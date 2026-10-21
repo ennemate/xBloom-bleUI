@@ -663,7 +663,7 @@
         <div class="card log-card">
           <div class="card-title" data-i18n="card_log_monitor">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div>[INIT] xBloom bleUI v0.9.0 구동 완료</div>
+            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v0.9.0 Ready</div>
           </div>
         </div>
       </div>
@@ -1157,6 +1157,18 @@
 <script>
   const TRANSLATIONS = {
     ko: {
+      "grind_label": "분쇄",
+      "no_grind": "원두분쇄 안함",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 구동 완료",
+      "log_ws_connected": "[BLE] 웹소켓 채널 연결 완료",
+      "log_ble_not_found": "[BLE ERROR] 주변에서 xBloom 기기를 찾지 못했습니다. 전원을 확인해주세요.",
+      "log_ble_reconnecting": "[BLE] 머신 수동 재연결 시도 중...",
+      "log_ble_disconnecting": "[BLE] 머신 연결 해제 요청 중...",
+      "log_cmd_start_brew": "[CMD] 추출 시작 요청 전송: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' 원두 분쇄 시작...",
+      "log_brew_done": "[DONE] 추출이 완료되었습니다.",
+      "log_cmd_stop": "[CMD] 비상 정지 명령 전송 완료",
+      "log_hist_saved": "[HIST] 추출 기록이 로컬 스토리지에 저장되었습니다.",
       "interval_last_pour": "🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>{wait}s</b> 유지)",
       "agit_after_add": " + 후교반 {n}s",
       "agit_next_before_add": " + 다음 전교반 {n}s",
@@ -1368,6 +1380,18 @@
       state_error: "오류"
     },
     en: {
+      "grind_label": "Grind",
+      "no_grind": "No Grind",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Ready",
+      "log_ws_connected": "[BLE] WebSocket telemetry channel connected",
+      "log_ble_not_found": "[BLE ERROR] xBloom machine not found nearby. Please check machine power.",
+      "log_ble_reconnecting": "[BLE] Attempting manual BLE reconnection...",
+      "log_ble_disconnecting": "[BLE] Requesting machine disconnection...",
+      "log_cmd_start_brew": "[CMD] Send brew start request: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' grinding coffee beans...",
+      "log_brew_done": "[DONE] Brewing process complete.",
+      "log_cmd_stop": "[CMD] Emergency stop command sent",
+      "log_hist_saved": "[HIST] Brew telemetry log saved to history.",
       "interval_last_pour": "🏁 <b>Final Pour</b>: Dripper drawdown pause (holds set <b>{wait}s</b>)",
       "agit_after_add": " + post-agitation {n}s",
       "agit_next_before_add": " + next pre-agitation {n}s",
@@ -1579,6 +1603,18 @@
       state_error: "ERROR"
     },
     ja: {
+      "grind_label": "粉砕",
+      "no_grind": "粉砕なし",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 起動完了",
+      "log_ws_connected": "[BLE] WebSocketチャンネル接続完了",
+      "log_ble_not_found": "[BLE ERROR] 周辺でxBloom機器が見つかりませんでした。電源をご確認ください。",
+      "log_ble_reconnecting": "[BLE] マシン手動再接続を試行中...",
+      "log_ble_disconnecting": "[BLE] マシン切断をリクエスト中...",
+      "log_cmd_start_brew": "[CMD] 抽出開始リクエスト送信: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' コーヒー豆粉砕開始...",
+      "log_brew_done": "[DONE] 抽出が完了しました。",
+      "log_cmd_stop": "[CMD] 緊急停止コマンド送信完了",
+      "log_hist_saved": "[HIST] 抽出履歴がローカルストレージに保存されました。",
       "interval_last_pour": "🏁 <b>最終注湯</b>: ドリッパー最終落としきり待機時間 (設定値 <b>{wait}s</b> 保持)",
       "agit_after_add": " + 注湯後攪拌 {n}s",
       "agit_next_before_add": " + 次の注湯前攪拌 {n}s",
@@ -1790,6 +1826,18 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "grind_label": "研磨",
+      "no_grind": "不研磨",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 啟動完成",
+      "log_ws_connected": "[BLE] WebSocket 遙測通道連線完成",
+      "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 機器，請確認電源是否開啟。",
+      "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線機器...",
+      "log_ble_disconnecting": "[BLE] 正在請求中斷機器連線...",
+      "log_cmd_start_brew": "[CMD] 發送開始沖煮請求: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' 開始研磨咖啡豆...",
+      "log_brew_done": "[DONE] 沖煮已完成。",
+      "log_cmd_stop": "[CMD] 緊急停止指令已發送",
+      "log_hist_saved": "[HIST] 沖煮記錄已儲存至歷史。",
       "interval_last_pour": "🏁 <b>最後一段注水</b>: 濾杯最終滴濾流盡等待時間 (維持設定的 <b>{wait}s</b>)",
       "agit_after_add": " + 注水後擾動 {n}s",
       "agit_next_before_add": " + 下一段注水前擾動 {n}s",
@@ -1974,6 +2022,18 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "grind_label": "研磨",
+      "no_grind": "不研磨",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 启动完成",
+      "log_ws_connected": "[BLE] WebSocket 遥测通道连接完成",
+      "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 机器，请确认电源是否开启。",
+      "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接机器...",
+      "log_ble_disconnecting": "[BLE] 正在请求断开机器连接...",
+      "log_cmd_start_brew": "[CMD] 发送开始冲煮请求: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' 开始研磨咖啡豆...",
+      "log_brew_done": "[DONE] 冲煮已完成。",
+      "log_cmd_stop": "[CMD] 紧急停止指令已发送",
+      "log_hist_saved": "[HIST] 冲煮记录已保存至历史。",
       "interval_last_pour": "🏁 <b>最后一段注水</b>: 滤杯最终滴滤流尽等待时间 (维持设定的 <b>{wait}s</b>)",
       "agit_after_add": " + 注水后扰动 {n}s",
       "agit_next_before_add": " + 下一段注水前扰动 {n}s",
@@ -2158,6 +2218,18 @@
       state_error: "异常"
     },
     de: {
+      "grind_label": "Mahlung",
+      "no_grind": "Kein Mahlen",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Bereit",
+      "log_ws_connected": "[BLE] WebSocket-Kanal verbunden",
+      "log_ble_not_found": "[BLE ERROR] xBloom-Gerät nicht gefunden. Bitte Stromversorgung prüfen.",
+      "log_ble_reconnecting": "[BLE] Versuche manuelle Wiederverbindung...",
+      "log_ble_disconnecting": "[BLE] Verbindungstrennung angefordert...",
+      "log_cmd_start_brew": "[CMD] Brühstart gesendet: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' Bohnen mahlen...",
+      "log_brew_done": "[DONE] Brühvorgang abgeschlossen.",
+      "log_cmd_stop": "[CMD] Not-Aus-Befehl gesendet",
+      "log_hist_saved": "[HIST] Brühprotokoll im Verlauf gespeichert.",
       "interval_last_pour": "🏁 <b>Letzter Aufguss</b>: Filter-Durchlaufpause (eingestellte <b>{wait}s</b> gehalten)",
       "agit_after_add": " + Nach-Agitation {n}s",
       "agit_next_before_add": " + nächste Vor-Agitation {n}s",
@@ -2369,6 +2441,18 @@
       state_error: "FEHLER"
     },
     fr: {
+      "grind_label": "Mouture",
+      "no_grind": "Sans mouture",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Prêt",
+      "log_ws_connected": "[BLE] Canal WebSocket connecté",
+      "log_ble_not_found": "[BLE ERROR] Appareil xBloom introuvable. Veuillez vérifier l'alimentation.",
+      "log_ble_reconnecting": "[BLE] Tentative de reconnexion manuelle...",
+      "log_ble_disconnecting": "[BLE] Déconnexion demandée...",
+      "log_cmd_start_brew": "[CMD] Démarrage de l'extraction envoyé: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' mouture du café...",
+      "log_brew_done": "[DONE] Extraction terminée.",
+      "log_cmd_stop": "[CMD] Commande d'arrêt d'urgence envoyée",
+      "log_hist_saved": "[HIST] Historique d'extraction enregistré.",
       "interval_last_pour": "🏁 <b>Dernier versement</b>: Écoulement final (pause réglée à <b>{wait}s</b>)",
       "agit_after_add": " + post-agitation {n}s",
       "agit_next_before_add": " + pré-agitation suivante {n}s",
@@ -2656,6 +2740,18 @@
     if (verDesc) {
       const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "0.9.0";
       verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${curVer}`;
+    }
+    const pctEl = document.getElementById("pctText");
+    if (pctEl) {
+      const match = pctEl.innerText.match(/\d+/);
+      const curStep = match ? match[0] : "0";
+      pctEl.innerText = `${t("label_step_prefix", "단계: ")}${curStep}`;
+    }
+    if (typeof updateRecipeDropdown === "function") {
+      try { updateRecipeDropdown(); } catch(e) {}
+    }
+    if (typeof retranslateAllLogs === "function") {
+      try { retranslateAllLogs(); } catch(e) {}
     }
     try {
       localStorage.setItem("xbloom_language", currentLangSetting);
@@ -3106,14 +3202,16 @@
   }
   function updateRecipeDropdown(selectName = null) {
     const sel = document.getElementById("recipeSelect");
+    if (!sel) return;
+    const currentSelectedName = selectName || (sel.options[sel.selectedIndex] ? loadedRecipes[sel.value]?.name : null);
     sel.innerHTML = "";
     let selectIndex = 0;
     loadedRecipes.forEach((r, idx) => {
       const opt = document.createElement("option");
       opt.value = idx;
-      const grindTxt = r.grind_enabled ? `분쇄 ${r.grind_size} (${r.grind_rpm || 80}RPM)` : '원두분쇄 안함';
+      const grindTxt = (r.grind_enabled !== false) ? `${t('grind_label', '분쇄')} ${r.grind_size} (${r.grind_rpm || 80}RPM)` : t('no_grind', '원두분쇄 안함');
       opt.text = `${r.name} (${grindTxt} / Dose ${r.dose}g)`;
-      if (selectName && r.name === selectName) {
+      if (currentSelectedName && r.name === currentSelectedName) {
         selectIndex = idx;
       }
       sel.appendChild(opt);
@@ -3290,7 +3388,10 @@
   function handleTelemetryUpdate(data) {
     if (data.temperature !== undefined) {
       const t = Math.round(Number(data.temperature));
-      document.getElementById("tempVal").innerText = t === 0 ? "0°C (상온)" : `${t}°C`;
+      let tempDisplay = `${t}°C`;
+        if (t === 0) tempDisplay = "0°C (RT)";
+        else if (t === 100) tempDisplay = "100°C (BP)";
+        document.getElementById("tempVal").innerText = tempDisplay;
     }
     if (data.pour_weight !== undefined) {
       const incomingPour = Number(data.pour_weight) || 0;
@@ -3308,7 +3409,7 @@
       document.getElementById("stateText").innerText = formatMachineState(data.state);
     }
     if (data.step_index !== undefined) {
-      document.getElementById("pctText").innerText = `단계: ${data.step_index}`;
+      document.getElementById("pctText").innerText = `${t("label_step_prefix", "단계: ")}${data.step_index !== undefined ? data.step_index : 0}`;
     }
     const curPour = Number(data.pour_weight) || 0;
     const curYield = Number(data.yield_weight) || 0;
@@ -3429,11 +3530,13 @@
     }
   }
   function formatLogMessage(key, params, fallbackMsg) {
-    if (key && TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) {
-      return t(key, params);
+    if (key) {
+      return { text: t(key, params), key: key, params: params };
     }
-    if (!fallbackMsg) return "";
+    if (!fallbackMsg) return { text: "", key: "", params: {} };
     const patterns = [
+      { regex: /^\[INIT\] xBloom bleUI/, key: 'log_init_ready' },
+      { regex: /^\[BLE ERROR\] 주변에서 xBloom 기기를 찾지 못했습니다/, key: 'log_ble_not_found' },
       { regex: /^\[BLE\] 웹소켓 채널 연결 완료/, key: 'log_ws_connected' },
       { regex: /^\[BLE\] 머신 수동 재연결 시도 중\.\.\./, key: 'log_ble_reconnecting' },
       { regex: /^\[BLE\] 머신 연결 해제 요청 중\.\.\./, key: 'log_ble_disconnecting' },
@@ -4524,8 +4627,8 @@
               <label>${t('label_temp_input', '수온 (0, 40~95, 100°C)')}</label>
               <div class="temp-input-wrap">
                 <input type="number" id="input-temp-${idx}" value="${step.temp}" oninput="updateStep(${idx}, 'temp', this.value)" placeholder="0 / 40~95 / 100">
-                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 0)">${t('tag_room_temp', '0 (상온)')}</button>
-                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 100)">100</button>
+                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 0)">0 (RT)</button>
+                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 100)">100 (BP)</button>
               </div>
               <span class="error-msg" id="err-temp-${idx}">0 또는 40~95, 100 입력</span>
             </div>
