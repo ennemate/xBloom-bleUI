@@ -1,0 +1,2959 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>xBloom bleUI</title>
+  <style>
+    :root, [data-theme="dark"] {
+      --bg: #0f1117;
+      --card: #1a1d26;
+      --card-inner: #13151c;
+      --accent: #d97736;
+      --accent-active: #b85f26;
+      --sky: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --border: #2a2e3d;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --tag-bg: #262c3d;
+      --banner-bg: #171b26;
+      --modal-bg: rgba(0, 0, 0, 0.75);
+      --card-shadow: none;
+      --overlay-color: rgba(10, 12, 18, 0.65);
+      --scrollbar-thumb: #334155;
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-inner: #f1f5f9;
+      --accent: #ea580c;
+      --accent-active: #c2410c;
+      --sky: #0284c7;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --tag-bg: #e2e8f0;
+      --banner-bg: #f1f5f9;
+      --modal-bg: rgba(15, 23, 42, 0.45);
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --overlay-color: rgba(248, 250, 252, 0.75);
+      --scrollbar-thumb: #cbd5e1;
+    }
+
+    body.custom-wallpaper {
+      background-size: cover !important;
+      background-position: center !important;
+      background-attachment: fixed !important;
+      background-repeat: no-repeat !important;
+      position: relative;
+    }
+
+    body.custom-wallpaper::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: var(--overlay-color);
+      transition: background 0.25s;
+    }
+
+    body.custom-wallpaper:not([data-theme="light"]) {
+      --card: rgba(26, 29, 38, 0.75) !important;
+      --card-inner: rgba(19, 21, 28, 0.70) !important;
+      --border: rgba(255, 255, 255, 0.15) !important;
+      --banner-bg: rgba(23, 27, 38, 0.70) !important;
+      --tag-bg: rgba(38, 44, 61, 0.85) !important;
+      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --overlay-color: rgba(10, 12, 18, 0.65);
+    }
+
+    html[data-theme="light"] body.custom-wallpaper {
+      --card: rgba(255, 255, 255, 0.88) !important;
+      --card-inner: rgba(241, 245, 249, 0.82) !important;
+      --text: #090d16 !important;
+      --muted: #334155 !important;
+      --border: rgba(203, 213, 225, 0.95) !important;
+      --banner-bg: rgba(248, 250, 252, 0.85) !important;
+      --tag-bg: rgba(226, 232, 240, 0.95) !important;
+      --card-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --overlay-color: rgba(241, 245, 249, 0.78) !important;
+    }
+
+    body.custom-wallpaper .card,
+    body.custom-wallpaper .modal-card,
+    body.custom-wallpaper .tab-bar,
+    body.custom-wallpaper .metric-box,
+    body.custom-wallpaper .step-card,
+    body.custom-wallpaper .chart-wrap,
+    body.custom-wallpaper .ratio-banner,
+    body.custom-wallpaper .history-item {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--card-shadow);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      padding: 12px 14px 28px; 
+      min-height: 100vh; 
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      transition: background 0.25s, color 0.25s; 
+    }
+
+    .container { 
+      width: 100%;
+      max-width: 480px; 
+      margin: 0 auto; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 14px; 
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 14px; 
+    }
+
+    .desktop-split-grid, .brew-left-col, .desktop-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step-col-wrap {
+      display: contents;
+    }
+
+    .card { 
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      border-radius: 14px; 
+      padding: 14px; 
+      transition: background 0.25s, border-color 0.25s, box-shadow 0.25s; 
+    }
+    .card-title { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 999px; }
+
+    @media (min-width: 860px) {
+      body { padding: 32px; justify-content: center; }
+      .container { max-width: 1180px; gap: 16px; margin: auto 0; }
+
+      #tab-brew.active { display: block; }
+      #tab-brew .desktop-split-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.35fr;
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      #tab-brew.active, #tab-editor.active {
+        min-height: 668px;
+      }
+
+      .brew-left-col {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .log-card {
+        height: 440px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+      }
+
+      .log-box {
+        flex: 1;
+        height: 100%;
+        overflow-y: scroll !important;
+        box-sizing: border-box;
+      }
+
+      #tab-editor.active { display: block; }
+      #tab-editor .desktop-split-grid {
+        display: grid;
+        grid-template-columns: 1.08fr 1fr;
+        gap: 16px;
+        align-items: stretch; 
+      }
+
+      .step-col-wrap {
+        display: block;
+        position: relative;
+        height: 100%;
+        min-height: 0;
+        width: 100%;
+      }
+
+      .desktop-col {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      #tab-editor .desktop-col .card {
+        padding: 12px 14px;
+      }
+
+      .step-manager-card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        box-sizing: border-box;
+      }
+
+      #stepsContainer {
+        flex: 1;
+        min-height: 0; 
+        overflow-y: auto !important;
+        padding-right: 6px;
+        margin-bottom: 8px;
+      }
+
+      canvas { height: 380px !important; }
+
+      .history-modal-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 16px;
+      }
+    }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 4px; }
+    .brand { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
+    .brand span { color: var(--accent); }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-icon { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; box-shadow: var(--card-shadow); }
+
+    .badge-btn {
+      font-size: 0.72rem; padding: 5px 10px; border-radius: 999px;
+      display: flex; align-items: center; gap: 6px; font-weight: 700;
+      border: 1px solid transparent; cursor: pointer; transition: 0.2s;
+    }
+    .badge-btn.connected { background: #132a1e; color: var(--success); border-color: rgba(34,197,94,0.3); }
+    .badge-btn.connected:hover { background: #341a1d; color: var(--danger); border-color: rgba(239,68,68,0.4); }
+    .badge-btn.connected:hover span::after { content: " (연결 끊기)"; font-size: 0.65rem; }
+    .badge-btn.disconnected { background: #341a1d; color: var(--danger); border-color: rgba(239,68,68,0.3); }
+    .badge-btn.disconnected:hover { background: #1c2e42; color: var(--sky); border-color: rgba(56,189,248,0.4); }
+    .badge-btn.scanning { background: #332711; color: #f59e0b; border-color: rgba(245,158,11,0.3); cursor: wait; }
+
+    [data-theme="light"] .badge-btn.connected { background: #dcfce7; color: #15803d; }
+    [data-theme="light"] .badge-btn.connected:hover { background: #fee2e2; color: #dc2626; }
+    [data-theme="light"] .badge-btn.disconnected { background: #fee2e2; color: #dc2626; }
+    [data-theme="light"] .badge-btn.disconnected:hover { background: #e0f2fe; color: #0284c7; }
+    [data-theme="light"] .badge-btn.scanning { background: #fef3c7; color: #b45309; }
+
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+    .tab-bar { display: flex; background: var(--card-inner); border-radius: 12px; padding: 4px; border: 1px solid var(--border); }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--muted); font-size: 0.9rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .tab-btn.active { background: var(--card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .field-group { display: flex; flex-direction: column; margin-bottom: 6px; position: relative; }
+    label { font-size: 0.72rem; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px 10px; background: var(--card-inner); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; transition: border-color 0.2s, background 0.25s, color 0.25s; font-weight: 500; }
+    input:focus, select:focus { border-color: var(--accent); }
+    input:disabled, select:disabled { opacity: 0.45; cursor: not-allowed; }
+    input.input-error, select.input-error { border-color: var(--danger) !important; background: #241416; }
+    [data-theme="light"] input.input-error, [data-theme="light"] select.input-error { background: #fee2e2; }
+    .error-msg { color: var(--danger); font-size: 0.68rem; margin-top: 2px; display: none; line-height: 1.2; font-weight: 600; }
+    .error-msg.visible { display: block; }
+
+    .temp-input-wrap { display: flex; gap: 4px; }
+    .btn-tag { padding: 4px 6px; font-size: 0.7rem; border-radius: 6px; background: var(--tag-bg); color: var(--sky); border: 1px solid var(--border); cursor: pointer; font-weight: 700; white-space: nowrap; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .metric-box { background: var(--card-inner); border-radius: 10px; padding: 10px 6px; text-align: center; border: 1px solid var(--border); }
+    .metric-val { font-size: 1.35rem; font-weight: 700; margin-top: 2px; }
+    .metric-val.theme-txt { color: var(--text); }
+    .metric-unit { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+
+    .chart-wrap { width: 100%; background: var(--card-inner); border-radius: 10px; border: 1px solid var(--border); padding: 8px; margin-top: 8px; }
+    canvas { width: 100%; height: 155px; display: block; }
+    .chart-legend { display: flex; justify-content: flex-end; gap: 12px; font-size: 0.75rem; margin-top: 4px; color: var(--muted); }
+    .legend-item { display: flex; align-items: center; gap: 4px; font-weight: 600; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .step-card { 
+      background: var(--card-inner); 
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      padding: 12px 14px; 
+      margin-bottom: 10px; 
+      position: relative; 
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover {
+      border-color: rgba(217, 119, 54, 0.4);
+    }
+    .step-card:last-child {
+      margin-bottom: 2px;
+    }
+    .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .step-title { font-weight: 700; font-size: 0.85rem; color: var(--accent); }
+    .btn-del { background: transparent; border: none; color: var(--danger); font-size: 0.75rem; cursor: pointer; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .btn-del:hover { background: rgba(239, 68, 68, 0.15); }
+    .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .ratio-wrap { margin-bottom: 8px; }
+    .ratio-banner { background: var(--banner-bg); border: 1px dashed var(--border); border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .ratio-banner.invalid { border-color: var(--danger); background: #241416; }
+    [data-theme="light"] .ratio-banner.invalid { background: #fee2e2; }
+    .ratio-badge { background: var(--tag-bg); padding: 2px 8px; border-radius: 6px; color: var(--accent); font-weight: 700; border: 1px solid var(--border); }
+    .ratio-badge.invalid { background: #3b1d1d; color: var(--danger); }
+    [data-theme="light"] .ratio-badge.invalid { background: #fecaca; }
+
+    .brew-action-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+      transition: all 0.25s ease;
+    }
+    .brew-action-grid.is-brewing {
+      grid-template-columns: 1fr;
+    }
+    .brew-action-grid.is-brewing #brewBtn {
+      display: none !important;
+    }
+    .brew-action-grid.is-brewing .btn-stop {
+      background: #dc2626 !important;
+      color: #ffffff !important;
+      border-color: #b91c1c !important;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 16px rgba(220, 38, 38, 0.45);
+    }
+    .brew-action-grid.is-brewing .btn-stop:hover {
+      background: #b91c1c !important;
+    }
+    [data-theme="light"] .brew-action-grid.is-brewing .btn-stop {
+      background: #ef4444 !important;
+      color: #ffffff !important;
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+    }
+    [data-theme="light"] .brew-action-grid.is-brewing .btn-stop:hover {
+      background: #dc2626 !important;
+    }
+
+    button { padding: 11px 12px; border-radius: 10px; font-weight: 600; border: none; cursor: pointer; font-size: 0.9rem; }
+    .btn-accent { background: var(--accent); color: white; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.15); height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.25s; }
+    .btn-accent.btn-finish-mode { background: #16a34a !important; color: white !important; box-shadow: 0 0 12px rgba(34, 197, 94, 0.45); font-weight: 700; }
+    .btn-accent.btn-finish-mode:hover { background: #15803d !important; }
+    .btn-accent:active { background: var(--accent-active); }
+    .btn-outline { 
+      background: transparent; 
+      border: 1px dashed var(--accent); 
+      color: var(--accent); 
+      width: 100%; 
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-outline:hover {
+      background: rgba(217, 119, 54, 0.12);
+      border-color: var(--accent-active);
+    }
+    .btn-secondary { background: var(--card-inner); color: var(--text); border: 1px solid var(--border); width: 100%; font-weight: 600; }
+    .btn-save-server { background: #132a1e; color: var(--success); border: 1px solid rgba(34,197,94,0.4); font-weight: 700; }
+    .btn-save-server:hover { background: #1a3828; }
+    [data-theme="light"] .btn-save-server { background: #dcfce7; color: #15803d; border-color: #86efac; }
+    [data-theme="light"] .btn-save-server:hover { background: #bbf7d0; }
+
+    .btn-cloud { background: #0e374e; color: #38bdf8; border: 1px solid #0369a1; width: 100%; }
+    [data-theme="light"] .btn-cloud { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }
+
+    .btn-stop {
+      background: #341a1d;
+      color: #f87171;
+      border: 1px solid #572228;
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .btn-stop:hover { background: #4a1f24; color: #fca5a5; }
+    [data-theme="light"] .btn-stop { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+    [data-theme="light"] .btn-stop:hover { background: #fecaca; }
+
+    .btn-sub { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; background: var(--card-inner); color: var(--text); border: 1px solid var(--border); font-weight: 600; }
+
+    .progress-bar-bg { width: 100%; height: 6px; background: var(--card-inner); border-radius: 999px; overflow: hidden; margin-top: 6px; border: 1px solid var(--border); }
+    .progress-bar { width: 0%; height: 100%; background: var(--accent); transition: width 0.2s; }
+
+    .log-box {
+      background: var(--card-inner);
+      border-radius: 8px;
+      padding: 10px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+      border: 1px solid var(--border);
+    }
+    .log-box div { word-break: break-all; margin-bottom: 2px; }
+
+    .agitation-chip-group { display: flex; gap: 8px; margin-top: 8px; }
+    .agitation-chip {
+      flex: 1; padding: 6px 8px; border-radius: 8px; font-size: 0.72rem; font-weight: 700;
+      background: var(--tag-bg); color: var(--muted); border: 1px solid var(--border);
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 4px;
+      white-space: nowrap;
+      transition: all 0.2s; user-select: none;
+    }
+    .agitation-chip:hover { border-color: var(--accent); color: var(--text); }
+    .agitation-chip.active {
+      background: rgba(217, 119, 54, 0.18); color: var(--accent); border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    [data-theme="light"] .agitation-chip.active {
+      background: #ffedd5; color: #c2410c; border-color: #ea580c;
+    }
+    .agitation-status {
+      font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; background: var(--border); flex-shrink: 0;
+    }
+    .agitation-chip.active .agitation-status {
+      background: var(--accent); color: white;
+    }
+
+    @media (max-width: 520px) {
+      .agitation-chip {
+        padding: 6px 6px;
+        font-size: 0.68rem;
+      }
+      .chip-en {
+        display: none;
+      }
+    }
+
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--modal-bg); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 440px; padding: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 14px; max-height: 90vh; overflow-y: auto; color: var(--text); position: relative; }
+    .modal-card.wide-modal { max-width: 840px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .modal-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .btn-close { background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; padding: 4px; }
+
+    .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+    .setting-label { font-size: 0.85rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px; }
+    .setting-desc { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+    .theme-switch { display: flex; background: var(--card-inner); border: 1px solid var(--border); border-radius: 8px; padding: 2px; flex-shrink: 0; }
+    .theme-opt { padding: 5px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; background: transparent; color: var(--muted); white-space: nowrap; transition: 0.15s; }
+    .theme-opt.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; cursor: pointer; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .25s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 24px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #ffffff; transition: .25s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.25); }
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .cloud-user-box { background: var(--card-inner); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
+
+    .toggle-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .toggle-chip-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-inner);
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      gap: 6px;
+      min-height: 46px;
+      box-sizing: border-box;
+    }
+    .toggle-chip-text {
+      min-width: 0;
+      flex: 1;
+    }
+    .toggle-chip-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text);
+    }
+    .toggle-chip-desc {
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+    @media (max-width: 600px) {
+      .toggle-row-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cloud-status { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+
+    .history-modal-grid { display: flex; flex-direction: column; gap: 16px; }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+      padding-bottom: 14px;
+      box-sizing: border-box;
+    }
+    @media (max-width: 859px) {
+      .history-list {
+        max-height: 230px;
+        border-bottom: 1px dashed var(--border);
+        padding-bottom: 14px;
+        margin-bottom: 2px;
+      }
+    }
+    .history-item { background: var(--card-inner); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: 0.2s; position: relative; }
+    .history-item:hover, .history-item.selected { border-color: var(--accent); background: var(--banner-bg); }
+    .history-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
+    .history-rec-name { font-weight: 700; font-size: 0.85rem; color: var(--text); }
+    .history-stats { display: flex; gap: 10px; font-size: 0.75rem; margin-top: 4px; font-weight: 600; flex-wrap: wrap; }
+    .history-chart-card { background: var(--card-inner); border: 1px solid var(--border); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+
+    .hist-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+    .badge-done { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge-abort { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-hist-del { background: transparent; border: none; color: var(--muted); cursor: pointer; padding: 2px 6px; font-size: 0.9rem; border-radius: 4px; transition: 0.15s; line-height: 1; }
+    .btn-hist-del:hover { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+    .btn-rebrew { background: rgba(56, 189, 248, 0.12); color: var(--sky); border: 1px solid rgba(56, 189, 248, 0.35); padding: 7px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 4px; }
+    .btn-rebrew:hover { background: rgba(56, 189, 248, 0.22); border-color: var(--sky); }
+
+    .settings-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; }
+
+    .interval-hint-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--text);
+      font-size: 0.73rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+    .interval-hint-badge b { color: var(--sky); font-weight: 700; }
+    .interval-hint-badge.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .interval-hint-badge.warning b { color: #f59e0b; }
+    .interval-hint-badge.info {
+      background: var(--card-inner);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .interval-hint-badge.info b { color: var(--text); }
+  </style>
+</head>
+<body class="custom-wallpaper-container">
+
+<div class="container">
+  <header>
+    <div class="brand">xBloom <span>bleUI</span></div>
+    <div class="header-actions">
+      <button class="badge-btn disconnected" id="bleStatusBtn" onclick="toggleBleConnection()">
+        <div class="dot"></div>
+        <span id="bleStatusText">BLE 연결 확인 중</span>
+      </button>
+      <button class="btn-icon" onclick="openSettings()" title="설정">⚙️</button>
+    </div>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabNavBrew" onclick="switchTab('brew')">실시간 추출 대시보드</button>
+    <button class="tab-btn" id="tabNavEditor" onclick="switchTab('editor')">레시피 스튜디오 / 클라우드</button>
+  </div>
+
+  <div class="tab-content active" id="tab-brew">
+    <div class="desktop-split-grid">
+      <div class="brew-left-col">
+        <div class="card">
+          <div class="card-title">추출 레시피 제어</div>
+          <label>실행할 레시피 선택 (recipes/ 자동 연동)</label>
+          <select id="recipeSelect" onchange="onRecipeSelectChanged()"></select>
+
+          <div class="brew-action-grid" id="brewActionGrid">
+            <button class="btn-accent" id="brewBtn" onclick="startBrew()">추출 시작</button>
+            <button class="btn-stop" id="stopBtn" onclick="stopBrew()">비상 정지</button>
+          </div>
+        </div>
+
+        <div class="card log-card">
+          <div class="card-title">BLE 이벤트 로그 모니터</div>
+          <div class="log-box" id="logBox">
+            <div>[INIT] xBloom bleUI v0.8.0 구동 완료</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div class="card-title" style="margin-bottom:0;">머신 실시간 상태 (Telemetry)</div>
+          <button class="btn-sub" onclick="openHistoryModal()">📜 추출 기록</button>
+        </div>
+
+        <div class="grid-4">
+          <div class="metric-box">
+            <div class="metric-unit">시간</div>
+            <div class="metric-val theme-txt" id="timeVal">00:00</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-unit">실시간 수온</div>
+            <div class="metric-val theme-txt" style="font-size:1.15rem;"><span id="tempVal">0°C</span></div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-unit">푸어</div>
+            <div class="metric-val" style="color:var(--sky);"><span id="pourVal">0</span><span class="metric-unit">g</span></div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-unit">추출</div>
+            <div class="metric-val" style="color:var(--accent);"><span id="yieldVal">0</span><span class="metric-unit">g</span></div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span>푸어</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span>추출</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--muted); border-radius:0; width:10px; height:2px;"></div><span>푸어 시작선</span></div>
+          </div>
+          <canvas id="brewChart"></canvas>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-bottom:2px;">
+            <span>상태: <b id="stateText" style="color:var(--text);">대기 중</b></span>
+            <span id="pctText" style="color:var(--text); font-weight:600;">단계: 0</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-editor">
+    <div class="desktop-split-grid">
+
+      <div class="step-col-wrap">
+        <div class="card step-manager-card">
+          <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>푸어 구간 설정 (Pour Steps & Pattern)</span>
+            <span style="font-size:0.75rem; color:var(--sky);" id="totalPourSummary">총 푸어: 0g</span>
+          </div>
+
+          <div id="stepsContainer"></div>
+
+          <button class="btn-outline" onclick="addStep()">+ 새 푸어 단계 추가</button>
+          <div class="error-msg" id="err-totalWater" style="margin-top:6px; text-align:center;">총 푸어량은 머신 상한인 500g을 넘을 수 없습니다.</div>
+        </div>
+      </div>
+
+      <div class="desktop-col">
+        <div class="card">
+          <div class="card-title">레시피 저장 및 연동 관리</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button class="btn-save-server" onclick="saveRecipeToServer()">💾 서버에 저장 후 즉시 추출 대시보드로 이동</button>
+            <div class="grid-4-buttons" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
+              <input type="file" id="fileInput" accept=".yaml,.yml" style="display:none;" onchange="handleFileLoad(event)">
+              <button class="btn-secondary" onclick="openServerRecipeModal()" title="저장된 레시피 목록 확인 및 관리" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📋 레시피 목록</button>
+              <button class="btn-secondary" onclick="openShareUrlModal()" title="xBloom 공유 링크(URL)로 레시피 가져오기" style="color:var(--sky); border-color:rgba(56,189,248,0.4); font-size:0.75rem; padding:6px 2px; white-space:nowrap;">🔗 공유 링크</button>
+              <button class="btn-secondary" onclick="document.getElementById('fileInput').click()" title="YAML 파일 불러오기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📂 YAML 열기</button>
+              <button class="btn-secondary" onclick="exportYAML()" title="YAML 파일로 내보내기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📤 YAML 저장</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">기본 파라미터 및 그라인더 설정</div>
+
+          <div class="field-group">
+            <label>레시피 이름</label>
+            <input type="text" id="recName" value="My Custom Brew" oninput="validateAll()">
+            <span class="error-msg" id="err-recName">이름을 입력해주세요.</span>
+          </div>
+
+          <div class="toggle-row-grid">
+            <div class="toggle-chip-box">
+              <div class="toggle-chip-text">
+                <div class="toggle-chip-title">내장 그라인더 (Grind)</div>
+                <div class="toggle-chip-desc">OFF 시 분쇄 건너뜀</div>
+              </div>
+              <label class="switch" title="내장 그라인더 분쇄 켜기/끄기">
+                <input type="checkbox" id="recGrindEnabled" checked onchange="toggleGrindSetting()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-chip-box">
+              <div class="toggle-chip-text">
+                <div class="toggle-chip-title">⏱️ 인터벌 보정 (Sync)</div>
+                <div class="toggle-chip-desc">푸어 간격 대기 자동 계산</div>
+              </div>
+              <label class="switch" title="핸드드립 인터벌 대기시간 보정 켜기/끄기">
+                <input type="checkbox" id="recIntervalSync" onchange="toggleIntervalSync()">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field-group">
+              <label>Dose (정수 g)</label>
+              <input type="number" id="recDose" value="18" step="1" min="1" oninput="this.value = this.value.replace(/[^0-9]/g, ''); calcRatio(); validateAll();">
+              <span class="error-msg" id="err-recDose">1g 이상 정수</span>
+            </div>
+            <div class="field-group" id="grindFieldWrap">
+              <label>분쇄도 (10~100)</label>
+              <input type="number" id="recGrind" value="45" oninput="validateAll()">
+              <span class="error-msg" id="err-recGrind">10~100 입력</span>
+            </div>
+            <div class="field-group" id="rpmFieldWrap">
+              <label>그라인더 RPM (60~120)</label>
+              <select id="recGrindRpm" onchange="validateAll()">
+                <option value="60">60 RPM</option>
+                <option value="70">70 RPM</option>
+                <option value="80" selected>80 RPM</option>
+                <option value="90">90 RPM</option>
+                <option value="100">100 RPM</option>
+                <option value="110">110 RPM</option>
+                <option value="120">120 RPM</option>
+              </select>
+              <span class="error-msg" id="err-recRpm">60~120 사이 10단위만 가능</span>
+            </div>
+          </div>
+
+          <div class="ratio-wrap" style="margin-top:4px;">
+            <div class="ratio-banner" id="ratioBanner">
+              <span>추출 비율 (0.5 단위 배수 일치 필요)</span>
+              <span class="ratio-badge" id="ratioText">1 : --</span>
+            </div>
+            <span class="error-msg" id="err-ratio" style="margin-top:4px;"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">머신 메모리 및 클라우드 전송</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button class="btn-accent" onclick="openSlotModal()">머신 슬롯에 직접 기록 (BLE)</button>
+            <button class="btn-cloud" onclick="uploadToCloud()">☁️ xBloom 앱 클라우드에 업로드 (Cloud API)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="slotModal" onclick="closeSlotModalOnBack(event)">
+  <div class="modal-card" style="max-width:360px;">
+    <div class="modal-header">
+      <div class="modal-title">머신 슬롯 지정 기록</div>
+      <button class="btn-close" onclick="closeSlotModal()">&times;</button>
+    </div>
+    <div style="font-size:0.75rem; color:var(--muted);">기록할 머신의 메모리 슬롯 번호를 선택하세요:</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(1)">슬롯 A (1번)에 기록</button>
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(2)">슬롯 B (2번)에 기록</button>
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(3)">슬롯 C (3번)에 기록</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cloudSuccessModal" onclick="closeCloudSuccessModalOnBack(event)">
+  <div class="modal-card" style="max-width:440px;">
+    <div class="modal-header">
+      <div class="modal-title">☁️ 클라우드 업로드 완료</div>
+      <button class="btn-close" onclick="closeCloudSuccessModal()">&times;</button>
+    </div>
+    <div style="font-size:0.8rem; color:var(--text); line-height:1.5;">
+      레시피가 xBloom 공식 앱 클라우드 계정에 성공적으로 동기화되었습니다!
+      <span id="cloudModalIntervalBadge" style="display:none; color:var(--accent); font-size:0.75rem; font-weight:600; margin-top:4px;">
+        ⏱️ 핸드드립 인터벌 대기시간 보정이 적용되었습니다.
+      </span>
+    </div>
+
+    <div style="margin-top:10px; padding:10px 12px; background:rgba(0,0,0,0.04); border-radius:8px; border:1px solid var(--border);">
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
+        <span style="color:var(--muted);">레시피명</span>
+        <strong id="cloudSuccessRecipeName" style="color:var(--text);">Custom Brew</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:4px;">
+        <span style="color:var(--muted);">클라우드 ID</span>
+        <span id="cloudSuccessRecipeId" style="font-family:monospace; color:var(--muted);">OK</span>
+      </div>
+    </div>
+
+    <div id="cloudShareSection" style="margin-top:12px;">
+      <div class="field-group" style="margin-bottom:6px;">
+        <label style="display:flex; justify-content:space-between; align-items:center;">
+          <span>레시피 웹 공유 링크 (URL)</span>
+          <span id="cloudOpenStatusText" style="font-size:0.72rem; color:var(--accent);">새 탭에서 열림 🚀</span>
+        </label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="cloudShareUrlInput" readonly style="font-size:0.78rem; font-family:monospace; background:rgba(0,0,0,0.03);" onclick="this.select()">
+          <button class="btn-secondary" id="btnCopyShareUrl" onclick="copyCloudShareUrl()" style="white-space:nowrap; padding:0 12px; font-size:0.75rem;">복사</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn-secondary" onclick="closeCloudSuccessModal()" style="flex:1;">닫기</button>
+      <button class="btn-accent" id="btnOpenShareNewTab" onclick="openShareUrlNewTab()" style="flex:1.5;">🔗 웹에서 레시피 열기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shareUrlModal" onclick="closeShareUrlOnBack(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">🔗 xBloom 공유 링크 레시피 가져오기</div>
+      <button class="btn-close" onclick="closeShareUrlModal()">&times;</button>
+    </div>
+    <div style="font-size:0.75rem; color:var(--muted); line-height:1.45;">
+      xBloom 공식 앱이나 웹에서 복사한 공유 링크(예: <code>https://share-h5.xbloom.com/?id=...</code>)를 입력하면 레시피 파라미터(이름, 원두량, 분쇄도, RPM, 모든 푸어 구간 및 교반 설정)를 자동으로 파싱하여 레시피 스튜디오로 가져옵니다.
+    </div>
+    <div class="field-group" style="margin-top:4px;">
+      <label>공유 링크 URL 또는 ID</label>
+      <input type="text" id="shareUrlInput" placeholder="https://share-h5.xbloom.com/?id=..." style="font-size:0.82rem;" onkeydown="if(event.key==='Enter') fetchSharedRecipe()">
+      <div class="error-msg" id="err-shareUrl">올바른 공유 링크를 입력해주세요.</div>
+    </div>
+    <div id="shareLoadingBox" style="display:none; align-items:center; gap:8px; font-size:0.8rem; color:var(--sky); background:rgba(56,189,248,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25);">
+      <div class="dot" style="background:var(--sky); animation:pulse 1s infinite;"></div>
+      <span>xBloom 클라우드에서 레시피를 가져오는 중입니다...</span>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:6px;">
+      <button class="btn-secondary" onclick="closeShareUrlModal()" style="flex:1;">취소</button>
+      <button class="btn-accent" id="btnFetchShare" onclick="fetchSharedRecipe()" style="flex:1.5;">레시피 가져오기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="serverRecipeModal" onclick="closeServerRecipeModalOnBack(event)">
+  <div class="modal-card" style="max-width:540px; width:92%; max-height:85vh; display:flex; flex-direction:column;">
+    <div class="modal-header">
+      <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+        <span>📋 저장된 레시피 목록</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">(<span id="serverRecipeCount">0</span>개)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button class="btn-secondary" onclick="loadServerRecipesList()" style="font-size:0.75rem; padding:4px 8px;" title="새로고침">🔄 새로고침</button>
+        <button class="btn-close" onclick="closeServerRecipeModal()">&times;</button>
+      </div>
+    </div>
+
+    <div style="margin-top:2px;">
+      <input type="text" id="serverRecipeSearch" placeholder="🔍 레시피 이름 또는 파일명 검색..." oninput="filterServerRecipes()" style="font-size:0.8rem; width:100%; padding:6px 10px;">
+    </div>
+
+    <div id="serverRecipeLoadingBox" style="display:none; align-items:center; gap:8px; font-size:0.8rem; color:var(--sky); background:rgba(56,189,248,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25); margin-top:8px;">
+      <div class="dot" style="background:var(--sky); animation:pulse 1s infinite;"></div>
+      <span>서버 레시피 목록을 로딩 중입니다...</span>
+    </div>
+
+    <div id="serverRecipeListContainer" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-top:10px; max-height:440px; padding-right:2px;">
+
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; margin-top:12px; padding-top:8px; border-top:1px solid var(--border);">
+      <button class="btn-secondary" onclick="closeServerRecipeModal()" style="min-width:80px;">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="historyModal" onclick="closeHistoryOnBack(event)">
+  <div class="modal-card wide-modal">
+    <div class="modal-header">
+      <div class="modal-title">📜 추출 히스토리 & 그래프 기록</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239, 68, 68, 0.4);" onclick="clearAllHistoryConfirm()">전체 삭제</button>
+        <button class="btn-close" onclick="closeHistoryModal()">&times;</button>
+      </div>
+    </div>
+
+    <div class="history-modal-grid">
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="font-size:0.75rem; color:var(--muted); font-weight:700;">추출 이력 목록 (<span id="histCount">0</span>)</div>
+        <div class="history-list" id="historyListContainer"></div>
+      </div>
+
+      <div class="history-chart-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-weight:700; font-size:0.85rem;" id="histDetailTitle">선택된 추출 로그</span>
+          <div class="chart-legend" style="margin:0;">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span>푸어</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span>추출</span></div>
+            <div class="legend-item"><div style="width:10px; height:0; border-top:1.5px dashed var(--muted);"></div><span>푸어선</span></div>
+          </div>
+        </div>
+        <div style="background:var(--card); border-radius:8px; border:1px solid var(--border); padding:6px; margin-top:4px;">
+          <canvas id="historyChart" style="height:170px !important;"></canvas>
+        </div>
+        <div id="histDetailSummary" style="font-size:0.75rem; color:var(--muted); line-height:1.4; margin-top:2px;"></div>
+
+        <button class="btn-rebrew" id="btnLoadHistoryRecipe" onclick="loadRecipeFromCurrentHistory()">
+          <span>⚡ 이 레시피 스튜디오로 불러오기</span>
+        </button>
+
+        <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px; background:var(--card); padding:8px 10px; border-radius:8px; border:1px solid var(--border);">
+          <div style="font-size:0.75rem; font-weight:700; color:var(--text); display:flex; justify-content:space-between; align-items:center; gap:8px;">
+            <span style="white-space:nowrap;">☕ 원두 정보 & 테이스팅 노트</span>
+            <button class="btn-secondary" style="font-size:0.7rem; padding:2px 8px; font-weight:600; white-space:nowrap;" onclick="saveHistoryNotes()">메모 저장</button>
+          </div>
+          <input type="text" id="histBeanInput" placeholder="원두 종류 / 로스팅 일자 (예: 에티오피아 게이샤 워시드)" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text);" />
+          <textarea id="histNotesInput" rows="2" placeholder="맛 평가, 분쇄도 코멘트 등 (예: 분쇄도 45 적절, 클린컵 우수)" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text); resize:none; font-family:inherit;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settingsModal" onclick="closeSettingsOnBack(event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ 환경 설정</div>
+      <button class="btn-close" onclick="closeSettings()">&times;</button>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">화면 테마</div>
+        <div class="setting-desc">다크 모드 또는 라이트 모드 전환</div>
+      </div>
+      <div class="theme-switch">
+        <button class="theme-opt active" id="btnThemeDark" onclick="setTheme('dark', true)">다크</button>
+        <button class="theme-opt" id="btnThemeLight" onclick="setTheme('light', true)">라이트</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <div style="flex:1; padding-right:12px;">
+        <div class="setting-label">⏸️ 비상정지 기록 저장</div>
+        <div class="setting-desc">추출 중 비상정지 시에도 진행된 시점까지의 차트와 무게를 기록합니다.</div>
+      </div>
+      <label class="switch" title="비상정지 기록 저장 켜기/끄기">
+        <input type="checkbox" id="recordAbortedToggle" onchange="setRecordAborted(this.checked, true)">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="setting-row">
+      <div style="flex:1; padding-right:12px;">
+        <div class="setting-label">📍 푸어 시작 구분선 기준</div>
+        <div class="setting-desc">실시간 물 배출(저울 무게 증가) 감지 또는 레시피 설정 시간 기준</div>
+      </div>
+      <div class="theme-switch" style="width:auto;">
+        <button class="theme-opt active" id="btnMarkerWeight" onclick="setMarkerMode('weight', true)">물 배출 감지</button>
+        <button class="theme-opt" id="btnMarkerTime" onclick="setMarkerMode('time', true)">시간 계산</button>
+      </div>
+    </div>
+
+    <div class="setting-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
+      <div>
+        <div class="setting-label">🖼️ 커스텀 배경화면</div>
+        <div class="setting-desc">사진 등록 시 각 카드 뒤로 부드러운 블러(Blur) 효과가 적용됩니다.</div>
+      </div>
+      <div class="btn-group" style="width:100%;">
+        <input type="file" id="wallpaperInput" accept="image/*" style="display:none;" onchange="handleWallpaperUpload(event)">
+        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="document.getElementById('wallpaperInput').click()">사진 선택</button>
+        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="clearWallpaper(true)">기본 배경 복원</button>
+      </div>
+    </div>
+
+    <hr style="border:none; border-top:1px solid var(--border);">
+
+    <div>
+      <div class="setting-label" style="margin-bottom:8px;">☁️ xBloom 클라우드 연동</div>
+      <div class="cloud-user-box" id="cloudStatusBox">
+        <div class="cloud-status">
+          <span id="cloudStatusDot" style="color:var(--muted); font-size:0.7rem;">●</span>
+          <span id="cloudStatusText">로그인되어 있지 않음</span>
+        </div>
+        <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
+      </div>
+
+      <div id="cloudLoginForm" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+        <div class="field-group" style="margin:0;">
+          <label>이메일 계정</label>
+          <input type="email" id="cloudEmail" placeholder="xbloom_app@example.com">
+        </div>
+        <div class="field-group" style="margin:0;">
+          <label>비밀번호</label>
+          <input type="password" id="cloudPassword" placeholder="••••••••">
+        </div>
+        <button class="btn-accent" style="margin-top:4px;" onclick="handleCloudLogin()">xBloom 로그인</button>
+      </div>
+
+      <div id="cloudLogoutWrap" style="margin-top:10px; display:none;">
+        <button class="btn-secondary" onclick="handleCloudLogout()">로그아웃 (토큰 해제)</button>
+      </div>
+    </div>
+
+    <div class="settings-footer">
+      <span>v0.8.0 by 팽이팽이</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  let recordAbortedBrews = false;
+  async function loadServerSettings() {
+    try {
+      const res = await fetch("/api/settings");
+      const cfg = await res.json();
+      if (cfg.theme) setTheme(cfg.theme, false);
+      if (cfg.wallpaper) applyWallpaper(cfg.wallpaper, false);
+      if (cfg.record_aborted_brews !== undefined) {
+        setRecordAborted(cfg.record_aborted_brews, false);
+      }
+      if (cfg.pour_marker_mode) {
+        setMarkerMode(cfg.pour_marker_mode, false);
+      }
+      if (cfg.chart_smoothing !== undefined) {
+        setChartSmoothing(cfg.chart_smoothing, false);
+      }
+      if (cfg.cloud_user) {
+        cloudUser = cfg.cloud_user;
+        updateCloudUI();
+      }
+    } catch (e) {
+      console.warn("서버 설정 로드 실패:", e);
+    }
+  }
+  function isIntervalSyncEnabled() {
+    const chk = document.getElementById("recIntervalSync");
+    return chk ? chk.checked : false;
+  }
+  function toggleIntervalSync() {
+    renderSteps();
+    validateAll();
+  }
+  function getStepIntervalBreakdown(idx, step, nextStep) {
+    const water = Number(step.water) || 0;
+    const flow = Number(step.flow) > 0 ? Number(step.flow) : 3.2;
+    const pourSec = Math.round(water / flow);
+    const afterSec = step.agitation_after ? 8 : 0;
+    const nextBeforeSec = (nextStep && nextStep.agitation_before) ? 8 : 0;
+    const overhead = pourSec + afterSec + nextBeforeSec;
+    const target = Number(step.wait) || 0;
+    const machineWait = Math.max(0, target - overhead);
+    const isClamped = target < overhead;
+    return { pourSec, afterSec, nextBeforeSec, overhead, target, machineWait, isClamped };
+  }
+  function adjustStepsForHanddripInterval(rawSteps) {
+    if (!isIntervalSyncEnabled() || !rawSteps || rawSteps.length === 0) {
+      return JSON.parse(JSON.stringify(rawSteps || []));
+    }
+    const adjusted = JSON.parse(JSON.stringify(rawSteps));
+    for (let i = 0; i < adjusted.length - 1; i++) {
+      const next = adjusted[i + 1];
+      const info = getStepIntervalBreakdown(i, adjusted[i], next);
+      adjusted[i].wait = info.machineWait;
+    }
+    return adjusted;
+  }
+  let chartSmoothing = true;
+  function setChartSmoothing(enabled, saveToServer = true) {
+    chartSmoothing = !!enabled;
+    const toggle = document.getElementById("chartSmoothingToggle");
+    if (toggle) toggle.checked = chartSmoothing;
+    drawChart();
+    if (currentHistRecord) drawHistoryChart(currentHistRecord);
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chart_smoothing: chartSmoothing })
+      }).catch(() => {});
+    }
+  }
+  function setMarkerMode(mode, saveToServer = true) {
+    pourMarkerMode = (mode === "time") ? "time" : "weight";
+    const btnW = document.getElementById("btnMarkerWeight");
+    const btnT = document.getElementById("btnMarkerTime");
+    if (btnW && btnT) {
+      if (pourMarkerMode === "weight") {
+        btnW.classList.add("active");
+        btnT.classList.remove("active");
+      } else {
+        btnT.classList.add("active");
+        btnW.classList.remove("active");
+      }
+    }
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pour_marker_mode: pourMarkerMode })
+      }).catch(() => {});
+    }
+  }
+  function setRecordAborted(enabled, saveToServer = true) {
+    recordAbortedBrews = !!enabled;
+    const toggle = document.getElementById("recordAbortedToggle");
+    if (toggle) {
+      toggle.checked = recordAbortedBrews;
+    }
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ record_aborted_brews: recordAbortedBrews })
+      }).catch(() => {});
+    }
+  }
+  function setTheme(theme, saveToServer = true) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const darkBtn = document.getElementById("btnThemeDark");
+    const lightBtn = document.getElementById("btnThemeLight");
+    if (theme === 'light') {
+      lightBtn.classList.add("active");
+      darkBtn.classList.remove("active");
+    } else {
+      darkBtn.classList.add("active");
+      lightBtn.classList.remove("active");
+    }
+    drawChart();
+    if (currentHistRecord) drawHistoryChart(currentHistRecord);
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme: theme })
+      }).catch(() => {});
+    }
+  }
+  function handleWallpaperUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      applyWallpaper(dataUrl, true);
+    };
+    reader.readAsDataURL(file);
+  }
+  function applyWallpaper(url, saveToServer = false) {
+    document.body.style.backgroundImage = `url('${url}')`;
+    document.body.classList.add("custom-wallpaper");
+    drawChart();
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wallpaper: url })
+      }).catch(() => {});
+    }
+  }
+  function clearWallpaper(saveToServer = false) {
+    document.body.style.backgroundImage = "none";
+    document.body.classList.remove("custom-wallpaper");
+    drawChart();
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wallpaper: "" })
+      }).catch(() => {});
+    }
+  }
+  function openSettings() { document.getElementById("settingsModal").classList.add("active"); }
+  function closeSettings() { document.getElementById("settingsModal").classList.remove("active"); }
+  function closeSettingsOnBack(e) { if (e.target.id === "settingsModal") closeSettings(); }
+  function toggleGrindSetting() {
+    const enabled = document.getElementById("recGrindEnabled").checked;
+    document.getElementById("recGrind").disabled = !enabled;
+    document.getElementById("recGrindRpm").disabled = !enabled;
+    validateAll();
+  }
+  function setRpmPreset(val) {
+    const rpmSel = document.getElementById("recGrindRpm");
+    if (!rpmSel.disabled) {
+      rpmSel.value = val;
+      validateAll();
+    }
+  }
+  function openSlotModal() { document.getElementById("slotModal").classList.add("active"); }
+  function closeSlotModal() { document.getElementById("slotModal").classList.remove("active"); }
+  function closeSlotModalOnBack(e) { if (e.target.id === "slotModal") closeSlotModal(); }
+  async function executeSlotSave(slotId) {
+    if (!validateAll()) {
+      alert("레시피 설정에 오류가 있습니다.");
+      return;
+    }
+    const rawPayload = getRecipePayload();
+    const payload = {
+      ...rawPayload,
+      interval_sync: false,
+      steps: rawPayload.interval_sync ? adjustStepsForHanddripInterval(rawPayload.steps) : rawPayload.steps
+    };
+    closeSlotModal();
+    const slotLetter = ["A", "B", "C"][slotId - 1];
+    addLog(`[SLOT] 머신 슬롯 ${slotLetter} (${slotId}번) 저장 요청 전송...`);
+    try {
+      const res = await fetch(`/api/machine/slot/${slotId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("슬롯 저장에 실패했습니다.");
+      alert(`[슬롯 저장 완료]\n'${payload.name}' 레시피가 기기 슬롯 ${slotLetter} (${slotId}번)에 저장되었습니다.`);
+      addLog(`[OK] 기기 슬롯 ${slotLetter} (${slotId}번) 기록 성공`);
+    } catch(e) {
+      alert(e.message);
+    }
+  }
+  async function saveRecipeToServer() {
+    if (!validateAll()) {
+      alert("레시피 파라미터 설정을 확인해주세요.");
+      return;
+    }
+    const rawPayload = getRecipePayload();
+    const payload = {
+      ...rawPayload,
+      interval_sync: false,
+      steps: rawPayload.interval_sync ? adjustStepsForHanddripInterval(rawPayload.steps) : rawPayload.steps
+    };
+    addLog(`[RECIPE] 서버에 레시피 파일 저장 요청: ${payload.name}${rawPayload.interval_sync ? ' (인터벌 보정 적용)' : ''}`);
+    try {
+      const res = await fetch("/api/recipes/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "서버 저장 실패");
+      addLog(`[RECIPE OK] recipes/${data.filename} 파일 저장 완료${rawPayload.interval_sync ? ' (인터벌 보정 적용)' : ''}`);
+      alert(`[서버 저장 완료]\n'${payload.name}' 레시피가 서버의 recipes/ 폴더에 저장되었습니다.${rawPayload.interval_sync ? '\n(핸드드립 인터벌 대기시간 보정 적용됨)' : ''}\n추출 대시보드로 이동합니다.`);
+      const intervalChk = document.getElementById("recIntervalSync");
+      if (intervalChk) {
+        intervalChk.checked = false;
+        renderSteps();
+      }
+      await loadServerLocalRecipes(payload.name);
+      switchTab('brew');
+    } catch (e) {
+      alert(`저장 오류: ${e.message}`);
+      addLog(`[RECIPE ERR] ${e.message}`);
+    }
+  }
+  let loadedRecipes = [];
+  async function loadServerLocalRecipes(selectName = null) {
+    try {
+      const res = await fetch("/api/recipes/local");
+      const data = await res.json();
+      if (data.recipes && data.recipes.length > 0) {
+        loadedRecipes = data.recipes;
+        updateRecipeDropdown(selectName);
+      }
+    } catch (e) {
+      console.warn("로컬 레시피 로드 오류:", e);
+    }
+  }
+  function updateRecipeDropdown(selectName = null) {
+    const sel = document.getElementById("recipeSelect");
+    sel.innerHTML = "";
+    let selectIndex = 0;
+    loadedRecipes.forEach((r, idx) => {
+      const opt = document.createElement("option");
+      opt.value = idx;
+      const grindTxt = r.grind_enabled ? `분쇄 ${r.grind_size} (${r.grind_rpm || 80}RPM)` : '원두분쇄 안함';
+      opt.text = `${r.name} (${grindTxt} / Dose ${r.dose}g)`;
+      if (selectName && r.name === selectName) {
+        selectIndex = idx;
+      }
+      sel.appendChild(opt);
+    });
+    sel.value = selectIndex;
+    if (loadedRecipes[selectIndex]) {
+      applyRecipeToUI(loadedRecipes[selectIndex]);
+    }
+  }
+  function onRecipeSelectChanged() {
+    const idx = document.getElementById("recipeSelect").value;
+    if (loadedRecipes[idx]) {
+      applyRecipeToUI(loadedRecipes[idx]);
+    }
+  }
+  function applyRecipeToUI(rec) {
+    document.getElementById("recName").value = rec.name;
+    document.getElementById("recDose").value = rec.dose;
+    document.getElementById("recGrind").value = rec.grind_size || 45;
+    let rpmVal = Number(rec.grind_rpm || 80);
+    rpmVal = Math.round(rpmVal / 10) * 10;
+    if (rpmVal < 60) rpmVal = 60;
+    if (rpmVal > 120) rpmVal = 120;
+    document.getElementById("recGrindRpm").value = String(rpmVal);
+    document.getElementById("recGrindEnabled").checked = (rec.grind_enabled !== false);
+    toggleGrindSetting();
+    const intervalChk = document.getElementById("recIntervalSync");
+    if (intervalChk) {
+      intervalChk.checked = false;
+    }
+    steps = JSON.parse(JSON.stringify(rec.steps || []));
+    if (steps.length === 0) {
+      steps = [{ temp: 93, water: 50, wait: 30, flow: 3.2, pattern: "center", agitation_before: false, agitation_after: false }];
+    }
+    renderSteps();
+    validateAll();
+  }
+  let currentBleStatus = "DISCONNECTED";
+  let ws = null;
+  let chartData = [{ time: 0, pour: 0, yield: 0 }];
+  let pourMarkers = [{ step: 1, time: 0, label: "1차 00:00" }];
+  let currentStepIndex = 1;
+  let activeRecipeSteps = [];
+  let stepScheduleTimeline = [];
+  let cumWaterTargets = [];
+  let stepPlateauReached = {};
+  let stepPlateauMaxWeight = {};
+  let pourMarkerMode = "weight"; 
+  let hasFirstPourStarted = false;
+  let brewStartTime = 0;
+  let isBrewActive = false;
+  let isGrindingPhase = false;
+  let isBrewStaging = false;
+  function updateBleBadgeUI(status) {
+    currentBleStatus = status;
+    const btn = document.getElementById("bleStatusBtn");
+    const text = document.getElementById("bleStatusText");
+    if (status === "CONNECTED") {
+      btn.className = "badge-btn connected";
+      text.innerText = "BLE 연결됨";
+    } else if (status === "SCANNING") {
+      btn.className = "badge-btn scanning";
+      text.innerText = "기기 탐색 중...";
+    } else {
+      btn.className = "badge-btn disconnected";
+      text.innerText = "연결 끊김 (클릭시 재연결)";
+    }
+  }
+  async function toggleBleConnection() {
+    if (currentBleStatus === "SCANNING") return;
+    if (currentBleStatus === "CONNECTED") {
+      if (confirm("xBloom 머신과의 블루투스 연결을 해제하시겠습니까?")) {
+        addLog("[BLE] 머신 연결 해제 요청 중...");
+        try {
+          await fetch("/api/ble/disconnect", { method: "POST" });
+        } catch(e) {}
+      }
+    } else {
+      addLog("[BLE] 머신 수동 재연결 시도 중...");
+      updateBleBadgeUI("SCANNING");
+      try {
+        await fetch("/api/ble/reconnect", { method: "POST" });
+      } catch(e) {
+        updateBleBadgeUI("DISCONNECTED");
+      }
+    }
+  }
+  function initWebSocket() {
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const wsUrl = `${protocol}//${location.host}/ws/telemetry`;
+    ws = new WebSocket(wsUrl);
+    ws.onopen = () => {
+      addLog("[BLE] 웹소켓 채널 연결 완료");
+      checkServerStatus();
+      loadServerLocalRecipes();
+      loadServerSettings();
+    };
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "status" && data.ble_status) {
+          updateBleBadgeUI(data.ble_status);
+        } else if (data.type === "log" && data.msg) {
+          addLog(data.msg);
+        } else if (data.type === "telemetry" || data.temperature !== undefined || data.pour_weight !== undefined) {
+          handleTelemetryUpdate(data);
+        }
+      } catch (err) {}
+    };
+    ws.onclose = () => {
+      updateBleBadgeUI("DISCONNECTED");
+      setTimeout(initWebSocket, 3000);
+    };
+  }
+  async function checkServerStatus() {
+    try {
+      const res = await fetch("/api/status");
+      const data = await res.json();
+      updateBleBadgeUI(data.ble_status);
+      if (data.telemetry) {
+        handleTelemetryUpdate(data.telemetry);
+      }
+    } catch (e) {}
+  }
+  function formatMachineState(st) {
+    if (!st) return "대기 중";
+    const s = String(st).toUpperCase().trim();
+    const map = {
+      "IDLE": "대기 중",
+      "STANDBY": "대기 중 (연결됨)",
+      "UNKNOWN_0X0A": "대기 중 (연결됨)",
+      "0X0A": "대기 중 (연결됨)",
+      "ARMED": "추출 대기 (확인 대기)",
+      "AWAITING_CONFIRM": "기기 확인 대기",
+      "STARTING": "원두 분쇄 중 (Grind ⚙️)",
+      "LOADING": "레시피 전송 중",
+      "BREWING": "추출 진행 중",
+      "READY": "추출 완료 (비프음)",
+      "COMPLETE": "추출 완료",
+      "FINISHED": "완료",
+      "NO_WATER": "물 부족",
+      "NO_BEANS": "원두 부족",
+      "SAVING_SLOTS": "슬롯 저장 중",
+      "SLOTS_SAVED": "슬롯 저장 완료"
+    };
+    if (map[s]) return map[s];
+    if (s.startsWith("UNKNOWN_0X")) return `대기 중 (${s})`;
+    return st;
+  }
+  function triggerActualBrewStart(initialPour = 0, initialYield = 0) {
+    if (isBrewActive) return;
+    isBrewActive = true;
+    isGrindingPhase = false;
+    isBrewStaging = false;
+    brewStartTime = Date.now();
+    currentStepIndex = 1;
+    const p0 = Number(initialPour) || 0;
+    const y0 = Number(initialYield) || 0;
+    chartData = [{ time: 0, pour: p0, yield: y0 }];
+    const firstStepHasPreAgitation = !!(activeRecipeSteps[0] && activeRecipeSteps[0].agitation_before);
+    if (pourMarkerMode === "weight") {
+      if (firstStepHasPreAgitation) {
+        pourMarkers = [{ step: 0, time: 0, label: "추출 시작" }];
+        hasFirstPourStarted = false;
+        addLog("[BREW] 🚀 실제 커피 추출 시작! (추출 전 교반 후 1차 푸어 물 투입 개시)");
+      } else {
+        pourMarkers = [{ step: 1, time: 0, label: "1차 00:00" }];
+        hasFirstPourStarted = true;
+        addLog(`[BREW] 🚀 실제 커피 추출 시작! (1차 푸어 물 공급 개시: ${p0.toFixed(1)}g)`);
+      }
+    } else {
+      pourMarkers = [{ step: 1, time: 0, label: "1차 00:00" }];
+      hasFirstPourStarted = true;
+      addLog("[BREW] 🚀 실제 커피 추출 시작! (1차 푸어 개시)");
+    }
+    document.getElementById("timeVal").innerText = "00:00";
+    document.getElementById("stateText").innerText = "추출 진행 중";
+    drawChart();
+  }
+  function handleTelemetryUpdate(data) {
+    if (data.temperature !== undefined) {
+      const t = Math.round(Number(data.temperature));
+      document.getElementById("tempVal").innerText = t === 0 ? "0°C (상온)" : `${t}°C`;
+    }
+    if (data.pour_weight !== undefined) {
+      document.getElementById("pourVal").innerText = Math.round(Number(data.pour_weight));
+    }
+    if (data.yield_weight !== undefined) {
+      document.getElementById("yieldVal").innerText = Math.round(Number(data.yield_weight));
+    }
+    if (data.state) {
+      document.getElementById("stateText").innerText = formatMachineState(data.state);
+    }
+    if (data.step_index !== undefined) {
+      document.getElementById("pctText").innerText = `단계: ${data.step_index}`;
+    }
+    const curPour = Number(data.pour_weight) || 0;
+    const curYield = Number(data.yield_weight) || 0;
+    const stUpper = String(data.state || "").toUpperCase().trim();
+    if (isGrindingPhase || stUpper === "STARTING") {
+      document.getElementById("timeVal").innerText = "Grind";
+      document.getElementById("stateText").innerText = "원두 분쇄 중 (Grind ⚙️)";
+    }
+    if ((isBrewStaging || isGrindingPhase) && !isBrewActive) {
+      const isBrewingSignal = (stUpper === "BREWING" || stUpper === "POURING" || stUpper === "0X10" || stUpper === "0X3B" || stUpper === "0X23");
+      const hasWaterFlowed = (curPour >= 0.5);
+      if (isBrewingSignal || hasWaterFlowed) {
+        triggerActualBrewStart(curPour, curYield);
+      }
+    }
+    if (isBrewActive) {
+      const nowSec = Math.floor((Date.now() - brewStartTime) / 1000);
+      const mm = String(Math.floor(nowSec / 60)).padStart(2, '0');
+      const ss = String(nowSec % 60).padStart(2, '0');
+      document.getElementById("timeVal").innerText = `${mm}:${ss}`;
+      if (data.step_index && Number(data.step_index) > currentStepIndex) {
+        const nextStep = Number(data.step_index);
+        currentStepIndex = nextStep;
+        if (!pourMarkers.some(m => m.step === currentStepIndex)) {
+          pourMarkers.push({
+            step: currentStepIndex,
+            time: nowSec,
+            label: `${currentStepIndex}차 ${mm}:${ss}`
+          });
+          addLog(`[STEP] 머신 신호: ${currentStepIndex}차 푸어 구간 진입 (${mm}:${ss})`);
+        }
+      }
+      if (pourMarkerMode === "weight") {
+        if (!hasFirstPourStarted && curPour >= 0.8) {
+          hasFirstPourStarted = true;
+          if (!pourMarkers.some(m => m.step === 1)) {
+            if (nowSec <= 2 && pourMarkers.length > 0 && pourMarkers[0].step === 0) {
+              pourMarkers[0].step = 1;
+              pourMarkers[0].label = "1차 00:00";
+              addLog(`[STEP] 1차 푸어 시작 (00:00, ${Math.round(curPour)}g)`);
+            } else {
+              pourMarkers.push({
+                step: 1,
+                time: nowSec,
+                label: `1차 ${mm}:${ss}`
+              });
+              addLog(`[STEP] 1차 푸어 물 배출 감지 (${mm}:${ss}, ${Math.round(curPour)}g)`);
+            }
+            drawChart();
+          }
+        }
+        if (currentStepIndex < activeRecipeSteps.length) {
+          const prevIdx = currentStepIndex;
+          const nextIdx = currentStepIndex + 1;
+          const prevTarget = cumWaterTargets[prevIdx - 1] || 0;
+          if (!stepPlateauReached[prevIdx]) {
+            if (curPour >= Math.max(5, prevTarget - 2.5)) {
+              stepPlateauReached[prevIdx] = true;
+              stepPlateauMaxWeight[prevIdx] = curPour;
+            }
+          } else {
+            if (curPour < prevTarget + 1.0) {
+              stepPlateauMaxWeight[prevIdx] = Math.max(stepPlateauMaxWeight[prevIdx] || 0, curPour);
+            }
+          }
+          const baseline = Math.max(prevTarget - 2.0, stepPlateauMaxWeight[prevIdx] || prevTarget);
+          if (stepPlateauReached[prevIdx] && curPour >= baseline + 1.5) {
+            currentStepIndex = nextIdx;
+            if (!pourMarkers.some(m => m.step === nextIdx)) {
+              pourMarkers.push({
+                step: nextIdx,
+                time: nowSec,
+                label: `${nextIdx}차 ${mm}:${ss}`
+              });
+              addLog(`[STEP] ${nextIdx}차 푸어 물 배출 감지 (${mm}:${ss}, ${Math.round(curPour)}g)`);
+            }
+          }
+        }
+      } else {
+        if (stepScheduleTimeline && stepScheduleTimeline.length > 0) {
+          for (const item of stepScheduleTimeline) {
+            if (nowSec >= item.time && item.step > currentStepIndex) {
+              currentStepIndex = item.step;
+              if (!pourMarkers.some(m => m.step === item.step)) {
+                pourMarkers.push({
+                  step: item.step,
+                  time: nowSec,
+                  label: `${item.step}차 ${mm}:${ss}`
+                });
+                addLog(`[STEP] 스케줄: ${item.step}차 푸어 시작 (${mm}:${ss})`);
+              }
+            }
+          }
+        }
+      }
+      const pVal = Number(data.pour_weight) || 0;
+      const yVal = Number(data.yield_weight) || 0;
+      if (chartData.length > 0 && chartData[chartData.length - 1].time === nowSec) {
+        chartData[chartData.length - 1].pour = Math.max(chartData[chartData.length - 1].pour, pVal);
+        chartData[chartData.length - 1].yield = Math.max(chartData[chartData.length - 1].yield, yVal);
+      } else {
+        chartData.push({
+          time: nowSec,
+          pour: pVal,
+          yield: yVal
+        });
+      }
+      drawChart();
+      const isTerminalState = (stUpper === "READY" || stUpper === "COMPLETE" || stUpper === "FINISHED" || stUpper === "IDLE" || stUpper === "STANDBY" || stUpper === "UNKNOWN_0X0A" || stUpper === "DONE");
+      if (nowSec >= 8 && isTerminalState) {
+        addLog(`[BREW] 머신 완료 신호 수신 (${stUpper}) -> 추출 완료 및 저장 처리`);
+        finishBrew(nowSec);
+      }
+    }
+  }
+  function addLog(msg) {
+    const b = document.getElementById("logBox");
+    const t = new Date().toTimeString().split(' ')[0];
+    b.innerHTML += `<div>[${t}] ${msg}</div>`;
+    b.scrollTop = b.scrollHeight;
+  }
+  function resetBrewButton() {
+    isBrewActive = false;
+    isGrindingPhase = false;
+    isBrewStaging = false;
+    const actionGrid = document.getElementById("brewActionGrid");
+    if (actionGrid) actionGrid.classList.remove("is-brewing");
+    const bBtn = document.getElementById("brewBtn");
+    if (bBtn) {
+      bBtn.innerText = "추출 시작";
+      bBtn.classList.remove("btn-finish-mode");
+      bBtn.disabled = false;
+      bBtn.style.opacity = "1";
+      bBtn.onclick = startBrew;
+    }
+    const stopBtn = document.getElementById("stopBtn");
+    if (stopBtn) stopBtn.innerHTML = "비상 정지";
+    const timeEl = document.getElementById("timeVal");
+    if (timeEl && timeEl.innerText === "Grind") timeEl.innerText = "00:00";
+  }
+  async function startBrew() {
+    if (!validateAll()) {
+      alert("레시피 설정에 오류가 있어 추출을 시작할 수 없습니다.");
+      return;
+    }
+    const rawPayload = getRecipePayload();
+    const isSync = !!rawPayload.interval_sync;
+    const payload = isSync
+      ? { ...rawPayload, steps: adjustStepsForHanddripInterval(rawPayload.steps) }
+      : rawPayload;
+    if (isSync) {
+      addLog("[SYNC] 레시피 핸드드립 인터벌 대기시간 보정 활성화");
+      for (let i = 0; i < rawPayload.steps.length - 1; i++) {
+        const info = getStepIntervalBreakdown(i, rawPayload.steps[i], rawPayload.steps[i + 1]);
+        addLog(`[SYNC] ${i + 1}차: 인터벌 ${info.target}s ➔ 머신 대기 ${info.machineWait}s (${info.overhead}s 차감)`);
+      }
+    }
+    addLog(`[CMD] 추출 시작 요청 전송: ${payload.name}`);
+    try {
+      const res = await fetch("/api/brew/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || "추출 실패");
+      }
+      const startRes = await res.json().catch(() => ({}));
+      currentStepIndex = 1;
+      activeRecipeSteps = JSON.parse(JSON.stringify(payload.steps || []));
+      cumWaterTargets = [];
+      let wSum = 0;
+      for (const s of activeRecipeSteps) {
+        wSum += Number(s.water) || 0;
+        cumWaterTargets.push(wSum);
+      }
+      stepPlateauReached = {};
+      stepPlateauMaxWeight = {};
+      stepScheduleTimeline = [{ step: 1, time: 0 }];
+      let cumTime = 0;
+      for (let i = 0; i < rawPayload.steps.length - 1; i++) {
+        if (isSync) {
+          cumTime += Number(rawPayload.steps[i].wait) || 0;
+        } else {
+          const s = activeRecipeSteps[i];
+          const flow = Number(s.flow) > 0 ? Number(s.flow) : 3.2;
+          const pourSec = Math.round(Number(s.water) / flow);
+          const waitSec = Number(s.wait) || 0;
+          cumTime += (pourSec + waitSec);
+        }
+        stepScheduleTimeline.push({ step: i + 2, time: cumTime });
+      }
+      chartData = [];
+      pourMarkers = [];
+      const hasGrind = payload.grind_enabled !== false;
+      if (hasGrind) {
+        isBrewActive = false;
+        isGrindingPhase = true;
+        isBrewStaging = true;
+        document.getElementById("stateText").innerText = "원두 분쇄 중 (Grind ⚙️)";
+        document.getElementById("timeVal").innerText = "Grind";
+        addLog(`[BREW] ⚙️ '${payload.name}' 원두 분쇄 시작... 분쇄 완료 후 실제 추출(물 투입) 타이머가 작동합니다.`);
+      } else {
+        isBrewActive = false;
+        isGrindingPhase = false;
+        isBrewStaging = true;
+        document.getElementById("stateText").innerText = "추출 준비 중";
+        document.getElementById("timeVal").innerText = "--:--";
+        addLog(`[BREW] 🚀 '${payload.name}' 추출 명령 전송 완료... 머신 물 공급 개시 시 타이머가 시작됩니다.`);
+      }
+      const actionGrid = document.getElementById("brewActionGrid");
+      if (actionGrid) actionGrid.classList.add("is-brewing");
+      const stopBtn = document.getElementById("stopBtn");
+      if (stopBtn) stopBtn.innerHTML = "🛑 비상 정지 (추출 중단)";
+      addLog("[OK] 머신이 명령을 수락했습니다.");
+    } catch (e) {
+      alert(e.message);
+      addLog(`[ERR] ${e.message}`);
+      resetBrewButton();
+    }
+  }
+  async function stopBrew() {
+    try {
+      await fetch("/api/brew/stop", { method: "POST" });
+      const wasActive = isBrewActive || isBrewStaging || isGrindingPhase;
+      isBrewActive = false;
+      isGrindingPhase = false;
+      isBrewStaging = false;
+      resetBrewButton();
+      document.getElementById("stateText").innerText = "정지됨";
+      document.getElementById("timeVal").innerText = "00:00";
+      addLog("[CMD] 비상 정지 명령 전송 완료");
+      const curPour = Number(document.getElementById("pourVal").innerText) || 0;
+      const curYield = Number(document.getElementById("yieldVal").innerText) || 0;
+      const durationSec = brewStartTime ? Math.floor((Date.now() - brewStartTime) / 1000) : 0;
+      if (wasActive && recordAbortedBrews && (chartData.length > 2 || curPour > 0 || durationSec > 2)) {
+        const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
+        const ss = String(durationSec % 60).padStart(2, '0');
+        const payload = getRecipePayload();
+        const abortedRecord = {
+          id: "hist_" + Date.now(),
+          date: new Date().toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+          recipeName: payload.name || "Custom Brew",
+          dose: payload.dose || 15,
+          totalWater: curPour,
+          totalYield: curYield,
+          duration: `${mm}:${ss}`,
+          durationSec: durationSec,
+          status: "aborted",
+          chartData: JSON.parse(JSON.stringify(chartData)),
+          markers: JSON.parse(JSON.stringify(pourMarkers)),
+          recipe: JSON.parse(JSON.stringify(payload)),
+          beanName: "",
+          notes: "비상 정지됨"
+        };
+        historyRecords.unshift(abortedRecord);
+        updateHistoryCount();
+        addLog("[HIST] 비상정지 추출 데이터가 히스토리에 기록되었습니다.");
+        fetch("/api/history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(abortedRecord)
+        }).catch(err => console.warn("비상정지 히스토리 서버 저장 실패:", err));
+      }
+    } catch (e) {
+      alert("정지 명령 실패");
+    }
+  }
+  function finishBrew(durationSec) {
+    if (!isBrewActive && !isBrewStaging && !isGrindingPhase) return;
+    isBrewActive = false;
+    isGrindingPhase = false;
+    isBrewStaging = false;
+    resetBrewButton();
+    document.getElementById("stateText").innerText = "추출 완료";
+    addLog("[DONE] 추출이 완료되었습니다. 저울 안정화 및 기록 보관 완료.");
+    const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
+    const ss = String(durationSec % 60).padStart(2, '0');
+    const payload = getRecipePayload();
+    const newRecord = {
+      id: "hist_" + Date.now(),
+      date: new Date().toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+      recipeName: payload.name || "Custom Brew",
+      dose: payload.dose || 15,
+      totalWater: Number(document.getElementById("pourVal").innerText) || 0,
+      totalYield: Number(document.getElementById("yieldVal").innerText) || 0,
+      duration: `${mm}:${ss}`,
+      durationSec: durationSec,
+      status: "completed",
+      chartData: JSON.parse(JSON.stringify(chartData)),
+      markers: JSON.parse(JSON.stringify(pourMarkers)),
+      recipe: JSON.parse(JSON.stringify(payload)),
+      beanName: "",
+      notes: ""
+    };
+    historyRecords.unshift(newRecord);
+    updateHistoryCount();
+    fetch("/api/history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newRecord)
+    }).then(res => {
+      if (res.ok) addLog("[HIST] 추출 기록이 로컬 스토리지에 영구 보존되었습니다.");
+    }).catch(err => console.warn("히스토리 서버 저장 실패:", err));
+  }
+  function getRecipePayload() {
+    return {
+      name: document.getElementById("recName").value.trim(),
+      dose: parseInt(document.getElementById("recDose").value, 10),
+      grind_size: Number(document.getElementById("recGrind").value),
+      grind_enabled: document.getElementById("recGrindEnabled").checked,
+      grind_rpm: Number(document.getElementById("recGrindRpm").value) || 80,
+      interval_sync: isIntervalSyncEnabled(),
+      steps: steps.map(s => ({
+        temp: Number(s.temp),
+        water: Number(s.water),
+        wait: Number(s.wait),
+        flow: Number(s.flow),
+        pattern: s.pattern === "circle" || s.pattern === "circular" ? "ring" : (s.pattern || "center"),
+        agitation_before: !!s.agitation_before,
+        agitation_after: !!s.agitation_after
+      }))
+    };
+  }
+  let lastCloudShareUrl = "";
+  function openCloudSuccessModal(recipeName, recipeId, shareUrl, autoOpened, hasIntervalSync) {
+    lastCloudShareUrl = shareUrl || "";
+    const nameEl = document.getElementById("cloudSuccessRecipeName");
+    if (nameEl) nameEl.innerText = recipeName || "Custom Brew";
+    const idEl = document.getElementById("cloudSuccessRecipeId");
+    if (idEl) idEl.innerText = recipeId || "OK";
+    const badge = document.getElementById("cloudModalIntervalBadge");
+    if (badge) badge.style.display = hasIntervalSync ? "block" : "none";
+    const shareSec = document.getElementById("cloudShareSection");
+    const openBtn = document.getElementById("btnOpenShareNewTab");
+    const statusTxt = document.getElementById("cloudOpenStatusText");
+    const input = document.getElementById("cloudShareUrlInput");
+    if (shareUrl) {
+      if (shareSec) shareSec.style.display = "block";
+      if (openBtn) openBtn.style.display = "inline-flex";
+      if (input) input.value = shareUrl;
+      if (statusTxt) {
+        if (autoOpened) {
+          statusTxt.innerText = "새 탭에서 오픈됨 🚀";
+          statusTxt.style.color = "var(--accent)";
+        } else {
+          statusTxt.innerText = "아래 버튼으로 열기 ↗";
+          statusTxt.style.color = "var(--muted)";
+        }
+      }
+    } else {
+      if (shareSec) shareSec.style.display = "none";
+      if (openBtn) openBtn.style.display = "none";
+    }
+    const copyBtn = document.getElementById("btnCopyShareUrl");
+    if (copyBtn) copyBtn.innerText = "복사";
+    const modal = document.getElementById("cloudSuccessModal");
+    if (modal) modal.classList.add("active");
+  }
+  function closeCloudSuccessModal() {
+    const modal = document.getElementById("cloudSuccessModal");
+    if (modal) modal.classList.remove("active");
+  }
+  function closeCloudSuccessModalOnBack(e) {
+    if (e.target.id === "cloudSuccessModal") closeCloudSuccessModal();
+  }
+  function openShareUrlNewTab() {
+    if (lastCloudShareUrl) {
+      window.open(lastCloudShareUrl, "_blank");
+    }
+  }
+  async function copyCloudShareUrl() {
+    if (!lastCloudShareUrl) return;
+    const copyBtn = document.getElementById("btnCopyShareUrl");
+    try {
+      await navigator.clipboard.writeText(lastCloudShareUrl);
+      if (copyBtn) {
+        copyBtn.innerText = "✓ 복사됨";
+        setTimeout(() => { copyBtn.innerText = "복사"; }, 2000);
+      }
+    } catch (e) {
+      const input = document.getElementById("cloudShareUrlInput");
+      if (input) {
+        input.select();
+        document.execCommand("copy");
+        if (copyBtn) {
+          copyBtn.innerText = "✓ 복사됨";
+          setTimeout(() => { copyBtn.innerText = "복사"; }, 2000);
+        }
+      }
+    }
+  }
+  async function uploadToCloud() {
+    if (!validateAll()) {
+      alert("레시피 설정 오류를 수정해주세요.");
+      return;
+    }
+    const rawPayload = getRecipePayload();
+    const payload = {
+      ...rawPayload,
+      interval_sync: false,
+      steps: rawPayload.interval_sync ? adjustStepsForHanddripInterval(rawPayload.steps) : rawPayload.steps
+    };
+    addLog(`[CLOUD] 레시피 클라우드 업로드 전송 중: ${payload.name}${rawPayload.interval_sync ? ' (인터벌 보정 적용)' : ''}`);
+    try {
+      const res = await fetch("/api/cloud/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.detail || "클라우드 업로드 실패");
+      }
+      let autoOpened = false;
+      if (data.share_url) {
+        try {
+          const win = window.open(data.share_url, "_blank");
+          if (win && !win.closed && typeof win.closed !== "undefined") {
+            autoOpened = true;
+          }
+        } catch (we) {
+          console.warn("window.open pop-up blocked:", we);
+        }
+      }
+      openCloudSuccessModal(payload.name, data.recipe_id, data.share_url, autoOpened, !!rawPayload.interval_sync);
+      addLog(`[CLOUD OK] 레시피 클라우드 업로드 성공: ${payload.name} (ID: ${data.recipe_id || 'OK'})${data.share_url ? ' - 웹 공유 링크 오픈 완료' : ''}`);
+    } catch (e) {
+      alert(e.message);
+      addLog(`[CLOUD ERR] ${e.message}`);
+    }
+  }
+  let cloudUser = null;
+  async function handleCloudLogin() {
+    const email = document.getElementById("cloudEmail").value.trim();
+    const pw = document.getElementById("cloudPassword").value.trim();
+    if (!email || !pw) {
+      alert("이메일과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/cloud/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pw })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "인증 실패");
+      }
+      cloudUser = { email: data.email, token: data.token };
+      updateCloudUI();
+      alert(`클라우드 로그인 성공: ${cloudUser.email}`);
+    } catch (e) {
+      alert(`로그인 오류: ${e.message}`);
+    }
+  }
+  async function handleCloudLogout() {
+    try {
+      await fetch("/api/cloud/logout", { method: "POST" });
+    } catch(e) {}
+    cloudUser = null;
+    document.getElementById("cloudEmail").value = "";
+    document.getElementById("cloudPassword").value = "";
+    updateCloudUI();
+  }
+  function updateCloudUI() {
+    const statusText = document.getElementById("cloudStatusText");
+    const statusDot = document.getElementById("cloudStatusDot");
+    const tokenInfo = document.getElementById("cloudTokenInfo");
+    const loginForm = document.getElementById("cloudLoginForm");
+    const logoutWrap = document.getElementById("cloudLogoutWrap");
+    if (cloudUser && cloudUser.email) {
+      statusText.innerText = `동기화됨: ${cloudUser.email}`;
+      statusText.style.color = "var(--success)";
+      statusDot.style.color = "var(--success)";
+      tokenInfo.innerText = "토큰 바인딩 완료";
+      loginForm.style.display = "none";
+      logoutWrap.style.display = "block";
+    } else {
+      statusText.innerText = "로그인되어 있지 않음";
+      statusText.style.color = "var(--muted)";
+      statusDot.style.color = "var(--muted)";
+      tokenInfo.innerText = "공식 앱 계정으로 로그인하여 레시피를 동기화하세요.";
+      loginForm.style.display = "flex";
+      logoutWrap.style.display = "none";
+    }
+  }
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  }
+  let historyRecords = [];
+  let currentHistRecord = null;
+  function updateHistoryCount() {
+    const el = document.getElementById("histCount");
+    if (el) el.innerText = historyRecords.length;
+  }
+  async function loadHistoryFromServer() {
+    try {
+      const res = await fetch("/api/history?limit=300");
+      if (res.ok) {
+        const data = await res.json();
+        historyRecords = data.records || [];
+        updateHistoryCount();
+        if (historyRecords.length > 0 && !currentHistRecord) {
+          currentHistRecord = historyRecords[0];
+        }
+        if (document.getElementById("historyModal").classList.contains("active")) {
+          renderHistoryList();
+          if (currentHistRecord) selectHistoryRecord(currentHistRecord.id);
+        }
+      }
+    } catch (e) {
+      console.warn("히스토리 서버 로드 실패:", e);
+    }
+  }
+  function openHistoryModal() {
+    loadHistoryFromServer().finally(() => {
+      renderHistoryList();
+      document.getElementById("historyModal").classList.add("active");
+      if (historyRecords.length > 0) {
+        selectHistoryRecord(historyRecords[0].id);
+      } else {
+        clearHistoryDetail();
+      }
+    });
+  }
+  function closeHistoryModal() { document.getElementById("historyModal").classList.remove("active"); }
+  function closeHistoryOnBack(e) { if (e.target.id === "historyModal") closeHistoryModal(); }
+  function renderHistoryList() {
+    updateHistoryCount();
+    const list = document.getElementById("historyListContainer");
+    list.innerHTML = "";
+    if (historyRecords.length === 0) {
+      list.innerHTML = "<div style='color:var(--muted); font-size:0.75rem; padding:10px;'>저장된 추출 이력이 없습니다.</div>";
+      return;
+    }
+    historyRecords.forEach(rec => {
+      const isSel = currentHistRecord && currentHistRecord.id === rec.id;
+      const ratio = rec.dose ? (rec.totalWater / rec.dose).toFixed(1) : "-";
+      const isAborted = (rec.status === "aborted");
+      const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? '중단' : '완료'}</span>`;
+      const beanHtml = rec.beanName ? `<div style="font-size:0.7rem; color:var(--sky); margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☕ ${escapeHtml(rec.beanName)}</div>` : '';
+      const item = document.createElement("div");
+      item.className = `history-item ${isSel ? 'selected' : ''}`;
+      item.onclick = () => selectHistoryRecord(rec.id);
+      item.innerHTML = `
+        <div class="history-meta">
+          <div style="display:flex; align-items:center; gap:5px;">
+            ${badgeHtml}
+            <span>${rec.date || ''}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>${rec.duration}</span>
+            <button class="btn-hist-del" onclick="event.stopPropagation(); deleteHistoryItem('${rec.id}')" title="삭제">&times;</button>
+          </div>
+        </div>
+        <div class="history-rec-name">${escapeHtml(rec.recipeName)}</div>
+        ${beanHtml}
+        <div class="history-stats">
+          <span style="color:var(--text);">Dose ${rec.dose}g</span>
+          <span style="color:var(--sky);">푸어 ${rec.totalWater}g</span>
+          <span style="color:var(--accent);">추출 ${rec.totalYield}g (1:${ratio})</span>
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+  function selectHistoryRecord(id) {
+    const rec = historyRecords.find(r => r.id === id);
+    if (!rec) return;
+    currentHistRecord = rec;
+    document.querySelectorAll(".history-item").forEach((el, idx) => {
+      if (historyRecords[idx]) {
+        el.classList.toggle("selected", historyRecords[idx].id === id);
+      }
+    });
+    const isAborted = (rec.status === "aborted");
+    const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? '비상정지' : '완료'}</span>`;
+    document.getElementById("histDetailTitle").innerHTML = `${escapeHtml(rec.recipeName)} ${badgeHtml} <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">(${rec.date || ''})</span>`;
+    const ratio = rec.dose ? (rec.totalWater / rec.dose).toFixed(1) : "-";
+    document.getElementById("histDetailSummary").innerHTML = `
+      원두 투입: <b>${rec.dose}g</b> | 총 푸어량: <b>${rec.totalWater}g</b> | 실제 추출액: <b>${rec.totalYield}g</b><br>
+      추출 비율: <b>1 : ${ratio}</b> | 총 소요시간: <b>${rec.duration}</b>
+    `;
+    document.getElementById("histBeanInput").value = rec.beanName || "";
+    document.getElementById("histNotesInput").value = rec.notes || "";
+    const btnRebrew = document.getElementById("btnLoadHistoryRecipe");
+    if (btnRebrew) {
+      btnRebrew.style.display = rec.recipe ? "flex" : "none";
+    }
+    setTimeout(() => drawHistoryChart(rec), 40);
+  }
+  function clearHistoryDetail() {
+    currentHistRecord = null;
+    document.getElementById("histDetailTitle").innerText = "선택된 추출 로그";
+    document.getElementById("histDetailSummary").innerHTML = "<div style='color:var(--muted); padding:6px 0;'>선택된 기록이 없습니다.</div>";
+    document.getElementById("histBeanInput").value = "";
+    document.getElementById("histNotesInput").value = "";
+    const canvas = document.getElementById("historyChart");
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    const btnRebrew = document.getElementById("btnLoadHistoryRecipe");
+    if (btnRebrew) btnRebrew.style.display = "none";
+  }
+  async function saveHistoryNotes() {
+    if (!currentHistRecord) {
+      alert("선택된 추출 기록이 없습니다.");
+      return;
+    }
+    const bean = document.getElementById("histBeanInput").value.trim();
+    const notes = document.getElementById("histNotesInput").value.trim();
+    try {
+      const res = await fetch("/api/history/" + currentHistRecord.id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ beanName: bean, notes: notes })
+      });
+      if (!res.ok) throw new Error("저장 실패");
+      currentHistRecord.beanName = bean;
+      currentHistRecord.notes = notes;
+      renderHistoryList();
+      addLog("[HIST] 원두 메모 및 테이스팅 노트가 저장되었습니다.");
+      alert("메모가 성공적으로 저장되었습니다.");
+    } catch (e) {
+      alert("메모 저장 실패: " + e.message);
+    }
+  }
+  async function deleteHistoryItem(id) {
+    if (!confirm("이 추출 기록을 삭제하시겠습니까?")) return;
+    try {
+      const res = await fetch("/api/history/" + id, { method: "DELETE" });
+      if (!res.ok) throw new Error("삭제 실패");
+      historyRecords = historyRecords.filter(r => r.id !== id);
+      updateHistoryCount();
+      if (currentHistRecord && currentHistRecord.id === id) {
+        currentHistRecord = historyRecords[0] || null;
+      }
+      renderHistoryList();
+      if (currentHistRecord) {
+        selectHistoryRecord(currentHistRecord.id);
+      } else {
+        clearHistoryDetail();
+      }
+      addLog("[HIST] 추출 기록이 삭제되었습니다.");
+    } catch (e) {
+      alert("삭제 실패: " + e.message);
+    }
+  }
+  async function clearAllHistoryConfirm() {
+    if (historyRecords.length === 0) {
+      alert("삭제할 추출 기록이 없습니다.");
+      return;
+    }
+    if (!confirm("저장된 모든 추출 기록을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
+    try {
+      const res = await fetch("/api/history", { method: "DELETE" });
+      if (!res.ok) throw new Error("전체 삭제 실패");
+      historyRecords = [];
+      updateHistoryCount();
+      renderHistoryList();
+      clearHistoryDetail();
+      addLog("[HIST] 모든 추출 기록이 삭제되었습니다.");
+    } catch (e) {
+      alert("전체 삭제 실패: " + e.message);
+    }
+  }
+  function loadRecipeFromCurrentHistory() {
+    if (!currentHistRecord || !currentHistRecord.recipe) {
+      alert("복원할 레시피 정보가 없습니다.");
+      return;
+    }
+    applyRecipeToUI(currentHistRecord.recipe);
+    switchTab('editor');
+    closeHistoryModal();
+    addLog(`[RECIPE] '${currentHistRecord.recipeName}' 레시피를 스튜디오로 복원했습니다.`);
+  }
+  function applyRecipeToUI(rec) {
+    if (!rec) return;
+    if (rec.name) document.getElementById("recName").value = rec.name;
+    if (rec.dose) document.getElementById("recDose").value = parseInt(rec.dose, 10);
+    if (rec.grind_size !== undefined) document.getElementById("recGrind").value = rec.grind_size;
+    if (rec.grind_enabled !== undefined) {
+      document.getElementById("recGrindEnabled").checked = !!rec.grind_enabled;
+      toggleGrindSetting();
+    }
+    if (rec.grind_rpm !== undefined) {
+      document.getElementById("recGrindRpm").value = String(rec.grind_rpm);
+    }
+    const intervalChk = document.getElementById("recIntervalSync");
+    if (intervalChk && rec.interval_sync !== undefined) {
+      intervalChk.checked = !!rec.interval_sync;
+    }
+    if (Array.isArray(rec.steps) && rec.steps.length > 0) {
+      steps = rec.steps.map(s => ({
+        temp: Number(s.temp !== undefined ? s.temp : 93),
+        water: Number(s.water !== undefined ? s.water : (s.pour !== undefined ? s.pour : 50)),
+        wait: Number(s.wait !== undefined ? s.wait : 15),
+        flow: Number(s.flow !== undefined ? s.flow : (s.flow_rate !== undefined ? s.flow_rate : 3.2)),
+        pattern: s.pattern === "circle" || s.pattern === "circular" ? "ring" : (s.pattern || "center"),
+        agitation_before: !!s.agitation_before,
+        agitation_after: !!s.agitation_after
+      }));
+      renderSteps();
+    }
+    validateAll();
+  }
+  // --- 서버 저장 레시피 관리 (목록 조회 및 삭제) ---
+  let cachedServerRecipes = [];
+  function openServerRecipeModal() {
+    document.getElementById("serverRecipeModal").classList.add("active");
+    const searchInp = document.getElementById("serverRecipeSearch");
+    if (searchInp) searchInp.value = "";
+    loadServerRecipesList();
+  }
+  function closeServerRecipeModal() {
+    document.getElementById("serverRecipeModal").classList.remove("active");
+  }
+  function closeServerRecipeModalOnBack(e) {
+    if (e.target.id === "serverRecipeModal") closeServerRecipeModal();
+  }
+  async function loadServerRecipesList() {
+    const loading = document.getElementById("serverRecipeLoadingBox");
+    const container = document.getElementById("serverRecipeListContainer");
+    const countEl = document.getElementById("serverRecipeCount");
+    if (loading) loading.style.display = "flex";
+    if (container) container.innerHTML = "";
+    try {
+      const res = await fetch("/api/recipes/local");
+      if (!res.ok) throw new Error("서버 레시피 로드 실패");
+      const data = await res.json();
+      cachedServerRecipes = Array.isArray(data.recipes) ? data.recipes : [];
+      if (countEl) countEl.innerText = cachedServerRecipes.length;
+      renderServerRecipeList(cachedServerRecipes);
+    } catch (e) {
+      if (container) {
+        container.innerHTML = `<div style="color:var(--danger); font-size:0.8rem; padding:12px; text-align:center;">레시피 목록을 불러오지 못했습니다: ${escapeHtml(e.message)}</div>`;
+      }
+    } finally {
+      if (loading) loading.style.display = "none";
+    }
+  }
+  function filterServerRecipes() {
+    const q = (document.getElementById("serverRecipeSearch").value || "").trim().toLowerCase();
+    if (!q) {
+      renderServerRecipeList(cachedServerRecipes);
+      return;
+    }
+    const filtered = cachedServerRecipes.filter(r => 
+      (r.name || "").toLowerCase().includes(q) || 
+      (r.filename || "").toLowerCase().includes(q)
+    );
+    renderServerRecipeList(filtered);
+  }
+  function renderServerRecipeList(recipes) {
+    const container = document.getElementById("serverRecipeListContainer");
+    if (!container) return;
+    container.innerHTML = "";
+    if (!recipes || recipes.length === 0) {
+      container.innerHTML = `<div style="color:var(--muted); font-size:0.8rem; padding:24px 10px; text-align:center;">저장된 서버 레시피가 없습니다.</div>`;
+      return;
+    }
+    recipes.forEach(rec => {
+      const card = document.createElement("div");
+      card.className = "server-recipe-item";
+      card.style.cssText = `
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      `;
+      card.onmouseenter = () => { card.style.borderColor = "var(--primary)"; };
+      card.onmouseleave = () => { card.style.borderColor = "var(--border)"; };
+      const totalWater = rec.total_water || (Array.isArray(rec.steps) ? rec.steps.reduce((a, b) => a + (Number(b.water) || 0), 0) : 0);
+      const ratio = rec.dose > 0 ? (totalWater / rec.dose).toFixed(1) : "-";
+      const grindText = rec.grind_enabled 
+        ? `<span style="color:var(--text);">⚙️ 분쇄 ${rec.grind_size} (${rec.grind_rpm} RPM)</span>`
+        : `<span style="color:var(--muted); font-weight:600;">🛑 분쇄 OFF</span>`;
+      const intervalBadge = rec.interval_sync
+        ? `<span style="background:rgba(249,115,22,0.12); color:var(--accent); font-size:0.68rem; padding:2px 6px; border-radius:4px; border:1px solid rgba(249,115,22,0.3);">⏱️ 인터벌 보정</span>`
+        : '';
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700; font-size:0.88rem; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(rec.name)}</div>
+            <div style="font-size:0.7rem; color:var(--muted); font-family:monospace; margin-top:1px;">📄 ${escapeHtml(rec.filename)}</div>
+          </div>
+          <div style="display:flex; gap:6px; flex-shrink:0;">
+            <button class="btn-accent" style="font-size:0.75rem; padding:4px 10px; white-space:nowrap;" onclick="loadRecipeFromServer('${encodeURIComponent(rec.filename)}')">불러오기</button>
+            <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239,68,68,0.4); white-space:nowrap;" onclick="deleteRecipeFromServer('${encodeURIComponent(rec.filename)}', '${escapeHtml(rec.name)}')">삭제</button>
+          </div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:0.75rem; color:var(--muted); margin-top:2px;">
+          <span>☕ ${rec.dose}g (1:${ratio})</span>
+          <span>•</span>
+          <span>💧 ${rec.pour_count || (rec.steps ? rec.steps.length : 0)}푸어 (${totalWater}g)</span>
+          <span>•</span>
+          ${grindText}
+          ${intervalBadge}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+  function loadRecipeFromServer(encodedFilename) {
+    const filename = decodeURIComponent(encodedFilename);
+    const rec = cachedServerRecipes.find(r => r.filename === filename);
+    if (!rec) {
+      alert("해당 레시피를 찾을 수 없습니다.");
+      return;
+    }
+    applyRecipeToUI(rec);
+    closeServerRecipeModal();
+    switchTab('editor');
+    addLog(`[RECIPE] 서버 레시피 '${rec.name}' (${rec.filename}) 로드 완료`);
+    alert(`✅ '${rec.name}' 레시피를 성공적으로 불러왔습니다!\n레시피 스튜디오에 적용되었습니다.`);
+  }
+  async function deleteRecipeFromServer(encodedFilename, recipeName) {
+    const filename = decodeURIComponent(encodedFilename);
+    if (!confirm(`정말 서버에서 '${recipeName}' 레시피를 영구 삭제하시겠습니까?\n(파일: ${filename})`)) {
+      return;
+    }
+    try {
+      const res = await fetch(`/api/recipes/local/${encodeURIComponent(filename)}`, {
+        method: "DELETE"
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.detail || "삭제 실패");
+      }
+      addLog(`[RECIPE] 서버 레시피 삭제 완료: ${recipeName} (${filename})`);
+      cachedServerRecipes = cachedServerRecipes.filter(r => r.filename !== filename);
+      const countEl = document.getElementById("serverRecipeCount");
+      if (countEl) countEl.innerText = cachedServerRecipes.length;
+      filterServerRecipes();
+    } catch (e) {
+      alert(`레시피 삭제 오류: ${e.message}`);
+      addLog(`[RECIPE ERR] ${e.message}`);
+    }
+  }
+  function openShareUrlModal() {
+    document.getElementById("shareUrlInput").value = "";
+    document.getElementById("err-shareUrl").style.display = "none";
+    document.getElementById("shareLoadingBox").style.display = "none";
+    document.getElementById("btnFetchShare").disabled = false;
+    document.getElementById("shareUrlModal").classList.add("active");
+    setTimeout(() => {
+      const inp = document.getElementById("shareUrlInput");
+      if (inp) inp.focus();
+    }, 100);
+  }
+  function closeShareUrlModal() {
+    document.getElementById("shareUrlModal").classList.remove("active");
+  }
+  function closeShareUrlOnBack(e) {
+    if (e.target.id === "shareUrlModal") closeShareUrlModal();
+  }
+  async function fetchSharedRecipe() {
+    const input = document.getElementById("shareUrlInput");
+    const url = input.value.trim();
+    const err = document.getElementById("err-shareUrl");
+    const loading = document.getElementById("shareLoadingBox");
+    const btn = document.getElementById("btnFetchShare");
+    if (!url) {
+      err.innerText = "공유 링크 URL 또는 ID를 입력해주세요.";
+      err.style.display = "block";
+      input.focus();
+      return;
+    }
+    err.style.display = "none";
+    loading.style.display = "flex";
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/cloud/fetch-shared-recipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.detail || data.message || "레시피를 가져오지 못했습니다.");
+      }
+      const rec = data.recipe;
+      applyRecipeToUI(rec);
+      closeShareUrlModal();
+      const creatorInfo = rec.share_member_name ? ` (공유자: ${rec.share_member_name})` : "";
+      addLog(`[SHARE OK] '${rec.name}'${creatorInfo} 레시피를 성공적으로 가져왔습니다.`);
+      alert(`✅ '${rec.name}'${creatorInfo} 레시피를 성공적으로 불러왔습니다!\n레시피 스튜디오에 적용되었습니다.`);
+    } catch (e) {
+      err.innerText = e.message;
+      err.style.display = "block";
+    } finally {
+      loading.style.display = "none";
+      btn.disabled = false;
+    }
+  }
+  function renderSmoothSpline(ctx, points, tension = 0.22) {
+    if (!points || points.length === 0) return;
+    if (points.length === 1) {
+      ctx.moveTo(points[0].x, points[0].y);
+      return;
+    }
+    ctx.moveTo(points[0].x, points[0].y);
+    if (points.length === 2) {
+      ctx.lineTo(points[1].x, points[1].y);
+      return;
+    }
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = i > 0 ? points[i - 1] : points[i];
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const p3 = i < points.length - 2 ? points[i + 2] : p2;
+      let cp1x = p1.x + (p2.x - p0.x) * tension;
+      let cp1y = p1.y + (p2.y - p0.y) * tension;
+      let cp2x = p2.x - (p3.x - p1.x) * tension;
+      let cp2y = p2.y - (p3.y - p1.y) * tension;
+      // 수평 대기 구간(뜸 들이기 등에서 무게가 같은 경우)의 불필요한 위아래 출렁임 방지
+      if (p1.y === p2.y) {
+        cp1y = p1.y;
+        cp2y = p2.y;
+      }
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+    }
+  }
+  function renderChartMarkers(ctx, markers, getX, h, isLight, w, yTop = 22, yBottomOffset = 22) {
+    if (!markers || markers.length === 0) return;
+    let lastPillRight = -999;
+    let lastPillY = yTop - 18;
+    markers.forEach(m => {
+      const mx = getX(m.time);
+      if (mx < 35 || mx > w - 10) return;
+      // 1. 세련된 수직 점선
+      ctx.save();
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = isLight ? "rgba(100, 116, 139, 0.45)" : "rgba(148, 163, 184, 0.45)";
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(mx, yTop);
+      ctx.lineTo(mx, h - yBottomOffset);
+      ctx.stroke();
+      ctx.restore();
+      // 2. 상단 핀 배지 (Pill Badge)
+      const tagText = m.label || "";
+      if (tagText) {
+        ctx.font = "600 10px -apple-system, sans-serif";
+        const tw = ctx.measureText(tagText).width;
+        const tagX = Math.max(35 + tw / 2 + 2, Math.min(w - 12 - tw / 2, mx));
+        const pillW = tw + 10;
+        const pillH = 15;
+        let pillY = yTop - 18;
+        if (tagX - pillW / 2 < lastPillRight + 3) {
+          pillY = (lastPillY === yTop - 18) ? (yTop + 2) : (yTop - 18);
+        }
+        lastPillRight = tagX + pillW / 2;
+        lastPillY = pillY;
+        ctx.fillStyle = isLight ? "rgba(241, 245, 249, 0.94)" : "rgba(15, 23, 42, 0.94)";
+        ctx.strokeStyle = isLight ? "#94a3b8" : "#475569";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(tagX - pillW / 2, pillY, pillW, pillH, 3);
+        } else {
+          ctx.rect(tagX - pillW / 2, pillY, pillW, pillH);
+        }
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = isLight ? "#0f172a" : "#f8fafc";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(tagText, tagX, pillY + pillH / 2);
+      }
+    });
+  }
+  function drawHistoryChart(rec) {
+    const canvas = document.getElementById("historyChart");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    ctx.scale(dpr, dpr);
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    ctx.strokeStyle = isLight ? "#cbd5e1" : "#334155";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(35, 22); ctx.lineTo(35, h - 20);
+    ctx.lineTo(w - 10, h - 20);
+    ctx.stroke();
+    const data = rec.chartData;
+    if (!data || data.length < 2) return;
+    const maxTime = Math.max(60, data[data.length - 1].time);
+    const maxWeight = Math.max(250, rec.totalWater * 1.15);
+    const getX = (t) => 35 + (t / maxTime) * (w - 50);
+    const getY = (v) => (h - 20) - (v / maxWeight) * (h - 44);
+    if (rec.markers) {
+      renderChartMarkers(ctx, rec.markers, getX, h, isLight, w, 22, 20);
+    }
+    const pourPts = data.map(d => ({ x: getX(d.time), y: getY(d.pour) }));
+    const yieldPts = data.map(d => ({ x: getX(d.time), y: getY(d.yield) }));
+    ctx.strokeStyle = isLight ? "#0284c7" : "#38bdf8";
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    if (chartSmoothing) {
+      renderSmoothSpline(ctx, pourPts);
+    } else {
+      pourPts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    }
+    ctx.stroke();
+    ctx.strokeStyle = isLight ? "#ea580c" : "#d97736";
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    if (chartSmoothing) {
+      renderSmoothSpline(ctx, yieldPts);
+    } else {
+      yieldPts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    }
+    ctx.stroke();
+  }
+  let steps = [
+    { temp: 100, water: 40, wait: 35, flow: 3.0, pattern: "center", agitation_before: false, agitation_after: true },
+    { temp: 93, water: 90, wait: 15, flow: 3.5, pattern: "spiral", agitation_before: false, agitation_after: false },
+    { temp: 0, water: 90, wait: 10, flow: 3.2, pattern: "ring", agitation_before: false, agitation_after: false }
+  ];
+  function calcRatio() {
+    const dose = parseInt(document.getElementById("recDose").value, 10) || 0;
+    const totalWater = steps.reduce((sum, s) => sum + Number(s.water), 0);
+    document.getElementById("totalPourSummary").innerText = `총 푸어: ${totalWater}g`;
+    if (dose > 0 && totalWater > 0) {
+      const exactRatio = totalWater / dose;
+      document.getElementById("ratioText").innerText = `1 : ${Number.isInteger(exactRatio) ? exactRatio.toFixed(1) : exactRatio.toFixed(2)}`;
+      return exactRatio;
+    } else {
+      document.getElementById("ratioText").innerText = `1 : --`;
+      return 0;
+    }
+  }
+  function setTempTag(idx, val) {
+    steps[idx].temp = Number(val);
+    document.getElementById(`input-temp-${idx}`).value = val;
+    validateAll();
+  }
+  function toggleStepAgitation(idx, type) {
+    steps[idx][type] = !steps[idx][type];
+    renderSteps();
+    validateAll();
+  }
+  function renderSteps() {
+    const container = document.getElementById("stepsContainer");
+    container.innerHTML = "";
+    steps.forEach((step, idx) => {
+      const isBloom = idx === 0;
+      let currentPat = (step.pattern || "center").toLowerCase();
+      if (currentPat === "circle" || currentPat === "circular") currentPat = "ring";
+      const hasBefore = !!step.agitation_before;
+      const hasAfter = !!step.agitation_after;
+      container.innerHTML += `
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-title">${isBloom ? '1단계 (뜸 들이기/Bloom)' : `${idx + 1}차 푸어 (Pour ${idx + 1})`}</span>
+            ${steps.length > 1 ? `<button class="btn-del" onclick="removeStep(${idx})">삭제</button>` : ''}
+          </div>
+          <div class="step-grid">
+            <div class="field-group">
+              <label>수온 (0, 40~95, 100°C)</label>
+              <div class="temp-input-wrap">
+                <input type="number" id="input-temp-${idx}" value="${step.temp}" oninput="updateStep(${idx}, 'temp', this.value)" placeholder="0 / 40~95 / 100">
+                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 0)">0 (상온)</button>
+                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 100)">100</button>
+              </div>
+              <span class="error-msg" id="err-temp-${idx}">0 또는 40~95, 100 입력</span>
+            </div>
+            <div class="field-group">
+              <label>푸어 (10~250g)</label>
+              <input type="number" id="input-water-${idx}" value="${step.water}" oninput="updateStep(${idx}, 'water', this.value)">
+              <span class="error-msg" id="err-water-${idx}">10~250g 입력</span>
+            </div>
+            <div class="field-group">
+              <label>대기 (0~180s)</label>
+              <input type="number" id="input-wait-${idx}" value="${step.wait}" oninput="updateStep(${idx}, 'wait', this.value)">
+              <span class="error-msg" id="err-wait-${idx}">0~180s 입력</span>
+            </div>
+            <div class="field-group">
+              <label>유속 (3.0~3.5ml/s)</label>
+              <input type="number" step="0.1" id="input-flow-${idx}" value="${step.flow}" oninput="updateStep(${idx}, 'flow', this.value)">
+              <span class="error-msg" id="err-flow-${idx}">3.0~3.5 입력</span>
+            </div>
+          </div>
+          <div class="field-group" style="margin-top:6px; margin-bottom:0;">
+            <label>푸어 패턴 (Pour Pattern)</label>
+            <select onchange="updateStep(${idx}, 'pattern', this.value)">
+              <option value="center" ${currentPat === 'center' ? 'selected' : ''}>🎯 Center (중앙 집중 푸어)</option>
+              <option value="spiral" ${currentPat === 'spiral' ? 'selected' : ''}>🌀 Spiral (나선형 회전 푸어)</option>
+              <option value="ring" ${currentPat === 'ring' ? 'selected' : ''}>⭕ Ring (외곽 링 푸어)</option>
+            </select>
+          </div>
+          <div class="agitation-chip-group">
+            <button type="button" class="agitation-chip ${hasBefore ? 'active' : ''}" onclick="toggleStepAgitation(${idx}, 'agitation_before')">
+              <span>📳 푸어 전 교반<span class="chip-en"> (Before)</span></span>
+              <span class="agitation-status">${hasBefore ? 'ON' : 'OFF'}</span>
+            </button>
+            <button type="button" class="agitation-chip ${hasAfter ? 'active' : ''}" onclick="toggleStepAgitation(${idx}, 'agitation_after')">
+              <span>📳 푸어 후 교반<span class="chip-en"> (After)</span></span>
+              <span class="agitation-status">${hasAfter ? 'ON' : 'OFF'}</span>
+            </button>
+          </div>
+          ${(() => {
+            if (!isIntervalSyncEnabled()) return '';
+            if (idx < steps.length - 1) {
+              const info = getStepIntervalBreakdown(idx, step, steps[idx + 1]);
+              const agitationTxt = (info.afterSec ? ' + 후교반 8s' : '') + (info.nextBeforeSec ? ' + 다음 전교반 8s' : '');
+              if (info.isClamped) {
+                return `
+                  <div class="interval-hint-badge warning" id="interval-hint-${idx}">
+                    <span>⚠️ <b>핸드드립 인터벌 ${info.target}s</b>: 주입/교반 소요시간(${info.overhead}s: 주입 ${info.pourSec}s${agitationTxt})보다 짧아 머신 대기시간이 <b>0s</b>로 적용됩니다.</span>
+                  </div>
+                `;
+              } else {
+                return `
+                  <div class="interval-hint-badge" id="interval-hint-${idx}">
+                    <span>💡 <b>핸드드립 인터벌 ${info.target}s</b> ➔ 머신 실제 대기 <b>${info.machineWait}s</b> (주입 ${info.pourSec}s${agitationTxt} 차감)</span>
+                  </div>
+                `;
+              }
+            } else {
+              return `
+                <div class="interval-hint-badge info" id="interval-hint-${idx}">
+                  <span>🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>${step.wait}s</b> 유지)</span>
+                </div>
+              `;
+            }
+          })()}
+        </div>
+      `;
+    });
+    calcRatio();
+    validateAll();
+  }
+  function updateIntervalBadges() {
+    if (!isIntervalSyncEnabled()) return;
+    steps.forEach((step, idx) => {
+      const el = document.getElementById(`interval-hint-${idx}`);
+      if (!el) return;
+      if (idx < steps.length - 1) {
+        const info = getStepIntervalBreakdown(idx, step, steps[idx + 1]);
+        const agitationTxt = (info.afterSec ? ' + 후교반 8s' : '') + (info.nextBeforeSec ? ' + 다음 전교반 8s' : '');
+        el.className = `interval-hint-badge ${info.isClamped ? 'warning' : ''}`;
+        if (info.isClamped) {
+          el.innerHTML = `<span>⚠️ <b>핸드드립 인터벌 ${info.target}s</b>: 주입/교반 소요시간(${info.overhead}s: 주입 ${info.pourSec}s${agitationTxt})보다 짧아 머신 대기시간이 <b>0s</b>로 적용됩니다.</span>`;
+        } else {
+          el.innerHTML = `<span>💡 <b>핸드드립 인터벌 ${info.target}s</b> ➔ 머신 실제 대기 <b>${info.machineWait}s</b> (주입 ${info.pourSec}s${agitationTxt} 차감)</span>`;
+        }
+      } else {
+        el.className = 'interval-hint-badge info';
+        el.innerHTML = `<span>🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>${step.wait}s</b> 유지)</span>`;
+      }
+    });
+  }
+  function addStep() {
+    let newStep;
+    if (steps.length > 0) {
+      // 직전 푸어 단계의 모든 설정(수온, 물량, 대기, 유속, 패턴, 교반)을 그대로 복사하여 계승
+      const last = steps[steps.length - 1];
+      newStep = {
+        temp: last.temp,
+        water: last.water,
+        wait: last.wait,
+        flow: last.flow,
+        pattern: last.pattern || "spiral",
+        agitation_before: !!last.agitation_before,
+        agitation_after: !!last.agitation_after
+      };
+    } else {
+      newStep = {
+        temp: 92,
+        water: 60,
+        wait: 10,
+        flow: 3.2,
+        pattern: "spiral",
+        agitation_before: false,
+        agitation_after: false
+      };
+    }
+    steps.push(newStep);
+    renderSteps();
+    setTimeout(() => {
+      const sc = document.getElementById("stepsContainer");
+      if (sc) sc.scrollTop = sc.scrollHeight;
+    }, 50);
+  }
+  function removeStep(idx) {
+    steps.splice(idx, 1);
+    renderSteps();
+  }
+  function updateStep(idx, field, val) {
+    steps[idx][field] = field === 'pattern' ? val : Number(val);
+    calcRatio();
+    updateIntervalBadges();
+    validateAll();
+  }
+  function setFieldError(inputId, errId, hasError) {
+    const input = document.getElementById(inputId);
+    const err = document.getElementById(errId);
+    if (!input || !err) return;
+    if (hasError) {
+      input.classList.add("input-error");
+      err.classList.add("visible");
+    } else {
+      input.classList.remove("input-error");
+      err.classList.remove("visible");
+    }
+  }
+  function validateAll() {
+    let isValid = true;
+    const name = document.getElementById("recName").value.trim();
+    if (!name) { setFieldError("recName", "err-recName", true); isValid = false; }
+    else { setFieldError("recName", "err-recName", false); }
+    const doseRaw = document.getElementById("recDose").value;
+    const dose = parseInt(doseRaw, 10);
+    if (isNaN(dose) || dose < 1 || doseRaw.includes(".")) {
+      setFieldError("recDose", "err-recDose", true); isValid = false;
+    } else {
+      setFieldError("recDose", "err-recDose", false);
+    }
+    const grindEnabled = document.getElementById("recGrindEnabled").checked;
+    if (grindEnabled) {
+      const grind = Number(document.getElementById("recGrind").value);
+      if (isNaN(grind) || grind < 10 || grind > 100) { setFieldError("recGrind", "err-recGrind", true); isValid = false; }
+      else { setFieldError("recGrind", "err-recGrind", false); }
+      const rpm = Number(document.getElementById("recGrindRpm").value);
+      const isRpmValid = !isNaN(rpm) && rpm >= 60 && rpm <= 120 && rpm % 10 === 0;
+      if (!isRpmValid) { setFieldError("recGrindRpm", "err-recRpm", true); isValid = false; }
+      else { setFieldError("recGrindRpm", "err-recRpm", false); }
+    } else {
+      setFieldError("recGrind", "err-recGrind", false);
+      setFieldError("recGrindRpm", "err-recRpm", false);
+    }
+    const ratioVal = calcRatio();
+    const totalWater = steps.reduce((sum, s) => sum + Number(s.water), 0);
+    const ratioBanner = document.getElementById("ratioBanner");
+    const ratioBadge = document.getElementById("ratioText");
+    const ratioErr = document.getElementById("err-ratio");
+    if (dose > 0 && totalWater > 0) {
+      const isHalfStep = Math.abs((ratioVal * 2) - Math.round(ratioVal * 2)) < 1e-5;
+      const inRange = ratioVal >= 5.0 && ratioVal <= 25.0;
+      if (!inRange) {
+        ratioBanner.classList.add("invalid");
+        ratioBadge.classList.add("invalid");
+        ratioErr.innerText = `추출 비율은 1:5.0 ~ 1:25.0 범위 내여야 합니다. (현재 1:${ratioVal.toFixed(2)})`;
+        ratioErr.classList.add("visible");
+        isValid = false;
+      } else if (!isHalfStep) {
+        const lowerHalf = Math.floor(ratioVal * 2) / 2;
+        const upperHalf = Math.ceil(ratioVal * 2) / 2;
+        const recWater1 = Math.round(lowerHalf * dose);
+        const recWater2 = Math.round(upperHalf * dose);
+        ratioBanner.classList.add("invalid");
+        ratioBadge.classList.add("invalid");
+        ratioErr.innerText = `실 푸어량 비율이 0.5단위와 일치하지 않습니다! (총 푸어량을 ${recWater1}g 또는 ${recWater2}g으로 설정하세요)`;
+        ratioErr.classList.add("visible");
+        isValid = false;
+      } else {
+        ratioBanner.classList.remove("invalid");
+        ratioBadge.classList.remove("invalid");
+        ratioErr.classList.remove("visible");
+      }
+    }
+    steps.forEach((s, i) => {
+      const t = Number(s.temp);
+      const tempValid = !isNaN(t) && (t === 0 || t === 100 || (t >= 40 && t <= 95));
+      if (!tempValid) { setFieldError(`input-temp-${i}`, `err-temp-${i}`, true); isValid = false; }
+      else { setFieldError(`input-temp-${i}`, `err-temp-${i}`, false); }
+      if (isNaN(s.water) || s.water < 10 || s.water > 250) { setFieldError(`input-water-${i}`, `err-water-${i}`, true); isValid = false; }
+      else { setFieldError(`input-water-${i}`, `err-water-${i}`, false); }
+      if (isNaN(s.wait) || s.wait < 0 || s.wait > 180) { setFieldError(`input-wait-${i}`, `err-wait-${i}`, true); isValid = false; }
+      else { setFieldError(`input-wait-${i}`, `err-wait-${i}`, false); }
+      if (isNaN(s.flow) || s.flow < 3.0 || s.flow > 3.5) { setFieldError(`input-flow-${i}`, `err-flow-${i}`, true); isValid = false; }
+      else { setFieldError(`input-flow-${i}`, `err-flow-${i}`, false); }
+    });
+    const totalErr = document.getElementById("err-totalWater");
+    if (totalWater > 500) { totalErr.classList.add("visible"); isValid = false; }
+    else { totalErr.classList.remove("visible"); }
+    return isValid;
+  }
+  function exportYAML() {
+    if (!validateAll()) {
+      alert("레시피 설정 오류를 수정해주세요.");
+      return;
+    }
+    const name = document.getElementById("recName").value;
+    const dose = parseInt(document.getElementById("recDose").value, 10) || 20;
+    const grind = Number(document.getElementById("recGrind").value);
+    const grindEnabled = document.getElementById("recGrindEnabled").checked;
+    const grindRpm = Number(document.getElementById("recGrindRpm").value) || 80;
+    const intervalSync = isIntervalSyncEnabled();
+    const exportSteps = intervalSync ? adjustStepsForHanddripInterval(steps) : steps;
+    let yamlText = `# xBloom Recipe YAML${intervalSync ? ' (Hand-drip Interval Corrected)' : ''}\nname: "${name}"\ndose: ${dose}\ngrind_size: ${grind}\ngrind_enabled: ${grindEnabled}\ngrind_rpm: ${grindRpm}\nsteps:\n`;
+    exportSteps.forEach(s => {
+      let p = s.pattern === "circle" || s.pattern === "circular" ? "ring" : (s.pattern || 'center');
+      yamlText += `  - temp: ${Number(s.temp)}\n    pour: ${s.water}\n    wait: ${s.wait}\n    flow_rate: ${s.flow}\n    pattern: "${p}"\n    agitation_before: ${!!s.agitation_before}\n    agitation_after: ${!!s.agitation_after}\n`;
+    });
+    const blob = new Blob([yamlText], { type: 'text/yaml' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${name.replace(/\s+/g, '_')}.yaml`;
+    a.click();
+    if (intervalSync) {
+      addLog(`[YAML] 핸드드립 인터벌 보정 대기시간이 적용된 YAML 파일을 내보냈습니다.`);
+    }
+  }
+  function handleFileLoad(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const text = e.target.result;
+      try {
+        const nameMatch = text.match(/name:\s*["']?([^"'\n]+)/);
+        const doseMatch = text.match(/dose:\s*(\d+)/);
+        const grindMatch = text.match(/grind_size:\s*(\d+)/);
+        const grindEnabledMatch = text.match(/grind_enabled:\s*(true|false)/i);
+        const rpmMatch = text.match(/grind_rpm:\s*(\d+)/) || text.match(/rpm:\s*(\d+)/);
+        if (nameMatch) document.getElementById("recName").value = nameMatch[1];
+        if (doseMatch) document.getElementById("recDose").value = parseInt(doseMatch[1], 10);
+        if (grindMatch) document.getElementById("recGrind").value = grindMatch[1];
+        if (rpmMatch) {
+          let parsedRpm = Number(rpmMatch[1]);
+          parsedRpm = Math.round(parsedRpm / 10) * 10;
+          if (parsedRpm < 60) parsedRpm = 60;
+          if (parsedRpm > 120) parsedRpm = 120;
+          document.getElementById("recGrindRpm").value = String(parsedRpm);
+        }
+        if (grindEnabledMatch) {
+          document.getElementById("recGrindEnabled").checked = (grindEnabledMatch[1].toLowerCase() === 'true');
+        }
+        toggleGrindSetting();
+        const intervalChk = document.getElementById("recIntervalSync");
+        if (intervalChk) {
+          intervalChk.checked = false;
+        }
+        const tempMatches = [...text.matchAll(/temp(?:erature)?:\s*["']?([A-Za-z0-9]+)["']?/g)];
+        const pourMatches = [...text.matchAll(/pour:\s*(\d+)/g)];
+        const waitMatches = [...text.matchAll(/wait:\s*(\d+)/g)];
+        const flowMatches = [...text.matchAll(/flow_rate:\s*([\d.]+)/g)];
+        const patternMatches = [...text.matchAll(/pattern:\s*["']?([a-zA-Z]+)["']?/g)];
+        const vibeBeforeMatches = [...text.matchAll(/agitation_before:\s*(true|false)/gi)];
+        const vibeAfterMatches = [...text.matchAll(/agitation(?:_after)?:\s*(true|false)/gi)];
+        if (pourMatches.length > 0) {
+          steps = pourMatches.map((m, i) => {
+            let pat = patternMatches[i] ? patternMatches[i][1].toLowerCase() : "center";
+            if (pat === "circle" || pat === "circular") pat = "ring";
+            return {
+              temp: tempMatches[i] ? Number(tempMatches[i][1]) : 92,
+              water: Number(m[1]),
+              wait: waitMatches[i] ? Number(waitMatches[i][1]) : 15,
+              flow: flowMatches[i] ? Number(flowMatches[i][1]) : 3.2,
+              pattern: pat,
+              agitation_before: vibeBeforeMatches[i] ? (vibeBeforeMatches[i][1].toLowerCase() === 'true') : false,
+              agitation_after: vibeAfterMatches[i] ? (vibeAfterMatches[i][1].toLowerCase() === 'true') : false
+            };
+          });
+          renderSteps();
+        }
+        alert(`'${file.name}' 파일을 성공적으로 로드했습니다.`);
+      } catch (err) {
+        alert("레시피 파일을 파싱하지 못했습니다.");
+      }
+    };
+    reader.readAsText(file);
+  }
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    if (tab === 'brew') {
+      document.getElementById('tabNavBrew').classList.add('active');
+      document.getElementById('tab-brew').classList.add('active');
+      setTimeout(drawChart, 50);
+    } else {
+      document.getElementById('tabNavEditor').classList.add('active');
+      document.getElementById('tab-editor').classList.add('active');
+      validateAll();
+    }
+  }
+  function drawChart() {
+    const canvas = document.getElementById("brewChart");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    ctx.scale(dpr, dpr);
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const axisColor = isLight ? "#94a3b8" : "#334155";
+    const markerColor = isLight ? "rgba(71, 85, 105, 0.45)" : "rgba(148, 163, 184, 0.45)";
+    const textColor = isLight ? "#334155" : "#94a3b8";
+    ctx.strokeStyle = axisColor;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(35, 24); ctx.lineTo(35, h - 22);
+    ctx.lineTo(w - 10, h - 22);
+    ctx.stroke();
+    if (chartData.length < 2) return;
+    const maxTime = Math.max(60, chartData[chartData.length - 1].time);
+    const maxWeight = Math.max(250, chartData[chartData.length - 1].pour * 1.15);
+    const getX = (t) => 35 + (t / maxTime) * (w - 50);
+    const getY = (v) => (h - 22) - (v / maxWeight) * (h - 48);
+    if (pourMarkers && pourMarkers.length > 0) {
+      renderChartMarkers(ctx, pourMarkers, getX, h, isLight, w, 22, 22);
+    }
+    const pourPts = chartData.map(d => ({ x: getX(d.time), y: getY(d.pour) }));
+    const yieldPts = chartData.map(d => ({ x: getX(d.time), y: getY(d.yield) }));
+    ctx.strokeStyle = isLight ? "#0284c7" : "#38bdf8";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    if (chartSmoothing) {
+      renderSmoothSpline(ctx, pourPts);
+    } else {
+      pourPts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    }
+    ctx.stroke();
+    ctx.strokeStyle = isLight ? "#ea580c" : "#d97736";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    if (chartSmoothing) {
+      renderSmoothSpline(ctx, yieldPts);
+    } else {
+      yieldPts.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    }
+    ctx.stroke();
+  }
+  window.addEventListener('resize', () => {
+    drawChart();
+    if (currentHistRecord) drawHistoryChart(currentHistRecord);
+  });
+  renderSteps();
+  setTimeout(drawChart, 100);
+  initWebSocket();
+  loadServerSettings();
+  loadHistoryFromServer();
+</script>
+
+</body>
+</html>

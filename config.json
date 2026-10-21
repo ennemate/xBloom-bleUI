@@ -1,0 +1,9 @@
+{
+  "theme": "dark",
+  "wallpaper": null,
+  "cloud_user": null,
+  "record_aborted_brews": false,
+  "pour_marker_mode": "weight",
+  "chart_smoothing": true,
+  "handdrip_interval_sync": false
+}
