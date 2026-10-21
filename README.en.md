@@ -66,8 +66,8 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
 | **Slot Memory** | CLI slot writing commands | **A / B / C physical button remote flash programming from browser** |
 | **Brew Archive** | Real-time session monitoring | **Permanent local history, dual curve chart restore, and one-click re-brew** |
 | **Auto Update** | Manual git pull or reinstall | **GitHub Releases-based one-click update (100% user data preserved)** |
-| **Grinder Micron (µm) Display** | Clicks only | **Theoretical micron (µm) conversion based on 48mm conical burr gap & settings toggle** |
-| **Multilingual (i18n)** | English based | **7 Global languages supported with specialty barista terminology** |
+| **Grinder Micron (µm) Display** | Clicks only | **Real-time micron (µm) display on click input & settings toggle** |
+| **Multilingual (i18n)** | English based | **7 Global languages supported (English, Korean, Japanese, Chinese, German, French)** |
 
 ---
 
@@ -109,7 +109,7 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
   <img src="docs/img/recipe-studio.png" alt="Recipe Studio" width="800">
 </p>
 
-- **Precision Grinder Control & Real-time Micron (µm) Display**: Grind size (10~100) and motor RPM (60~120), featuring real-time theoretical micron conversion badges (e.g., `≈ 836 µm`) with a Settings toggle.
+- **Precision Grinder Control & Real-time Micron (µm) Display**: Grind size (10~100) and motor RPM (60~120), featuring real-time micron badges (e.g., `≈ 836 µm`) with a Settings toggle.
 - **Pour Patterns**: Center, Spiral, and Ring patterns fully supported.
 - **Dual Agitation**: Independent pre-pour bed leveling and post-pour extraction agitation.
 - **YAML Standards**: Export and import standard YAML recipe files.
