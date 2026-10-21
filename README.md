@@ -194,7 +194,7 @@
 ---
 
 ### 방법 A. Windows 포터블 무설치판 실행 (가장 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.8-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.9.0-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    - 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -256,10 +256,13 @@
 xBloom-bleUI/
 ├── run.bat               # Windows 원클릭 실행 배치 파일 (포트 커스텀 지원)
 ├── run.py                # Python 크로스플랫폼 자동 브라우저 오픈 런처
-├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.8)
+├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.9.0)
 ├── requirements.txt      # 실행 필수 의존성 목록
 ├── config.example.json   # 기본 설정 참고용 템플릿 (기존 설정 덮어쓰기 방지)
-├── README.md             # 프로젝트 상세 안내 문서 (이미지 포함)
+├── README.md             # 한국어 안내 문서
+├── README.en.md          # English Documentation
+├── README.ja.md          # 日本語 ドキュメント
+├── README.zh-TW.md       # 繁體中文 說明文件
 ├── docs/
 │   └── img/              # 대시보드 및 주요 기능 데모 스크린샷 이미지
 │       ├── dashboard-chart.png
