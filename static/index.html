@@ -248,6 +248,14 @@
     [data-theme="light"] input.input-error, [data-theme="light"] select.input-error { background: #fee2e2; }
     .error-msg { color: var(--danger); font-size: 0.68rem; margin-top: 2px; display: none; line-height: 1.2; font-weight: 600; }
     .error-msg.visible { display: block; }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
     .temp-input-wrap { display: flex; gap: 4px; }
     .btn-tag { padding: 4px 6px; font-size: 0.7rem; border-radius: 6px; background: var(--tag-bg); color: var(--sky); border: 1px solid var(--border); cursor: pointer; font-weight: 700; white-space: nowrap; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
@@ -710,9 +718,9 @@
             </div>
             <div class="field-group" id="grindFieldWrap">
               <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
-              <div class="grind-input-wrap" style="display:flex; gap:6px; align-items:center;">
-                <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();" style="flex:1; min-width:0;">
-                <span id="grindMicronBadge" style="display:none; align-items:center; justify-content:center; padding:0 8px; height:36px; border-radius:8px; font-size:0.78rem; font-weight:700; font-family:monospace; white-space:nowrap; color:var(--primary); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; box-sizing:border-box; flex-shrink:0;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836 µm</span>
+              <div class="grind-input-wrap" style="display:flex; gap:4px; align-items:center;">
+                <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();" style="flex:1; min-width:44px; text-align:center; padding:8px 4px; font-weight:600;">
+                <span id="grindMicronBadge" style="display:none; align-items:center; justify-content:center; padding:0 5px; height:36px; border-radius:8px; font-size:0.68rem; font-weight:700; font-family:monospace; letter-spacing:-0.2px; white-space:nowrap; color:var(--primary); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; box-sizing:border-box; flex-shrink:0;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836µm</span>
               </div>
               <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">10~100 입력</span>
             </div>
@@ -3226,7 +3234,7 @@
     const c = input ? Number(input.value) : null;
     const micron = clickToMicron(c);
     if (micron !== null) {
-      badge.textContent = `≈ ${micron.toLocaleString()} µm`;
+      badge.textContent = `≈ ${micron}µm`;
       badge.title = t("micron_approx_tooltip", "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)");
       badge.style.display = "inline-flex";
     } else {
