@@ -1004,14 +1004,14 @@
           <div class="setting-desc" data-i18n="setting_lang_desc">시스템 기본 언어 또는 원하는 언어 선택</div>
         </div>
         <select id="settingLangSelect" onchange="setLanguage(this.value, true)" style="font-size:0.8rem; padding:6px 12px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text); cursor:pointer;">
-          <option value="auto" data-i18n="lang_auto">시스템 언어 자동 감지 (Auto)</option>
-          <option value="ko" data-i18n="lang_ko">한국어 (Korean)</option>
-          <option value="en" data-i18n="lang_en">English (Specialty Coffee Standard)</option>
-          <option value="ja" data-i18n="lang_ja">日本語 (Japanese Barista Standard)</option>
-          <option value="zh-TW" data-i18n="lang_zh_tw">繁體中文 (Taiwan / HK Specialty)</option>
-          <option value="zh-CN" data-i18n="lang_zh_cn">简体中文 (Chinese Specialty)</option>
-          <option value="de" data-i18n="lang_de">Deutsch (German Coffee Lab)</option>
-          <option value="fr" data-i18n="lang_fr">Français (French Specialty)</option>
+          <option value="auto" data-i18n="lang_auto">자동 감지 (Auto)</option>
+          <option value="ko" data-i18n="lang_ko">한국어</option>
+          <option value="en" data-i18n="lang_en">English</option>
+          <option value="ja" data-i18n="lang_ja">日本語</option>
+          <option value="zh-TW" data-i18n="lang_zh_tw">繁體中文</option>
+          <option value="zh-CN" data-i18n="lang_zh_cn">简体中文</option>
+          <option value="de" data-i18n="lang_de">Deutsch</option>
+          <option value="fr" data-i18n="lang_fr">Français</option>
         </select>
       </div>
 
@@ -1079,11 +1079,11 @@
 
       <div id="cloudLoginForm" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
         <div class="field-group" style="margin:0;">
-          <label>이메일 계정</label>
+          <label data-i18n="label_email">이메일 계정</label>
           <input type="email" id="cloudEmail" placeholder="xbloom_app@example.com">
         </div>
         <div class="field-group" style="margin:0;">
-          <label>비밀번호</label>
+          <label data-i18n="label_password">비밀번호</label>
           <input type="password" id="cloudPassword" placeholder="••••••••">
         </div>
         <button class="btn-accent" style="margin-top:4px;" onclick="handleCloudLogin()" data-i18n="btn_login">xBloom 로그인</button>
@@ -1157,6 +1157,10 @@
 <script>
   const TRANSLATIONS = {
     ko: {
+      "interval_last_pour": "🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>{wait}s</b> 유지)",
+      "agit_after_add": " + 후교반 {n}s",
+      "agit_next_before_add": " + 다음 전교반 {n}s",
+      "current_ver_prefix": "현재 버전: ",
       "ble_disconnect_hover": " (연결 끊기)",
       "err_share_url": "올바른 공유 링크를 입력해주세요.",
       "err_rec_rpm": "60~120 사이 10단위만 가능",
@@ -1304,7 +1308,7 @@
       setting_lang: "🌐 언어 설정 (Language)",
       setting_lang_desc: "시스템 기본 언어 또는 원하는 언어 선택",
       "lang_auto": "Auto (자동 감지)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -1364,6 +1368,10 @@
       state_error: "오류"
     },
     en: {
+      "interval_last_pour": "🏁 <b>Final Pour</b>: Dripper drawdown pause (holds set <b>{wait}s</b>)",
+      "agit_after_add": " + post-agitation {n}s",
+      "agit_next_before_add": " + next pre-agitation {n}s",
+      "current_ver_prefix": "Current Version: ",
       "ble_disconnect_hover": " (Disconnect)",
       "err_share_url": "Please enter a valid share link.",
       "err_rec_rpm": "60~120 in increments of 10",
@@ -1511,7 +1519,7 @@
       setting_lang: "🌐 Language",
       setting_lang_desc: "Select system default or custom UI language",
       "lang_auto": "Auto (Detect)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -1571,6 +1579,10 @@
       state_error: "ERROR"
     },
     ja: {
+      "interval_last_pour": "🏁 <b>最終注湯</b>: ドリッパー最終落としきり待機時間 (設定値 <b>{wait}s</b> 保持)",
+      "agit_after_add": " + 注湯後攪拌 {n}s",
+      "agit_next_before_add": " + 次の注湯前攪拌 {n}s",
+      "current_ver_prefix": "現在のバージョン: ",
       "ble_disconnect_hover": " (切断)",
       "err_share_url": "有効な共有リンクを入力してください。",
       "err_rec_rpm": "60〜120(10単位)",
@@ -1718,7 +1730,7 @@
       setting_lang: "🌐 言語設定 (Language)",
       setting_lang_desc: "OS標準またはUI言語を選択",
       "lang_auto": "Auto (自動検出)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -1778,6 +1790,10 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "interval_last_pour": "🏁 <b>最後一段注水</b>: 濾杯最終滴濾流盡等待時間 (維持設定的 <b>{wait}s</b>)",
+      "agit_after_add": " + 注水後擾動 {n}s",
+      "agit_next_before_add": " + 下一段注水前擾動 {n}s",
+      "current_ver_prefix": "目前版本: ",
       "ble_disconnect_hover": " (中斷連線)",
       "err_share_url": "請輸入有效的分享連結。",
       "err_rec_rpm": "60~120 (以 10 為單位)",
@@ -1898,7 +1914,7 @@
       setting_lang: "🌐 語言設定 (Language)",
       setting_lang_desc: "選擇系統預設或慣用介面語言",
       "lang_auto": "Auto (自動偵測)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -1958,6 +1974,10 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "interval_last_pour": "🏁 <b>最后一段注水</b>: 滤杯最终滴滤流尽等待时间 (维持设定的 <b>{wait}s</b>)",
+      "agit_after_add": " + 注水后扰动 {n}s",
+      "agit_next_before_add": " + 下一段注水前扰动 {n}s",
+      "current_ver_prefix": "当前版本: ",
       "ble_disconnect_hover": " (断开连接)",
       "err_share_url": "请输入有效的分享链接。",
       "err_rec_rpm": "60~120 (以 10 为单位)",
@@ -2078,7 +2098,7 @@
       setting_lang: "🌐 语言设置 (Language)",
       setting_lang_desc: "选择系统默认或常用界面语言",
       "lang_auto": "Auto (自动检测)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -2138,6 +2158,10 @@
       state_error: "异常"
     },
     de: {
+      "interval_last_pour": "🏁 <b>Letzter Aufguss</b>: Filter-Durchlaufpause (eingestellte <b>{wait}s</b> gehalten)",
+      "agit_after_add": " + Nach-Agitation {n}s",
+      "agit_next_before_add": " + nächste Vor-Agitation {n}s",
+      "current_ver_prefix": "Aktuelle Version: ",
       "ble_disconnect_hover": " (Trennen)",
       "err_share_url": "Bitte gültigen Freigabelink eingeben.",
       "err_rec_rpm": "60~120 in 10er-Schritten",
@@ -2285,7 +2309,7 @@
       setting_lang: "🌐 Sprache (Language)",
       setting_lang_desc: "Systemstandard oder Sprache wählen",
       "lang_auto": "Auto (Erkennung)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -2345,6 +2369,10 @@
       state_error: "FEHLER"
     },
     fr: {
+      "interval_last_pour": "🏁 <b>Dernier versement</b>: Écoulement final (pause réglée à <b>{wait}s</b>)",
+      "agit_after_add": " + post-agitation {n}s",
+      "agit_next_before_add": " + pré-agitation suivante {n}s",
+      "current_ver_prefix": "Version actuelle: ",
       "ble_disconnect_hover": " (Déconnecter)",
       "err_share_url": "Veuillez entrer un lien valide.",
       "err_rec_rpm": "60~120 par pas de 10",
@@ -2492,7 +2520,7 @@
       setting_lang: "🌐 Langue (Language)",
       setting_lang_desc: "Choisir la langue par défaut ou personnalisée",
       "lang_auto": "Auto (Détection)",
-      "lang_ko": "한국어 (Korean)",
+      "lang_ko": "한국어",
       "lang_en": "English",
       "lang_ja": "日本語",
       "lang_zh_tw": "繁體中文",
@@ -2570,13 +2598,25 @@
     }
     return TRANSLATIONS[code] ? code : "en";
   }
-  function t(key, fallback = "") {
-    const dict = TRANSLATIONS[activeLang] || TRANSLATIONS["ko"];
-    if (dict && dict[key] !== undefined) {
-      return dict[key];
+  function t(key, params = {}, fallback = "") {
+    if (typeof params === "string") {
+      fallback = params;
+      params = {};
     }
-    const koDict = TRANSLATIONS["ko"];
-    return (koDict && koDict[key] !== undefined) ? koDict[key] : fallback;
+    const dict = TRANSLATIONS[activeLang] || TRANSLATIONS["ko"];
+    let text = "";
+    if (dict && dict[key] !== undefined) {
+      text = dict[key];
+    } else {
+      const koDict = TRANSLATIONS["ko"];
+      text = (koDict && koDict[key] !== undefined) ? koDict[key] : fallback;
+    }
+    if (text && typeof text === "string" && params && typeof params === "object") {
+      for (const [k, v] of Object.entries(params)) {
+        text = text.replaceAll(`{${k}}`, v);
+      }
+    }
+    return text;
   }
   function setLanguage(langCode, saveToServer = true) {
     currentLangSetting = langCode || "auto";
@@ -2613,8 +2653,9 @@
     updateBleStatusUI();
     updateIntervalBadges();
     const verDesc = document.getElementById("settingsVersionInfo");
-    if (verDesc && latestReleaseData) {
-      verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${latestReleaseData.current_version || "0.9.0"}`;
+    if (verDesc) {
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "0.9.0";
+      verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${curVer}`;
     }
     try {
       localStorage.setItem("xbloom_language", currentLangSetting);
@@ -2659,7 +2700,7 @@
     if (!bleStatusText || !bleBtn) return;
     if (bleBtn.classList.contains("connected")) {
       bleStatusText.innerText = t("ble_connected");
-    } else if (bleBtn.classList.contains("connecting")) {
+    } else if (bleBtn.classList.contains("connecting") || bleBtn.classList.contains("scanning")) {
       bleStatusText.innerText = t("ble_connecting");
     } else {
       bleStatusText.innerText = t("ble_disconnected");
@@ -2716,7 +2757,7 @@
       const badgeText = document.getElementById("updateBadgeText");
       const verDesc = document.getElementById("settingsVersionInfo");
       if (verDesc) {
-        verDesc.innerText = `현재 버전: v${data.current_version || "0.9.0"}`;
+        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "0.9.0"}`;
       }
       const footerVer = document.getElementById("settingsFooterVer");
       if (footerVer) {
@@ -2967,7 +3008,7 @@
     if (latestReleaseData && latestReleaseData.current_version) {
       const verDesc = document.getElementById("settingsVersionInfo");
       const footerVer = document.getElementById("settingsFooterVer");
-      if (verDesc) verDesc.innerText = `현재 버전: v${latestReleaseData.current_version}`;
+      if (verDesc) verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${latestReleaseData.current_version}`;
       if (footerVer) footerVer.innerText = `v${latestReleaseData.current_version} by 팽이팽이`;
     }
   }
@@ -3133,13 +3174,13 @@
     const text = document.getElementById("bleStatusText");
     if (status === "CONNECTED") {
       btn.className = "badge-btn connected";
-      text.innerText = "BLE 연결됨";
+      text.innerText = t("ble_connected", "BLE 연결됨");
     } else if (status === "SCANNING") {
       btn.className = "badge-btn scanning";
-      text.innerText = "기기 탐색 중...";
+      text.innerText = t("ble_connecting", "기기 탐색 중...");
     } else {
       btn.className = "badge-btn disconnected";
-      text.innerText = "연결 끊김 (클릭시 재연결)";
+      text.innerText = t("ble_disconnected", "연결 끊김 (클릭시 재연결)");
     }
   }
   async function toggleBleConnection() {
@@ -3199,28 +3240,20 @@
     } catch (e) {}
   }
   function formatMachineState(st) {
-    if (!st) return "대기 중";
+    if (!st) return t("state_idle", "대기 중");
     const s = String(st).toUpperCase().trim();
-    const map = {
-      "IDLE": "대기 중",
-      "STANDBY": "대기 중 (연결됨)",
-      "UNKNOWN_0X0A": "대기 중 (연결됨)",
-      "0X0A": "대기 중 (연결됨)",
-      "ARMED": "추출 대기 (확인 대기)",
-      "AWAITING_CONFIRM": "기기 확인 대기",
-      "STARTING": "원두 분쇄 중 (Grind ⚙️)",
-      "LOADING": "레시피 전송 중",
-      "BREWING": "추출 진행 중",
-      "READY": "추출 완료 (비프음)",
-      "COMPLETE": "추출 완료",
-      "FINISHED": "완료",
-      "NO_WATER": "물 부족",
-      "NO_BEANS": "원두 부족",
-      "SAVING_SLOTS": "슬롯 저장 중",
-      "SLOTS_SAVED": "슬롯 저장 완료"
-    };
-    if (map[s]) return map[s];
-    if (s.startsWith("UNKNOWN_0X")) return `대기 중 (${s})`;
+    if (s === "IDLE") return t("state_idle", "대기 중");
+    if (s === "STANDBY" || s === "UNKNOWN_0X0A" || s === "0X0A") return `${t("state_idle", "대기 중")} (${t("ble_connected", "연결됨")})`;
+    if (s === "ARMED" || s === "AWAITING_CONFIRM") return t("state_armed", "기기 확인 대기");
+    if (s === "STARTING") return t("state_grinding", "원두 분쇄 중 (Grind ⚙️)");
+    if (s === "LOADING") return t("state_loading", "레시피 전송 중");
+    if (s === "BREWING") return t("state_brewing", "추출 진행 중");
+    if (s === "READY" || s === "COMPLETE" || s === "FINISHED") return t("state_finished", "추출 완료");
+    if (s === "NO_WATER") return t("state_no_water", "물 부족");
+    if (s === "NO_BEANS") return t("state_no_beans", "원두 부족");
+    if (s === "SAVING_SLOTS") return t("state_saving_slots", "슬롯 저장 중");
+    if (s === "SLOTS_SAVED") return t("state_slots_saved", "슬롯 저장 완료");
+    if (s.startsWith("UNKNOWN_0X")) return `${t("state_idle", "대기 중")} (${s})`;
     return st;
   }
   function triggerActualBrewStart(initialPour = 0, initialYield = 0) {
@@ -4534,24 +4567,24 @@
             if (!isIntervalSyncEnabled()) return '';
             if (idx < steps.length - 1) {
               const info = getStepIntervalBreakdown(idx, step, steps[idx + 1]);
-              const agitationTxt = (info.afterSec ? ' + 후교반 8s' : '') + (info.nextBeforeSec ? ' + 다음 전교반 8s' : '');
+              const agitationTxt = (info.afterSec ? t('agit_after_add', { n: 8 }) : '') + (info.nextBeforeSec ? t('agit_next_before_add', { n: 8 }) : '');
               if (info.isClamped) {
                 return `
                   <div class="interval-hint-badge warning" id="interval-hint-${idx}">
-                    <span>⚠️ <b>핸드드립 인터벌 ${info.target}s</b>: 주입/교반 소요시간(${info.overhead}s: 주입 ${info.pourSec}s${agitationTxt})보다 짧아 머신 대기시간이 <b>0s</b>로 적용됩니다.</span>
+                    <span>${t('interval_hint_clamped', { target: info.target, overhead: info.overhead, pourSec: info.pourSec, agitation: agitationTxt })}</span>
                   </div>
                 `;
               } else {
                 return `
                   <div class="interval-hint-badge" id="interval-hint-${idx}">
-                    <span>💡 <b>핸드드립 인터벌 ${info.target}s</b> ➔ 머신 실제 대기 <b>${info.machineWait}s</b> (주입 ${info.pourSec}s${agitationTxt} 차감)</span>
+                    <span>${t('interval_hint_normal', { target: info.target, machineWait: info.machineWait, pourSec: info.pourSec, agitation: agitationTxt })}</span>
                   </div>
                 `;
               }
             } else {
               return `
                 <div class="interval-hint-badge info" id="interval-hint-${idx}">
-                  <span>🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>${step.wait}s</b> 유지)</span>
+                  <span>${t('interval_last_pour', { wait: step.wait })}</span>
                 </div>
               `;
             }
@@ -4569,16 +4602,16 @@
       if (!el) return;
       if (idx < steps.length - 1) {
         const info = getStepIntervalBreakdown(idx, step, steps[idx + 1]);
-        const agitationTxt = (info.afterSec ? ' + 후교반 8s' : '') + (info.nextBeforeSec ? ' + 다음 전교반 8s' : '');
+        const agitationTxt = (info.afterSec ? t('agit_after_add', { n: 8 }) : '') + (info.nextBeforeSec ? t('agit_next_before_add', { n: 8 }) : '');
         el.className = `interval-hint-badge ${info.isClamped ? 'warning' : ''}`;
         if (info.isClamped) {
-          el.innerHTML = `<span>⚠️ <b>핸드드립 인터벌 ${info.target}s</b>: 주입/교반 소요시간(${info.overhead}s: 주입 ${info.pourSec}s${agitationTxt})보다 짧아 머신 대기시간이 <b>0s</b>로 적용됩니다.</span>`;
+          el.innerHTML = `<span>${t('interval_hint_clamped', { target: info.target, overhead: info.overhead, pourSec: info.pourSec, agitation: agitationTxt })}</span>`;
         } else {
-          el.innerHTML = `<span>💡 <b>핸드드립 인터벌 ${info.target}s</b> ➔ 머신 실제 대기 <b>${info.machineWait}s</b> (주입 ${info.pourSec}s${agitationTxt} 차감)</span>`;
+          el.innerHTML = `<span>${t('interval_hint_normal', { target: info.target, machineWait: info.machineWait, pourSec: info.pourSec, agitation: agitationTxt })}</span>`;
         }
       } else {
         el.className = 'interval-hint-badge info';
-        el.innerHTML = `<span>🏁 <b>마지막 푸어</b>: 드리퍼 최종 물 빠짐 대기시간 (설정된 <b>${step.wait}s</b> 유지)</span>`;
+        el.innerHTML = `<span>${t('interval_last_pour', { wait: step.wait })}</span>`;
       }
     });
   }
