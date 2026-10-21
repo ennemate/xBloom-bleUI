@@ -1,5 +1,5 @@
 import shutil
-'\nxBloom bleUI Local Web Server (v0.8.5)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n'
+'\nxBloom bleUI Local Web Server (v0.8.8)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n'
 import sys
 import os
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 from typing import Dict, Any, Optional, List
 import urllib.request
 import urllib.parse
-CURRENT_VERSION = '0.8.5'
+CURRENT_VERSION = '0.8.8'
 GITHUB_REPO = 'ennemate/xBloom-bleUI'
 import uvicorn
 import yaml

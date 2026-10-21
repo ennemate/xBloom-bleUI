@@ -11,7 +11,7 @@ DEFAULT_HOST = "0.0.0.0"
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="xBloom bleUI v0.8.5 Launcher",
+        description="xBloom bleUI v0.8.8 Launcher",
         epilog="예시: python run.py 8080  또는  python run.py -p 8080"
     )
     # 위치 인자(선택사항)로 포트 번호 입력 허용 (예: python run.py 8080)
@@ -30,7 +30,7 @@ def main():
     port, host, no_browser, extra_args = parse_args()
     
     print("=" * 55)
-    print("  xBloom bleUI v0.8.5 런처")
+    print("  xBloom bleUI v0.8.8 런처")
     print(f"  - 웹 대시보드 URL : http://localhost:{port}")
     print(f"  - 포트 변경 방법   : python run.py [포트번호]  (예: python run.py 8080)")
     print("=" * 55)

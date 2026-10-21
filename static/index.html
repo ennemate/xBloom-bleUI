@@ -663,7 +663,7 @@
         <div class="card log-card">
           <div class="card-title">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div>[INIT] xBloom bleUI v0.8.5 구동 완료</div>
+            <div>[INIT] xBloom bleUI v0.8.8 구동 완료</div>
           </div>
         </div>
       </div>
@@ -1073,14 +1073,14 @@
       <div class="setting-row" style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
         <div>
           <div class="setting-label">🚀 버전 및 자동 업데이트</div>
-          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.8.5</div>
+          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.8.8</div>
         </div>
         <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="font-size:0.75rem; padding:6px 12px; cursor:pointer;">업데이트 확인</button>
       </div>
     </div>
 
     <div class="settings-footer">
-      <span>v0.8.5 by 팽이팽이</span>
+      <span>v0.8.8 by 팽이팽이</span>
     </div>
   </div>
 </div>
@@ -1098,12 +1098,12 @@
     <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
       <div>
         <div style="font-size:0.75rem; color:var(--muted);">현재 버전</div>
-        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.8.5</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.8.8</div>
       </div>
       <div style="font-size:1.1rem; color:var(--accent);">➔</div>
       <div>
         <div style="font-size:0.75rem; color:var(--muted);">최신 릴리즈</div>
-        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.8.5</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.8.8</div>
       </div>
     </div>
 
@@ -1173,7 +1173,7 @@
       const badgeText = document.getElementById("updateBadgeText");
       const verDesc = document.getElementById("settingsVersionInfo");
       if (verDesc) {
-        verDesc.innerText = `현재 버전: v${data.current_version || "0.8.5"}`;
+        verDesc.innerText = `현재 버전: v${data.current_version || "0.8.8"}`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -1186,7 +1186,7 @@
       } else {
         if (badgeBtn) badgeBtn.style.display = "none";
         if (manual) {
-          alert(`현재 최신 버전(v${data.current_version || "0.8.5"})을 사용 중입니다.`);
+          alert(`현재 최신 버전(v${data.current_version || "0.8.8"})을 사용 중입니다.`);
         }
       }
     } catch (e) {
@@ -1213,8 +1213,8 @@
     const latestSpan = document.getElementById("updateLatestVer");
     const titleSpan = document.getElementById("updateModalTitle");
     const notesBox = document.getElementById("updateReleaseNotes");
-    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.8.5"}`;
-    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.8.5"}`;
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.8.8"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.8.8"}`;
     if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || `xBloom bleUI v${latestReleaseData.latest_version} 업데이트`;
     if (notesBox) {
       notesBox.innerText = latestReleaseData.release_notes || "새로운 기능 개선 및 버그 수정이 포함되어 있습니다.";

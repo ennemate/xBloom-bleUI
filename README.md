@@ -1,11 +1,11 @@
-# xBloom bleUI (v0.8.5)
+# xBloom bleUI (v0.8.8)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 모던 로컬 웹 대시보드 & 실시간 추출 분석 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.8.5-orange.svg" alt="Version 0.8.5">
+  <img src="https://img.shields.io/badge/Version-0.8.8-orange.svg" alt="Version 0.8.8">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/Interface-FastAPI%20%7C%20Web%20WebSocket-success.svg" alt="Interface Web">
@@ -182,7 +182,7 @@
 ---
 
 ### 방법 A. Windows 포터블 무설치판 실행 (가장 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.5-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.8-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    - 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -244,7 +244,7 @@
 xBloom-bleUI/
 ├── run.bat               # Windows 원클릭 실행 배치 파일 (포트 커스텀 지원)
 ├── run.py                # Python 크로스플랫폼 자동 브라우저 오픈 런처
-├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.5)
+├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.8)
 ├── requirements.txt      # 실행 필수 의존성 목록
 ├── config.example.json   # 기본 설정 참고용 템플릿 (기존 설정 덮어쓰기 방지)
 ├── README.md             # 프로젝트 상세 안내 문서 (이미지 포함)
