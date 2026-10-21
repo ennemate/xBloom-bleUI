@@ -753,7 +753,7 @@
           <div class="field-group">
             <label data-i18n="label_recipe_name">레시피 이름</label>
             <input type="text" id="recName" value="My Custom Brew" oninput="validateAll()">
-            <span class="error-msg" id="err-recName">이름을 입력해주세요.</span>
+            <span class="error-msg" id="err-recName" data-i18n="err_rec_name">이름을 입력해주세요.</span>
           </div>
 
           <div class="toggle-row-grid">
@@ -784,12 +784,12 @@
             <div class="field-group">
               <label data-i18n="label_dose_g">Dose (정수 g)</label>
               <input type="number" id="recDose" value="18" step="1" min="1" oninput="this.value = this.value.replace(/[^0-9]/g, ''); calcRatio(); validateAll();">
-              <span class="error-msg" id="err-recDose">1g 이상 정수</span>
+              <span class="error-msg" id="err-recDose" data-i18n="err_rec_dose">1g 이상 정수</span>
             </div>
             <div class="field-group" id="grindFieldWrap">
               <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
               <input type="number" id="recGrind" value="45" oninput="validateAll()">
-              <span class="error-msg" id="err-recGrind">10~100 입력</span>
+              <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">10~100 입력</span>
             </div>
             <div class="field-group" id="rpmFieldWrap">
               <label data-i18n="label_rpm_range">그라인더 RPM (60~120)</label>
@@ -802,7 +802,7 @@
                 <option value="110">110 RPM</option>
                 <option value="120">120 RPM</option>
               </select>
-              <span class="error-msg" id="err-recRpm">60~120 사이 10단위만 가능</span>
+              <span class="error-msg" id="err-recRpm" data-i18n="err_rec_rpm">60~120 사이 10단위만 가능</span>
             </div>
           </div>
 
@@ -845,19 +845,19 @@
 <div class="modal-overlay" id="cloudSuccessModal" onclick="closeCloudSuccessModalOnBack(event)">
   <div class="modal-card" style="max-width:440px;">
     <div class="modal-header">
-      <div class="modal-title">☁️ 클라우드 업로드 완료</div>
+      <div class="modal-title" data-i18n="cloud_modal_title">☁️ 클라우드 업로드 완료</div>
       <button class="btn-close" onclick="closeCloudSuccessModal()">&times;</button>
     </div>
     <div style="font-size:0.8rem; color:var(--text); line-height:1.5;">
-      레시피가 xBloom 공식 앱 클라우드 계정에 성공적으로 동기화되었습니다!
+      <span data-i18n="cloud_sync_success_msg">레시피가 xBloom 공식 앱 클라우드 계정에 성공적으로 동기화되었습니다!</span>
       <span id="cloudModalIntervalBadge" style="display:none; color:var(--accent); font-size:0.75rem; font-weight:600; margin-top:4px;">
-        ⏱️ 핸드드립 인터벌 대기시간 보정이 적용되었습니다.
+        <span data-i18n="interval_notice_cloud">⏱️ 핸드드립 인터벌 대기시간 보정이 적용되었습니다.</span>
       </span>
     </div>
 
     <div style="margin-top:10px; padding:10px 12px; background:rgba(0,0,0,0.04); border-radius:8px; border:1px solid var(--border);">
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
-        <span style="color:var(--muted);">레시피명</span>
+        <span style="color:var(--muted);" data-i18n="cloud_recipe_name_label">레시피명</span>
         <strong id="cloudSuccessRecipeName" style="color:var(--text);">Custom Brew</strong>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:4px;">
@@ -870,18 +870,18 @@
       <div class="field-group" style="margin-bottom:6px;">
         <label style="display:flex; justify-content:space-between; align-items:center;">
           <span>레시피 웹 공유 링크 (URL)</span>
-          <span id="cloudOpenStatusText" style="font-size:0.72rem; color:var(--accent);">새 탭에서 열림 🚀</span>
+          <span id="cloudOpenStatusText" style="font-size:0.72rem; color:var(--accent);" data-i18n="cloud_opened_badge">새 탭에서 열림 🚀</span>
         </label>
         <div style="display:flex; gap:6px;">
           <input type="text" id="cloudShareUrlInput" readonly style="font-size:0.78rem; font-family:monospace; background:rgba(0,0,0,0.03);" onclick="this.select()">
-          <button class="btn-secondary" id="btnCopyShareUrl" onclick="copyCloudShareUrl()" style="white-space:nowrap; padding:0 12px; font-size:0.75rem;">복사</button>
+          <button class="btn-secondary" id="btnCopyShareUrl" onclick="copyCloudShareUrl()" style="white-space:nowrap; padding:0 12px; font-size:0.75rem;" data-i18n="btn_copy">복사</button>
         </div>
       </div>
     </div>
 
     <div style="display:flex; gap:8px; margin-top:14px;">
       <button class="btn-secondary" onclick="closeCloudSuccessModal()" style="flex:1;">닫기</button>
-      <button class="btn-accent" id="btnOpenShareNewTab" onclick="openShareUrlNewTab()" style="flex:1.5;">🔗 웹에서 레시피 열기</button>
+      <button class="btn-accent" id="btnOpenShareNewTab" onclick="openShareUrlNewTab()" style="flex:1.5;" data-i18n="btn_open_web">🔗 웹에서 레시피 열기</button>
     </div>
   </div>
 </div>
@@ -889,24 +889,24 @@
 <div class="modal-overlay" id="shareUrlModal" onclick="closeShareUrlOnBack(event)">
   <div class="modal-card">
     <div class="modal-header">
-      <div class="modal-title">🔗 xBloom 공유 링크 레시피 가져오기</div>
+      <div class="modal-title" data-i18n="share_modal_title">🔗 xBloom 공유 링크 레시피 가져오기</div>
       <button class="btn-close" onclick="closeShareUrlModal()">&times;</button>
     </div>
     <div style="font-size:0.75rem; color:var(--muted); line-height:1.45;">
-      xBloom 공식 앱이나 웹에서 복사한 공유 링크(예: <code>https://share-h5.xbloom.com/?id=...</code>)를 입력하면 레시피 파라미터(이름, 원두량, 분쇄도, RPM, 모든 푸어 구간 및 교반 설정)를 자동으로 파싱하여 레시피 스튜디오로 가져옵니다.
+      <span data-i18n="share_modal_desc">xBloom 공식 앱이나 웹에서 복사한 공유 링크(예: <code>https://share-h5.xbloom.com/?id=...</code>)를 입력하면 레시피 파라미터(이름, 원두량, 분쇄도, RPM, 모든 푸어 구간 및 교반 설정)를 자동으로 파싱하여 레시피 스튜디오로 가져옵니다.</span>
     </div>
     <div class="field-group" style="margin-top:4px;">
-      <label>공유 링크 URL 또는 ID</label>
+      <label data-i18n="share_url_label">공유 링크 URL 또는 ID</label>
       <input type="text" id="shareUrlInput" placeholder="https://share-h5.xbloom.com/?id=..." style="font-size:0.82rem;" onkeydown="if(event.key==='Enter') fetchSharedRecipe()">
-      <div class="error-msg" id="err-shareUrl">올바른 공유 링크를 입력해주세요.</div>
+      <div class="error-msg" id="err-shareUrl" data-i18n="err_share_url">올바른 공유 링크를 입력해주세요.</div>
     </div>
     <div id="shareLoadingBox" style="display:none; align-items:center; gap:8px; font-size:0.8rem; color:var(--sky); background:rgba(56,189,248,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25);">
       <div class="dot" style="background:var(--sky); animation:pulse 1s infinite;"></div>
-      <span>xBloom 클라우드에서 레시피를 가져오는 중입니다...</span>
+      <span data-i18n="share_loading_msg">xBloom 클라우드에서 레시피를 가져오는 중입니다...</span>
     </div>
     <div style="display:flex; gap:8px; margin-top:6px;">
       <button class="btn-secondary" onclick="closeShareUrlModal()" style="flex:1;">취소</button>
-      <button class="btn-accent" id="btnFetchShare" onclick="fetchSharedRecipe()" style="flex:1.5;">레시피 가져오기</button>
+      <button class="btn-accent" id="btnFetchShare" onclick="fetchSharedRecipe()" style="flex:1.5;" data-i18n="btn_fetch_share">레시피 가져오기</button>
     </div>
   </div>
 </div>
@@ -915,22 +915,22 @@
   <div class="modal-card" style="max-width:540px; width:92%; max-height:85vh; display:flex; flex-direction:column;">
     <div class="modal-header">
       <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
-        <span>📋 저장된 레시피 목록</span>
+        <span data-i18n="server_recipes_modal_title">📋 저장된 레시피 목록</span>
         <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">(<span id="serverRecipeCount">0</span>개)</span>
       </div>
       <div style="display:flex; align-items:center; gap:6px;">
-        <button class="btn-secondary" onclick="loadServerRecipesList()" style="font-size:0.75rem; padding:4px 8px;" title="새로고침">🔄 새로고침</button>
+        <button class="btn-secondary" onclick="loadServerRecipesList()" style="font-size:0.75rem; padding:4px 8px;" data-i18n="btn_refresh">🔄 새로고침</button>
         <button class="btn-close" onclick="closeServerRecipeModal()">&times;</button>
       </div>
     </div>
 
     <div style="margin-top:2px;">
-      <input type="text" id="serverRecipeSearch" placeholder="🔍 레시피 이름 또는 파일명 검색..." oninput="filterServerRecipes()" style="font-size:0.8rem; width:100%; padding:6px 10px;">
+      <input type="text" id="serverRecipeSearch" placeholder="🔍 레시피 이름 또는 파일명 검색..." data-i18n-placeholder="server_recipes_search_ph" oninput="filterServerRecipes()" style="font-size:0.8rem; width:100%; padding:6px 10px;">
     </div>
 
     <div id="serverRecipeLoadingBox" style="display:none; align-items:center; gap:8px; font-size:0.8rem; color:var(--sky); background:rgba(56,189,248,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25); margin-top:8px;">
       <div class="dot" style="background:var(--sky); animation:pulse 1s infinite;"></div>
-      <span>서버 레시피 목록을 로딩 중입니다...</span>
+      <span data-i18n="server_recipes_loading">서버 레시피 목록을 로딩 중입니다...</span>
     </div>
 
     <div id="serverRecipeListContainer" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-top:10px; max-height:440px; padding-right:2px;">
@@ -1157,6 +1157,34 @@
 <script>
   const TRANSLATIONS = {
     ko: {
+      "ble_disconnect_hover": " (연결 끊기)",
+      "err_share_url": "올바른 공유 링크를 입력해주세요.",
+      "err_rec_rpm": "60~120 사이 10단위만 가능",
+      "err_rec_grind": "10~100 입력",
+      "err_rec_dose": "1g 이상 정수",
+      "err_rec_name": "이름을 입력해주세요.",
+      "btn_refresh": "🔄 새로고침",
+      "server_recipes_loading": "서버 레시피 목록을 로딩 중입니다...",
+      "server_recipes_search_ph": "🔍 레시피 이름 또는 파일명 검색...",
+      "server_recipes_modal_title": "📋 저장된 레시피 목록",
+      "btn_fetch_share": "레시피 가져오기",
+      "share_loading_msg": "xBloom 클라우드에서 레시피를 가져오는 중입니다...",
+      "share_url_label": "공유 링크 URL 또는 ID",
+      "share_modal_desc": "xBloom 공식 앱이나 웹에서 복사한 공유 링크(예: https://share-h5.xbloom.com/?id=...)를 입력하면 레시피 파라미터(이름, 원두량, 분쇄도, RPM, 모든 푸어 구간 및 교반 설정)를 자동으로 파싱하여 레시피 스튜디오로 가져옵니다.",
+      "share_modal_title": "🔗 xBloom 공유 링크 레시피 가져오기",
+      "btn_open_web": "🔗 웹에서 레시피 열기",
+      "btn_copy": "복사",
+      "cloud_opened_badge": "새 탭에서 열림 🚀",
+      "cloud_recipe_name_label": "레시피명",
+      "cloud_sync_success_msg": "레시피가 xBloom 공식 앱 클라우드 계정에 성공적으로 동기화되었습니다!",
+      "cloud_modal_title": "☁️ 클라우드 업로드 완료",
+      "agit_txt_after": ", 주수 후 교반 {n}s",
+      "agit_txt_before": ", 주수 전 교반 {n}s",
+      "total_pour_summary": "총 푸어: {n}g",
+      "interval_notice_cloud": "⏱️ 핸드드립 인터벌 대기시간 보정이 적용되었습니다.",
+      "interval_hint_normal": "💡 <b>핸드드립 인터벌 {target}s</b> ➔ 머신 실제 대기 <b>{machineWait}s</b> (주입 {pourSec}s{agitation} 차감)",
+      "interval_hint_clamped": "⚠️ <b>핸드드립 인터벌 {target}s</b>: 주입/교반 소요시간({overhead}s: 주입 {pourSec}s{agitation})보다 짧아 머신 대기시간이 <b>0s</b>로 적용됩니다.",
+      "interval_badge": "${t('interval_badge')}",
       "metric_time": "\uc2dc\uac04",
       "metric_temp": "\uc2e4\uc2dc\uac04 \uc218\uc628",
       "metric_pour": "\ud478\uc5b4",
@@ -1275,14 +1303,14 @@
       settings_title: "⚙️ 환경 설정",
       setting_lang: "🌐 언어 설정 (Language)",
       setting_lang_desc: "시스템 기본 언어 또는 원하는 언어 선택",
-      lang_auto: "시스템 언어 자동 감지 (Auto)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (자동 감지)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ 한국어를 제외한 다른 언어는 AI 번역을 기반으로 하여 현지 바리스타 전문 용어와 일부 차이가 있거나 부정확할 수 있습니다.",
       disclaimer_ko: "한국어는 기본 기준 언어로 모든 바리스타 용어가 표준화되어 있습니다.",
       setting_theme: "화면 테마",
@@ -1336,6 +1364,34 @@
       state_error: "오류"
     },
     en: {
+      "ble_disconnect_hover": " (Disconnect)",
+      "err_share_url": "Please enter a valid share link.",
+      "err_rec_rpm": "60~120 in increments of 10",
+      "err_rec_grind": "Enter 10~100",
+      "err_rec_dose": "Integer >= 1g",
+      "err_rec_name": "Please enter a recipe name.",
+      "btn_refresh": "🔄 Refresh",
+      "server_recipes_loading": "Loading server recipes...",
+      "server_recipes_search_ph": "🔍 Search by recipe name or filename...",
+      "server_recipes_modal_title": "📋 Saved Server Recipes",
+      "btn_fetch_share": "Import Recipe",
+      "share_loading_msg": "Fetching recipe from xBloom Cloud...",
+      "share_url_label": "Share Link URL or Recipe ID",
+      "share_modal_desc": "Paste an official recipe link (e.g. https://share-h5.xbloom.com/?id=...) to automatically parse all brewing parameters (name, dose, grind size, RPM, all pour steps and agitation) into Recipe Studio.",
+      "share_modal_title": "🔗 Import Shared xBloom Recipe",
+      "btn_open_web": "🔗 Open Recipe on Web",
+      "btn_copy": "Copy",
+      "cloud_opened_badge": "Opened in new tab 🚀",
+      "cloud_recipe_name_label": "Recipe Name",
+      "cloud_sync_success_msg": "Recipe synchronized successfully to your official xBloom cloud account!",
+      "cloud_modal_title": "☁️ Cloud Upload Complete",
+      "agit_txt_after": ", post-agitation {n}s",
+      "agit_txt_before": ", pre-agitation {n}s",
+      "total_pour_summary": "Total Pour: {n}g",
+      "interval_notice_cloud": "⏱️ Hand-drip interval timing compensation applied.",
+      "interval_hint_normal": "💡 <b>Hand-drip Interval {target}s</b> ➔ Machine pause <b>{machineWait}s</b> (minus pour {pourSec}s{agitation})",
+      "interval_hint_clamped": "⚠️ <b>Hand-drip Interval {target}s</b>: Flow/agitation duration ({overhead}s: pour {pourSec}s{agitation}) exceeds interval, machine pause set to <b>0s</b>.",
+      "interval_badge": "⏱️ Interval Adjusted",
       "metric_time": "Time",
       "metric_temp": "Water Temp",
       "metric_pour": "Pour",
@@ -1454,14 +1510,14 @@
       settings_title: "⚙️ Preferences & Settings",
       setting_lang: "🌐 Language",
       setting_lang_desc: "Select system default or custom UI language",
-      lang_auto: "System Default (Auto)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (Detect)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ Languages other than Korean are powered by AI translation and may contain slight barista terminology inaccuracies.",
       disclaimer_ko: "Korean is the native baseline language with fully standardized barista terminology.",
       setting_theme: "Theme",
@@ -1515,6 +1571,34 @@
       state_error: "ERROR"
     },
     ja: {
+      "ble_disconnect_hover": " (切断)",
+      "err_share_url": "有効な共有リンクを入力してください。",
+      "err_rec_rpm": "60〜120(10単位)",
+      "err_rec_grind": "10〜100を入力",
+      "err_rec_dose": "1g以上の整数",
+      "err_rec_name": "レシピ名を入力してください。",
+      "btn_refresh": "🔄 更新",
+      "server_recipes_loading": "サーバーレシピを読み込み中...",
+      "server_recipes_search_ph": "🔍 レシピ名またはファイル名で検索...",
+      "server_recipes_modal_title": "📋 保存済みレシピ一覧",
+      "btn_fetch_share": "レシピを取得",
+      "share_loading_msg": "xBloom クラウドからレシピを取得中...",
+      "share_url_label": "共有リンクURL または レシピID",
+      "share_modal_desc": "公式アプリやWebで共有されたリンク(例: https://share-h5.xbloom.com/?id=...)を入力すると、全抽出パラメータ(名前、豆量、挽き目、RPM、各注湯ステップ、攪拌設定)を自動解析してレシピスタジオへ読み込みます。",
+      "share_modal_title": "🔗 xBloom 共有リンクからレシピ取得",
+      "btn_open_web": "🔗 Webでレシピを開く",
+      "btn_copy": "コピー",
+      "cloud_opened_badge": "新しいタブで開きました 🚀",
+      "cloud_recipe_name_label": "レシピ名",
+      "cloud_sync_success_msg": "レシピが公式 xBloom クラウドアカウントに正常に同期されました！",
+      "cloud_modal_title": "☁️ クラウドアップロード完了",
+      "agit_txt_after": ", 注湯後攪拌 {n}s",
+      "agit_txt_before": ", 注湯前攪拌 {n}s",
+      "total_pour_summary": "総注湯量: {n}g",
+      "interval_notice_cloud": "⏱️ ハンドドリップインターバル待機時間補正が適用されました。",
+      "interval_hint_normal": "💡 <b>注湯インターバル {target}s</b> ➔ マシン実待機 <b>{machineWait}s</b> (注湯 {pourSec}s{agitation} 差引)",
+      "interval_hint_clamped": "⚠️ <b>注湯インターバル {target}s</b>: 注湯/攪拌時間({overhead}s: 注湯 {pourSec}s{agitation})が長いためマシン待機時間は <b>0s</b> に設定されます。",
+      "interval_badge": "⏱️ インターバル補正済",
       "metric_time": "\u62bd\u51fa\u6642\u9593",
       "metric_temp": "\u73fe\u5728\u6e6f\u6e29",
       "metric_pour": "\u6ce8\u6e6f\u91cf",
@@ -1633,14 +1717,14 @@
       settings_title: "⚙️ 環境設定",
       setting_lang: "🌐 言語設定 (Language)",
       setting_lang_desc: "OS標準またはUI言語を選択",
-      lang_auto: "システム標準 (自動)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (自動検出)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ 韓国語以外の言語はAI翻訳を基にしており、一部のバリスタ専門用語が正確でない場合があります。",
       disclaimer_ko: "韓国語は標準基準言語であり、バリスタ専門用語が正確に設定されています。",
       setting_theme: "画面テーマ",
@@ -1694,6 +1778,34 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "ble_disconnect_hover": " (中斷連線)",
+      "err_share_url": "請輸入有效的分享連結。",
+      "err_rec_rpm": "60~120 (以 10 為單位)",
+      "err_rec_grind": "請輸入 10~100",
+      "err_rec_dose": "大於或等於 1g 的整數",
+      "err_rec_name": "請輸入配方名稱。",
+      "btn_refresh": "🔄 重新整理",
+      "server_recipes_loading": "正在載入伺服器配方清單...",
+      "server_recipes_search_ph": "🔍 搜尋配方名稱或檔案名稱...",
+      "server_recipes_modal_title": "📋 已儲存配方清單",
+      "btn_fetch_share": "匯入配方",
+      "share_loading_msg": "正在從 xBloom 雲端獲取配方...",
+      "share_url_label": "分享連結網址或配方 ID",
+      "share_modal_desc": "輸入官方 App 或網頁複製的分享連結 (例如 https://share-h5.xbloom.com/?id=...)，系統將自動解析所有沖煮參數 (名稱、粉量、研磨度、RPM、各段注水與擾動設定) 並匯入至配方工作台。",
+      "share_modal_title": "🔗 從 xBloom 分享連結匯入配方",
+      "btn_open_web": "🔗 在網頁中開啟配方",
+      "btn_copy": "複製",
+      "cloud_opened_badge": "已在新分頁開啟 🚀",
+      "cloud_recipe_name_label": "配方名稱",
+      "cloud_sync_success_msg": "配方已成功同步至官方 xBloom 雲端帳號！",
+      "cloud_modal_title": "☁️ 雲端上傳完成",
+      "agit_txt_after": ", 注水後擾動 {n}s",
+      "agit_txt_before": ", 注水前擾動 {n}s",
+      "total_pour_summary": "總注水量: {n}g",
+      "interval_notice_cloud": "⏱️ 已套用手沖注水區間時間自動補償。",
+      "interval_hint_normal": "💡 <b>手沖注水區間 {target}s</b> ➔ 機器實際待機 <b>{machineWait}s</b> (扣除注水 {pourSec}s{agitation})",
+      "interval_hint_clamped": "⚠️ <b>手沖注水區間 {target}s</b>: 注水/擾動耗時 ({overhead}s: 注水 {pourSec}s{agitation}) 超過區間，機器待機時間設為 <b>0s</b>。",
+      "interval_badge": "⏱️ 區間已補償",
       "log_ws_connected": "[BLE] WebSocket 連線頻道已建立",
       "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線咖啡機...",
       "log_ble_disconnecting": "[BLE] 正在請求中斷咖啡機連線...",
@@ -1785,14 +1897,14 @@
       settings_title: "⚙️ 偏好設定",
       setting_lang: "🌐 語言設定 (Language)",
       setting_lang_desc: "選擇系統預設或慣用介面語言",
-      lang_auto: "跟隨系統 (自動)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (自動偵測)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ 除韓語外的其他語言均由AI翻譯提供，部分咖啡師專業術語可能不夠精準。",
       disclaimer_ko: "韓語為基礎語言，所有咖啡師專業術語均已標準化校對。",
       setting_theme: "外觀主題",
@@ -1846,6 +1958,34 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "ble_disconnect_hover": " (断开连接)",
+      "err_share_url": "请输入有效的分享链接。",
+      "err_rec_rpm": "60~120 (以 10 为单位)",
+      "err_rec_grind": "请输入 10~100",
+      "err_rec_dose": "大于或等于 1g 的整数",
+      "err_rec_name": "请输入配方名称。",
+      "btn_refresh": "🔄 刷新",
+      "server_recipes_loading": "正在加载服务器配方列表...",
+      "server_recipes_search_ph": "🔍 搜索配方名称或文件名...",
+      "server_recipes_modal_title": "📋 已保存配方列表",
+      "btn_fetch_share": "导入配方",
+      "share_loading_msg": "正在从 xBloom 云端获取配方...",
+      "share_url_label": "分享链接网址或配方 ID",
+      "share_modal_desc": "输入官方 App 或网页复制的分享链接 (例如 https://share-h5.xbloom.com/?id=...)，系统将自动解析所有冲煮参数 (名称、粉量、研磨度、RPM、各段注水与扰动设置) 并导入至配方工作台。",
+      "share_modal_title": "🔗 从 xBloom 分享链接导入配方",
+      "btn_open_web": "🔗 在网页中打开配方",
+      "btn_copy": "复制",
+      "cloud_opened_badge": "已在新标签页打开 🚀",
+      "cloud_recipe_name_label": "配方名称",
+      "cloud_sync_success_msg": "配方已成功同步至官方 xBloom 云端账号！",
+      "cloud_modal_title": "☁️ 云端上传完成",
+      "agit_txt_after": ", 注水后扰动 {n}s",
+      "agit_txt_before": ", 注水前扰动 {n}s",
+      "total_pour_summary": "总注水量: {n}g",
+      "interval_notice_cloud": "⏱️ 已应用手冲注水区间时间自动补偿。",
+      "interval_hint_normal": "💡 <b>手冲注水区间 {target}s</b> ➔ 机器实际待机 <b>{machineWait}s</b> (扣除注水 {pourSec}s{agitation})",
+      "interval_hint_clamped": "⚠️ <b>手冲注水区间 {target}s</b>: 注水/扰动耗时 ({overhead}s: 注水 {pourSec}s{agitation}) 超过区间，机器待机时间设为 <b>0s</b>。",
+      "interval_badge": "⏱️ 区间已补偿",
       "log_ws_connected": "[BLE] WebSocket 连接已建立",
       "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接咖啡机...",
       "log_ble_disconnecting": "[BLE] 正在请求断开咖啡机连接...",
@@ -1937,14 +2077,14 @@
       settings_title: "⚙️ 偏好设置",
       setting_lang: "🌐 语言设置 (Language)",
       setting_lang_desc: "选择系统默认或常用界面语言",
-      lang_auto: "跟随系统 (自动)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (自动检测)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ 除韩语外的其他语言均由AI翻译提供，部分咖啡师专业术语可能不够精准。",
       disclaimer_ko: "韩语为基准语言，所有咖啡师专业术语均已标准化校对。",
       setting_theme: "外观主题",
@@ -1998,6 +2138,34 @@
       state_error: "异常"
     },
     de: {
+      "ble_disconnect_hover": " (Trennen)",
+      "err_share_url": "Bitte gültigen Freigabelink eingeben.",
+      "err_rec_rpm": "60~120 in 10er-Schritten",
+      "err_rec_grind": "10~100 eingeben",
+      "err_rec_dose": "Ganzzahl >= 1g",
+      "err_rec_name": "Bitte Rezeptnamen eingeben.",
+      "btn_refresh": "🔄 Aktualisieren",
+      "server_recipes_loading": "Rezepte werden geladen...",
+      "server_recipes_search_ph": "🔍 Nach Name oder Dateinamen suchen...",
+      "server_recipes_modal_title": "📋 Gespeicherte Rezepte",
+      "btn_fetch_share": "Rezept importieren",
+      "share_loading_msg": "Rezept wird aus xBloom-Cloud abgerufen...",
+      "share_url_label": "Freigabelink-URL oder Rezept-ID",
+      "share_modal_desc": "Geben Sie einen Freigabelink ein (z. B. https://share-h5.xbloom.com/?id=...), um alle Brühparameter automatisch in das Rezept-Studio zu importieren.",
+      "share_modal_title": "🔗 xBloom Rezept-Freigabelink importieren",
+      "btn_open_web": "🔗 Rezept im Web öffnen",
+      "btn_copy": "Kopieren",
+      "cloud_opened_badge": "In neuem Tab geöffnet 🚀",
+      "cloud_recipe_name_label": "Rezeptname",
+      "cloud_sync_success_msg": "Rezept erfolgreich mit dem xBloom-Cloudkonto synchronisiert!",
+      "cloud_modal_title": "☁️ Cloud-Upload abgeschlossen",
+      "agit_txt_after": ", Nach-Agitation {n}s",
+      "agit_txt_before": ", Vor-Agitation {n}s",
+      "total_pour_summary": "Gesamtaufguss: {n}g",
+      "interval_notice_cloud": "⏱️ Handfilter-Intervallkompensation angewendet.",
+      "interval_hint_normal": "💡 <b>Brühintervall {target}s</b> ➔ Maschinenpause <b>{machineWait}s</b> (abzgl. Aufguss {pourSec}s{agitation})",
+      "interval_hint_clamped": "⚠️ <b>Brühintervall {target}s</b>: Durchfluss/Agitation ({overhead}s: Aufguss {pourSec}s{agitation}) überschreitet Intervall, Maschinenpause auf <b>0s</b> gesetzt.",
+      "interval_badge": "⏱️ Intervall angepasst",
       "metric_time": "Zeit",
       "metric_temp": "Wassertemp.",
       "metric_pour": "Aufguss",
@@ -2116,14 +2284,14 @@
       settings_title: "⚙️ Einstellungen",
       setting_lang: "🌐 Sprache (Language)",
       setting_lang_desc: "Systemstandard oder Sprache wählen",
-      lang_auto: "Systemstandard (Auto)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (Erkennung)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ Andere Sprachen als Koreanisch basieren auf KI-Übersetzung. Einige Barista-Fachbegriffe können geringfügige Abweichungen aufweisen.",
       disclaimer_ko: "Koreanisch ist die native Standardsprache mit vollständig standardisierten Barista-Begriffen.",
       setting_theme: "Farbschema",
@@ -2177,6 +2345,34 @@
       state_error: "FEHLER"
     },
     fr: {
+      "ble_disconnect_hover": " (Déconnecter)",
+      "err_share_url": "Veuillez entrer un lien valide.",
+      "err_rec_rpm": "60~120 par pas de 10",
+      "err_rec_grind": "Entrer entre 10 et 100",
+      "err_rec_dose": "Entier >= 1g",
+      "err_rec_name": "Veuillez entrer un nom de recette.",
+      "btn_refresh": "🔄 Actualiser",
+      "server_recipes_loading": "Chargement des recettes...",
+      "server_recipes_search_ph": "🔍 Rechercher par nom ou nom de fichier...",
+      "server_recipes_modal_title": "📋 Recettes enregistrées",
+      "btn_fetch_share": "Importer la recette",
+      "share_loading_msg": "Récupération depuis xBloom Cloud...",
+      "share_url_label": "URL du lien ou ID de recette",
+      "share_modal_desc": "Collez un lien officiel (ex: https://share-h5.xbloom.com/?id=...) pour importer automatiquement tous les paramètres d'extraction dans l'atelier.",
+      "share_modal_title": "🔗 Importer un lien de partage xBloom",
+      "btn_open_web": "🔗 Ouvrir sur le Web",
+      "btn_copy": "Copier",
+      "cloud_opened_badge": "Ouvert dans un nouvel onglet 🚀",
+      "cloud_recipe_name_label": "Nom de la recette",
+      "cloud_sync_success_msg": "Recette synchronisée avec succès sur votre compte xBloom Cloud!",
+      "cloud_modal_title": "☁️ Téléversement Cloud terminé",
+      "agit_txt_after": ", post-agitation {n}s",
+      "agit_txt_before": ", pré-agitation {n}s",
+      "total_pour_summary": "Versement total: {n}g",
+      "interval_notice_cloud": "⏱️ Compensation d'intervalle appliquée.",
+      "interval_hint_normal": "💡 <b>Intervalle d'infusion {target}s</b> ➔ Pause machine <b>{machineWait}s</b> (versement {pourSec}s{agitation} déduit)",
+      "interval_hint_clamped": "⚠️ <b>Intervalle d'infusion {target}s</b>: La durée ({overhead}s: versement {pourSec}s{agitation}) dépasse l'intervalle, pause machine fixée à <b>0s</b>.",
+      "interval_badge": "⏱️ Intervalle ajusté",
       "metric_time": "Temps",
       "metric_temp": "Temp\u00e9rature",
       "metric_pour": "Vers\u00e9",
@@ -2295,14 +2491,14 @@
       settings_title: "⚙️ Préférences",
       setting_lang: "🌐 Langue (Language)",
       setting_lang_desc: "Choisir la langue par défaut ou personnalisée",
-      lang_auto: "Système par défaut (Auto)",
-      lang_ko: "한국어 (Korean)",
-      lang_en: "English (Specialty Coffee Standard)",
-      lang_ja: "日本語 (Japanese Barista Standard)",
-      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
-      lang_zh_cn: "简体中文 (Chinese Specialty)",
-      lang_de: "Deutsch (German Coffee Lab)",
-      lang_fr: "Français (French Specialty)",
+      "lang_auto": "Auto (Détection)",
+      "lang_ko": "한국어 (Korean)",
+      "lang_en": "English",
+      "lang_ja": "日本語",
+      "lang_zh_tw": "繁體中文",
+      "lang_zh_cn": "简体中文",
+      "lang_de": "Deutsch",
+      "lang_fr": "Français",
       disclaimer_ai: "⚠️ Les langues autres que le coréen sont issues de la traduction par IA et peuvent comporter de légères imprécisions dans les termes de barista.",
       disclaimer_ko: "Le coréen est la langue de référence native avec des termes de barista entièrement standardisés.",
       setting_theme: "Thème d'affichage",
@@ -2415,6 +2611,7 @@
       try { renderSteps(); } catch(e) {}
     }
     updateBleStatusUI();
+    updateIntervalBadges();
     const verDesc = document.getElementById("settingsVersionInfo");
     if (verDesc && latestReleaseData) {
       verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${latestReleaseData.current_version || "0.9.0"}`;
@@ -4254,7 +4451,7 @@
   function calcRatio() {
     const dose = parseInt(document.getElementById("recDose").value, 10) || 0;
     const totalWater = steps.reduce((sum, s) => sum + Number(s.water), 0);
-    document.getElementById("totalPourSummary").innerText = `총 푸어: ${totalWater}g`;
+    document.getElementById("totalPourSummary").innerText = `${t('total_pour_summary', { n: totalWater })}`;
     if (dose > 0 && totalWater > 0) {
       const exactRatio = totalWater / dose;
       document.getElementById("ratioText").innerText = `1 : ${Number.isInteger(exactRatio) ? exactRatio.toFixed(1) : exactRatio.toFixed(2)}`;

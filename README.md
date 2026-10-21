@@ -16,7 +16,9 @@
 <p align="center">
   🌐 <strong>Language:</strong>
   <a href="README.md"><strong>한국어 (Korean)</strong></a> | 
-  <a href="README.en.md"><strong>English</strong></a>
+  <a href="README.en.md"><strong>English</strong></a> | 
+  <a href="README.ja.md"><strong>日本語</strong></a> | 
+  <a href="README.zh-TW.md"><strong>繁體中文</strong></a>
 </p>
 
 <p align="center">
