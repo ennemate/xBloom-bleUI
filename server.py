@@ -1,3 +1,4 @@
+import shutil
 import sys
 import os
 
@@ -291,7 +292,7 @@ async def lifespan(app: FastAPI):
     yield
     if ble_init_task and (not ble_init_task.done()):
         ble_init_task.cancel()
-app = FastAPI(title='xBloom bleUI Server', version='0.8.0', lifespan=lifespan)
+app = FastAPI(title='xBloom bleUI Server', version='0.8.1', lifespan=lifespan)
 
 class ProtocolCompliantPour:
 
@@ -963,7 +964,7 @@ if __name__ == '__main__':
     parser.add_argument('--host', type=str, default='0.0.0.0', help='호스트 주소')
     args = parser.parse_args()
     print(f'\n========================================================')
-    print(f'  xBloom bleUI v0.8.0 Server Started')
+    print(f'  xBloom bleUI v0.8.1 Server Started')
     print(f'  - Local URL:   http://localhost:{args.port}')
     print(f'  - Network URL: http://0.0.0.0:{args.port}')
     print(f'========================================================\n')

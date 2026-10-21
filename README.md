@@ -1,11 +1,11 @@
-# xBloom bleUI (v0.8.0)
+# xBloom bleUI (v0.8.1)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 모던 로컬 웹 대시보드 & 실시간 추출 분석 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.8.0-orange.svg" alt="Version 0.8.0">
+  <img src="https://img.shields.io/badge/Version-0.8.1-orange.svg" alt="Version 0.8.1">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/Interface-FastAPI%20%7C%20Web%20WebSocket-success.svg" alt="Interface Web">
@@ -157,7 +157,7 @@
 ---
 
 ### 방법 A. Windows 포터블 무설치판 실행 (가장 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.0-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.1-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    - 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -186,6 +186,23 @@
 
 ---
 
+### 🔄 버전 업데이트 및 사용자 데이터 보존 안내 (Data Safe Update)
+
+기존 v0.8.0 버전을 사용 중이던 유저가 **v0.8.1로 업데이트하더라도 기존 추출 기록과 설정은 100% 안전하게 보존**됩니다:
+
+- **기존 데이터 보존 원칙**:
+  - `recipes/` (직접 작성한 나만의 레시피 파일들)
+  - `history.json` (과거 모든 추출 기록 및 그래프 아카이브)
+  - `config.json` (테마, 배경화면, 설정값)
+- **간편 업데이트 방법**:
+  - 새 버전의 파일들(`server.py`, `run.bat`, `run.py`, `static/`)을 기존 폴더에 그대로 덮어쓰기 하셔도, 배포 패키지에는 유저 데이터 파일(`history.json`, `config.json`)이 포함되어 있지 않으므로(설정은 `config.example.json` 제공), **기존의 추출 기록과 사용자 설정(로그인, 테마, 배경화면 등)이 절대 덮어씌워지지 않고 100% 보존**됩니다.
+- **3중 데이터 안전망 (Triple Safety Net)**:
+  1. **`.bak` 자동 백업**: 서버 기동 시 `history.json.bak` 및 `config.json.bak` 사본을 자동 생성하여 손상을 방지합니다.
+  2. **브라우저 로컬 스마트 동기화**: 브라우저 캐시와 서버 기록을 비교하여, 서버 기록이 비어있더라도 브라우저에서 서버로 즉시 자동 복원합니다.
+  3. **단조 증가(Peak) 주수량 보호**: 머신 추출 종료 시 주수 저울이 0g으로 리셋되어도 최종 투입량(Water Pour)이 0으로 떨어지지 않고 정상 보존됩니다.
+
+---
+
 ### ⚙️ 포트 번호 변경 (Port Customization)
 기본 포트는 `8000`이며, 다른 프로그램과 포트가 충돌하거나 원하는 포트로 변경하고 싶다면 아래 방법 중 하나를 사용할 수 있습니다:
 
@@ -207,10 +224,9 @@
 dist/
 ├── run.bat               # Windows 원클릭 실행 배치 파일 (포트 커스텀 지원)
 ├── run.py                # Python 크로스플랫폼 자동 브라우저 오픈 런처
-├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.0)
+├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.1)
 ├── requirements.txt      # 실행 필수 의존성 목록
-├── config.json           # 사용자 기본 설정 템플릿
-├── history.json          # 초기 추출 이력 보관 파일
+├── config.example.json   # 기본 설정 참고용 템플릿 (기존 설정 덮어쓰기 방지)
 ├── README.md             # 프로젝트 상세 안내 문서 (이미지 포함)
 ├── docs/
 │   └── img/              # 대시보드 및 주요 기능 데모 스크린샷 이미지

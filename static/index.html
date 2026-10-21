@@ -627,7 +627,7 @@
         <div class="card log-card">
           <div class="card-title">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div>[INIT] xBloom bleUI v0.8.0 구동 완료</div>
+            <div>[INIT] xBloom bleUI v0.8.1 구동 완료</div>
           </div>
         </div>
       </div>
@@ -1036,7 +1036,7 @@
     </div>
 
     <div class="settings-footer">
-      <span>v0.8.0 by 팽이팽이</span>
+      <span>v0.8.1 by 팽이팽이</span>
     </div>
   </div>
 </div>
@@ -1359,6 +1359,7 @@
   let isBrewActive = false;
   let isGrindingPhase = false;
   let isBrewStaging = false;
+  let maxWaterPoured = 0;
   function updateBleBadgeUI(status) {
     currentBleStatus = status;
     const btn = document.getElementById("bleStatusBtn");
@@ -1464,6 +1465,7 @@
     currentStepIndex = 1;
     const p0 = Number(initialPour) || 0;
     const y0 = Number(initialYield) || 0;
+    maxWaterPoured = p0;
     chartData = [{ time: 0, pour: p0, yield: y0 }];
     const firstStepHasPreAgitation = !!(activeRecipeSteps[0] && activeRecipeSteps[0].agitation_before);
     if (pourMarkerMode === "weight") {
@@ -1491,7 +1493,13 @@
       document.getElementById("tempVal").innerText = t === 0 ? "0°C (상온)" : `${t}°C`;
     }
     if (data.pour_weight !== undefined) {
-      document.getElementById("pourVal").innerText = Math.round(Number(data.pour_weight));
+      const incomingPour = Number(data.pour_weight) || 0;
+      if (isBrewActive) {
+        if (incomingPour > maxWaterPoured) maxWaterPoured = incomingPour;
+        document.getElementById("pourVal").innerText = Math.round(Math.max(maxWaterPoured, incomingPour));
+      } else if (!isBrewStaging && !isGrindingPhase) {
+        document.getElementById("pourVal").innerText = Math.round(incomingPour);
+      }
     }
     if (data.yield_weight !== undefined) {
       document.getElementById("yieldVal").innerText = Math.round(Number(data.yield_weight));
@@ -1596,7 +1604,11 @@
           }
         }
       }
-      const pVal = Number(data.pour_weight) || 0;
+      const rawPour = Number(data.pour_weight) || 0;
+      if (isBrewActive && rawPour > maxWaterPoured) {
+        maxWaterPoured = rawPour;
+      }
+      const pVal = isBrewActive ? Math.max(maxWaterPoured, rawPour) : rawPour;
       const yVal = Number(data.yield_weight) || 0;
       if (chartData.length > 0 && chartData[chartData.length - 1].time === nowSec) {
         chartData[chartData.length - 1].pour = Math.max(chartData[chartData.length - 1].pour, pVal);
@@ -1734,7 +1746,17 @@
       document.getElementById("stateText").innerText = "정지됨";
       document.getElementById("timeVal").innerText = "00:00";
       addLog("[CMD] 비상 정지 명령 전송 완료");
-      const curPour = Number(document.getElementById("pourVal").innerText) || 0;
+      let finalAbortWater = maxWaterPoured;
+      if (chartData && chartData.length > 0) {
+        for (const pt of chartData) {
+          if (pt.pour > finalAbortWater) finalAbortWater = pt.pour;
+        }
+      }
+      if (finalAbortWater <= 0) {
+        finalAbortWater = Number(document.getElementById("pourVal").innerText) || 0;
+      }
+      finalAbortWater = Math.round(finalAbortWater * 10) / 10;
+      const curPour = finalAbortWater;
       const curYield = Number(document.getElementById("yieldVal").innerText) || 0;
       const durationSec = brewStartTime ? Math.floor((Date.now() - brewStartTime) / 1000) : 0;
       if (wasActive && recordAbortedBrews && (chartData.length > 2 || curPour > 0 || durationSec > 2)) {
@@ -1781,12 +1803,24 @@
     const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
     const ss = String(durationSec % 60).padStart(2, '0');
     const payload = getRecipePayload();
+    let finalTotalWater = maxWaterPoured;
+    if (chartData && chartData.length > 0) {
+      for (const pt of chartData) {
+        if (pt.pour > finalTotalWater) finalTotalWater = pt.pour;
+      }
+    }
+    if (finalTotalWater <= 0) {
+      finalTotalWater = Number(document.getElementById("pourVal").innerText) || 0;
+    }
+    finalTotalWater = Math.round(finalTotalWater * 10) / 10;
+    document.getElementById("pourVal").innerText = Math.round(finalTotalWater);
+
     const newRecord = {
       id: "hist_" + Date.now(),
       date: new Date().toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
       recipeName: payload.name || "Custom Brew",
       dose: payload.dose || 15,
-      totalWater: Number(document.getElementById("pourVal").innerText) || 0,
+      totalWater: finalTotalWater,
       totalYield: Number(document.getElementById("yieldVal").innerText) || 0,
       duration: `${mm}:${ss}`,
       durationSec: durationSec,
@@ -2005,7 +2039,37 @@
       const res = await fetch("/api/history?limit=300");
       if (res.ok) {
         const data = await res.json();
-        historyRecords = data.records || [];
+        let serverRecords = data.records || [];
+
+        // 브라우저 로컬 백업 확인 및 스마트 복원 (기존 데이터 보존)
+        const localBackupRaw = localStorage.getItem("xbloom_brew_history_backup");
+        let localRecords = [];
+        if (localBackupRaw) {
+          try { localRecords = JSON.parse(localBackupRaw); } catch(e){}
+        }
+
+        if (Array.isArray(localRecords) && localRecords.length > 0) {
+          const serverIds = new Set(serverRecords.map(r => r.id));
+          const missingOnServer = localRecords.filter(r => r && r.id && !serverIds.has(r.id));
+          if (missingOnServer.length > 0) {
+            console.log(`[HIST SYNC] 브라우저 백업에서 ${missingOnServer.length}개의 기록을 서버로 복원합니다.`);
+            for (const rec of missingOnServer) {
+              serverRecords.push(rec);
+              fetch("/api/history", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(rec)
+              }).catch(() => {});
+            }
+            serverRecords.sort((a, b) => (b.id || "").localeCompare(a.id || ""));
+          }
+        }
+
+        historyRecords = serverRecords;
+        try {
+          localStorage.setItem("xbloom_brew_history_backup", JSON.stringify(historyRecords.slice(0, 100)));
+        } catch(e){}
+
         updateHistoryCount();
         if (historyRecords.length > 0 && !currentHistRecord) {
           currentHistRecord = historyRecords[0];
