@@ -1,4 +1,4 @@
-# xBloom bleUI (v0.9.0)
+# xBloom bleUI (v0.9.2)
 
 <p align="center">
   <strong>xBloom Studio のためのモダンなローカルWebダッシュボード＆リアルタイム抽出分析コントローラー</strong>
@@ -122,7 +122,7 @@
 
 ## 🚀 クイックスタート (Windows ポータブル版)
 
-1. [Releases](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v0.9.0-Windows-Portable.zip` をダウンロード。
+1. [Releases](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v0.9.2-Windows-Portable.zip` をダウンロード。
 2. 任意のフォルダに解凍。
 3. **`run.bat`** をダブルクリック。
    - 自動でローカルサーバーが起動し、ブラウザで `http://localhost:8000` が開きます。

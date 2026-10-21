@@ -1,4 +1,4 @@
-# xBloom bleUI (v0.9.0)
+# xBloom bleUI (v0.9.2)
 
 <p align="center">
   <strong>Modern Local Web Dashboard & Real-Time Extraction Controller for xBloom Studio</strong>
@@ -175,7 +175,7 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
 ## 🚀 Quick Start
 
 ### Method A. Windows Standalone Portable (Recommended)
-1. Download `xBloom-bleUI-v0.9.0-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+1. Download `xBloom-bleUI-v0.9.2-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
 2. Extract the archive into any folder.
 3. Double-click **`run.bat`**.
    - Starts the server and automatically opens `http://localhost:8000` in your default browser.
@@ -205,7 +205,7 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
 xBloom-bleUI/
 ├── run.bat               # Windows one-click launcher
 ├── run.py                # Cross-platform auto-browser launcher
-├── server.py             # Optimized FastAPI backend server (v0.9.0)
+├── server.py             # Optimized FastAPI backend server (v0.9.2)
 ├── requirements.txt      # Python dependencies
 ├── config.example.json   # Configuration template
 ├── README.md             # Korean documentation

@@ -24,7 +24,6 @@
       --overlay-color: rgba(10, 12, 18, 0.65);
       --scrollbar-thumb: #334155;
     }
-
     [data-theme="light"] {
       --bg: #f8fafc;
       --card: #ffffff;
@@ -44,7 +43,6 @@
       --overlay-color: rgba(248, 250, 252, 0.75);
       --scrollbar-thumb: #cbd5e1;
     }
-
     body.custom-wallpaper {
       background-size: cover !important;
       background-position: center !important;
@@ -52,7 +50,6 @@
       background-repeat: no-repeat !important;
       position: relative;
     }
-
     body.custom-wallpaper::before {
       content: "";
       position: fixed;
@@ -62,7 +59,6 @@
       background: var(--overlay-color);
       transition: background 0.25s;
     }
-
     body.custom-wallpaper:not([data-theme="light"]) {
       --card: rgba(26, 29, 38, 0.75) !important;
       --card-inner: rgba(19, 21, 28, 0.70) !important;
@@ -72,7 +68,6 @@
       --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
       --overlay-color: rgba(10, 12, 18, 0.65);
     }
-
     html[data-theme="light"] body.custom-wallpaper {
       --card: rgba(255, 255, 255, 0.88) !important;
       --card-inner: rgba(241, 245, 249, 0.82) !important;
@@ -84,7 +79,6 @@
       --card-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --overlay-color: rgba(241, 245, 249, 0.78) !important;
     }
-
     body.custom-wallpaper .card,
     body.custom-wallpaper .modal-card,
     body.custom-wallpaper .tab-bar,
@@ -97,9 +91,7 @@
       -webkit-backdrop-filter: blur(20px);
       box-shadow: var(--card-shadow);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-
     body { 
       background: var(--bg); 
       color: var(--text); 
@@ -111,7 +103,6 @@
       align-items: center;
       transition: background 0.25s, color 0.25s; 
     }
-
     .container { 
       width: 100%;
       max-width: 480px; 
@@ -120,24 +111,20 @@
       flex-direction: column; 
       gap: 14px; 
     }
-
     .tab-content { display: none; }
     .tab-content.active { 
       display: flex; 
       flex-direction: column; 
       gap: 14px; 
     }
-
     .desktop-split-grid, .brew-left-col, .desktop-col {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
-
     .step-col-wrap {
       display: contents;
     }
-
     .card { 
       background: var(--card); 
       border: 1px solid var(--border); 
@@ -146,15 +133,12 @@
       transition: background 0.25s, border-color 0.25s, box-shadow 0.25s; 
     }
     .card-title { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 999px; }
-
     @media (min-width: 860px) {
       body { padding: 32px; justify-content: center; }
       .container { max-width: 1180px; gap: 16px; margin: auto 0; }
-
       #tab-brew.active { display: block; }
       #tab-brew .desktop-split-grid {
         display: grid;
@@ -162,31 +146,26 @@
         gap: 16px;
         align-items: stretch;
       }
-
       #tab-brew.active, #tab-editor.active {
         min-height: 668px;
       }
-
       .brew-left-col {
         display: flex;
         flex-direction: column;
         gap: 14px;
       }
-
       .log-card {
         height: 440px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
       }
-
       .log-box {
         flex: 1;
         height: 100%;
         overflow-y: scroll !important;
         box-sizing: border-box;
       }
-
       #tab-editor.active { display: block; }
       #tab-editor .desktop-split-grid {
         display: grid;
@@ -194,7 +173,6 @@
         gap: 16px;
         align-items: stretch; 
       }
-
       .step-col-wrap {
         display: block;
         position: relative;
@@ -202,17 +180,14 @@
         min-height: 0;
         width: 100%;
       }
-
       .desktop-col {
         display: flex;
         flex-direction: column;
         gap: 12px;
       }
-
       #tab-editor .desktop-col .card {
         padding: 12px 14px;
       }
-
       .step-manager-card {
         position: absolute;
         top: 0;
@@ -225,7 +200,6 @@
         min-height: 0;
         box-sizing: border-box;
       }
-
       #stepsContainer {
         flex: 1;
         min-height: 0; 
@@ -233,22 +207,18 @@
         padding-right: 6px;
         margin-bottom: 8px;
       }
-
       canvas { height: 380px !important; }
-
       .history-modal-grid {
         display: grid;
         grid-template-columns: 1fr 1.4fr;
         gap: 16px;
       }
     }
-
     header { display: flex; justify-content: space-between; align-items: center; padding: 4px; }
     .brand { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
     .brand span { color: var(--accent); }
     .header-actions { display: flex; align-items: center; gap: 8px; }
     .btn-icon { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; box-shadow: var(--card-shadow); }
-
     .badge-btn {
       font-size: 0.72rem; padding: 5px 10px; border-radius: 999px;
       display: flex; align-items: center; gap: 6px; font-weight: 700;
@@ -260,19 +230,15 @@
     .badge-btn.disconnected { background: #341a1d; color: var(--danger); border-color: rgba(239,68,68,0.3); }
     .badge-btn.disconnected:hover { background: #1c2e42; color: var(--sky); border-color: rgba(56,189,248,0.4); }
     .badge-btn.scanning { background: #332711; color: #f59e0b; border-color: rgba(245,158,11,0.3); cursor: wait; }
-
     [data-theme="light"] .badge-btn.connected { background: #dcfce7; color: #15803d; }
     [data-theme="light"] .badge-btn.connected:hover { background: #fee2e2; color: #dc2626; }
     [data-theme="light"] .badge-btn.disconnected { background: #fee2e2; color: #dc2626; }
     [data-theme="light"] .badge-btn.disconnected:hover { background: #e0f2fe; color: #0284c7; }
     [data-theme="light"] .badge-btn.scanning { background: #fef3c7; color: #b45309; }
-
     .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-
     .tab-bar { display: flex; background: var(--card-inner); border-radius: 12px; padding: 4px; border: 1px solid var(--border); }
     .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--muted); font-size: 0.9rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
     .tab-btn.active { background: var(--card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
     .field-group { display: flex; flex-direction: column; margin-bottom: 6px; position: relative; }
     label { font-size: 0.72rem; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
     input, select { width: 100%; padding: 8px 10px; background: var(--card-inner); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; transition: border-color 0.2s, background 0.25s, color 0.25s; font-weight: 500; }
@@ -282,25 +248,20 @@
     [data-theme="light"] input.input-error, [data-theme="light"] select.input-error { background: #fee2e2; }
     .error-msg { color: var(--danger); font-size: 0.68rem; margin-top: 2px; display: none; line-height: 1.2; font-weight: 600; }
     .error-msg.visible { display: block; }
-
     .temp-input-wrap { display: flex; gap: 4px; }
     .btn-tag { padding: 4px 6px; font-size: 0.7rem; border-radius: 6px; background: var(--tag-bg); color: var(--sky); border: 1px solid var(--border); cursor: pointer; font-weight: 700; white-space: nowrap; }
-
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
     .metric-box { background: var(--card-inner); border-radius: 10px; padding: 10px 6px; text-align: center; border: 1px solid var(--border); }
     .metric-val { font-size: 1.35rem; font-weight: 700; margin-top: 2px; }
     .metric-val.theme-txt { color: var(--text); }
     .metric-unit { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
-
     .chart-wrap { width: 100%; background: var(--card-inner); border-radius: 10px; border: 1px solid var(--border); padding: 8px; margin-top: 8px; }
     canvas { width: 100%; height: 155px; display: block; }
     .chart-legend { display: flex; justify-content: flex-end; gap: 12px; font-size: 0.75rem; margin-top: 4px; color: var(--muted); }
     .legend-item { display: flex; align-items: center; gap: 4px; font-weight: 600; }
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
     .step-card { 
       background: var(--card-inner); 
       border: 1px solid var(--border); 
@@ -321,7 +282,6 @@
     .btn-del { background: transparent; border: none; color: var(--danger); font-size: 0.75rem; cursor: pointer; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
     .btn-del:hover { background: rgba(239, 68, 68, 0.15); }
     .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
     .ratio-wrap { margin-bottom: 8px; }
     .ratio-banner { background: var(--banner-bg); border: 1px dashed var(--border); border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; color: var(--text); }
     .ratio-banner.invalid { border-color: var(--danger); background: #241416; }
@@ -329,7 +289,6 @@
     .ratio-badge { background: var(--tag-bg); padding: 2px 8px; border-radius: 6px; color: var(--accent); font-weight: 700; border: 1px solid var(--border); }
     .ratio-badge.invalid { background: #3b1d1d; color: var(--danger); }
     [data-theme="light"] .ratio-badge.invalid { background: #fecaca; }
-
     .brew-action-grid {
       display: grid;
       grid-template-columns: 2.2fr 1fr;
@@ -363,7 +322,6 @@
     [data-theme="light"] .brew-action-grid.is-brewing .btn-stop:hover {
       background: #dc2626 !important;
     }
-
     button { padding: 11px 12px; border-radius: 10px; font-weight: 600; border: none; cursor: pointer; font-size: 0.9rem; }
     .btn-accent { background: var(--accent); color: white; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.15); height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.25s; }
     .btn-accent.btn-finish-mode { background: #16a34a !important; color: white !important; box-shadow: 0 0 12px rgba(34, 197, 94, 0.45); font-weight: 700; }
@@ -389,10 +347,8 @@
     .btn-save-server:hover { background: #1a3828; }
     [data-theme="light"] .btn-save-server { background: #dcfce7; color: #15803d; border-color: #86efac; }
     [data-theme="light"] .btn-save-server:hover { background: #bbf7d0; }
-
     .btn-cloud { background: #0e374e; color: #38bdf8; border: 1px solid #0369a1; width: 100%; }
     [data-theme="light"] .btn-cloud { background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc; }
-
     .btn-stop {
       background: #341a1d;
       color: #f87171;
@@ -408,12 +364,9 @@
     .btn-stop:hover { background: #4a1f24; color: #fca5a5; }
     [data-theme="light"] .btn-stop { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
     [data-theme="light"] .btn-stop:hover { background: #fecaca; }
-
     .btn-sub { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; background: var(--card-inner); color: var(--text); border: 1px solid var(--border); font-weight: 600; }
-
     .progress-bar-bg { width: 100%; height: 6px; background: var(--card-inner); border-radius: 999px; overflow: hidden; margin-top: 6px; border: 1px solid var(--border); }
     .progress-bar { width: 0%; height: 100%; background: var(--accent); transition: width 0.2s; }
-
     .log-box {
       background: var(--card-inner);
       border-radius: 8px;
@@ -425,7 +378,6 @@
       border: 1px solid var(--border);
     }
     .log-box div { word-break: break-all; margin-bottom: 2px; }
-
     .agitation-chip-group { display: flex; gap: 8px; margin-top: 8px; }
     .agitation-chip {
       flex: 1; padding: 6px 8px; border-radius: 8px; font-size: 0.72rem; font-weight: 700;
@@ -448,7 +400,6 @@
     .agitation-chip.active .agitation-status {
       background: var(--accent); color: white;
     }
-
     @media (max-width: 520px) {
       .agitation-chip {
         padding: 6px 6px;
@@ -458,7 +409,6 @@
         display: none;
       }
     }
-
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--modal-bg); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 16px; }
     .modal-overlay.active { display: flex; }
     .modal-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 440px; padding: 18px; box-shadow: 0 15px 35px rgba(0,0,0,0.35); display: flex; flex-direction: column; gap: 14px; max-height: 90vh; overflow-y: auto; color: var(--text); position: relative; }
@@ -466,23 +416,19 @@
     .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .modal-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
     .btn-close { background: transparent; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; padding: 4px; }
-
     .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
     .setting-label { font-size: 0.85rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 6px; }
     .setting-desc { font-size: 0.72rem; color: var(--muted); margin-top: 3px; line-height: 1.35; }
     .theme-switch { display: flex; background: var(--card-inner); border: 1px solid var(--border); border-radius: 8px; padding: 2px; flex-shrink: 0; }
     .theme-opt { padding: 5px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; background: transparent; color: var(--muted); white-space: nowrap; transition: 0.15s; }
     .theme-opt.active { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-
     .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; cursor: pointer; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .25s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 24px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15); }
     .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #ffffff; transition: .25s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.25); }
     input:checked + .slider { background-color: var(--accent); }
     input:checked + .slider:before { transform: translateX(20px); }
-
     .cloud-user-box { background: var(--card-inner); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
-
     .toggle-row-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -527,7 +473,6 @@
       }
     }
     .cloud-status { display: flex; align-items: center; gap: 6px; font-weight: 600; }
-
     .history-modal-grid { display: flex; flex-direction: column; gap: 16px; }
     .history-list {
       display: flex;
@@ -553,7 +498,6 @@
     .history-rec-name { font-weight: 700; font-size: 0.85rem; color: var(--text); }
     .history-stats { display: flex; gap: 10px; font-size: 0.75rem; margin-top: 4px; font-weight: 600; flex-wrap: wrap; }
     .history-chart-card { background: var(--card-inner); border: 1px solid var(--border); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-
     .hist-badge { font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
     .badge-done { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
     .badge-abort { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
@@ -561,9 +505,7 @@
     .btn-hist-del:hover { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
     .btn-rebrew { background: rgba(56, 189, 248, 0.12); color: var(--sky); border: 1px solid rgba(56, 189, 248, 0.35); padding: 7px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 4px; }
     .btn-rebrew:hover { background: rgba(56, 189, 248, 0.22); border-color: var(--sky); }
-
     .settings-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; }
-
     .interval-hint-badge {
       display: flex;
       align-items: center;
@@ -589,7 +531,6 @@
       color: var(--muted);
     }
     .interval-hint-badge.info b { color: var(--text); }
-
     .update-badge-btn {
       display: inline-flex;
       align-items: center;
@@ -624,7 +565,6 @@
   </style>
 </head>
 <body class="custom-wallpaper-container">
-
 <div class="container">
   <header>
     <div class="brand">xBloom <span>bleUI</span></div>
@@ -635,17 +575,15 @@
       </button>
       <button class="badge-btn disconnected" id="bleStatusBtn" onclick="toggleBleConnection()">
         <div class="dot"></div>
-        <span id="bleStatusText">BLE 연결 확인 중</span>
+        <span id="bleStatusText" data-i18n="ble_checking">BLE 연결 확인 중</span>
       </button>
       <button class="btn-icon" onclick="openSettings()" title="설정" data-i18n-title="btn_settings">⚙️</button>
     </div>
   </header>
-
   <div class="tab-bar">
     <button class="tab-btn active" id="tabNavBrew" onclick="switchTab('brew')" data-i18n="nav_brew">실시간 추출 대시보드</button>
     <button class="tab-btn" id="tabNavEditor" onclick="switchTab('editor')" data-i18n="nav_editor">레시피 스튜디오 / 클라우드</button>
   </div>
-
   <div class="tab-content active" id="tab-brew">
     <div class="desktop-split-grid">
       <div class="brew-left-col">
@@ -653,27 +591,23 @@
           <div class="card-title" data-i18n="card_recipe_ctrl">추출 레시피 제어</div>
           <label data-i18n="label_select_recipe">실행할 레시피 선택 (recipes/ 자동 연동)</label>
           <select id="recipeSelect" onchange="onRecipeSelectChanged()"></select>
-
           <div class="brew-action-grid" id="brewActionGrid">
             <button class="btn-accent" id="brewBtn" onclick="startBrew()" data-i18n="btn_start_brew">추출 시작</button>
             <button class="btn-stop" id="stopBtn" onclick="stopBrew()" data-i18n="btn_stop_brew">비상 정지</button>
           </div>
         </div>
-
         <div class="card log-card">
           <div class="card-title" data-i18n="card_log_monitor">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v0.9.0 Ready</div>
+            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v0.9.2 Ready</div>
           </div>
         </div>
       </div>
-
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div class="card-title" style="margin-bottom:0;" data-i18n="card_telemetry">머신 실시간 상태 (Telemetry)</div>
           <button class="btn-sub" onclick="openHistoryModal()" data-i18n="btn_history">📜 추출 기록</button>
         </div>
-
         <div class="grid-4">
           <div class="metric-box">
             <div class="metric-unit" data-i18n="metric_time">시간</div>
@@ -692,7 +626,6 @@
             <div class="metric-val" style="color:var(--accent);"><span id="yieldVal">0</span><span class="metric-unit">g</span></div>
           </div>
         </div>
-
         <div class="chart-wrap">
           <div class="chart-legend">
             <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span id="legendPourText" data-i18n="legend_pour">푸어</span></div>
@@ -701,7 +634,6 @@
           </div>
           <canvas id="brewChart"></canvas>
         </div>
-
         <div style="margin-top: 14px;">
           <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-bottom:2px;">
             <span data-i18n="label_state_prefix">상태: </span><b id="stateText" style="color:var(--text);">대기 중</b></span>
@@ -714,24 +646,19 @@
       </div>
     </div>
   </div>
-
   <div class="tab-content" id="tab-editor">
     <div class="desktop-split-grid">
-
       <div class="step-col-wrap">
         <div class="card step-manager-card">
           <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
             <span data-i18n="card_pour_steps">푸어 구간 설정 (Pour Steps & Pattern)</span>
             <span style="font-size:0.75rem; color:var(--sky);" id="totalPourSummary">총 푸어: 0g</span>
           </div>
-
           <div id="stepsContainer"></div>
-
           <button class="btn-outline" onclick="addStep()" data-i18n="btn_add_pour_step">+ 새 푸어 단계 추가</button>
           <div class="error-msg" id="err-totalWater" style="margin-top:6px; text-align:center;"><span data-i18n="err_total_water">총 푸어량은 머신 상한인 500g을 넘을 수 없습니다.</span></div>
         </div>
       </div>
-
       <div class="desktop-col">
         <div class="card">
           <div class="card-title" data-i18n="card_recipe_storage">레시피 저장 및 연동 관리</div>
@@ -746,40 +673,35 @@
             </div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title" data-i18n="card_grinder_params">기본 파라미터 및 그라인더 설정</div>
-
           <div class="field-group">
             <label data-i18n="label_recipe_name">레시피 이름</label>
             <input type="text" id="recName" value="My Custom Brew" oninput="validateAll()">
             <span class="error-msg" id="err-recName" data-i18n="err_rec_name">이름을 입력해주세요.</span>
           </div>
-
           <div class="toggle-row-grid">
             <div class="toggle-chip-box">
               <div class="toggle-chip-text">
                 <div class="toggle-chip-title" data-i18n="toggle_grinder">내장 그라인더 (Grind)</div>
                 <div class="toggle-chip-desc" data-i18n="toggle_grinder_desc">OFF 시 분쇄 건너뜀</div>
               </div>
-              <label class="switch" title="내장 그라인더 분쇄 켜기/끄기">
+              <label class="switch" title="내장 그라인더 분쇄 켜기/끄기" data-i18n-title="title_toggle_grinder">
                 <input type="checkbox" id="recGrindEnabled" checked onchange="toggleGrindSetting()">
                 <span class="slider"></span>
               </label>
             </div>
-
             <div class="toggle-chip-box">
               <div class="toggle-chip-text">
                 <div class="toggle-chip-title" data-i18n="toggle_sync">⏱️ 인터벌 보정 (Sync)</div>
                 <div class="toggle-chip-desc" data-i18n="toggle_sync_desc">푸어 간격 대기 자동 계산</div>
               </div>
-              <label class="switch" title="핸드드립 인터벌 대기시간 보정 켜기/끄기">
+              <label class="switch" title="핸드드립 인터벌 대기시간 보정 켜기/끄기" data-i18n-title="title_toggle_sync">
                 <input type="checkbox" id="recIntervalSync" onchange="toggleIntervalSync()">
                 <span class="slider"></span>
               </label>
             </div>
           </div>
-
           <div class="grid-3">
             <div class="field-group">
               <label data-i18n="label_dose_g">Dose (정수 g)</label>
@@ -805,7 +727,6 @@
               <span class="error-msg" id="err-recRpm" data-i18n="err_rec_rpm">60~120 사이 10단위만 가능</span>
             </div>
           </div>
-
           <div class="ratio-wrap" style="margin-top:4px;">
             <div class="ratio-banner" id="ratioBanner">
               <span data-i18n="label_ratio_banner">추출 비율 (0.5 단위 배수 일치 필요)</span>
@@ -814,7 +735,6 @@
             <span class="error-msg" id="err-ratio" style="margin-top:4px;"></span>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title" data-i18n="card_memory_cloud">머신 메모리 및 클라우드 전송</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
@@ -826,7 +746,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="slotModal" onclick="closeSlotModalOnBack(event)">
   <div class="modal-card" style="max-width:360px;">
     <div class="modal-header">
@@ -841,7 +760,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="cloudSuccessModal" onclick="closeCloudSuccessModalOnBack(event)">
   <div class="modal-card" style="max-width:440px;">
     <div class="modal-header">
@@ -854,22 +772,20 @@
         <span data-i18n="interval_notice_cloud">⏱️ 핸드드립 인터벌 대기시간 보정이 적용되었습니다.</span>
       </span>
     </div>
-
     <div style="margin-top:10px; padding:10px 12px; background:rgba(0,0,0,0.04); border-radius:8px; border:1px solid var(--border);">
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem;">
         <span style="color:var(--muted);" data-i18n="cloud_recipe_name_label">레시피명</span>
         <strong id="cloudSuccessRecipeName" style="color:var(--text);">Custom Brew</strong>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:4px;">
-        <span style="color:var(--muted);">클라우드 ID</span>
+        <span style="color:var(--muted);" data-i18n="cloud_id_label">클라우드 ID</span>
         <span id="cloudSuccessRecipeId" style="font-family:monospace; color:var(--muted);">OK</span>
       </div>
     </div>
-
     <div id="cloudShareSection" style="margin-top:12px;">
       <div class="field-group" style="margin-bottom:6px;">
         <label style="display:flex; justify-content:space-between; align-items:center;">
-          <span>레시피 웹 공유 링크 (URL)</span>
+          <span data-i18n="cloud_share_url_label">레시피 웹 공유 링크 (URL)</span>
           <span id="cloudOpenStatusText" style="font-size:0.72rem; color:var(--accent);" data-i18n="cloud_opened_badge">새 탭에서 열림 🚀</span>
         </label>
         <div style="display:flex; gap:6px;">
@@ -878,14 +794,12 @@
         </div>
       </div>
     </div>
-
     <div style="display:flex; gap:8px; margin-top:14px;">
-      <button class="btn-secondary" onclick="closeCloudSuccessModal()" style="flex:1;">닫기</button>
+      <button class="btn-secondary" onclick="closeCloudSuccessModal()" style="flex:1;" data-i18n="btn_close">닫기</button>
       <button class="btn-accent" id="btnOpenShareNewTab" onclick="openShareUrlNewTab()" style="flex:1.5;" data-i18n="btn_open_web">🔗 웹에서 레시피 열기</button>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="shareUrlModal" onclick="closeShareUrlOnBack(event)">
   <div class="modal-card">
     <div class="modal-header">
@@ -905,12 +819,11 @@
       <span data-i18n="share_loading_msg">xBloom 클라우드에서 레시피를 가져오는 중입니다...</span>
     </div>
     <div style="display:flex; gap:8px; margin-top:6px;">
-      <button class="btn-secondary" onclick="closeShareUrlModal()" style="flex:1;">취소</button>
+      <button class="btn-secondary" onclick="closeShareUrlModal()" style="flex:1;" data-i18n="btn_cancel">취소</button>
       <button class="btn-accent" id="btnFetchShare" onclick="fetchSharedRecipe()" style="flex:1.5;" data-i18n="btn_fetch_share">레시피 가져오기</button>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="serverRecipeModal" onclick="closeServerRecipeModalOnBack(event)">
   <div class="modal-card" style="max-width:540px; width:92%; max-height:85vh; display:flex; flex-direction:column;">
     <div class="modal-header">
@@ -923,26 +836,20 @@
         <button class="btn-close" onclick="closeServerRecipeModal()">&times;</button>
       </div>
     </div>
-
     <div style="margin-top:2px;">
       <input type="text" id="serverRecipeSearch" placeholder="🔍 레시피 이름 또는 파일명 검색..." data-i18n-placeholder="server_recipes_search_ph" oninput="filterServerRecipes()" style="font-size:0.8rem; width:100%; padding:6px 10px;">
     </div>
-
     <div id="serverRecipeLoadingBox" style="display:none; align-items:center; gap:8px; font-size:0.8rem; color:var(--sky); background:rgba(56,189,248,0.08); padding:8px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25); margin-top:8px;">
       <div class="dot" style="background:var(--sky); animation:pulse 1s infinite;"></div>
       <span data-i18n="server_recipes_loading">서버 레시피 목록을 로딩 중입니다...</span>
     </div>
-
     <div id="serverRecipeListContainer" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-top:10px; max-height:440px; padding-right:2px;">
-
     </div>
-
     <div style="display:flex; justify-content:flex-end; margin-top:12px; padding-top:8px; border-top:1px solid var(--border);">
-      <button class="btn-secondary" onclick="closeServerRecipeModal()" style="min-width:80px;">닫기</button>
+      <button class="btn-secondary" onclick="closeServerRecipeModal()" style="min-width:80px;" data-i18n="btn_close">닫기</button>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="historyModal" onclick="closeHistoryOnBack(event)">
   <div class="modal-card wide-modal">
     <div class="modal-header">
@@ -952,16 +859,14 @@
         <button class="btn-close" onclick="closeHistoryModal()">&times;</button>
       </div>
     </div>
-
     <div class="history-modal-grid">
       <div style="display:flex; flex-direction:column; gap:6px;">
-        <div style="font-size:0.75rem; color:var(--muted); font-weight:700;">추출 이력 목록 (<span id="histCount">0</span>)</div>
+        <div style="font-size:0.75rem; color:var(--muted); font-weight:700;"><span data-i18n="hist_list_title">추출 이력 목록</span> (<span id="histCount">0</span>)</div>
         <div class="history-list" id="historyListContainer"></div>
       </div>
-
       <div class="history-chart-card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; font-size:0.85rem;" id="histDetailTitle">선택된 추출 로그</span>
+          <span style="font-weight:700; font-size:0.85rem;" id="histDetailTitle" data-i18n="hist_detail_title">선택된 추출 로그</span>
           <div class="chart-legend" style="margin:0;">
             <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span id="legendPourText" data-i18n="legend_pour">푸어</span></div>
             <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span id="legendYieldText" data-i18n="legend_yield">추출</span></div>
@@ -972,14 +877,12 @@
           <canvas id="historyChart" style="height:170px !important;"></canvas>
         </div>
         <div id="histDetailSummary" style="font-size:0.75rem; color:var(--muted); line-height:1.4; margin-top:2px;"></div>
-
         <button class="btn-rebrew" id="btnLoadHistoryRecipe" onclick="loadRecipeFromCurrentHistory()">
           <span data-i18n="btn_load_to_studio">⚡ 이 레시피 스튜디오로 불러오기</span>
         </button>
-
         <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px; background:var(--card); padding:8px 10px; border-radius:8px; border:1px solid var(--border);">
           <div style="font-size:0.75rem; font-weight:700; color:var(--text); display:flex; justify-content:space-between; align-items:center; gap:8px;">
-            <span style="white-space:nowrap;">☕ 원두 정보 & 테이스팅 노트</span>
+            <span style="white-space:nowrap;" data-i18n="hist_bean_notes_title">☕ 원두 정보 & 테이스팅 노트</span>
             <button class="btn-secondary" style="font-size:0.7rem; padding:2px 8px; font-weight:600; white-space:nowrap;" onclick="saveHistoryNotes()" data-i18n="btn_save_note">메모 저장</button>
           </div>
           <input type="text" id="histBeanInput" placeholder="원두 종류 / 로스팅 일자 (예: 에티오피아 게이샤 워시드)" data-i18n-placeholder="hist_bean_ph" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text);" />
@@ -989,14 +892,12 @@
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="settingsModal" onclick="closeSettingsOnBack(event)">
   <div class="modal-card">
     <div class="modal-header">
       <div class="modal-title" data-i18n="settings_title">⚙️ 환경 설정</div>
       <button class="btn-close" onclick="closeSettings()">&times;</button>
     </div>
-
     <div class="setting-row" style="flex-direction:column; align-items:stretch; gap:8px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -1014,12 +915,10 @@
           <option value="fr" data-i18n="lang_fr">Français</option>
         </select>
       </div>
-
       <div id="langDisclaimerBox" style="margin-top:2px; padding:8px 12px; border-radius:6px; background:rgba(34, 197, 94, 0.08); border:1px solid rgba(34, 197, 94, 0.25); font-size:0.73rem; line-height:1.45; color:var(--text); transition:all 0.2s;">
         <span id="langDisclaimerText">한국어는 기본 기준 언어로 모든 바리스타 용어가 표준화되어 있습니다.</span>
       </div>
     </div>
-
     <div class="setting-row">
       <div>
         <div class="setting-label" data-i18n="setting_theme">화면 테마</div>
@@ -1030,18 +929,16 @@
         <button class="theme-opt" id="btnThemeLight" onclick="setTheme('light', true)" data-i18n="theme_light">라이트</button>
       </div>
     </div>
-
     <div class="setting-row">
       <div style="flex:1; padding-right:12px;">
         <div class="setting-label" data-i18n="setting_aborted">⏸️ 비상정지 기록 저장</div>
         <div class="setting-desc" data-i18n="setting_aborted_desc">추출 중 비상정지 시에도 진행된 시점까지의 차트와 무게를 기록합니다.</div>
       </div>
-      <label class="switch" title="비상정지 기록 저장 켜기/끄기">
+      <label class="switch" title="비상정지 기록 저장 켜기/끄기" data-i18n-title="title_toggle_aborted">
         <input type="checkbox" id="recordAbortedToggle" onchange="setRecordAborted(this.checked, true)">
         <span class="slider"></span>
       </label>
     </div>
-
     <div class="setting-row">
       <div style="flex:1; padding-right:12px;">
         <div class="setting-label" data-i18n="setting_marker">📍 푸어 시작 구분선 기준</div>
@@ -1052,7 +949,6 @@
         <button class="theme-opt" id="btnMarkerTime" onclick="setMarkerMode('time', true)" data-i18n="marker_time">시간 계산</button>
       </div>
     </div>
-
     <div class="setting-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
       <div>
         <div class="setting-label" data-i18n="setting_wallpaper">🖼️ 커스텀 배경화면</div>
@@ -1064,9 +960,7 @@
         <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="clearWallpaper(true)" data-i18n="btn_reset_wallpaper">기본 배경 복원</button>
       </div>
     </div>
-
     <hr style="border:none; border-top:1px solid var(--border);">
-
     <div>
       <div class="setting-label" style="margin-bottom:8px;" data-i18n="setting_cloud">☁️ xBloom 클라우드 연동</div>
       <div class="cloud-user-box" id="cloudStatusBox">
@@ -1076,7 +970,6 @@
         </div>
         <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo" data-i18n="cloud_desc_logged_out">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
       </div>
-
       <div id="cloudLoginForm" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
         <div class="field-group" style="margin:0;">
           <label data-i18n="label_email">이메일 계정</label>
@@ -1088,26 +981,22 @@
         </div>
         <button class="btn-accent" style="margin-top:4px;" onclick="handleCloudLogin()" data-i18n="btn_login">xBloom 로그인</button>
       </div>
-
       <div id="cloudLogoutWrap" style="margin-top:10px; display:none;">
         <button class="btn-secondary" onclick="handleCloudLogout()" data-i18n="btn_logout">로그아웃 (토큰 해제)</button>
       </div>
-
       <div class="setting-row" style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
         <div>
           <div class="setting-label" data-i18n="setting_version">🚀 버전 및 자동 업데이트</div>
-          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.9.0</div>
+          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.9.2</div>
         </div>
         <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="font-size:0.75rem; padding:6px 12px; cursor:pointer;" data-i18n="btn_check_update">업데이트 확인</button>
       </div>
     </div>
-
     <div class="settings-footer">
-      <span id="settingsFooterVer">v0.9.0 by 팽이팽이</span>
+      <span id="settingsFooterVer">v0.9.2 by 팽이팽이</span>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="updateModal" onclick="closeUpdateOnBack(event)">
   <div class="modal-card" style="max-width: 520px; width: 92%;">
     <div class="modal-header">
@@ -1117,49 +1006,108 @@
       </div>
       <button class="btn-close" onclick="closeUpdateModal()">&times;</button>
     </div>
-
     <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_cur_ver">현재 버전</div>
-        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.9.0</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.9.2</div>
       </div>
       <div style="font-size:1.1rem; color:var(--accent);">➔</div>
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_latest_ver">최신 릴리즈</div>
-        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.9.0</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.9.2</div>
       </div>
     </div>
-
     <div style="font-size:0.8rem; font-weight:600; margin-bottom:6px; color:var(--text);" data-i18n="update_notes_title">릴리즈 변경 사항 (Release Notes)</div>
     <div id="updateReleaseNotes" style="max-height: 220px; overflow-y: auto; background: var(--card-inner); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.78rem; line-height: 1.5; color: var(--text); white-space: pre-wrap;"></div>
-
     <div style="margin-top:12px; padding:10px 12px; border-radius:8px; background:rgba(34, 197, 94, 0.1); border:1px solid rgba(34, 197, 94, 0.3); font-size:0.74rem; color:var(--text); line-height:1.4;">
-      🛡️ <b>데이터 보호 안내</b>: 개인 레시피(recipes/), 추출 기록(history.json), 설정 파일(config.json) 및 포터블 파이썬 환경은 <b>절대 덮어씌워지지 않고 100% 안전하게 유지</b>됩니다.
+      <span data-i18n="update_data_protection">🛡️ <b>데이터 보호 안내</b>: 개인 레시피(recipes/), 추출 기록(history.json), 설정 파일(config.json) 및 포터블 파이썬 환경은 <b>절대 덮어씌워지지 않고 100% 안전하게 유지</b>됩니다.</span>
     </div>
-
     <div id="updateProgressArea" style="display:none; margin-top:14px;">
       <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
-        <span id="updateProgressStatus" style="color:var(--sky); font-weight:600;">업데이트 다운로드 및 적용 중...</span>
-        <span id="updateProgressPercent" style="color:var(--muted);">잠시만 기다려주세요</span>
+        <span id="updateProgressStatus" style="color:var(--sky); font-weight:600;" data-i18n="update_downloading">업데이트 다운로드 및 적용 중...</span>
+        <span id="updateProgressPercent" style="color:var(--muted);" data-i18n="update_please_wait">잠시만 기다려주세요</span>
       </div>
       <div class="progress-bar-bg" style="height:6px;">
         <div class="progress-bar" id="updateProgressBar" style="width:100%;"></div>
       </div>
     </div>
-
     <div class="modal-footer" id="updateModalButtons" style="margin-top:18px; display:flex; gap:8px;">
       <button class="btn-secondary" id="updateCancelBtn" onclick="closeUpdateModal()" style="flex:1;" data-i18n="btn_update_later">나중에 하기</button>
       <button class="btn-accent" id="updateApplyBtn" onclick="applyUpdateNow()" style="flex:2; background: linear-gradient(135deg, var(--accent), #e05206); border:none;" data-i18n="btn_update_now">🚀 지금 즉시 업데이트</button>
     </div>
   </div>
 </div>
-
 <script>
   const TRANSLATIONS = {
     ko: {
+      "btn_close": "닫기",
+      "btn_cancel": "취소",
+      "btn_load": "불러오기",
+      "btn_copied": "✓ 복사됨",
+      "cloud_id_label": "클라우드 ID",
+      "cloud_share_url_label": "레시피 웹 공유 링크 (URL)",
+      "hist_list_title": "추출 이력 목록",
+      "hist_detail_title": "선택된 추출 로그",
+      "hist_bean_notes_title": "☕ 원두 정보 & 테이스팅 노트",
+      "title_toggle_aborted": "비상정지 기록 저장 켜기/끄기",
+      "title_toggle_grinder": "내장 그라인더 분쇄 켜기/끄기",
+      "title_toggle_sync": "핸드드립 인터벌 대기시간 보정 켜기/끄기",
+      "update_data_protection": "🛡️ <b>데이터 보호 안내</b>: 개인 레시피(recipes/), 추출 기록(history.json), 설정 파일(config.json) 및 포터블 파이썬 환경은 <b>절대 덮어씌워지지 않고 100% 안전하게 유지</b>됩니다.",
+      "update_downloading": "업데이트 다운로드 및 적용 중...",
+      "update_please_wait": "잠시만 기다려주세요",
+      "status_aborted": "중단",
+      "status_completed": "완료",
+      "status_emergency_stop": "비상정지",
+      "hist_sum_dose": "원두 투입",
+      "hist_sum_water": "총 푸어량",
+      "hist_sum_yield": "실제 추출액",
+      "hist_sum_ratio": "추출 비율",
+      "hist_sum_duration": "총 소요시간",
+      "hist_no_records": "저장된 추출 이력이 없습니다.",
+      "hist_no_selection": "선택된 기록이 없습니다.",
+      "server_recipes_empty": "저장된 서버 레시피가 없습니다.",
+      "server_recipes_load_err": "레시피 목록을 불러오지 못했습니다",
+      "pours_unit": "푸어",
+      "cloud_synced_prefix": "동기화됨: ",
+      "cloud_token_bound": "토큰 바인딩 완료",
+      "err_ratio_range": "추출 비율은 1:5.0 ~ 1:25.0 범위 내여야 합니다. (현재 1:{current})",
+      "err_ratio_half_unit": "실 푸어량 비율이 0.5단위와 일치하지 않습니다! (총 푸어량을 {water1}g 또는 {water2}g으로 설정하세요)",
+      "confirm_ble_disconnect": "xBloom 머신과의 블루투스 연결을 해제하시겠습니까?",
+      "confirm_delete_history": "해당 추출 기록을 영구 삭제하시겠습니까?",
+      "confirm_clear_all_history": "정말 모든 추출 기록을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
+      "confirm_delete_recipe": "정말 서버에서 '{name}' 레시피를 영구 삭제하시겠습니까?\n(파일: {file})",
+      "alert_latest_version": "현재 최신 버전(v{ver})을 사용 중입니다.",
+      "alert_net_error_update": "업데이트 확인 중 네트워크 오류가 발생했습니다.",
+      "alert_update_failed": "업데이트 적용 실패: {msg}",
+      "alert_recipe_err": "레시피 설정에 오류가 있습니다.",
+      "alert_slot_saved": "[슬롯 저장 완료]\n'{name}' 레시피가 기기 슬롯 {slot} ({n}번)에 저장되었습니다.",
+      "alert_recipe_param_check": "레시피 파라미터 설정을 확인해주세요.",
+      "alert_server_saved": "[서버 저장 완료]\n'{name}' 레시피가 서버의 recipes/ 폴더에 저장되었습니다.{interval}\n추출 대시보드로 이동합니다.",
+      "alert_interval_applied_notice": "\n(핸드드립 인터벌 대기시간 보정 적용됨)",
+      "alert_save_err": "저장 오류: {msg}",
+      "alert_input_email_pass": "이메일과 비밀번호를 모두 입력해주세요.",
+      "alert_login_success": "클라우드 로그인 성공: {email}",
+      "alert_login_err": "로그인 오류: {msg}",
+      "alert_logout": "로그아웃되었습니다.",
+      "alert_input_recipe_name": "레시피 이름을 입력해주세요.",
+      "alert_upload_failed": "클라우드 업로드 실패: {msg}",
+      "alert_no_hist_selected": "선택된 추출 기록이 없습니다.",
+      "alert_note_saved": "메모가 성공적으로 저장되었습니다.",
+      "alert_note_save_failed": "메모 저장 실패: {msg}",
+      "alert_hist_del_failed": "삭제 실패: {msg}",
+      "alert_all_hist_deleted": "전체 추출 기록이 삭제되었습니다.",
+      "alert_all_hist_del_failed": "전체 삭제 실패: {msg}",
+      "alert_recipe_loaded": "✅ '{name}' 레시피를 성공적으로 불러왔습니다!\n레시피 스튜디오에 적용되었습니다.",
+      "alert_recipe_del_failed": "레시피 삭제 오류: {msg}",
+      "alert_recipe_restored": "'{name}' 레시피를 스튜디오로 복원했습니다.",
+      "alert_max_steps": "최대 {max}단계까지만 추가할 수 있습니다.",
+      "alert_yaml_saved": "YAML 파일로 내보내기 완료",
+      "alert_yaml_save_err": "YAML 저장 오류: {msg}",
+      "alert_yaml_invalid": "유효하지 않은 YAML 형식입니다.",
+      "alert_stop_failed": "정지 명령 전송 실패",
       "grind_label": "분쇄",
       "no_grind": "원두분쇄 안함",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 구동 완료",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 구동 완료",
       "log_ws_connected": "[BLE] 웹소켓 채널 연결 완료",
       "log_ble_not_found": "[BLE ERROR] 주변에서 xBloom 기기를 찾지 못했습니다. 전원을 확인해주세요.",
       "log_ble_reconnecting": "[BLE] 머신 수동 재연결 시도 중...",
@@ -1380,9 +1328,74 @@
       state_error: "오류"
     },
     en: {
+      "btn_close": "Close",
+      "btn_cancel": "Cancel",
+      "btn_load": "Load",
+      "btn_copied": "✓ Copied",
+      "cloud_id_label": "Cloud ID",
+      "cloud_share_url_label": "Recipe Share Link (URL)",
+      "hist_list_title": "Brew History Records",
+      "hist_detail_title": "Selected Brew Telemetry",
+      "hist_bean_notes_title": "☕ Coffee Bean & Tasting Notes",
+      "title_toggle_aborted": "Toggle Saving Aborted Brews",
+      "title_toggle_grinder": "Toggle Built-in Grinder",
+      "title_toggle_sync": "Toggle Pour-over Interval Compensation",
+      "update_data_protection": "🛡️ <b>Data Protection Notice</b>: Your custom recipes (recipes/), brew history (history.json), config (config.json), and portable Python environment are <b>never overwritten and 100% preserved</b>.",
+      "update_downloading": "Downloading and applying update package...",
+      "update_please_wait": "Please wait a moment",
+      "status_aborted": "Aborted",
+      "status_completed": "Complete",
+      "status_emergency_stop": "Emergency Stop",
+      "hist_sum_dose": "Dose",
+      "hist_sum_water": "Total Pour",
+      "hist_sum_yield": "Actual Yield",
+      "hist_sum_ratio": "Brew Ratio",
+      "hist_sum_duration": "Total Time",
+      "hist_no_records": "No saved brew history yet.",
+      "hist_no_selection": "No brew record selected.",
+      "server_recipes_empty": "No recipes saved on server.",
+      "server_recipes_load_err": "Failed to load recipe list",
+      "pours_unit": "Pours",
+      "cloud_synced_prefix": "Synced: ",
+      "cloud_token_bound": "Token Bound",
+      "err_ratio_range": "Brew ratio must be between 1:5.0 and 1:25.0 (Currently 1:{current})",
+      "err_ratio_half_unit": "Actual brew ratio does not align with 0.5 increments! (Set total pour to {water1}g or {water2}g)",
+      "confirm_ble_disconnect": "Are you sure you want to disconnect from the xBloom machine?",
+      "confirm_delete_history": "Permanently delete this brew record?",
+      "confirm_clear_all_history": "Permanently delete all brew records?\nThis action cannot be undone.",
+      "confirm_delete_recipe": "Permanently delete recipe '{name}' from server?\n(File: {file})",
+      "alert_latest_version": "You are already using the latest version (v{ver}).",
+      "alert_net_error_update": "Network error occurred while checking for updates.",
+      "alert_update_failed": "Failed to apply update: {msg}",
+      "alert_recipe_err": "There are validation errors in the recipe.",
+      "alert_slot_saved": "[Slot Saved]\nRecipe '{name}' written to hardware Slot {slot} (#{n}).",
+      "alert_recipe_param_check": "Please verify your recipe parameters.",
+      "alert_server_saved": "[Server Saved]\nRecipe '{name}' saved to recipes/ folder.{interval}\nMoving to brew dashboard.",
+      "alert_interval_applied_notice": "\n(Pour-over interval compensation applied)",
+      "alert_save_err": "Save error: {msg}",
+      "alert_input_email_pass": "Please enter both email and password.",
+      "alert_login_success": "Cloud login successful: {email}",
+      "alert_login_err": "Login error: {msg}",
+      "alert_logout": "Logged out successfully.",
+      "alert_input_recipe_name": "Please enter a recipe name.",
+      "alert_upload_failed": "Cloud upload failed: {msg}",
+      "alert_no_hist_selected": "No brew record selected.",
+      "alert_note_saved": "Notes saved successfully.",
+      "alert_note_save_failed": "Failed to save notes: {msg}",
+      "alert_hist_del_failed": "Delete failed: {msg}",
+      "alert_all_hist_deleted": "All brew history records have been cleared.",
+      "alert_all_hist_del_failed": "Failed to clear history: {msg}",
+      "alert_recipe_loaded": "✅ Loaded '{name}' successfully!\nApplied to Recipe Studio.",
+      "alert_recipe_del_failed": "Recipe deletion error: {msg}",
+      "alert_recipe_restored": "Restored recipe '{name}' to studio.",
+      "alert_max_steps": "Maximum of {max} pour steps allowed.",
+      "alert_yaml_saved": "Exported to YAML file successfully.",
+      "alert_yaml_save_err": "YAML export error: {msg}",
+      "alert_yaml_invalid": "Invalid YAML recipe format.",
+      "alert_stop_failed": "Failed to send emergency stop command",
       "grind_label": "Grind",
       "no_grind": "No Grind",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Ready",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 Ready",
       "log_ws_connected": "[BLE] WebSocket telemetry channel connected",
       "log_ble_not_found": "[BLE ERROR] xBloom machine not found nearby. Please check machine power.",
       "log_ble_reconnecting": "[BLE] Attempting manual BLE reconnection...",
@@ -1603,9 +1616,74 @@
       state_error: "ERROR"
     },
     ja: {
+      "btn_close": "閉じる",
+      "btn_cancel": "キャンセル",
+      "btn_load": "読み込む",
+      "btn_copied": "✓ コピー完了",
+      "cloud_id_label": "クラウドID",
+      "cloud_share_url_label": "レシピ共有リンク (URL)",
+      "hist_list_title": "抽出履歴一覧",
+      "hist_detail_title": "選択された抽出ログ",
+      "hist_bean_notes_title": "☕ コーヒー豆情報＆テイスティングノート",
+      "title_toggle_aborted": "緊急停止時の記録保存 ON/OFF",
+      "title_toggle_grinder": "内蔵グラインダー粉砕 ON/OFF",
+      "title_toggle_sync": "注湯インターバル時間補正 ON/OFF",
+      "update_data_protection": "🛡️ <b>データ保護案内</b>: 個人レシピ(recipes/)、抽出履歴(history.json)、設定ファイル(config.json)およびポータブルPython環境は<b>決して上書きされず100%安全に保護</b>されます。",
+      "update_downloading": "アップデートパッケージをダウンロード・適用中...",
+      "update_please_wait": "少々お待ちください",
+      "status_aborted": "中断",
+      "status_completed": "完了",
+      "status_emergency_stop": "緊急停止",
+      "hist_sum_dose": "豆量",
+      "hist_sum_water": "総注湯量",
+      "hist_sum_yield": "実抽出液",
+      "hist_sum_ratio": "抽出比率",
+      "hist_sum_duration": "所要時間",
+      "hist_no_records": "保存された抽出履歴がありません。",
+      "hist_no_selection": "選択された記録がありません。",
+      "server_recipes_empty": "サーバーに保存されたレシピがありません。",
+      "server_recipes_load_err": "レシピ一覧の読み込みに失敗しました",
+      "pours_unit": "注湯",
+      "cloud_synced_prefix": "同期済み: ",
+      "cloud_token_bound": "トークン連携完了",
+      "err_ratio_range": "抽出比率は 1:5.0 〜 1:25.0 の範囲内である必要があります。(現在 1:{current})",
+      "err_ratio_half_unit": "注湯量比率が0.5単位と一致していません！ (総注湯量を {water1}g または {water2}g に設定してください)",
+      "confirm_ble_disconnect": "xBloomマシンとのBluetooth接続を切断しますか？",
+      "confirm_delete_history": "この抽出記録を完全に削除しますか？",
+      "confirm_clear_all_history": "すべての抽出記録を完全に削除しますか？\nこの操作は元に戻せません。",
+      "confirm_delete_recipe": "サーバーからレシピ '{name}' を完全に削除しますか？\n(ファイル: {file})",
+      "alert_latest_version": "現在、最新バージョン(v{ver})を使用しています。",
+      "alert_net_error_update": "アップデート確認中にネットワークエラーが発生しました。",
+      "alert_update_failed": "アップデート適用失敗: {msg}",
+      "alert_recipe_err": "レシピ設定にエラーがあります。",
+      "alert_slot_saved": "[スロット保存完了]\n'{name}' レシピを機器スロット {slot} ({n}番) に書き込みました。",
+      "alert_recipe_param_check": "レシピパラメータの設定をご確認ください。",
+      "alert_server_saved": "[サーバー保存完了]\n'{name}' レシ피がサーバーの recipes/ フォルダに保存されました。{interval}\n抽出ダッシュボードへ移動します。",
+      "alert_interval_applied_notice": "\n(注湯インターバル時間補正が適用されました)",
+      "alert_save_err": "保存エラー: {msg}",
+      "alert_input_email_pass": "メールアドレスとパスワードの両方を入力してください。",
+      "alert_login_success": "クラウドログイン成功: {email}",
+      "alert_login_err": "ログインエラー: {msg}",
+      "alert_logout": "ログアウトしました。",
+      "alert_input_recipe_name": "レシピ名を入力してください。",
+      "alert_upload_failed": "クラウドアップロード失敗: {msg}",
+      "alert_no_hist_selected": "選択された抽出記録がありません。",
+      "alert_note_saved": "メモが正常に保存されました。",
+      "alert_note_save_failed": "メモ保存失敗: {msg}",
+      "alert_hist_del_failed": "削除失敗: {msg}",
+      "alert_all_hist_deleted": "すべての抽出記録が削除されました。",
+      "alert_all_hist_del_failed": "一括削除失敗: {msg}",
+      "alert_recipe_loaded": "✅ '{name}' レシピを正常に読み込みました！\nレシピスタジオに反映されました。",
+      "alert_recipe_del_failed": "レシピ削除エラー: {msg}",
+      "alert_recipe_restored": "レシピ '{name}' をスタジオに復元しました。",
+      "alert_max_steps": "最大 {max} ステップまで追加できます。",
+      "alert_yaml_saved": "YAMLファイルへ出力完了",
+      "alert_yaml_save_err": "YAML保存エラー: {msg}",
+      "alert_yaml_invalid": "無効なYAMLレシピ形式です。",
+      "alert_stop_failed": "緊急停止コマンドの送信に失敗しました",
       "grind_label": "粉砕",
       "no_grind": "粉砕なし",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 起動完了",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 起動完了",
       "log_ws_connected": "[BLE] WebSocketチャンネル接続完了",
       "log_ble_not_found": "[BLE ERROR] 周辺でxBloom機器が見つかりませんでした。電源をご確認ください。",
       "log_ble_reconnecting": "[BLE] マシン手動再接続を試行中...",
@@ -1826,9 +1904,75 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "label_step_prefix": "步驟: ",
+      "btn_close": "關閉",
+      "btn_cancel": "取消",
+      "btn_load": "載入",
+      "btn_copied": "✓ 已複製",
+      "cloud_id_label": "雲端 ID",
+      "cloud_share_url_label": "食譜網頁分享連結 (URL)",
+      "hist_list_title": "沖煮歷史紀錄",
+      "hist_detail_title": "選定的沖煮遙測記錄",
+      "hist_bean_notes_title": "☕ 咖啡豆資訊與杯測風味筆記",
+      "title_toggle_aborted": "切換是否儲存緊急停止紀錄",
+      "title_toggle_grinder": "切換內建磨豆機研磨",
+      "title_toggle_sync": "切換手沖注水區間時間補償",
+      "update_data_protection": "🛡️ <b>資料保護宣告</b>: 您的個人食譜(recipes/)、沖煮歷史(history.json)、設定檔(config.json)及綠色免安裝Python環境<b>絕不會被覆寫，100%安全完整保留</b>。",
+      "update_downloading": "正在下載並套用更新套件...",
+      "update_please_wait": "請稍候",
+      "status_aborted": "中斷",
+      "status_completed": "完成",
+      "status_emergency_stop": "緊急停止",
+      "hist_sum_dose": "咖啡豆粉量",
+      "hist_sum_water": "總注水量",
+      "hist_sum_yield": "實際萃取液重",
+      "hist_sum_ratio": "粉水比",
+      "hist_sum_duration": "總耗時",
+      "hist_no_records": "目前尚無儲存的沖煮記錄。",
+      "hist_no_selection": "尚未選擇沖煮記錄。",
+      "server_recipes_empty": "伺服器上目前沒有儲存的食譜。",
+      "server_recipes_load_err": "無法載入食譜清單",
+      "pours_unit": "段注水",
+      "cloud_synced_prefix": "已同步: ",
+      "cloud_token_bound": "權杖綁定完成",
+      "err_ratio_range": "粉水比必須在 1:5.0 至 1:25.0 範圍內 (目前 1:{current})",
+      "err_ratio_half_unit": "實際注水量比例不符合 0.5 單位級距！ (請將總注水量設為 {water1}g 或 {water2}g)",
+      "confirm_ble_disconnect": "確定要中斷與 xBloom 機器的藍牙連線嗎？",
+      "confirm_delete_history": "確定要永久刪除此沖煮記錄嗎？",
+      "confirm_clear_all_history": "確定要永久刪除所有沖煮記錄嗎？\n此操作無法復原。",
+      "confirm_delete_recipe": "確定要從伺服器永久刪除食譜 '{name}' 嗎？\n(檔案: {file})",
+      "alert_latest_version": "目前已是最新版本 (v{ver})。",
+      "alert_net_error_update": "檢查更新時發生網路錯誤。",
+      "alert_update_failed": "套用更新失敗: {msg}",
+      "alert_recipe_err": "食譜設定有錯誤，請檢查。",
+      "alert_slot_saved": "[記憶插槽儲存完成]\n食譜 '{name}' 已寫入機器硬體插槽 {slot} (第 {n} 號)。",
+      "alert_recipe_param_check": "請確認食譜參數設定。",
+      "alert_server_saved": "[伺服器儲存完成]\n食譜 '{name}' 已儲存至伺服器 recipes/ 資料夾。{interval}\n即將前往沖煮儀表板。",
+      "alert_interval_applied_notice": "\n(已套用手沖注水區間補償時間)",
+      "alert_save_err": "儲存錯誤: {msg}",
+      "alert_input_email_pass": "請輸入電子信箱與密碼。",
+      "alert_login_success": "雲端登入成功: {email}",
+      "alert_login_err": "登入錯誤: {msg}",
+      "alert_logout": "已成功登出。",
+      "alert_input_recipe_name": "請輸入食譜名稱。",
+      "alert_upload_failed": "雲端上傳失敗: {msg}",
+      "alert_no_hist_selected": "尚未選擇沖煮記錄。",
+      "alert_note_saved": "筆記已成功儲存。",
+      "alert_note_save_failed": "儲存筆記失敗: {msg}",
+      "alert_hist_del_failed": "刪除失敗: {msg}",
+      "alert_all_hist_deleted": "所有沖煮記錄已清空。",
+      "alert_all_hist_del_failed": "清空失敗: {msg}",
+      "alert_recipe_loaded": "✅ 成功載入食譜 '{name}'！\n已套用至食譜工作室。",
+      "alert_recipe_del_failed": "刪除食譜錯誤: {msg}",
+      "alert_recipe_restored": "已將食譜 '{name}' 還原至工作室。",
+      "alert_max_steps": "最多僅支援新增至 {max} 段注水步驟。",
+      "alert_yaml_saved": "成功匯出為 YAML 食譜檔案。",
+      "alert_yaml_save_err": "匯出 YAML 錯誤: {msg}",
+      "alert_yaml_invalid": "無效的 YAML 食譜格式。",
+      "alert_stop_failed": "發送緊急停止指令失敗",
       "grind_label": "研磨",
       "no_grind": "不研磨",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 啟動完成",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 啟動完成",
       "log_ws_connected": "[BLE] WebSocket 遙測通道連線完成",
       "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 機器，請確認電源是否開啟。",
       "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線機器...",
@@ -2022,9 +2166,75 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "label_step_prefix": "步骤: ",
+      "btn_close": "关闭",
+      "btn_cancel": "取消",
+      "btn_load": "载入",
+      "btn_copied": "✓ 已复制",
+      "cloud_id_label": "云端 ID",
+      "cloud_share_url_label": "食谱网页分享链接 (URL)",
+      "hist_list_title": "冲煮历史记录",
+      "hist_detail_title": "选定的冲煮遥测记录",
+      "hist_bean_notes_title": "☕ 咖啡豆信息与杯测风味笔记",
+      "title_toggle_aborted": "切换是否保存紧急停止记录",
+      "title_toggle_grinder": "切换内置磨豆机研磨",
+      "title_toggle_sync": "切换手冲注水区间时间补偿",
+      "update_data_protection": "🛡️ <b>数据保护声明</b>: 您的个人食谱(recipes/)、冲煮历史(history.json)、配置文件(config.json)及免安装Python环境<b>绝不会被覆盖，100%安全完整保留</b>。",
+      "update_downloading": "正在下载并应用更新包...",
+      "update_please_wait": "请稍候",
+      "status_aborted": "中断",
+      "status_completed": "完成",
+      "status_emergency_stop": "紧急停止",
+      "hist_sum_dose": "咖啡豆粉量",
+      "hist_sum_water": "总注水量",
+      "hist_sum_yield": "实际萃取液重",
+      "hist_sum_ratio": "粉水比",
+      "hist_sum_duration": "总耗时",
+      "hist_no_records": "暂无保存的冲煮记录。",
+      "hist_no_selection": "未选择冲煮记录。",
+      "server_recipes_empty": "服务器上暂无保存的食谱。",
+      "server_recipes_load_err": "无法加载食谱列表",
+      "pours_unit": "段注水",
+      "cloud_synced_prefix": "已同步: ",
+      "cloud_token_bound": "令牌绑定完成",
+      "err_ratio_range": "粉水比必须在 1:5.0 至 1:25.0 范围内 (当前 1:{current})",
+      "err_ratio_half_unit": "实际注水量比例不符合 0.5 单位步进！ (请将总注水量设为 {water1}g 或 {water2}g)",
+      "confirm_ble_disconnect": "确定要断开与 xBloom 机器的蓝牙连接吗？",
+      "confirm_delete_history": "确定要永久删除此冲煮记录吗？",
+      "confirm_clear_all_history": "确定要永久删除所有冲煮记录吗？\n此操作不可撤销。",
+      "confirm_delete_recipe": "确定要从服务器永久删除食谱 '{name}' 吗？\n(文件: {file})",
+      "alert_latest_version": "当前已是最新版本 (v{ver})。",
+      "alert_net_error_update": "检查更新时发生网络错误。",
+      "alert_update_failed": "应用更新失败: {msg}",
+      "alert_recipe_err": "食谱设置存在错误，请检查。",
+      "alert_slot_saved": "[记忆插槽保存完成]\n食谱 '{name}' 已写入机器硬件插槽 {slot} (第 {n} 号)。",
+      "alert_recipe_param_check": "请确认食谱参数设置。",
+      "alert_server_saved": "[服务器保存完成]\n食谱 '{name}' 已保存至服务器 recipes/ 文件夹。{interval}\n即将前往冲煮仪表板。",
+      "alert_interval_applied_notice": "\n(已应用手冲注水区间补偿时间)",
+      "alert_save_err": "保存错误: {msg}",
+      "alert_input_email_pass": "请输入邮箱与密码。",
+      "alert_login_success": "云端登录成功: {email}",
+      "alert_login_err": "登录错误: {msg}",
+      "alert_logout": "已成功退出登录。",
+      "alert_input_recipe_name": "请输入食谱名称。",
+      "alert_upload_failed": "云端上传失败: {msg}",
+      "alert_no_hist_selected": "未选择冲煮记录。",
+      "alert_note_saved": "笔记已成功保存。",
+      "alert_note_save_failed": "保存笔记失败: {msg}",
+      "alert_hist_del_failed": "删除失败: {msg}",
+      "alert_all_hist_deleted": "所有冲煮记录已清空。",
+      "alert_all_hist_del_failed": "清空失败: {msg}",
+      "alert_recipe_loaded": "✅ 成功载入食谱 '{name}'！\n已应用至食谱工作室。",
+      "alert_recipe_del_failed": "删除食谱错误: {msg}",
+      "alert_recipe_restored": "已将食谱 '{name}' 还原至工作室。",
+      "alert_max_steps": "最多仅支持添加至 {max} 段注水步骤。",
+      "alert_yaml_saved": "成功导出为 YAML 食谱文件。",
+      "alert_yaml_save_err": "导出 YAML 错误: {msg}",
+      "alert_yaml_invalid": "无效的 YAML 食谱格式。",
+      "alert_stop_failed": "发送紧急停止指令失败",
       "grind_label": "研磨",
       "no_grind": "不研磨",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 启动完成",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 启动完成",
       "log_ws_connected": "[BLE] WebSocket 遥测通道连接完成",
       "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 机器，请确认电源是否开启。",
       "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接机器...",
@@ -2218,9 +2428,74 @@
       state_error: "异常"
     },
     de: {
+      "btn_close": "Schließen",
+      "btn_cancel": "Abbrechen",
+      "btn_load": "Laden",
+      "btn_copied": "✓ Kopiert",
+      "cloud_id_label": "Cloud-ID",
+      "cloud_share_url_label": "Rezept-Freigabelink (URL)",
+      "hist_list_title": "Brühverlauf",
+      "hist_detail_title": "Ausgewählte Brüh-Telemetrie",
+      "hist_bean_notes_title": "☕ Kaffeebohne & Verkostungsnotizen",
+      "title_toggle_aborted": "Abgebrochene Brühungen speichern ein/aus",
+      "title_toggle_grinder": "Integriertes Mahlwerk ein/aus",
+      "title_toggle_sync": "Brühintervall-Kompensation ein/aus",
+      "update_data_protection": "🛡️ <b>Datenschutzhinweis</b>: Eigene Rezepte (recipes/), Verlauf (history.json), Konfiguration (config.json) und die portable Python-Umgebung werden <b>niemals überschrieben und bleiben 100% erhalten</b>.",
+      "update_downloading": "Update-Paket wird heruntergeladen und angewendet...",
+      "update_please_wait": "Bitte warten...",
+      "status_aborted": "Abgebrochen",
+      "status_completed": "Abgeschlossen",
+      "status_emergency_stop": "Not-Aus",
+      "hist_sum_dose": "Kaffeemehl",
+      "hist_sum_water": "Gesamtwasser",
+      "hist_sum_yield": "Ertrag",
+      "hist_sum_ratio": "Brühverhältnis",
+      "hist_sum_duration": "Gesamtzeit",
+      "hist_no_records": "Noch kein Brühverlauf gespeichert.",
+      "hist_no_selection": "Kein Brühprotokoll ausgewählt.",
+      "server_recipes_empty": "Keine Rezepte auf dem Server gespeichert.",
+      "server_recipes_load_err": "Rezeptliste konnte nicht geladen werden",
+      "pours_unit": "Aufgüsse",
+      "cloud_synced_prefix": "Synchronisiert: ",
+      "cloud_token_bound": "Token gebunden",
+      "err_ratio_range": "Brühverhältnis muss zwischen 1:5,0 und 1:25,0 liegen (Aktuell 1:{current})",
+      "err_ratio_half_unit": "Wasserverhältnis passt nicht zu 0,5er Schritten! (Gesamtwasser auf {water1}g oder {water2}g setzen)",
+      "confirm_ble_disconnect": "Verbindung zur xBloom-Maschine trennen?",
+      "confirm_delete_history": "Diesen Brühdatensatz dauerhaft löschen?",
+      "confirm_clear_all_history": "Alle Brühprotokolle dauerhaft löschen?\nDies kann nicht rückgängig gemacht werden.",
+      "confirm_delete_recipe": "Rezept '{name}' dauerhaft vom Server löschen?\n(Datei: {file})",
+      "alert_latest_version": "Sie nutzen bereits die neueste Version (v{ver}).",
+      "alert_net_error_update": "Netzwerkfehler bei der Update-Prüfung.",
+      "alert_update_failed": "Update fehlgeschlagen: {msg}",
+      "alert_recipe_err": "Fehler in den Rezepteinstellungen.",
+      "alert_slot_saved": "[Slot gespeichert]\nRezept '{name}' in Hardware-Slot {slot} (#{n}) geschrieben.",
+      "alert_recipe_param_check": "Bitte Rezeptparameter überprüfen.",
+      "alert_server_saved": "[Server gespeichert]\nRezept '{name}' im recipes/-Ordner gespeichert.{interval}\nWechsle zum Brüh-Dashboard.",
+      "alert_interval_applied_notice": "\n(Brühintervall-Kompensation angewendet)",
+      "alert_save_err": "Speicherfehler: {msg}",
+      "alert_input_email_pass": "Bitte E-Mail und Passwort eingeben.",
+      "alert_login_success": "Cloud-Anmeldung erfolgreich: {email}",
+      "alert_login_err": "Anmeldefehler: {msg}",
+      "alert_logout": "Erfolgreich abgemeldet.",
+      "alert_input_recipe_name": "Bitte einen Rezeptnamen eingeben.",
+      "alert_upload_failed": "Cloud-Upload fehlgeschlagen: {msg}",
+      "alert_no_hist_selected": "Kein Brühprotokoll ausgewählt.",
+      "alert_note_saved": "Notizen erfolgreich gespeichert.",
+      "alert_note_save_failed": "Notizen konnten nicht gespeichert werden: {msg}",
+      "alert_hist_del_failed": "Löschen fehlgeschlagen: {msg}",
+      "alert_all_hist_deleted": "Gesamter Brühverlauf wurde gelöscht.",
+      "alert_all_hist_del_failed": "Löschen fehlgeschlagen: {msg}",
+      "alert_recipe_loaded": "✅ '{name}' erfolgreich geladen!\nIm Rezept-Studio angewendet.",
+      "alert_recipe_del_failed": "Fehler beim Löschen des Rezepts: {msg}",
+      "alert_recipe_restored": "Rezept '{name}' im Studio wiederhergestellt.",
+      "alert_max_steps": "Maximal {max} Aufgussschritte zulässig.",
+      "alert_yaml_saved": "Erfolgreich als YAML exportiert.",
+      "alert_yaml_save_err": "YAML-Exportfehler: {msg}",
+      "alert_yaml_invalid": "Ungültiges YAML-Rezeptformat.",
+      "alert_stop_failed": "Not-Aus-Befehl konnte nicht gesendet werden",
       "grind_label": "Mahlung",
       "no_grind": "Kein Mahlen",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Bereit",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 Bereit",
       "log_ws_connected": "[BLE] WebSocket-Kanal verbunden",
       "log_ble_not_found": "[BLE ERROR] xBloom-Gerät nicht gefunden. Bitte Stromversorgung prüfen.",
       "log_ble_reconnecting": "[BLE] Versuche manuelle Wiederverbindung...",
@@ -2441,9 +2716,74 @@
       state_error: "FEHLER"
     },
     fr: {
+      "btn_close": "Fermer",
+      "btn_cancel": "Annuler",
+      "btn_load": "Charger",
+      "btn_copied": "✓ Copié",
+      "cloud_id_label": "ID Cloud",
+      "cloud_share_url_label": "Lien de partage de recette (URL)",
+      "hist_list_title": "Historique d'extraction",
+      "hist_detail_title": "Télémétrie d'extraction sélectionnée",
+      "hist_bean_notes_title": "☕ Grains de café & Notes de dégustation",
+      "title_toggle_aborted": "Enregistrer les extractions interrompues on/off",
+      "title_toggle_grinder": "Mouture intégrée on/off",
+      "title_toggle_sync": "Compensation d'intervalle de versement on/off",
+      "update_data_protection": "🛡️ <b>Protection des données</b>: Vos recettes (recipes/), historiques (history.json), configurations (config.json) et l'environnement Python portable <b>ne sont jamais écrasés et 100% préservés</b>.",
+      "update_downloading": "Téléchargement et application de la mise à jour...",
+      "update_please_wait": "Veuillez patienter",
+      "status_aborted": "Interrompu",
+      "status_completed": "Terminé",
+      "status_emergency_stop": "Arrêt d'urgence",
+      "hist_sum_dose": "Dose",
+      "hist_sum_water": "Eau totale",
+      "hist_sum_yield": "Rendement",
+      "hist_sum_ratio": "Ratio",
+      "hist_sum_duration": "Temps total",
+      "hist_no_records": "Aucun historique d'extraction enregistré.",
+      "hist_no_selection": "Aucun enregistrement sélectionné.",
+      "server_recipes_empty": "Aucune recette enregistrée sur le serveur.",
+      "server_recipes_load_err": "Impossible de charger la liste des recettes",
+      "pours_unit": "versements",
+      "cloud_synced_prefix": "Synchronisé: ",
+      "cloud_token_bound": "Jeton associé",
+      "err_ratio_range": "Le ratio doit être compris entre 1:5,0 et 1:25,0 (Actuel 1:{current})",
+      "err_ratio_half_unit": "Le ratio d'eau ne correspond pas aux incréments de 0,5 ! (Réglez l'eau totale sur {water1}g ou {water2}g)",
+      "confirm_ble_disconnect": "Voulez-vous vraiment déconnecter la machine xBloom ?",
+      "confirm_delete_history": "Supprimer définitivement cet enregistrement d'extraction ?",
+      "confirm_clear_all_history": "Supprimer définitivement tous les enregistrements ?\nCette opération est irréversible.",
+      "confirm_delete_recipe": "Supprimer définitivement la recette '{name}' du serveur ?\n(Fichier: {file})",
+      "alert_latest_version": "Vous utilisez déjà la dernière version (v{ver}).",
+      "alert_net_error_update": "Erreur réseau lors de la vérification des mises à jour.",
+      "alert_update_failed": "Échec de la mise à jour: {msg}",
+      "alert_recipe_err": "Erreurs dans les paramètres de recette.",
+      "alert_slot_saved": "[Emplacement enregistré]\nRecette '{name}' enregistrée dans l'emplacement matériel {slot} (#{n}).",
+      "alert_recipe_param_check": "Veuillez vérifier les paramètres de la recette.",
+      "alert_server_saved": "[Enregistré sur le serveur]\nRecette '{name}' enregistrée dans le dossier recipes/.{interval}\nRetour au tableau de bord.",
+      "alert_interval_applied_notice": "\n(Compensation d'intervalle appliquée)",
+      "alert_save_err": "Erreur d'enregistrement: {msg}",
+      "alert_input_email_pass": "Veuillez saisir votre e-mail et votre mot de passe.",
+      "alert_login_success": "Connexion Cloud réussie: {email}",
+      "alert_login_err": "Erreur de connexion: {msg}",
+      "alert_logout": "Déconnexion réussie.",
+      "alert_input_recipe_name": "Veuillez saisir un nom de recette.",
+      "alert_upload_failed": "Échec du téléchargement Cloud: {msg}",
+      "alert_no_hist_selected": "Aucun enregistrement sélectionné.",
+      "alert_note_saved": "Notes enregistrées avec succès.",
+      "alert_note_save_failed": "Échec de l'enregistrement des notes: {msg}",
+      "alert_hist_del_failed": "Échec de la suppression: {msg}",
+      "alert_all_hist_deleted": "Tout l'historique d'extraction a été effacé.",
+      "alert_all_hist_del_failed": "Échec de la suppression: {msg}",
+      "alert_recipe_loaded": "✅ Recette '{name}' chargée avec succès !\nAppliquée dans Recipe Studio.",
+      "alert_recipe_del_failed": "Erreur de suppression de la recette: {msg}",
+      "alert_recipe_restored": "Recette '{name}' restaurée dans le studio.",
+      "alert_max_steps": "Maximum de {max} étapes de versement autorisées.",
+      "alert_yaml_saved": "Exportation en fichier YAML réussie.",
+      "alert_yaml_save_err": "Erreur d'exportation YAML: {msg}",
+      "alert_yaml_invalid": "Format de recette YAML invalide.",
+      "alert_stop_failed": "Échec de l'envoi de la commande d'arrêt d'urgence",
       "grind_label": "Mouture",
       "no_grind": "Sans mouture",
-      "log_init_ready": "[INIT] xBloom bleUI v0.9.0 Prêt",
+      "log_init_ready": "[INIT] xBloom bleUI v0.9.2 Prêt",
       "log_ws_connected": "[BLE] Canal WebSocket connecté",
       "log_ble_not_found": "[BLE ERROR] Appareil xBloom introuvable. Veuillez vérifier l'alimentation.",
       "log_ble_reconnecting": "[BLE] Tentative de reconnexion manuelle...",
@@ -2738,7 +3078,7 @@
     updateIntervalBadges();
     const verDesc = document.getElementById("settingsVersionInfo");
     if (verDesc) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "0.9.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "0.9.2";
       verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${curVer}`;
     }
     const pctEl = document.getElementById("pctText");
@@ -2752,6 +3092,12 @@
     }
     if (typeof retranslateAllLogs === "function") {
       try { retranslateAllLogs(); } catch(e) {}
+    }
+    if (typeof renderHistoryList === "function" && typeof historyRecords !== "undefined" && historyRecords && historyRecords.length > 0) {
+      try { renderHistoryList(); } catch(e) {}
+    }
+    if (typeof renderServerRecipeList === "function" && typeof cachedServerRecipes !== "undefined" && cachedServerRecipes && cachedServerRecipes.length > 0) {
+      try { renderServerRecipeList(cachedServerRecipes); } catch(e) {}
     }
     try {
       localStorage.setItem("xbloom_language", currentLangSetting);
@@ -2841,7 +3187,7 @@
   async function checkForUpdates(manual = false) {
     const btnManual = document.getElementById("btnManualCheckUpdate");
     if (manual && btnManual) {
-      btnManual.innerText = "확인 중...";
+      btnManual.innerText = t("checking_update", "확인 중...");
       btnManual.disabled = true;
     }
     try {
@@ -2853,11 +3199,11 @@
       const badgeText = document.getElementById("updateBadgeText");
       const verDesc = document.getElementById("settingsVersionInfo");
       if (verDesc) {
-        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "0.9.0"}`;
+        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "0.9.2"}`;
       }
       const footerVer = document.getElementById("settingsFooterVer");
       if (footerVer) {
-        footerVer.innerText = `v${data.current_version || "0.9.0"} by 팽이팽이`;
+        footerVer.innerText = `v${data.current_version || "0.9.2"} by 팽이팽이`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -2870,17 +3216,17 @@
       } else {
         if (badgeBtn) badgeBtn.style.display = "none";
         if (manual) {
-          alert(`현재 최신 버전(v${data.current_version || "0.9.0"})을 사용 중입니다.`);
+          alert(t("alert_latest_version", { ver: data.current_version || "0.9.2" }));
         }
       }
     } catch (e) {
       console.warn("업데이트 확인 실패:", e);
       if (manual) {
-        alert("업데이트 확인 중 네트워크 오류가 발생했습니다.");
+        alert(t("alert_net_error_update"));
       }
     } finally {
       if (manual && btnManual) {
-        btnManual.innerText = "업데이트 확인";
+        btnManual.innerText = t("btn_check_update", "업데이트 확인");
         btnManual.disabled = false;
       }
     }
@@ -2897,8 +3243,8 @@
     const latestSpan = document.getElementById("updateLatestVer");
     const titleSpan = document.getElementById("updateModalTitle");
     const notesBox = document.getElementById("updateReleaseNotes");
-    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.9.0"}`;
-    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.9.0"}`;
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.9.2"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.9.2"}`;
     if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || `xBloom bleUI v${latestReleaseData.latest_version} 업데이트`;
     if (notesBox) {
       notesBox.innerText = latestReleaseData.release_notes || "새로운 기능 개선 및 버그 수정이 포함되어 있습니다.";
@@ -2924,7 +3270,7 @@
     if (applyBtn) {
       applyBtn.disabled = true;
       applyBtn.style.opacity = "0.6";
-      applyBtn.innerText = "업데이트 진행 중...";
+      applyBtn.innerText = t("update_in_progress", "업데이트 진행 중...");
     }
     if (cancelBtn) cancelBtn.style.display = "none";
     if (progressArea) progressArea.style.display = "block";
@@ -2938,12 +3284,12 @@
       }
       if (progressStatus) {
         progressStatus.style.color = "var(--success)";
-        progressStatus.innerText = "업데이트 완료! 서버가 재시작됩니다.";
+        progressStatus.innerText = t("update_done_restarting", "업데이트 완료! 서버가 재시작됩니다.");
       }
       let count = 4;
       const interval = setInterval(() => {
         if (progressPercent) {
-          progressPercent.innerText = `${count}초 후 새로고침...`;
+          progressPercent.innerText = t("update_reload_countdown", { n: count }, `${count}초 후 새로고침...`);
         }
         count--;
         if (count < 0) {
@@ -2952,11 +3298,11 @@
         }
       }, 1000);
     } catch (e) {
-      alert("업데이트 적용 실패: " + e.message);
+      alert(t("alert_update_failed", { msg: e.message }));
       if (applyBtn) {
         applyBtn.disabled = false;
         applyBtn.style.opacity = "1";
-        applyBtn.innerText = "🚀 지금 즉시 업데이트";
+        applyBtn.innerText = t("btn_update_now", "🚀 지금 즉시 업데이트");
       }
       if (cancelBtn) cancelBtn.style.display = "block";
       if (progressArea) progressArea.style.display = "none";
@@ -3128,7 +3474,7 @@
   function closeSlotModalOnBack(e) { if (e.target.id === "slotModal") closeSlotModal(); }
   async function executeSlotSave(slotId) {
     if (!validateAll()) {
-      alert("레시피 설정에 오류가 있습니다.");
+      alert(t("alert_recipe_err"));
       return;
     }
     const rawPayload = getRecipePayload();
@@ -3147,7 +3493,7 @@
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error("슬롯 저장에 실패했습니다.");
-      alert(`[슬롯 저장 완료]\n'${payload.name}' 레시피가 기기 슬롯 ${slotLetter} (${slotId}번)에 저장되었습니다.`);
+      alert(t("alert_slot_saved", { name: payload.name, slot: slotLetter, n: slotId }));
       addLog(`[OK] 기기 슬롯 ${slotLetter} (${slotId}번) 기록 성공`);
     } catch(e) {
       alert(e.message);
@@ -3155,7 +3501,7 @@
   }
   async function saveRecipeToServer() {
     if (!validateAll()) {
-      alert("레시피 파라미터 설정을 확인해주세요.");
+      alert(t("alert_recipe_param_check"));
       return;
     }
     const rawPayload = getRecipePayload();
@@ -3174,7 +3520,8 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "서버 저장 실패");
       addLog(`[RECIPE OK] recipes/${data.filename} 파일 저장 완료${rawPayload.interval_sync ? ' (인터벌 보정 적용)' : ''}`);
-      alert(`[서버 저장 완료]\n'${payload.name}' 레시피가 서버의 recipes/ 폴더에 저장되었습니다.${rawPayload.interval_sync ? '\n(핸드드립 인터벌 대기시간 보정 적용됨)' : ''}\n추출 대시보드로 이동합니다.`);
+      const notice = rawPayload.interval_sync ? t("alert_interval_applied_notice") : "";
+      alert(t("alert_server_saved", { name: payload.name, interval: notice }));
       const intervalChk = document.getElementById("recIntervalSync");
       if (intervalChk) {
         intervalChk.checked = false;
@@ -3183,7 +3530,7 @@
       await loadServerLocalRecipes(payload.name);
       switchTab('brew');
     } catch (e) {
-      alert(`저장 오류: ${e.message}`);
+      alert(t("alert_save_err", { msg: e.message }));
       addLog(`[RECIPE ERR] ${e.message}`);
     }
   }
@@ -3284,7 +3631,7 @@
   async function toggleBleConnection() {
     if (currentBleStatus === "SCANNING") return;
     if (currentBleStatus === "CONNECTED") {
-      if (confirm("xBloom 머신과의 블루투스 연결을 해제하시겠습니까?")) {
+      if (confirm(t("confirm_ble_disconnect"))) {
         addLog("[BLE] 머신 연결 해제 요청 중...");
         try {
           await fetch("/api/ble/disconnect", { method: "POST" });
@@ -3382,7 +3729,7 @@
       addLog("[BREW] 🚀 실제 커피 추출 시작! (1차 푸어 개시)");
     }
     document.getElementById("timeVal").innerText = "00:00";
-    document.getElementById("stateText").innerText = "추출 진행 중";
+    document.getElementById("stateText").innerText = t("state_brewing", "추출 진행 중");
     drawChart();
   }
   function handleTelemetryUpdate(data) {
@@ -3416,7 +3763,7 @@
     const stUpper = String(data.state || "").toUpperCase().trim();
     if (isGrindingPhase || stUpper === "STARTING") {
       document.getElementById("timeVal").innerText = "Grind";
-      document.getElementById("stateText").innerText = "원두 분쇄 중 (Grind ⚙️)";
+      document.getElementById("stateText").innerText = t("state_grinding", "원두 분쇄 중 (Grind ⚙️)");
     }
     if ((isBrewStaging || isGrindingPhase) && !isBrewActive) {
       const isBrewingSignal = (stUpper === "BREWING" || stUpper === "POURING" || stUpper === "0X10" || stUpper === "0X3B" || stUpper === "0X23");
@@ -3632,20 +3979,20 @@
     if (actionGrid) actionGrid.classList.remove("is-brewing");
     const bBtn = document.getElementById("brewBtn");
     if (bBtn) {
-      bBtn.innerText = "추출 시작";
+      bBtn.innerText = t("btn_start_brew", "추출 시작");
       bBtn.classList.remove("btn-finish-mode");
       bBtn.disabled = false;
       bBtn.style.opacity = "1";
       bBtn.onclick = startBrew;
     }
     const stopBtn = document.getElementById("stopBtn");
-    if (stopBtn) stopBtn.innerHTML = "비상 정지";
+    if (stopBtn) stopBtn.innerHTML = t("btn_stop_brew", "비상 정지");
     const timeEl = document.getElementById("timeVal");
     if (timeEl && timeEl.innerText === "Grind") timeEl.innerText = "00:00";
   }
   async function startBrew() {
     if (!validateAll()) {
-      alert("레시피 설정에 오류가 있어 추출을 시작할 수 없습니다.");
+      alert(t("alert_recipe_err"));
       return;
     }
     const rawPayload = getRecipePayload();
@@ -3703,21 +4050,21 @@
         isBrewActive = false;
         isGrindingPhase = true;
         isBrewStaging = true;
-        document.getElementById("stateText").innerText = "원두 분쇄 중 (Grind ⚙️)";
+        document.getElementById("stateText").innerText = t("state_grinding", "원두 분쇄 중 (Grind ⚙️)");
         document.getElementById("timeVal").innerText = "Grind";
         addLog(`[BREW] ⚙️ '${payload.name}' 원두 분쇄 시작... 분쇄 완료 후 실제 추출(물 투입) 타이머가 작동합니다.`);
       } else {
         isBrewActive = false;
         isGrindingPhase = false;
         isBrewStaging = true;
-        document.getElementById("stateText").innerText = "추출 준비 중";
+        document.getElementById("stateText").innerText = t("state_armed", "추출 준비 중");
         document.getElementById("timeVal").innerText = "--:--";
         addLog(`[BREW] 🚀 '${payload.name}' 추출 명령 전송 완료... 머신 물 공급 개시 시 타이머가 시작됩니다.`);
       }
       const actionGrid = document.getElementById("brewActionGrid");
       if (actionGrid) actionGrid.classList.add("is-brewing");
       const stopBtn = document.getElementById("stopBtn");
-      if (stopBtn) stopBtn.innerHTML = "🛑 비상 정지 (추출 중단)";
+      if (stopBtn) stopBtn.innerHTML = t("btn_stop_active", "🛑 비상 정지 (추출 중단)");
       addLog("[OK] 머신이 명령을 수락했습니다.");
     } catch (e) {
       alert(e.message);
@@ -3733,7 +4080,7 @@
       isGrindingPhase = false;
       isBrewStaging = false;
       resetBrewButton();
-      document.getElementById("stateText").innerText = "정지됨";
+      document.getElementById("stateText").innerText = t("state_aborted", "정지됨");
       document.getElementById("timeVal").innerText = "00:00";
       addLog("[CMD] 비상 정지 명령 전송 완료");
       let finalAbortWater = maxWaterPoured;
@@ -3779,7 +4126,7 @@
         }).catch(err => console.warn("비상정지 히스토리 서버 저장 실패:", err));
       }
     } catch (e) {
-      alert("정지 명령 실패");
+      alert(t("alert_stop_failed"));
     }
   }
   function finishBrew(durationSec) {
@@ -3788,7 +4135,7 @@
     isGrindingPhase = false;
     isBrewStaging = false;
     resetBrewButton();
-    document.getElementById("stateText").innerText = "추출 완료";
+    document.getElementById("stateText").innerText = t("state_finished", "추출 완료");
     addLog("[DONE] 추출이 완료되었습니다. 저울 안정화 및 기록 보관 완료.");
     const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
     const ss = String(durationSec % 60).padStart(2, '0');
@@ -3868,10 +4215,10 @@
       if (input) input.value = shareUrl;
       if (statusTxt) {
         if (autoOpened) {
-          statusTxt.innerText = "새 탭에서 오픈됨 🚀";
+          statusTxt.innerText = t("cloud_opened_badge", "새 탭에서 오픈됨 🚀");
           statusTxt.style.color = "var(--accent)";
         } else {
-          statusTxt.innerText = "아래 버튼으로 열기 ↗";
+          statusTxt.innerText = t("cloud_open_below", "아래 버튼으로 열기 ↗");
           statusTxt.style.color = "var(--muted)";
         }
       }
@@ -3880,7 +4227,7 @@
       if (openBtn) openBtn.style.display = "none";
     }
     const copyBtn = document.getElementById("btnCopyShareUrl");
-    if (copyBtn) copyBtn.innerText = "복사";
+    if (copyBtn) copyBtn.innerText = t("btn_copy", "복사");
     const modal = document.getElementById("cloudSuccessModal");
     if (modal) modal.classList.add("active");
   }
@@ -3902,8 +4249,8 @@
     try {
       await navigator.clipboard.writeText(lastCloudShareUrl);
       if (copyBtn) {
-        copyBtn.innerText = "✓ 복사됨";
-        setTimeout(() => { copyBtn.innerText = "복사"; }, 2000);
+        copyBtn.innerText = t("btn_copied", "✓ 복사됨");
+        setTimeout(() => { copyBtn.innerText = t("btn_copy", "복사"); }, 2000);
       }
     } catch (e) {
       const input = document.getElementById("cloudShareUrlInput");
@@ -3911,15 +4258,15 @@
         input.select();
         document.execCommand("copy");
         if (copyBtn) {
-          copyBtn.innerText = "✓ 복사됨";
-          setTimeout(() => { copyBtn.innerText = "복사"; }, 2000);
+          copyBtn.innerText = t("btn_copied", "✓ 복사됨");
+          setTimeout(() => { copyBtn.innerText = t("btn_copy", "복사"); }, 2000);
         }
       }
     }
   }
   async function uploadToCloud() {
     if (!validateAll()) {
-      alert("레시피 설정 오류를 수정해주세요.");
+      alert(t("alert_recipe_err"));
       return;
     }
     const rawPayload = getRecipePayload();
@@ -3962,7 +4309,7 @@
     const email = document.getElementById("cloudEmail").value.trim();
     const pw = document.getElementById("cloudPassword").value.trim();
     if (!email || !pw) {
-      alert("이메일과 비밀번호를 모두 입력해주세요.");
+      alert(t("alert_input_email_pass"));
       return;
     }
     try {
@@ -3977,9 +4324,9 @@
       }
       cloudUser = { email: data.email, token: data.token };
       updateCloudUI();
-      alert(`클라우드 로그인 성공: ${cloudUser.email}`);
+      alert(t("alert_login_success", { email: cloudUser.email }));
     } catch (e) {
-      alert(`로그인 오류: ${e.message}`);
+      alert(t("alert_login_err", { msg: e.message }));
     }
   }
   async function handleCloudLogout() {
@@ -3998,17 +4345,17 @@
     const loginForm = document.getElementById("cloudLoginForm");
     const logoutWrap = document.getElementById("cloudLogoutWrap");
     if (cloudUser && cloudUser.email) {
-      statusText.innerText = `동기화됨: ${cloudUser.email}`;
+      statusText.innerText = `${t("cloud_synced_prefix", "동기화됨: ")}${cloudUser.email}`;
       statusText.style.color = "var(--success)";
       statusDot.style.color = "var(--success)";
-      tokenInfo.innerText = "토큰 바인딩 완료";
+      tokenInfo.innerText = t("cloud_token_bound", "토큰 바인딩 완료");
       loginForm.style.display = "none";
       logoutWrap.style.display = "block";
     } else {
-      statusText.innerText = "로그인되어 있지 않음";
+      statusText.innerText = t("cloud_logged_out", "로그인되어 있지 않음");
       statusText.style.color = "var(--muted)";
       statusDot.style.color = "var(--muted)";
-      tokenInfo.innerText = "공식 앱 계정으로 로그인하여 레시피를 동기화하세요.";
+      tokenInfo.innerText = t("cloud_desc_logged_out", "공식 앱 계정으로 로그인하여 레시피를 동기화하세요.");
       loginForm.style.display = "flex";
       logoutWrap.style.display = "none";
     }
@@ -4086,14 +4433,14 @@
     const list = document.getElementById("historyListContainer");
     list.innerHTML = "";
     if (historyRecords.length === 0) {
-      list.innerHTML = "<div style='color:var(--muted); font-size:0.75rem; padding:10px;'>저장된 추출 이력이 없습니다.</div>";
+      list.innerHTML = `<div style="color:var(--muted); font-size:0.75rem; padding:10px;">${t("hist_no_records", "저장된 추출 이력이 없습니다.")}</div>`;
       return;
     }
     historyRecords.forEach(rec => {
       const isSel = currentHistRecord && currentHistRecord.id === rec.id;
       const ratio = rec.dose ? (rec.totalWater / rec.dose).toFixed(1) : "-";
       const isAborted = (rec.status === "aborted");
-      const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? '중단' : '완료'}</span>`;
+      const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? t('status_aborted', '중단') : t('status_completed', '완료')}</span>`;
       const beanHtml = rec.beanName ? `<div style="font-size:0.7rem; color:var(--sky); margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">☕ ${escapeHtml(rec.beanName)}</div>` : '';
       const item = document.createElement("div");
       item.className = `history-item ${isSel ? 'selected' : ''}`;
@@ -4106,15 +4453,15 @@
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
             <span>${rec.duration}</span>
-            <button class="btn-hist-del" onclick="event.stopPropagation(); deleteHistoryItem('${rec.id}')" title="삭제">&times;</button>
+            <button class="btn-hist-del" onclick="event.stopPropagation(); deleteHistoryItem('${rec.id}')" title="${t('btn_del_step', '삭제')}">&times;</button>
           </div>
         </div>
         <div class="history-rec-name">${escapeHtml(rec.recipeName)}</div>
         ${beanHtml}
         <div class="history-stats">
           <span style="color:var(--text);">Dose ${rec.dose}g</span>
-          <span style="color:var(--sky);">푸어 ${rec.totalWater}g</span>
-          <span style="color:var(--accent);">추출 ${rec.totalYield}g (1:${ratio})</span>
+          <span style="color:var(--sky);">${t('metric_pour', '푸어')} ${rec.totalWater}g</span>
+          <span style="color:var(--accent);">${t('metric_yield', '추출')} ${rec.totalYield}g (1:${ratio})</span>
         </div>
       `;
       list.appendChild(item);
@@ -4130,12 +4477,12 @@
       }
     });
     const isAborted = (rec.status === "aborted");
-    const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? '비상정지' : '완료'}</span>`;
+    const badgeHtml = `<span class="hist-badge ${isAborted ? 'badge-abort' : 'badge-done'}">${isAborted ? t('status_emergency_stop', '비상정지') : t('status_completed', '완료')}</span>`;
     document.getElementById("histDetailTitle").innerHTML = `${escapeHtml(rec.recipeName)} ${badgeHtml} <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">(${rec.date || ''})</span>`;
     const ratio = rec.dose ? (rec.totalWater / rec.dose).toFixed(1) : "-";
     document.getElementById("histDetailSummary").innerHTML = `
-      원두 투입: <b>${rec.dose}g</b> | 총 푸어량: <b>${rec.totalWater}g</b> | 실제 추출액: <b>${rec.totalYield}g</b><br>
-      추출 비율: <b>1 : ${ratio}</b> | 총 소요시간: <b>${rec.duration}</b>
+      ${t('hist_sum_dose', '원두 투입')}: <b>${rec.dose}g</b> | ${t('hist_sum_water', '총 푸어량')}: <b>${rec.totalWater}g</b> | ${t('hist_sum_yield', '실제 추출액')}: <b>${rec.totalYield}g</b><br>
+      ${t('hist_sum_ratio', '추출 비율')}: <b>1 : ${ratio}</b> | ${t('hist_sum_duration', '총 소요시간')}: <b>${rec.duration}</b>
     `;
     document.getElementById("histBeanInput").value = rec.beanName || "";
     document.getElementById("histNotesInput").value = rec.notes || "";
@@ -4147,8 +4494,8 @@
   }
   function clearHistoryDetail() {
     currentHistRecord = null;
-    document.getElementById("histDetailTitle").innerText = "선택된 추출 로그";
-    document.getElementById("histDetailSummary").innerHTML = "<div style='color:var(--muted); padding:6px 0;'>선택된 기록이 없습니다.</div>";
+    document.getElementById("histDetailTitle").innerText = t("hist_detail_title", "선택된 추출 로그");
+    document.getElementById("histDetailSummary").innerHTML = `<div style="color:var(--muted); padding:6px 0;">${t("hist_no_selection", "선택된 기록이 없습니다.")}</div>`;
     document.getElementById("histBeanInput").value = "";
     document.getElementById("histNotesInput").value = "";
     const canvas = document.getElementById("historyChart");
@@ -4161,7 +4508,7 @@
   }
   async function saveHistoryNotes() {
     if (!currentHistRecord) {
-      alert("선택된 추출 기록이 없습니다.");
+      alert(t("alert_no_hist_selected"));
       return;
     }
     const bean = document.getElementById("histBeanInput").value.trim();
@@ -4177,13 +4524,13 @@
       currentHistRecord.notes = notes;
       renderHistoryList();
       addLog("[HIST] 원두 메모 및 테이스팅 노트가 저장되었습니다.");
-      alert("메모가 성공적으로 저장되었습니다.");
+      alert(t("alert_note_saved"));
     } catch (e) {
-      alert("메모 저장 실패: " + e.message);
+      alert(t("alert_note_save_failed", { msg: e.message }));
     }
   }
   async function deleteHistoryItem(id) {
-    if (!confirm("이 추출 기록을 삭제하시겠습니까?")) return;
+    if (!confirm(t("confirm_delete_history", "이 추출 기록을 삭제하시겠습니까?"))) return;
     try {
       const res = await fetch("/api/history/" + id, { method: "DELETE" });
       if (!res.ok) throw new Error("삭제 실패");
@@ -4200,15 +4547,15 @@
       }
       addLog("[HIST] 추출 기록이 삭제되었습니다.");
     } catch (e) {
-      alert("삭제 실패: " + e.message);
+      alert(t("alert_hist_del_failed", { msg: e.message }));
     }
   }
   async function clearAllHistoryConfirm() {
     if (historyRecords.length === 0) {
-      alert("삭제할 추출 기록이 없습니다.");
+      alert(t("alert_no_hist_selected"));
       return;
     }
-    if (!confirm("저장된 모든 추출 기록을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) return;
+    if (!confirm(t("confirm_clear_all_history", "저장된 모든 추출 기록을 영구 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다."))) return;
     try {
       const res = await fetch("/api/history", { method: "DELETE" });
       if (!res.ok) throw new Error("전체 삭제 실패");
@@ -4218,12 +4565,12 @@
       clearHistoryDetail();
       addLog("[HIST] 모든 추출 기록이 삭제되었습니다.");
     } catch (e) {
-      alert("전체 삭제 실패: " + e.message);
+      alert(t("alert_all_hist_del_failed", { msg: e.message }));
     }
   }
   function loadRecipeFromCurrentHistory() {
     if (!currentHistRecord || !currentHistRecord.recipe) {
-      alert("복원할 레시피 정보가 없습니다.");
+      alert(t("alert_no_recipe_info", "복원할 레시피 정보가 없습니다."));
       return;
     }
     applyRecipeToUI(currentHistRecord.recipe);
@@ -4290,7 +4637,7 @@
       renderServerRecipeList(cachedServerRecipes);
     } catch (e) {
       if (container) {
-        container.innerHTML = `<div style="color:var(--danger); font-size:0.8rem; padding:12px; text-align:center;">레시피 목록을 불러오지 못했습니다: ${escapeHtml(e.message)}</div>`;
+        container.innerHTML = `<div style="color:var(--danger); font-size:0.8rem; padding:12px; text-align:center;">${t("server_recipes_load_err", "레시피 목록을 불러오지 못했습니다")}: ${escapeHtml(e.message)}</div>`;
       }
     } finally {
       if (loading) loading.style.display = "none";
@@ -4313,7 +4660,7 @@
     if (!container) return;
     container.innerHTML = "";
     if (!recipes || recipes.length === 0) {
-      container.innerHTML = `<div style="color:var(--muted); font-size:0.8rem; padding:24px 10px; text-align:center;">저장된 서버 레시피가 없습니다.</div>`;
+      container.innerHTML = `<div style="color:var(--muted); font-size:0.8rem; padding:24px 10px; text-align:center;">${t("server_recipes_empty", "저장된 서버 레시피가 없습니다.")}</div>`;
       return;
     }
     recipes.forEach(rec => {
@@ -4334,10 +4681,10 @@
       const totalWater = rec.total_water || (Array.isArray(rec.steps) ? rec.steps.reduce((a, b) => a + (Number(b.water) || 0), 0) : 0);
       const ratio = rec.dose > 0 ? (totalWater / rec.dose).toFixed(1) : "-";
       const grindText = rec.grind_enabled 
-        ? `<span style="color:var(--text);">⚙️ 분쇄 ${rec.grind_size} (${rec.grind_rpm} RPM)</span>`
-        : `<span style="color:var(--muted); font-weight:600;">🛑 분쇄 OFF</span>`;
+        ? `<span style="color:var(--text);">⚙️ ${t('grind_label', '분쇄')} ${rec.grind_size} (${rec.grind_rpm} RPM)</span>`
+        : `<span style="color:var(--muted); font-weight:600;">🛑 ${t('no_grind', '분쇄 OFF')}</span>`;
       const intervalBadge = rec.interval_sync
-        ? `<span style="background:rgba(249,115,22,0.12); color:var(--accent); font-size:0.68rem; padding:2px 6px; border-radius:4px; border:1px solid rgba(249,115,22,0.3);">⏱️ 인터벌 보정</span>`
+        ? `<span style="background:rgba(249,115,22,0.12); color:var(--accent); font-size:0.68rem; padding:2px 6px; border-radius:4px; border:1px solid rgba(249,115,22,0.3);">⏱️ ${t('interval_badge', '인터벌 보정')}</span>`
         : '';
       card.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
@@ -4346,14 +4693,14 @@
             <div style="font-size:0.7rem; color:var(--muted); font-family:monospace; margin-top:1px;">📄 ${escapeHtml(rec.filename)}</div>
           </div>
           <div style="display:flex; gap:6px; flex-shrink:0;">
-            <button class="btn-accent" style="font-size:0.75rem; padding:4px 10px; white-space:nowrap;" onclick="loadRecipeFromServer('${encodeURIComponent(rec.filename)}')">불러오기</button>
-            <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239,68,68,0.4); white-space:nowrap;" onclick="deleteRecipeFromServer('${encodeURIComponent(rec.filename)}', '${escapeHtml(rec.name)}')">삭제</button>
+            <button class="btn-accent" style="font-size:0.75rem; padding:4px 10px; white-space:nowrap;" onclick="loadRecipeFromServer('${encodeURIComponent(rec.filename)}')">${t('btn_load', '불러오기')}</button>
+            <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239,68,68,0.4); white-space:nowrap;" onclick="deleteRecipeFromServer('${encodeURIComponent(rec.filename)}', '${escapeHtml(rec.name)}')">${t('btn_del_step', '삭제')}</button>
           </div>
         </div>
         <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:0.75rem; color:var(--muted); margin-top:2px;">
           <span>☕ ${rec.dose}g (1:${ratio})</span>
           <span>•</span>
-          <span>💧 ${rec.pour_count || (rec.steps ? rec.steps.length : 0)}푸어 (${totalWater}g)</span>
+          <span>💧 ${rec.pour_count || (rec.steps ? rec.steps.length : 0)} ${t('pours_unit', '푸어')} (${totalWater}g)</span>
           <span>•</span>
           ${grindText}
           ${intervalBadge}
@@ -4366,18 +4713,18 @@
     const filename = decodeURIComponent(encodedFilename);
     const rec = cachedServerRecipes.find(r => r.filename === filename);
     if (!rec) {
-      alert("해당 레시피를 찾을 수 없습니다.");
+      alert(t("server_recipes_empty"));
       return;
     }
     applyRecipeToUI(rec);
     closeServerRecipeModal();
     switchTab('editor');
     addLog(`[RECIPE] 서버 레시피 '${rec.name}' (${rec.filename}) 로드 완료`);
-    alert(`✅ '${rec.name}' 레시피를 성공적으로 불러왔습니다!\n레시피 스튜디오에 적용되었습니다.`);
+    alert(t("alert_recipe_loaded", { name: rec.name }));
   }
   async function deleteRecipeFromServer(encodedFilename, recipeName) {
     const filename = decodeURIComponent(encodedFilename);
-    if (!confirm(`정말 서버에서 '${recipeName}' 레시피를 영구 삭제하시겠습니까?\n(파일: ${filename})`)) {
+    if (!confirm(t("confirm_delete_recipe", { name: recipeName, file: filename }))) {
       return;
     }
     try {
@@ -4394,7 +4741,7 @@
       if (countEl) countEl.innerText = cachedServerRecipes.length;
       filterServerRecipes();
     } catch (e) {
-      alert(`레시피 삭제 오류: ${e.message}`);
+      alert(t("alert_recipe_del_failed", { msg: e.message }));
       addLog(`[RECIPE ERR] ${e.message}`);
     }
   }
@@ -4422,7 +4769,7 @@
     const loading = document.getElementById("shareLoadingBox");
     const btn = document.getElementById("btnFetchShare");
     if (!url) {
-      err.innerText = "공유 링크 URL 또는 ID를 입력해주세요.";
+      err.innerText = t("err_share_url", "공유 링크 URL 또는 ID를 입력해주세요.");
       err.style.display = "block";
       input.focus();
       return;
@@ -4808,7 +5155,7 @@
       if (!inRange) {
         ratioBanner.classList.add("invalid");
         ratioBadge.classList.add("invalid");
-        ratioErr.innerText = `추출 비율은 1:5.0 ~ 1:25.0 범위 내여야 합니다. (현재 1:${ratioVal.toFixed(2)})`;
+        ratioErr.innerText = t("err_ratio_range", { current: ratioVal.toFixed(2) });
         ratioErr.classList.add("visible");
         isValid = false;
       } else if (!isHalfStep) {
@@ -4818,7 +5165,7 @@
         const recWater2 = Math.round(upperHalf * dose);
         ratioBanner.classList.add("invalid");
         ratioBadge.classList.add("invalid");
-        ratioErr.innerText = `실 푸어량 비율이 0.5단위와 일치하지 않습니다! (총 푸어량을 ${recWater1}g 또는 ${recWater2}g으로 설정하세요)`;
+        ratioErr.innerText = t("err_ratio_half_unit", { water1: recWater1, water2: recWater2 });
         ratioErr.classList.add("visible");
         isValid = false;
       } else {
@@ -4846,7 +5193,7 @@
   }
   function exportYAML() {
     if (!validateAll()) {
-      alert("레시피 설정 오류를 수정해주세요.");
+      alert(t("alert_recipe_err"));
       return;
     }
     const name = document.getElementById("recName").value;
@@ -4925,7 +5272,7 @@
         }
         alert(`'${file.name}' 파일을 성공적으로 로드했습니다.`);
       } catch (err) {
-        alert("레시피 파일을 파싱하지 못했습니다.");
+        alert(t("alert_recipe_parse_failed", "레시피 파일을 파싱하지 못했습니다."));
       }
     };
     reader.readAsText(file);
@@ -5003,6 +5350,5 @@
   loadServerSettings();
   loadHistoryFromServer();
 </script>
-
 </body>
 </html>

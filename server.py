@@ -1,5 +1,5 @@
 import shutil
-'\nxBloom bleUI Local Web Server (v0.9.0)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n- 글로벌 판매국 스페셜티 커피 바리스타 전문 용어 다국어(i18n) 지원\n'
+'\nxBloom bleUI Local Web Server (v0.9.2)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n- 글로벌 판매국 스페셜티 커피 바리스타 전문 용어 다국어(i18n) 지원\n'
 import sys
 import os
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 from typing import Dict, Any, Optional, List
 import urllib.request
 import urllib.parse
-CURRENT_VERSION = '0.9.0'
+CURRENT_VERSION = '0.9.2'
 GITHUB_REPO = 'ennemate/xBloom-bleUI'
 import uvicorn
 import yaml
@@ -39,7 +39,7 @@ for candidate in ['Step', 'PourStep', 'RecipeStep', 'Pour']:
 try:
     import xbloom_ble.cloud as cloud_module
 except Exception as ce:
-    print(f'[WARN] xbloom_ble.cloud 임포트 실패: {ce}')
+    print(f'[WARN] Failed to import xbloom_ble.cloud: {ce}')
     cloud_module = None
 
 def get_cloud_handler():
@@ -88,15 +88,15 @@ def load_server_config() -> Dict[str, Any]:
                         pass
                     return {**default_config, **cfg}
         except Exception as e:
-            print(f'[WARN] 설정 파일 로드 실패: {e}')
+            print(f'[WARN] Failed to load config.json: {e}')
             return default_config
     else:
         try:
             with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
                 json.dump(default_config, f, ensure_ascii=False, indent=2)
-            print('[INIT] 최초 실행: config.json 기본 설정 파일이 자동 생성되었습니다.')
+            print('[INIT] First run: config.json default configuration file created.')
         except Exception as e:
-            print(f'[WARN] config.json 생성 실패: {e}')
+            print(f'[WARN] Failed to create config.json: {e}')
     return default_config
 
 def save_server_config(cfg: Dict[str, Any]):
@@ -104,7 +104,7 @@ def save_server_config(cfg: Dict[str, Any]):
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(cfg, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f'[WARN] 설정 저장 실패: {e}')
+        print(f'[WARN] Failed to save config: {e}')
 server_config = load_server_config()
 
 def load_brew_history() -> List[Dict[str, Any]]:
@@ -120,14 +120,14 @@ def load_brew_history() -> List[Dict[str, Any]]:
                             pass
                     return data
         except Exception as e:
-            print(f'[WARN] 추출 히스토리 로드 실패: {e}')
+            print(f'[WARN] Failed to load history.json: {e}')
             bak_file = HISTORY_FILE + '.bak'
             if os.path.exists(bak_file):
                 try:
                     with open(bak_file, 'r', encoding='utf-8') as bf:
                         bak_data = json.load(bf)
                         if isinstance(bak_data, list):
-                            print('[HIST] 손상된 history.json을 백업 사본(.bak)에서 자동 복원했습니다.')
+                            print('[HIST] Corrupted history.json automatically restored from backup (.bak).')
                             return bak_data
                 except Exception:
                     pass
@@ -135,9 +135,9 @@ def load_brew_history() -> List[Dict[str, Any]]:
         try:
             with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
                 json.dump([], f, ensure_ascii=False, indent=2)
-            print('[INIT] 최초 실행: history.json 추출 기록 파일이 자동 생성되었습니다.')
+            print('[INIT] First run: history.json brew history file created.')
         except Exception as e:
-            print(f'[WARN] history.json 생성 실패: {e}')
+            print(f'[WARN] Failed to create history.json: {e}')
     return []
 initial_history = load_brew_history()
 
@@ -146,7 +146,7 @@ def save_brew_history(records: List[Dict[str, Any]]):
         with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(records[:500], f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f'[WARN] 추출 히스토리 저장 실패: {e}')
+        print(f'[WARN] Failed to save history.json: {e}')
 
 def restore_cloud_session():
     global cloud_client
@@ -277,12 +277,12 @@ def on_machine_telemetry(telemetry_data):
         if main_loop and main_loop.is_running():
             asyncio.run_coroutine_threadsafe(broadcast_msg(payload), main_loop)
     except Exception as e:
-        print(f'[WARN] 텔레메트리 파싱 실패: {e}')
+        print(f'[WARN] Telemetry parse error: {e}')
 
 async def connect_ble_task():
     global ble_client, ble_connection_status, discovered_device_address
     ble_connection_status = 'SCANNING'
-    print('\n[BLE] 주변의 xBloom 기기를 블루투스로 검색 중입니다...')
+    print('\n[BLE] Scanning for nearby xBloom machines via Bluetooth...')
     await broadcast_msg({'type': 'log', 'msg': '[BLE] 주변 xBloom 기기 탐색 중...'})
     await broadcast_msg({'type': 'status', 'ble_status': 'SCANNING'})
     target_address = None
@@ -292,13 +292,13 @@ async def connect_ble_task():
             d_name = (d.name or '').lower()
             if 'xbloom' in d_name or 'bloom' in d_name:
                 target_address = d.address
-                print(f'[BLE] 기기 발견: {d.name} ({d.address})')
+                print(f'[BLE] Device found: {d.name} ({d.address})')
                 await broadcast_msg({'type': 'log', 'msg': f'[BLE] 기기 발견: {d.name} ({d.address})'})
                 break
         if not target_address:
             raise RuntimeError('주변에서 xBloom 기기를 찾지 못했습니다. 전원을 확인해주세요.')
         discovered_device_address = target_address
-        print(f'[BLE] 기기({target_address})에 연결 시도...')
+        print(f'[BLE] Connecting to device ({target_address})...')
         await broadcast_msg({'type': 'log', 'msg': '[BLE] 페어링 연결 시도 중...'})
         ble_client = XBloomClient(target_address)
         if hasattr(ble_client, 'connect'):
@@ -307,12 +307,12 @@ async def connect_ble_task():
             res = ble_client.open_session()
             if asyncio.iscoroutine(res):
                 await res
-            print('[BLE] open_session 완료 (기기 연결 표시 활성화)')
+            print('[BLE] open_session completed (device connection marked active)')
         if hasattr(ble_client, 'add_telemetry_listener'):
             ble_client.add_telemetry_listener(on_machine_telemetry)
-            print('[BLE] 실시간 텔레메트리 팬아웃 리스너 등록 완료')
+            print('[BLE] Real-time telemetry fanout listener registered')
         ble_connection_status = 'CONNECTED'
-        print('[BLE] xBloom 머신 정상 연결 및 제어 준비 완료!')
+        print('[BLE] xBloom machine connected and ready for control!')
         await broadcast_msg({'type': 'log', 'msg': '[BLE] 머신 연결 성공! 제어 준비 완료.'})
         await broadcast_msg({'type': 'status', 'ble_status': 'CONNECTED'})
     except Exception as e:
@@ -329,7 +329,7 @@ async def lifespan(app: FastAPI):
     cloud_client = get_cloud_handler()
     if cloud_client:
         restore_cloud_session()
-        print(f'[CLOUD] 클라우드 모듈 로드 완료: {type(cloud_client).__name__}')
+        print(f'[CLOUD] Cloud module loaded: {type(cloud_client).__name__}')
     ble_init_task = asyncio.create_task(connect_ble_task())
     yield
     if ble_init_task and (not ble_init_task.done()):
@@ -554,7 +554,7 @@ async def add_history_record(record: HistoryItemModel):
         rec_dict['date'] = time.strftime('%m. %d. %H:%M')
     records.insert(0, rec_dict)
     save_brew_history(records)
-    print(f"[HISTORY] 새 추출 기록 저장: {rec_dict['recipeName']} ({rec_dict.get('status', 'completed')}) - {rec_dict['totalYield']}g / {rec_dict['duration']}")
+    print(f"[HISTORY] New brew record saved: {rec_dict['recipeName']} ({rec_dict.get('status', 'completed')}) - {rec_dict['totalYield']}g / {rec_dict['duration']}")
     return {'status': 'saved', 'record': rec_dict}
 
 @app.put('/api/history/{record_id}')
@@ -581,13 +581,13 @@ async def delete_history_record(record_id: str):
     if len(new_records) == len(records):
         raise HTTPException(status_code=404, detail='해당 추출 기록을 찾을 수 없습니다.')
     save_brew_history(new_records)
-    print(f'[HISTORY] 추출 기록 삭제: ID {record_id}')
+    print(f'[HISTORY] Brew record deleted: ID {record_id}')
     return {'status': 'deleted', 'id': record_id, 'remaining': len(new_records)}
 
 @app.delete('/api/history')
 async def clear_all_history():
     save_brew_history([])
-    print('[HISTORY] 전체 추출 기록 일괄 삭제 완료')
+    print('[HISTORY] All brew records cleared successfully')
     return {'status': 'cleared'}
 
 @app.post('/api/ble/reconnect')
@@ -601,7 +601,7 @@ async def trigger_reconnect():
 @app.post('/api/ble/disconnect')
 async def trigger_disconnect():
     global ble_client, ble_connection_status
-    print('\n[BLE] 머신 연결 해제 요청 수신...')
+    print('\n[BLE] Disconnection request received...')
     if ble_client:
         try:
             if hasattr(ble_client, 'close_session'):
@@ -613,9 +613,9 @@ async def trigger_disconnect():
                 if asyncio.iscoroutine(res):
                     await res
         except Exception as e:
-            print(f'[WARN] 연결 해제 중 예외: {e}')
+            print(f'[WARN] Exception during disconnect: {e}')
     ble_connection_status = 'DISCONNECTED'
-    print('[BLE] 머신과의 연결이 해제되었습니다.')
+    print('[BLE] Machine disconnected successfully.')
     await broadcast_msg({'type': 'log', 'msg': '[BLE] 머신과의 연결이 해제되었습니다.'})
     await broadcast_msg({'type': 'status', 'ble_status': 'DISCONNECTED'})
     return {'status': 'disconnected'}
@@ -641,7 +641,7 @@ async def get_local_recipes():
                 total_water_ml = sum((s['water'] for s in steps_data))
                 recipes_list.append({'filename': os.path.basename(fpath), 'name': data.get('name', os.path.splitext(os.path.basename(fpath))[0]), 'dose': int(data.get('dose', 15)), 'grind_size': grind_val if grind_val > 0 else 45, 'grind_enabled': bool(grind_on), 'grind_rpm': grind_rpm, 'interval_sync': False, 'total_water': total_water_ml, 'pour_count': len(steps_data), 'steps': steps_data})
         except Exception as e:
-            print(f'[WARN] 레시피 파일 로드 실패 ({fpath}): {e}')
+            print(f'[WARN] Failed to load recipe file ({fpath}): {e}')
     recipes_list.sort(key=lambda x: x.get('name', '').lower())
     return {'recipes': recipes_list}
 
@@ -655,7 +655,7 @@ async def delete_local_recipe(filename: str):
         raise HTTPException(status_code=404, detail='해당 레시피 파일을 찾을 수 없습니다.')
     try:
         os.remove(file_path)
-        print(f'[RECIPE] 서버 레시피 파일 삭제 완료: {clean_name}')
+        print(f'[RECIPE] Deleted server recipe: {clean_name}')
         return {'status': 'deleted', 'filename': clean_name}
     except Exception as e:
         traceback.print_exc()
@@ -672,7 +672,7 @@ async def save_recipe_to_server(recipe_data: RecipeModel):
         yaml_content = {'name': recipe_data.name, 'dose': int(recipe_data.dose), 'grind_size': int(recipe_data.grind_size), 'grind_enabled': bool(recipe_data.grind_enabled), 'grind_rpm': int(recipe_data.grind_rpm), 'steps': [{'temp': int(s.temp), 'pour': int(s.water), 'wait': int(s.wait), 'flow_rate': float(s.flow), 'pattern': normalize_pattern(s.pattern), 'agitation_before': bool(s.agitation_before), 'agitation_after': bool(s.agitation_after)} for s in recipe_data.steps]}
         with open(file_path, 'w', encoding='utf-8') as f:
             yaml.dump(yaml_content, f, allow_unicode=True, sort_keys=False)
-        print(f'[RECIPE] 서버에 레시피 파일 저장 완료: {file_path}')
+        print(f'[RECIPE] Saved recipe to server: {file_path}')
         return {'status': 'saved', 'filename': filename, 'name': recipe_data.name}
     except Exception as e:
         traceback.print_exc()
@@ -690,7 +690,7 @@ async def write_slot(slot_id: int, recipe_data: RecipeModel):
         with open(target_slot_file, 'w', encoding='utf-8') as f:
             json.dump(recipe_data.dict(), f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f'[WARN] 슬롯 캐시 저장 경고: {e}')
+        print(f'[WARN] Slot cache save warning: {e}')
     all_slots_payload = {}
     for sid in [1, 2, 3]:
         key_name = SLOT_KEY_MAP[sid]
@@ -711,15 +711,15 @@ async def write_slot(slot_id: int, recipe_data: RecipeModel):
         try:
             if hasattr(ble_client, 'save_slots'):
                 target_key = SLOT_KEY_MAP[slot_id]
-                print(f"[SLOT] xBloom 슬롯 매핑 전송: 슬롯 {target_key}({slot_id}번) 갱신 -> '{recipe_data.name}'")
+                print(f"[SLOT] Hardware slot mapping update: Slot {target_key} (#{slot_id}) -> '{recipe_data.name}'")
                 res = ble_client.save_slots(all_slots_payload)
                 if asyncio.iscoroutine(res):
                     await res
-                print(f'[SLOT] xBloom 머신 메모리 슬롯 저장 성공!')
+                print('[SLOT] xBloom hardware memory slot write successful!')
             else:
                 raise RuntimeError('클라이언트에 save_slots 메서드가 없습니다.')
         except Exception as e:
-            print(f'[WARN] save_slots BLE 전송 오류: {e}')
+            print(f'[WARN] save_slots BLE transfer error: {e}')
             traceback.print_exc()
             raise HTTPException(status_code=500, detail=f'슬롯 저장 실패: {str(e)}')
     return {'status': 'saved', 'slot': slot_id, 'key': SLOT_KEY_MAP[slot_id], 'name': recipe_data.name}
@@ -737,7 +737,7 @@ async def start_brew(recipe_data: RecipeModel):
     latest_telemetry['step_index'] = 1
     latest_telemetry['elapsed_time'] = 0
     recipe_obj = build_official_recipe_object(recipe_data)
-    print(f'\n[BREW] 공식 추출 루틴 실행: {recipe_data.name} (Dose: {recipe_data.dose}g)')
+    print(f'\n[BREW] Executing brew routine: {recipe_data.name} (Dose: {recipe_data.dose}g)')
     if hasattr(recipe_obj, 'ble_warnings'):
         warnings = recipe_obj.ble_warnings()
         for w in warnings:
@@ -832,7 +832,7 @@ async def cloud_login(creds: CloudLoginModel):
         server_config['cloud_user'] = {'email': creds.email, 'token': token_str}
         save_server_config(server_config)
         restore_cloud_session()
-        print(f'[CLOUD] 로그인 성공: {creds.email}')
+        print(f'[CLOUD] Login successful: {creds.email}')
         return {'success': True, 'token': token_str, 'email': creds.email}
     except Exception as e:
         traceback.print_exc()
@@ -867,7 +867,7 @@ async def cloud_upload(recipe_data: RecipeModel):
     try:
         res = upload_func(recipe_obj)
         resp_data = await res if asyncio.iscoroutine(res) else res
-        print(f'[CLOUD] 레시피 업로드 원본 응답: {resp_data}')
+        print(f'[CLOUD] Recipe upload raw response: {resp_data}')
         table_id = None
         share_url = None
         if isinstance(resp_data, dict):
@@ -896,12 +896,12 @@ async def cloud_upload(recipe_data: RecipeModel):
                             break
                         await asyncio.sleep(0.4)
                     except Exception as fe:
-                        print(f'[WARN] 레시피 공유 URL 조회 중 경고: {fe}')
+                        print(f'[WARN] Warning during recipe share URL query: {fe}')
                         break
-        print(f'[CLOUD] 레시피 업로드 완료: ID = {table_id or resp_data}, ShareURL = {share_url}')
+        print(f'[CLOUD] Recipe upload complete: ID = {table_id or resp_data}, ShareURL = {share_url}')
         return {'success': True, 'recipe_id': str(table_id or resp_data or 'OK'), 'share_url': share_url}
     except Exception as e:
-        print('[WARN] 레시피 업로드 예외 발생:')
+        print('[WARN] Recipe upload exception occurred:')
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f'업로드 실패 원인: {str(e)}')
 
@@ -987,7 +987,7 @@ def fetch_xbloom_shared_recipe(url_or_id: str) -> Dict[str, Any]:
 async def api_fetch_shared_recipe(req: FetchSharedRecipeRequest):
     try:
         recipe_data = fetch_xbloom_shared_recipe(req.url)
-        print(f"[CLOUD SHARE] 공유 레시피 성공적으로 파싱: '{recipe_data['name']}' (공유자: {recipe_data.get('share_member_name')})")
+        print(f"[CLOUD SHARE] Successfully parsed shared recipe: '{recipe_data['name']}' (Author: {recipe_data.get('share_member_name')})")
         return {'success': True, 'recipe': recipe_data}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
@@ -1063,9 +1063,9 @@ def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
                     shutil.copy2(src_file, dst_file)
                     copied_files.append(os.path.relpath(dst_file, BASE_DIR))
                 except Exception as ce:
-                    print(f'[UPDATE WARN] 파일 복사 건너뜀 ({file_name}): {ce}')
+                    print(f'[UPDATE WARN] Skipped file copy ({file_name}): {ce}')
         shutil.rmtree(tmp_dir, ignore_errors=True)
-        print(f'[UPDATE] 총 {len(copied_files)}개 소스 파일 교체 완료 (사용자 데이터 보존됨)')
+        print(f'[UPDATE] Replaced {len(copied_files)} files cleanly (user data preserved)')
 
         def delayed_restart():
             time.sleep(1.5)
@@ -1077,7 +1077,7 @@ def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
                 if sys.platform == 'win32':
                     flags = getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0) | getattr(subprocess, 'DETACHED_PROCESS', 8)
                 subprocess.Popen(cmd, cwd=BASE_DIR, creationflags=flags)
-                print('[UPDATE] 새 서버 프로세스를 성공적으로 기동했습니다.')
+                print('[UPDATE] Successfully started new server process.')
             except Exception as re:
                 print(f'[UPDATE RESTART ERROR] {re}')
             finally:

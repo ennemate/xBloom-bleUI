@@ -1,4 +1,4 @@
-# xBloom bleUI (v0.9.0)
+# xBloom bleUI (v0.9.2)
 
 <p align="center">
   <strong>專為 xBloom Studio 打造的現代化本機網頁儀表板與即時沖煮萃取分析控制器</strong>
@@ -122,7 +122,7 @@
 
 ## 🚀 快速上手 (Windows 免安裝版)
 
-1. 前往 [Releases](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v0.9.0-Windows-Portable.zip`。
+1. 前往 [Releases](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v0.9.2-Windows-Portable.zip`。
 2. 解壓縮至任意資料夾。
 3. 雙擊執行 **`run.bat`**。
    - 系統將自動啟動本機伺服器並在瀏覽器中開啟 `http://localhost:8000`。
