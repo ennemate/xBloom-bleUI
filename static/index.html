@@ -589,6 +589,38 @@
       color: var(--muted);
     }
     .interval-hint-badge.info b { color: var(--text); }
+
+    .update-badge-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(217, 119, 54, 0.2), rgba(56, 189, 248, 0.25));
+      border: 1px solid rgba(217, 119, 54, 0.5);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      animation: updateGlow 2s infinite ease-in-out;
+    }
+    .update-badge-btn:hover {
+      background: linear-gradient(135deg, rgba(217, 119, 54, 0.35), rgba(56, 189, 248, 0.4));
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    @keyframes updateGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 54, 0.4); }
+      50% { box-shadow: 0 0 8px 2px rgba(56, 189, 248, 0.4); }
+    }
+    .update-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+    }
   </style>
 </head>
 <body class="custom-wallpaper-container">
@@ -597,6 +629,10 @@
   <header>
     <div class="brand">xBloom <span>bleUI</span></div>
     <div class="header-actions">
+      <button class="update-badge-btn" id="updateBadgeBtn" style="display:none;" onclick="openUpdateModal()">
+        <div class="update-pulse-dot"></div>
+        <span id="updateBadgeText">새 업데이트 발견</span>
+      </button>
       <button class="badge-btn disconnected" id="bleStatusBtn" onclick="toggleBleConnection()">
         <div class="dot"></div>
         <span id="bleStatusText">BLE 연결 확인 중</span>
@@ -627,7 +663,7 @@
         <div class="card log-card">
           <div class="card-title">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div>[INIT] xBloom bleUI v0.8.1 구동 완료</div>
+            <div>[INIT] xBloom bleUI v0.8.5 구동 완료</div>
           </div>
         </div>
       </div>
@@ -1033,16 +1069,71 @@
       <div id="cloudLogoutWrap" style="margin-top:10px; display:none;">
         <button class="btn-secondary" onclick="handleCloudLogout()">로그아웃 (토큰 해제)</button>
       </div>
+
+      <div class="setting-row" style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
+        <div>
+          <div class="setting-label">🚀 버전 및 자동 업데이트</div>
+          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.8.5</div>
+        </div>
+        <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="font-size:0.75rem; padding:6px 12px; cursor:pointer;">업데이트 확인</button>
+      </div>
     </div>
 
     <div class="settings-footer">
-      <span>v0.8.1 by 팽이팽이</span>
+      <span>v0.8.5 by 팽이팽이</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="updateModal" onclick="closeUpdateOnBack(event)">
+  <div class="modal-card" style="max-width: 520px; width: 92%;">
+    <div class="modal-header">
+      <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+        <span>🚀</span>
+        <span id="updateModalTitle">새로운 버전 업데이트</span>
+      </div>
+      <button class="btn-close" onclick="closeUpdateModal()">&times;</button>
+    </div>
+
+    <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
+      <div>
+        <div style="font-size:0.75rem; color:var(--muted);">현재 버전</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.8.5</div>
+      </div>
+      <div style="font-size:1.1rem; color:var(--accent);">➔</div>
+      <div>
+        <div style="font-size:0.75rem; color:var(--muted);">최신 릴리즈</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.8.5</div>
+      </div>
+    </div>
+
+    <div style="font-size:0.8rem; font-weight:600; margin-bottom:6px; color:var(--text);">릴리즈 변경 사항 (Release Notes)</div>
+    <div id="updateReleaseNotes" style="max-height: 220px; overflow-y: auto; background: var(--card-inner); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.78rem; line-height: 1.5; color: var(--text); white-space: pre-wrap;"></div>
+
+    <div style="margin-top:12px; padding:10px 12px; border-radius:8px; background:rgba(34, 197, 94, 0.1); border:1px solid rgba(34, 197, 94, 0.3); font-size:0.74rem; color:var(--text); line-height:1.4;">
+      🛡️ <b>데이터 보호 안내</b>: 개인 레시피(recipes/), 추출 기록(history.json), 설정 파일(config.json) 및 포터블 파이썬 환경은 <b>절대 덮어씌워지지 않고 100% 안전하게 유지</b>됩니다.
+    </div>
+
+    <div id="updateProgressArea" style="display:none; margin-top:14px;">
+      <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+        <span id="updateProgressStatus" style="color:var(--sky); font-weight:600;">업데이트 다운로드 및 적용 중...</span>
+        <span id="updateProgressPercent" style="color:var(--muted);">잠시만 기다려주세요</span>
+      </div>
+      <div class="progress-bar-bg" style="height:6px;">
+        <div class="progress-bar" id="updateProgressBar" style="width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="modal-footer" id="updateModalButtons" style="margin-top:18px; display:flex; gap:8px;">
+      <button class="btn-secondary" id="updateCancelBtn" onclick="closeUpdateModal()" style="flex:1;">나중에 하기</button>
+      <button class="btn-accent" id="updateApplyBtn" onclick="applyUpdateNow()" style="flex:2; background: linear-gradient(135deg, var(--accent), #e05206); border:none;">🚀 지금 즉시 업데이트</button>
     </div>
   </div>
 </div>
 
 <script>
   let recordAbortedBrews = false;
+  let latestReleaseData = null;
   async function loadServerSettings() {
     try {
       const res = await fetch("/api/settings");
@@ -1064,6 +1155,127 @@
       }
     } catch (e) {
       console.warn("서버 설정 로드 실패:", e);
+    }
+    setTimeout(() => checkForUpdates(false), 1500);
+  }
+  async function checkForUpdates(manual = false) {
+    const btnManual = document.getElementById("btnManualCheckUpdate");
+    if (manual && btnManual) {
+      btnManual.innerText = "확인 중...";
+      btnManual.disabled = true;
+    }
+    try {
+      const url = "/api/update/check" + (manual ? "?force=true" : "");
+      const res = await fetch(url);
+      const data = await res.json();
+      latestReleaseData = data;
+      const badgeBtn = document.getElementById("updateBadgeBtn");
+      const badgeText = document.getElementById("updateBadgeText");
+      const verDesc = document.getElementById("settingsVersionInfo");
+      if (verDesc) {
+        verDesc.innerText = `현재 버전: v${data.current_version || "0.8.5"}`;
+      }
+      if (data.update_available) {
+        if (badgeBtn) {
+          badgeBtn.style.display = "inline-flex";
+          if (badgeText) badgeText.innerText = `🎉 v${data.latest_version} 업데이트`;
+        }
+        if (manual) {
+          openUpdateModal();
+        }
+      } else {
+        if (badgeBtn) badgeBtn.style.display = "none";
+        if (manual) {
+          alert(`현재 최신 버전(v${data.current_version || "0.8.5"})을 사용 중입니다.`);
+        }
+      }
+    } catch (e) {
+      console.warn("업데이트 확인 실패:", e);
+      if (manual) {
+        alert("업데이트 확인 중 네트워크 오류가 발생했습니다.");
+      }
+    } finally {
+      if (manual && btnManual) {
+        btnManual.innerText = "업데이트 확인";
+        btnManual.disabled = false;
+      }
+    }
+  }
+  function manualCheckUpdate() {
+    checkForUpdates(true);
+  }
+  function openUpdateModal() {
+    if (!latestReleaseData) {
+      manualCheckUpdate();
+      return;
+    }
+    const currentSpan = document.getElementById("updateCurrentVer");
+    const latestSpan = document.getElementById("updateLatestVer");
+    const titleSpan = document.getElementById("updateModalTitle");
+    const notesBox = document.getElementById("updateReleaseNotes");
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.8.5"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.8.5"}`;
+    if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || `xBloom bleUI v${latestReleaseData.latest_version} 업데이트`;
+    if (notesBox) {
+      notesBox.innerText = latestReleaseData.release_notes || "새로운 기능 개선 및 버그 수정이 포함되어 있습니다.";
+    }
+    const modal = document.getElementById("updateModal");
+    if (modal) modal.classList.add("active");
+  }
+  function closeUpdateModal() {
+    const modal = document.getElementById("updateModal");
+    if (modal) modal.classList.remove("active");
+  }
+  function closeUpdateOnBack(e) {
+    if (e.target.id === "updateModal") {
+      closeUpdateModal();
+    }
+  }
+  async function applyUpdateNow() {
+    const applyBtn = document.getElementById("updateApplyBtn");
+    const cancelBtn = document.getElementById("updateCancelBtn");
+    const progressArea = document.getElementById("updateProgressArea");
+    const progressStatus = document.getElementById("updateProgressStatus");
+    const progressPercent = document.getElementById("updateProgressPercent");
+    if (applyBtn) {
+      applyBtn.disabled = true;
+      applyBtn.style.opacity = "0.6";
+      applyBtn.innerText = "업데이트 진행 중...";
+    }
+    if (cancelBtn) cancelBtn.style.display = "none";
+    if (progressArea) progressArea.style.display = "block";
+    if (progressStatus) progressStatus.innerText = "업데이트 패키지 다운로드 및 적용 중...";
+    if (progressPercent) progressPercent.innerText = "잠시만 기다려주세요";
+    try {
+      const res = await fetch("/api/update/apply", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || data.message || "업데이트 적용 중 오류가 발생했습니다.");
+      }
+      if (progressStatus) {
+        progressStatus.style.color = "var(--success)";
+        progressStatus.innerText = "업데이트 완료! 서버가 재시작됩니다.";
+      }
+      let count = 4;
+      const interval = setInterval(() => {
+        if (progressPercent) {
+          progressPercent.innerText = `${count}초 후 새로고침...`;
+        }
+        count--;
+        if (count < 0) {
+          clearInterval(interval);
+          location.reload();
+        }
+      }, 1000);
+    } catch (e) {
+      alert("업데이트 적용 실패: " + e.message);
+      if (applyBtn) {
+        applyBtn.disabled = false;
+        applyBtn.style.opacity = "1";
+        applyBtn.innerText = "🚀 지금 즉시 업데이트";
+      }
+      if (cancelBtn) cancelBtn.style.display = "block";
+      if (progressArea) progressArea.style.display = "none";
     }
   }
   function isIntervalSyncEnabled() {
@@ -1814,7 +2026,6 @@
     }
     finalTotalWater = Math.round(finalTotalWater * 10) / 10;
     document.getElementById("pourVal").innerText = Math.round(finalTotalWater);
-
     const newRecord = {
       id: "hist_" + Date.now(),
       date: new Date().toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
@@ -2040,14 +2251,12 @@
       if (res.ok) {
         const data = await res.json();
         let serverRecords = data.records || [];
-
         // 브라우저 로컬 백업 확인 및 스마트 복원 (기존 데이터 보존)
         const localBackupRaw = localStorage.getItem("xbloom_brew_history_backup");
         let localRecords = [];
         if (localBackupRaw) {
           try { localRecords = JSON.parse(localBackupRaw); } catch(e){}
         }
-
         if (Array.isArray(localRecords) && localRecords.length > 0) {
           const serverIds = new Set(serverRecords.map(r => r.id));
           const missingOnServer = localRecords.filter(r => r && r.id && !serverIds.has(r.id));
@@ -2064,12 +2273,10 @@
             serverRecords.sort((a, b) => (b.id || "").localeCompare(a.id || ""));
           }
         }
-
         historyRecords = serverRecords;
         try {
           localStorage.setItem("xbloom_brew_history_backup", JSON.stringify(historyRecords.slice(0, 100)));
         } catch(e){}
-
         updateHistoryCount();
         if (historyRecords.length > 0 && !currentHistRecord) {
           currentHistRecord = historyRecords[0];

@@ -1,11 +1,11 @@
-# xBloom bleUI (v0.8.1)
+# xBloom bleUI (v0.8.5)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 모던 로컬 웹 대시보드 & 실시간 추출 분석 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.8.1-orange.svg" alt="Version 0.8.1">
+  <img src="https://img.shields.io/badge/Version-0.8.5-orange.svg" alt="Version 0.8.5">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/Interface-FastAPI%20%7C%20Web%20WebSocket-success.svg" alt="Interface Web">
@@ -35,7 +35,7 @@
 | 프로필 | 기여자 | 기여 및 역할 |
 | :---: | :---: | :--- |
 | <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • 원본 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** 프로젝트 저작자<br>• xBloom Studio 블루투스(BLE) 통신 프로토콜 리버스 엔지니어링 및 코어 패킷 디코더 설계<br>• 머신 통신 프레임워크 및 기기 물리 슬롯 제어 기반 구축 |
-| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate (xBloom bleUI Contributors)](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** 로컬 웹 대시보드 기획 및 풀스택 아키텍처 설계<br>• 실시간 듀얼 추출 차트(Chart.js) & 스마트 유속 감지 푸어 마커 알고리즘<br>• 원두 분쇄(Grind)와 추출(Brew) 2단계 분리 및 타이머 동기화<br>• 핸드드립 누적 인터벌 보정 & 이중 적용 방지 시스템<br>• xBloom 공식 클라우드 양방향 연동 & 웹 공유 링크 자동 발급/파싱<br>• 영구 추출 히스토리 아카이브 및 Windows 포터블 무설치판 패키징 |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate (xBloom bleUI Contributors)](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** 로컬 웹 대시보드 기획 및 풀스택 아키텍처 설계<br>• 순수 파이썬 기반 GitHub 연동 원클릭 자동 업데이트 시스템 구현<br>• 실시간 듀얼 추출 차트(Chart.js) & 스마트 유속 감지 푸어 마커 알고리즘<br>• 원두 분쇄(Grind)와 추출(Brew) 2단계 분리 및 타이머 동기화<br>• 핸드드립 누적 인터벌 보정 & 이중 적용 방지 시스템<br>• xBloom 공식 클라우드 양방향 연동 & 웹 공유 링크 자동 발급/파싱<br>• 영구 추출 히스토리 아카이브 및 Windows 포터블 무설치판 패키징 |
 
 > [!NOTE]
 > 훌륭한 BLE 프로토콜 기반과 코어 통신 라이브러리를 오픈소스로 공유하여 본 프로젝트의 토대를 마련해 주신 **Janczykkkko** 님께 깊은 감사를 표합니다.
@@ -46,6 +46,7 @@
 
 | 비교 항목 | 원본 프로젝트 (`xbloom-ble`) | **xBloom bleUI (본 프로젝트)** |
 | :--- | :--- | :--- |
+| **자동 업데이트** | 수동 git pull 또는 재설치 | **GitHub 릴리즈 연동 원클릭 자동 업데이트 (사용자 데이터 100% 무손실 보존)** |
 | **인터페이스 (UI)** | 터미널 기반 CLI 및 TUI (Textual) | **모던 반응형 웹 대시보드 (다크/라이트, 커스텀 배경, Zero-Jank)** |
 | **추출 시점 동기화** | 커밋 즉시 시간 카운트 (분쇄 중 시간 누적) | **원두 분쇄(Grind)와 실제 물 투입(Brew) 2단계 분리 (00:00 완벽 동기화)** |
 | **푸어 구간 감지** | 단순 고정 시간 경과 기준 | **스마트 유속/저울 감지 (Smart Flow Detection) 실시간 핀 배지 마커** |
@@ -135,6 +136,30 @@
 
 ---
 
+### 6. 🚀 순수 파이썬 원클릭 자동 업데이트 (Auto-Update)
+
+새로운 버전이 GitHub 릴리즈에 등록되면, 웹 화면 상단에 자동으로 알림 뱃지가 표시되며 클릭 한 번으로 안전하게 최신 버전으로 업데이트할 수 있습니다.
+
+<p align="center">
+  <img src="docs/img/auto-update-badge.png" alt="자동 업데이트 알림 뱃지" width="750">
+  <br>
+  <em>헤더 우측의 새 업데이트 알림 펄스 뱃지 (비동기 감지로 실행 지연 0초)</em>
+</p>
+
+<p align="center">
+  <img src="docs/img/auto-update-modal.png" alt="자동 업데이트 상세 모달" width="550">
+  <br>
+  <em>릴리즈 노트 열람 및 데이터 무손실 원클릭 업데이트 모달</em>
+</p>
+
+- **포터블 환경 100% 자립 동작**: Git이 설치되어 있지 않은 일반 사용자 및 Windows 포터블 무설치판 환경에서도 파이썬 표준 라이브러리(`urllib`, `zipfile`, `shutil`)만으로 안전하게 업데이트됩니다.
+- **실행 지연 0초 & 오프라인 완벽 대응**: 서버 기동을 가로막지 않고 페이지 로드 후 백그라운드에서 비동기 확인하며, 12시간 스마트 캐시를 통해 불필요한 네트워크 요청을 방지합니다. 오프라인 상태에서도 오류 없이 조용히 넘어갑니다.
+- **사용자 데이터 100% 보존**: 업데이트 시 소스 코드만 선별 덮어쓰기되므로, 사용자의 개인 레시피(`recipes/`), 과거 추출 기록(`history.json`), 개인 설정(`config.json`) 및 포터블 파이썬 환경(`python/`)은 **절대 지워지지 않고 온전히 유지**됩니다.
+- **원클릭 자동 재기동**: [지금 즉시 업데이트] 클릭 시 최신 패키지를 내려받아 교체한 후 서버 프로세스가 자동으로 재시작되며 브라우저 화면이 새로고침됩니다.
+- **수동 확인 지원**: 우측 상단 설정(⚙️) 모달 내 **[업데이트 확인]** 버튼으로 언제든 즉시 최신 버전을 확인할 수 있습니다.
+
+---
+
 ## 📦 다운로드 및 배포 버전 (Download & Releases)
 
 사용 환경에 맞게 두 가지 배포판 중 하나를 선택하여 다운로드할 수 있습니다:
@@ -157,7 +182,7 @@
 ---
 
 ### 방법 A. Windows 포터블 무설치판 실행 (가장 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.1-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.5-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    - 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -188,14 +213,9 @@
 
 ### 🔄 버전 업데이트 및 사용자 데이터 보존 안내 (Data Safe Update)
 
-기존 v0.8.0 버전을 사용 중이던 유저가 **v0.8.1로 업데이트하더라도 기존 추출 기록과 설정은 100% 안전하게 보존**됩니다:
-
-- **기존 데이터 보존 원칙**:
-  - `recipes/` (직접 작성한 나만의 레시피 파일들)
-  - `history.json` (과거 모든 추출 기록 및 그래프 아카이브)
-  - `config.json` (테마, 배경화면, 설정값)
-- **간편 업데이트 방법**:
-  - 새 버전의 파일들(`server.py`, `run.bat`, `run.py`, `static/`)을 기존 폴더에 그대로 덮어쓰기 하셔도, 배포 패키지에는 유저 데이터 파일(`history.json`, `config.json`)이 포함되어 있지 않으므로(설정은 `config.example.json` 제공), **기존의 추출 기록과 사용자 설정(로그인, 테마, 배경화면 등)이 절대 덮어씌워지지 않고 100% 보존**됩니다.
+- **원클릭 자동 업데이트**: 웹 화면 상단의 업데이트 알림 뱃지 또는 설정(⚙️)의 [업데이트 확인]을 통해 마우스 클릭 한 번으로 안전하게 최신 버전으로 업그레이드할 수 있습니다.
+- **수동 덮어쓰기 업데이트 지원**:
+  - 새 버전의 파일들(`server.py`, `run.bat`, `run.py`, `static/`, `xbloom_ble/`)을 기존 폴더에 그대로 덮어쓰기 하셔도, 배포 패키지에는 유저 데이터 파일(`history.json`, `config.json`)이 포함되어 있지 않으므로(설정은 `config.example.json` 제공), **기존의 추출 기록과 사용자 설정(로그인, 테마, 배경화면 등), 레시피가 절대 덮어씌워지지 않고 100% 보존**됩니다.
 - **3중 데이터 안전망 (Triple Safety Net)**:
   1. **`.bak` 자동 백업**: 서버 기동 시 `history.json.bak` 및 `config.json.bak` 사본을 자동 생성하여 손상을 방지합니다.
   2. **브라우저 로컬 스마트 동기화**: 브라우저 캐시와 서버 기록을 비교하여, 서버 기록이 비어있더라도 브라우저에서 서버로 즉시 자동 복원합니다.
@@ -221,10 +241,10 @@
 ## 📁 배포 패키지 디렉터리 구조
 
 ```text
-dist/
+xBloom-bleUI/
 ├── run.bat               # Windows 원클릭 실행 배치 파일 (포트 커스텀 지원)
 ├── run.py                # Python 크로스플랫폼 자동 브라우저 오픈 런처
-├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.1)
+├── server.py             # 경량화/최적화된 FastAPI 백엔드 서버 (v0.8.5)
 ├── requirements.txt      # 실행 필수 의존성 목록
 ├── config.example.json   # 기본 설정 참고용 템플릿 (기존 설정 덮어쓰기 방지)
 ├── README.md             # 프로젝트 상세 안내 문서 (이미지 포함)
@@ -234,9 +254,11 @@ dist/
 │       ├── recipe-studio.png
 │       ├── server-recipes.png
 │       ├── cloud-share.png
-│       └── brew-history.png
+│       ├── brew-history.png
+│       ├── auto-update-badge.png
+│       └── auto-update-modal.png
 ├── static/
-│   └── index.html        # 단일 페이지 모던 웹 프론트엔드 (주석 제거 최적화)
+│   └── index.html        # 단일 페이지 모던 웹 프론트엔드
 ├── recipes/              # 로컬 저장 기본 레시피 및 슬롯 프리셋 보관소
 │   ├── example-iced.yaml
 │   ├── example-natural.yaml
@@ -245,7 +267,7 @@ dist/
 │       ├── slot_1.json
 │       ├── slot_2.json
 │       └── slot_3.json
-└── xbloom_ble/           # BLE 통신 및 제어 핵심 모듈 (주석 제거 최적화)
+└── xbloom_ble/           # BLE 통신 및 제어 핵심 모듈
     ├── __init__.py
     ├── client.py
     ├── cloud.py

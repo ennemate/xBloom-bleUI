@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title xBloom bleUI Server v0.8.1
+title xBloom bleUI Server v0.8.5
 
 :: ========================================================
 :: [PORT SETTING] Default: 8000

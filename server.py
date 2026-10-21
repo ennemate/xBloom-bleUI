@@ -1,11 +1,10 @@
 import shutil
+'\nxBloom bleUI Local Web Server (v0.8.5)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n'
 import sys
 import os
-
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 if CURRENT_DIR not in sys.path:
     sys.path.insert(0, CURRENT_DIR)
-
 import asyncio
 import json
 import re
@@ -13,10 +12,15 @@ import time
 import glob
 import argparse
 import traceback
+import zipfile
+import subprocess
+import threading
 from contextlib import asynccontextmanager
 from typing import Dict, Any, Optional, List
 import urllib.request
 import urllib.parse
+CURRENT_VERSION = '0.8.5'
+GITHUB_REPO = 'ennemate/xBloom-bleUI'
 import uvicorn
 import yaml
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
@@ -53,7 +57,7 @@ def get_cloud_handler():
                     pass
     return cloud_module
 cloud_client = None
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 RECIPES_DIR = os.path.join(BASE_DIR, 'recipes')
 SLOTS_DIR = os.path.join(RECIPES_DIR, 'slots')
@@ -76,9 +80,23 @@ def load_server_config() -> Dict[str, Any]:
     if os.path.exists(CONFIG_FILE):
         try:
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                return {**default_config, **json.load(f)}
-        except Exception:
+                cfg = json.load(f)
+                if isinstance(cfg, dict):
+                    try:
+                        shutil.copy2(CONFIG_FILE, CONFIG_FILE + '.bak')
+                    except Exception:
+                        pass
+                    return {**default_config, **cfg}
+        except Exception as e:
+            print(f'[WARN] 설정 파일 로드 실패: {e}')
             return default_config
+    else:
+        try:
+            with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+                json.dump(default_config, f, ensure_ascii=False, indent=2)
+            print('[INIT] 최초 실행: config.json 기본 설정 파일이 자동 생성되었습니다.')
+        except Exception as e:
+            print(f'[WARN] config.json 생성 실패: {e}')
     return default_config
 
 def save_server_config(cfg: Dict[str, Any]):
@@ -95,10 +113,33 @@ def load_brew_history() -> List[Dict[str, Any]]:
             with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 if isinstance(data, list):
+                    if len(data) > 0:
+                        try:
+                            shutil.copy2(HISTORY_FILE, HISTORY_FILE + '.bak')
+                        except Exception:
+                            pass
                     return data
         except Exception as e:
             print(f'[WARN] 추출 히스토리 로드 실패: {e}')
+            bak_file = HISTORY_FILE + '.bak'
+            if os.path.exists(bak_file):
+                try:
+                    with open(bak_file, 'r', encoding='utf-8') as bf:
+                        bak_data = json.load(bf)
+                        if isinstance(bak_data, list):
+                            print('[HIST] 손상된 history.json을 백업 사본(.bak)에서 자동 복원했습니다.')
+                            return bak_data
+                except Exception:
+                    pass
+    else:
+        try:
+            with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
+                json.dump([], f, ensure_ascii=False, indent=2)
+            print('[INIT] 최초 실행: history.json 추출 기록 파일이 자동 생성되었습니다.')
+        except Exception as e:
+            print(f'[WARN] history.json 생성 실패: {e}')
     return []
+initial_history = load_brew_history()
 
 def save_brew_history(records: List[Dict[str, Any]]):
     try:
@@ -292,7 +333,7 @@ async def lifespan(app: FastAPI):
     yield
     if ble_init_task and (not ble_init_task.done()):
         ble_init_task.cancel()
-app = FastAPI(title='xBloom bleUI Server', version='0.8.1', lifespan=lifespan)
+app = FastAPI(title='xBloom bleUI Server', version=CURRENT_VERSION, lifespan=lifespan)
 
 class ProtocolCompliantPour:
 
@@ -950,6 +991,118 @@ async def api_fetch_shared_recipe(req: FetchSharedRecipeRequest):
     except Exception as e:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f'공유 레시피 가져오기 실패: {str(e)}')
+_update_cache: Dict[str, Any] = {'last_check': 0, 'data': None}
+
+def parse_version_tuple(v_str: str) -> tuple:
+    nums = re.findall('\\d+', str(v_str or ''))
+    return tuple(map(int, nums)) if nums else (0, 0, 0)
+
+def fetch_latest_release(force: bool=False) -> Dict[str, Any]:
+    global _update_cache
+    now = time.time()
+    if not force and _update_cache['data'] and (now - _update_cache['last_check'] < 43200):
+        return _update_cache['data']
+    url = f'https://api.github.com/repos/{GITHUB_REPO}/releases/latest'
+    req = urllib.request.Request(url, headers={'User-Agent': f'xBloom-bleUI-Updater/{CURRENT_VERSION}', 'Accept': 'application/vnd.github.v3+json'})
+    try:
+        with urllib.request.urlopen(req, timeout=3.5) as response:
+            if response.status == 200:
+                body = response.read().decode('utf-8')
+                data = json.loads(body)
+                tag = data.get('tag_name', '').strip()
+                remote_ver = tag.lstrip('vV')
+                remote_tuple = parse_version_tuple(remote_ver)
+                local_tuple = parse_version_tuple(CURRENT_VERSION)
+                is_newer = remote_tuple > local_tuple
+                result = {'current_version': CURRENT_VERSION, 'latest_version': remote_ver, 'tag_name': tag, 'update_available': is_newer, 'release_name': data.get('name') or f'xBloom bleUI {tag}', 'release_notes': data.get('body') or '', 'published_at': data.get('published_at') or '', 'html_url': data.get('html_url') or f'https://github.com/{GITHUB_REPO}/releases', 'zip_url': data.get('zipball_url') or f'https://github.com/{GITHUB_REPO}/archive/refs/tags/{tag}.zip', 'checked_at': int(now)}
+                _update_cache['last_check'] = now
+                _update_cache['data'] = result
+                return result
+    except Exception as e:
+        return {'current_version': CURRENT_VERSION, 'latest_version': CURRENT_VERSION, 'update_available': False, 'error': str(e), 'checked_at': int(now)}
+    return {'current_version': CURRENT_VERSION, 'latest_version': CURRENT_VERSION, 'update_available': False, 'checked_at': int(now)}
+
+def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
+    tmp_dir = os.path.join(BASE_DIR, '.update_tmp')
+    if os.path.exists(tmp_dir):
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+    os.makedirs(tmp_dir, exist_ok=True)
+    zip_path = os.path.join(tmp_dir, 'release.zip')
+    extract_dir = os.path.join(tmp_dir, 'extracted')
+    os.makedirs(extract_dir, exist_ok=True)
+    try:
+        req = urllib.request.Request(zip_url, headers={'User-Agent': f'xBloom-bleUI-Updater/{CURRENT_VERSION}'})
+        with urllib.request.urlopen(req, timeout=45.0) as resp, open(zip_path, 'wb') as out_f:
+            shutil.copyfileobj(resp, out_f)
+        with zipfile.ZipFile(zip_path, 'r') as zf:
+            zf.extractall(extract_dir)
+        extracted_items = os.listdir(extract_dir)
+        source_root = extract_dir
+        if len(extracted_items) == 1 and os.path.isdir(os.path.join(extract_dir, extracted_items[0])):
+            source_root = os.path.join(extract_dir, extracted_items[0])
+        PROTECTED_ITEMS = {'recipes', 'history.json', 'history.json.bak', 'config.json', 'config.json.bak', 'python', 'runtime', '.git', '.gitignore', 'scratch', 'dist', 'dist_portable', '.update_tmp'}
+        copied_files = []
+        for root, dirs, files in os.walk(source_root):
+            rel_path = os.path.relpath(root, source_root)
+            rel_parts = [] if rel_path == '.' else rel_path.split(os.sep)
+            if rel_parts and rel_parts[0] in PROTECTED_ITEMS:
+                continue
+            target_dir = os.path.join(BASE_DIR, rel_path) if rel_path != '.' else BASE_DIR
+            os.makedirs(target_dir, exist_ok=True)
+            for file_name in files:
+                if file_name in PROTECTED_ITEMS:
+                    continue
+                if file_name.endswith('.zip') or file_name.endswith('.tar.gz'):
+                    continue
+                src_file = os.path.join(root, file_name)
+                dst_file = os.path.join(target_dir, file_name)
+                try:
+                    shutil.copy2(src_file, dst_file)
+                    copied_files.append(os.path.relpath(dst_file, BASE_DIR))
+                except Exception as ce:
+                    print(f'[UPDATE WARN] 파일 복사 건너뜀 ({file_name}): {ce}')
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        print(f'[UPDATE] 총 {len(copied_files)}개 소스 파일 교체 완료 (사용자 데이터 보존됨)')
+
+        def delayed_restart():
+            time.sleep(1.5)
+            try:
+                cmd = [sys.executable, os.path.join(BASE_DIR, 'server.py')]
+                if len(sys.argv) > 1:
+                    cmd = [sys.executable] + sys.argv
+                flags = 0
+                if sys.platform == 'win32':
+                    flags = getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0) | getattr(subprocess, 'DETACHED_PROCESS', 8)
+                subprocess.Popen(cmd, cwd=BASE_DIR, creationflags=flags)
+                print('[UPDATE] 새 서버 프로세스를 성공적으로 기동했습니다.')
+            except Exception as re:
+                print(f'[UPDATE RESTART ERROR] {re}')
+            finally:
+                os._exit(0)
+        threading.Thread(target=delayed_restart, daemon=True).start()
+        return {'success': True, 'message': '업데이트가 성공적으로 적용되었습니다. 잠시 후 서버가 재기동됩니다.', 'copied_count': len(copied_files)}
+    except Exception as e:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        raise RuntimeError(f'업데이트 적용 실패: {str(e)}')
+
+@app.get('/api/update/check')
+async def api_check_update(force: bool=False):
+    loop = asyncio.get_running_loop()
+    res = await loop.run_in_executor(None, fetch_latest_release, force)
+    return res
+
+@app.post('/api/update/apply')
+async def api_apply_update():
+    loop = asyncio.get_running_loop()
+    release_info = await loop.run_in_executor(None, fetch_latest_release, True)
+    zip_url = release_info.get('zip_url')
+    if not zip_url:
+        raise HTTPException(status_code=400, detail='다운로드할 최신 릴리즈 ZIP URL을 찾을 수 없습니다.')
+    try:
+        res = await loop.run_in_executor(None, apply_update_from_zip, zip_url)
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get('/')
 async def serve_index():
@@ -964,7 +1117,7 @@ if __name__ == '__main__':
     parser.add_argument('--host', type=str, default='0.0.0.0', help='호스트 주소')
     args = parser.parse_args()
     print(f'\n========================================================')
-    print(f'  xBloom bleUI v0.8.1 Server Started')
+    print(f'  xBloom bleUI v{CURRENT_VERSION} Server Started')
     print(f'  - Local URL:   http://localhost:{args.port}')
     print(f'  - Network URL: http://0.0.0.0:{args.port}')
     print(f'========================================================\n')

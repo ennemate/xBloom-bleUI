@@ -1,0 +1,25 @@
+{
+  "name": "Example Washed",
+  "dose": 15,
+  "grind_size": 62,
+  "steps": [
+    {
+      "temp": 92,
+      "water": 45,
+      "wait": 15,
+      "flow": 3.2
+    },
+    {
+      "temp": 92,
+      "water": 100,
+      "wait": 15,
+      "flow": 3.2
+    },
+    {
+      "temp": 92,
+      "water": 95,
+      "wait": 15,
+      "flow": 3.2
+    }
+  ]
+}

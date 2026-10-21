@@ -3,7 +3,24 @@ import os
 import stat
 import sys
 from pathlib import Path
-import platformdirs
+try:
+    import platformdirs
+except ImportError:
+
+    class _PlatformDirsFallback:
+
+        @staticmethod
+        def user_config_dir(app, appauthor=False):
+            return os.path.join(os.environ.get('APPDATA') or os.path.expanduser('~'), app)
+
+        @staticmethod
+        def user_data_dir(app, appauthor=False):
+            return os.path.join(os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'), app)
+
+        @staticmethod
+        def user_state_dir(app, appauthor=False):
+            return os.path.join(os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'), app, 'state')
+    platformdirs = _PlatformDirsFallback()
 APP = 'xbloom'
 
 def _resolve(override_env: str, xdg_env: str, default_factory) -> Path:
