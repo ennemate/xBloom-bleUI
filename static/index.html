@@ -1694,6 +1694,34 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "log_ws_connected": "[BLE] WebSocket 連線頻道已建立",
+      "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線咖啡機...",
+      "log_ble_disconnecting": "[BLE] 正在請求中斷咖啡機連線...",
+      "log_cmd_start_brew": "[CMD] 已發送開始萃取請求: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' 磨豆開始... 研磨完成後將啟動注水計時器。",
+      "log_brew_starting": "[BREW] 🚀 '{name}' 萃取指令發送成功... 出水時將自動開始計時。",
+      "log_machine_accepted": "[OK] 咖啡機已接受萃取指令。",
+      "log_brew_pour1_agitation": "[BREW] 🚀 實際咖啡萃取開始！ (注水前擾動完成，第1段注水開始)",
+      "log_brew_pour1_weight": "[BREW] 🚀 實際咖啡萃取開始！ (第1段注水出水開始: {g}g)",
+      "log_brew_pour1_simple": "[BREW] 🚀 實際咖啡萃取開始！ (第1段注水啟動)",
+      "log_step_entered": "[STEP] 咖啡機訊號: 進入第 {n} 段注水區間 ({time})",
+      "log_step1_detected": "[STEP] 偵測到第1段注水水流 ({time}, {g}g)",
+      "log_step_detected": "[STEP] 偵測到第 {n} 段注水水流 ({time}, {g}g)",
+      "log_step_schedule": "[STEP] 排程: 第 {n} 段注水開始 ({time})",
+      "log_brew_finish_signal": "[BREW] 收到咖啡機完成訊號 ({status}) -> 完成萃取並保存資料",
+      "log_cmd_stop": "[CMD] 緊急停止指令已發送",
+      "log_hist_aborted": "[HIST] 中止的萃取紀錄已儲存至歷史資料庫。",
+      "log_brew_done": "[DONE] 萃取已完成。電子秤穩定與資料封存完成。",
+      "log_hist_saved": "[HIST] 萃取紀錄已永久儲存至本機資料庫。",
+      "log_slot_req": "[SLOT] 正在寫入咖啡機記憶體槽位 {slot} (編號 {n})...",
+      "log_slot_success": "[OK] 咖啡機記憶體槽位 {slot} (編號 {n}) 寫入成功",
+      "log_recipe_save_req": "[RECIPE] 請求儲存伺服器配方檔案: {name}",
+      "log_recipe_save_ok": "[RECIPE OK] 已成功儲存 recipes/{filename}",
+      "log_cloud_uploading": "[CLOUD] 正在上傳配方至雲端: {name}",
+      "log_cloud_upload_ok": "[CLOUD OK] 配方成功上傳至雲端: {name}",
+      "log_hist_deleted": "[HIST] 萃取紀錄已刪除。",
+      "log_hist_restored": "[RECIPE] 已將配方 '{name}' 還原至配方工作台。",
+      "log_sync_interval": "[SYNC] 手沖注水區間時間自動補償已啟用",
       nav_brew: "即時沖煮儀表板",
       nav_editor: "沖煮配方工作室 / 雲端",
       ble_checking: "確認BLE連線中...",
@@ -1818,6 +1846,34 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "log_ws_connected": "[BLE] WebSocket 连接已建立",
+      "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接咖啡机...",
+      "log_ble_disconnecting": "[BLE] 正在请求断开咖啡机连接...",
+      "log_cmd_start_brew": "[CMD] 已发送开始萃取请求: {name}",
+      "log_brew_grind_start": "[BREW] ⚙️ '{name}' 磨豆开始... 研磨完成后将启动注水计时器。",
+      "log_brew_starting": "[BREW] 🚀 '{name}' 萃取指令发送成功... 出水时将自动开始计时。",
+      "log_machine_accepted": "[OK] 咖啡机已接受萃取指令。",
+      "log_brew_pour1_agitation": "[BREW] 🚀 实际咖啡萃取开始！ (注水前扰动完成，第1段注水开始)",
+      "log_brew_pour1_weight": "[BREW] 🚀 实际咖啡萃取开始！ (第1段注水出水开始: {g}g)",
+      "log_brew_pour1_simple": "[BREW] 🚀 实际咖啡萃取开始！ (第1段注水启动)",
+      "log_step_entered": "[STEP] 咖啡机信号: 进入第 {n} 段注水区间 ({time})",
+      "log_step1_detected": "[STEP] 检测到第1段注水水流 ({time}, {g}g)",
+      "log_step_detected": "[STEP] 检测到第 {n} 段注水水流 ({time}, {g}g)",
+      "log_step_schedule": "[STEP] 排程: 第 {n} 段注水开始 ({time})",
+      "log_brew_finish_signal": "[BREW] 收到咖啡机完成信号 ({status}) -> 完成萃取并保存数据",
+      "log_cmd_stop": "[CMD] 紧急停止指令已发送",
+      "log_hist_aborted": "[HIST] 中止的萃取记录已保存至历史数据库。",
+      "log_brew_done": "[DONE] 萃取已完成。电子秤稳定与数据归档完成。",
+      "log_hist_saved": "[HIST] 萃取记录已永久保存至本地存储。",
+      "log_slot_req": "[SLOT] 正在写入咖啡机存储槽位 {slot} (编号 {n})...",
+      "log_slot_success": "[OK] 咖啡机存储槽位 {slot} (编号 {n}) 写入成功",
+      "log_recipe_save_req": "[RECIPE] 请求保存服务器配方文件: {name}",
+      "log_recipe_save_ok": "[RECIPE OK] 已成功保存 recipes/{filename}",
+      "log_cloud_uploading": "[CLOUD] 正在上传配方至云端: {name}",
+      "log_cloud_upload_ok": "[CLOUD OK] 配方成功上传至云端: {name}",
+      "log_hist_deleted": "[HIST] 萃取记录已删除。",
+      "log_hist_restored": "[RECIPE] 已将配方 '{name}' 还原至配方工作台。",
+      "log_sync_interval": "[SYNC] 手冲注水区间时间自动补偿已启用",
       nav_brew: "实时冲煮仪表板",
       nav_editor: "冲煮配方工作室 / 云端",
       ble_checking: "确认BLE连接中...",
@@ -3142,11 +3198,98 @@
       }
     }
   }
-  function addLog(msg) {
+  function formatLogMessage(key, params, fallbackMsg) {
+    if (key && TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) {
+      return t(key, params);
+    }
+    if (!fallbackMsg) return "";
+    const patterns = [
+      { regex: /^\[BLE\] 웹소켓 채널 연결 완료/, key: 'log_ws_connected' },
+      { regex: /^\[BLE\] 머신 수동 재연결 시도 중\.\.\./, key: 'log_ble_reconnecting' },
+      { regex: /^\[BLE\] 머신 연결 해제 요청 중\.\.\./, key: 'log_ble_disconnecting' },
+      { regex: /^\[CMD\] 추출 시작 요청 전송: (.+)$/, key: 'log_cmd_start_brew', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[BREW\] ⚙️ '(.+)' 원두 분쇄 (?:시작|중)/, key: 'log_brew_grind_start', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[BREW\] 🚀 '(.+)' (?:추출 명령|실제 추출)/, key: 'log_brew_starting', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[OK\] 머신이 명령을 수락했습니다\./, key: 'log_machine_accepted' },
+      { regex: /^\[BREW\] 🚀 실제 커피 추출 시작! \(추출 전 교반 후/, key: 'log_brew_pour1_agitation' },
+      { regex: /^\[BREW\] 🚀 실제 커피 추출 시작! \(1차 푸어 물 공급 개시: ([\d\.]+)g\)/, key: 'log_brew_pour1_weight', paramFn: m => ({ g: m[1] }) },
+      { regex: /^\[BREW\] 🚀 실제 커피 추출 시작! \(1차 푸어 개시\)/, key: 'log_brew_pour1_simple' },
+      { regex: /^\[STEP\] 머신 신호: (\d+)차 푸어 구간 진입 \(([\d:]+)\)/, key: 'log_step_entered', paramFn: m => ({ n: m[1], time: m[2] }) },
+      { regex: /^\[STEP\] 1차 푸어 물 배출 감지 \(([\d:]+), ([\d\.]+)g\)/, key: 'log_step1_detected', paramFn: m => ({ time: m[1], g: m[2] }) },
+      { regex: /^\[STEP\] (\d+)차 푸어 물 배출 감지 \(([\d:]+), ([\d\.]+)g\)/, key: 'log_step_detected', paramFn: m => ({ n: m[1], time: m[2], g: m[3] }) },
+      { regex: /^\[STEP\] 스케줄: (\d+)차 푸어 시작 \(([\d:]+)\)/, key: 'log_step_schedule', paramFn: m => ({ n: m[1], time: m[2] }) },
+      { regex: /^\[BREW\] 머신 완료 신호 수신 \((.+)\) ->/, key: 'log_brew_finish_signal', paramFn: m => ({ status: m[1] }) },
+      { regex: /^\[CMD\] 비상 정지 명령 전송 완료/, key: 'log_cmd_stop' },
+      { regex: /^\[HIST\] 비상정지 추출 데이터가/, key: 'log_hist_aborted' },
+      { regex: /^\[DONE\] 추출이 완료되었습니다\./, key: 'log_brew_done' },
+      { regex: /^\[HIST\] 추출 기록이 로컬 스토리지에/, key: 'log_hist_saved' },
+      { regex: /^\[SLOT\] 머신 슬롯 ([A-C]) \((\d+)번\) 저장 요청/, key: 'log_slot_req', paramFn: m => ({ slot: m[1], n: m[2] }) },
+      { regex: /^\[OK\] 기기 슬롯 ([A-C]) \((\d+)번\) 기록 성공/, key: 'log_slot_success', paramFn: m => ({ slot: m[1], n: m[2] }) },
+      { regex: /^\[RECIPE\] 서버에 레시피 파일 저장 요청: (.+)$/, key: 'log_recipe_save_req', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[RECIPE OK\] recipes\/(.+) 파일 저장 완료/, key: 'log_recipe_save_ok', paramFn: m => ({ filename: m[1] }) },
+      { regex: /^\[CLOUD\] 레시피 클라우드 업로드 전송 중: (.+)$/, key: 'log_cloud_uploading', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[CLOUD OK\] 레시피 클라우드 업로드 성공: (.+)$/, key: 'log_cloud_upload_ok', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[HIST\] 추출 기록이 삭제되었습니다\./, key: 'log_hist_deleted' },
+      { regex: /^\[RECIPE\] '(.+)' 레시피를 스튜디오로 복원했습니다\./, key: 'log_hist_restored', paramFn: m => ({ name: m[1] }) },
+      { regex: /^\[SYNC\] 레시피 핸드드립 인터벌/, key: 'log_sync_interval' }
+    ];
+    for (const p of patterns) {
+      const match = fallbackMsg.match(p.regex);
+      if (match) {
+        const par = p.paramFn ? p.paramFn(match) : {};
+        return { text: t(p.key, par), key: p.key, params: par };
+      }
+    }
+    return { text: fallbackMsg, key: '', params: {} };
+  }
+  function addLog(msg, key = null, params = {}) {
     const b = document.getElementById("logBox");
-    const t = new Date().toTimeString().split(' ')[0];
-    b.innerHTML += `<div>[${t}] ${msg}</div>`;
+    if (!b) return;
+    const tStr = new Date().toTimeString().split(' ')[0];
+    let renderedText = msg;
+    let storeKey = key;
+    let storeParams = params;
+    if (key) {
+      renderedText = t(key, params);
+    } else {
+      const matched = formatLogMessage(null, null, msg);
+      if (typeof matched === 'object' && matched.text) {
+        renderedText = matched.text;
+        storeKey = matched.key;
+        storeParams = matched.params;
+      }
+    }
+    const div = document.createElement("div");
+    div.className = "log-entry";
+    div.dataset.time = tStr;
+    if (storeKey) {
+      div.dataset.logKey = storeKey;
+      div.dataset.logParams = JSON.stringify(storeParams);
+    } else {
+      div.dataset.rawMsg = msg;
+    }
+    div.innerText = `[${tStr}] ${renderedText}`;
+    b.appendChild(div);
     b.scrollTop = b.scrollHeight;
+  }
+  function retranslateAllLogs() {
+    const b = document.getElementById("logBox");
+    if (!b) return;
+    const entries = b.querySelectorAll(".log-entry");
+    entries.forEach(entry => {
+      const time = entry.dataset.time || "";
+      const key = entry.dataset.logKey;
+      if (key) {
+        let params = {};
+        try { params = JSON.parse(entry.dataset.logParams || "{}"); } catch(e) {}
+        const txt = t(key, params);
+        entry.innerText = `[${time}] ${txt}`;
+      } else if (entry.dataset.rawMsg) {
+        const matched = formatLogMessage(null, null, entry.dataset.rawMsg);
+        const txt = (typeof matched === 'object' && matched.text) ? matched.text : entry.dataset.rawMsg;
+        entry.innerText = `[${time}] ${txt}`;
+      }
+    });
   }
   function resetBrewButton() {
     isBrewActive = false;

@@ -14,6 +14,12 @@
 </p>
 
 <p align="center">
+  🌐 <strong>Language:</strong>
+  <a href="README.md"><strong>한국어 (Korean)</strong></a> | 
+  <a href="README.en.md"><strong>English</strong></a>
+</p>
+
+<p align="center">
   <img src="docs/img/dashboard-chart.png" alt="xBloom bleUI 실시간 추출 대시보드 듀얼 차트" width="850">
   <br>
   <em>실시간 물 투입량(Water Pour)과 컵 추출액(Coffee Yield) 듀얼 그래프 & 스마트 유속 감지 푸어 마커</em>
