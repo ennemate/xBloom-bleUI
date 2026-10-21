@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.9.0-orange.svg" alt="Version 0.9.0">
+  <img src="https://img.shields.io/badge/Version-0.9.2-orange.svg" alt="Version 0.9.2">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
@@ -66,6 +66,8 @@
 | **기기 메모리 슬롯** | CLI 커맨드라인 슬롯 기록 | **A / B / C 물리 버튼 브라우저 원터치 원격 프로그래밍** |
 | **추출 데이터 보관** | 세션 실시간 모니터링 | **영구 로컬 히스토리 아카이빙, 듀얼 차트 복원, 원클릭 재추출(Re-brew)** |
 | **자동 업데이트** | 수동 git pull 또는 재설치 | **GitHub 릴리즈 연동 원클릭 자동 업데이트 (사용자 데이터 100% 무손실 보존)** |
+| **그라인더 마이크론 에스티메이터** | 단순 클릭 수 설정 | **48mm 코니컬 버 간극 기반 이론적 마이크론(µm) 실시간 환산 & 설정 토글** |
+| **온도 표기 규격** | 일반 숫자 표기 | **글로벌 스페셜티 표준 RT (상온 0°C) 및 BP (끓는점 100°C) 약어 규격화** |
 | **다국어 (i18n)** | 영문 기반 | **글로벌 판매국 7개 언어 지원 & 스페셜티 커피 바리스타 전문 용어 최적화** |
 
 ---
@@ -109,7 +111,8 @@
   <img src="docs/img/recipe-studio.png" alt="레시피 스튜디오 상세 편집 화면" width="800">
 </p>
 
-- **정밀 그라인더 제어**: 분쇄도(10~100) 및 모터 회전 속도(60~120 RPM, 10단위) 제어 지원.
+- **정밀 그라인더 제어 & 마이크론(µm) 실시간 에스티메이터**: 분쇄도(10~100) 및 모터 회전 속도(60~120 RPM) 제어 지원, 48mm 코니컬 버 규격 기반의 이론적 마이크론(`≈ 836 µm` 등) 실시간 환산 뱃지 제공 (환경 설정에서 ON/OFF 토글 가능).
+- **글로벌 스페셜티 표준 온도 단축 태그**: 상온수 추출을 위한 `0 (RT)` 및 비등점 끓는 물 `100 (BP)` 원터치 주입 태그 제공.
 - **다양한 푸어 패턴**: Center(중앙), Ring(원형), Spiral(나선형) 패턴 완벽 지원.
 - **스마트 교반(Agitation)**: 푸어 전 원두 평탄화 교반(`agitation_before`) 및 푸어 후 교반(`agitation_after`) 독립 설정.
 - **핸드드립 인터벌 동기화 뱃지**: 목표 대기시간 대비 주수 오버헤드를 뺀 실제 기기 대기시간을 카드에 실시간 힌트로 표시.
