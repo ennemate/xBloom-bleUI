@@ -1,11 +1,12 @@
-# xBloom bleUI (v0.8.8)
+# xBloom bleUI (v0.9.0)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 모던 로컬 웹 대시보드 & 실시간 추출 분석 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.8.8-orange.svg" alt="Version 0.8.8">
+  <img src="https://img.shields.io/badge/Version-0.9.0-orange.svg" alt="Version 0.9.0">
+  <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/Interface-FastAPI%20%7C%20Web%20WebSocket-success.svg" alt="Interface Web">
@@ -55,6 +56,7 @@
 | **분쇄 OFF 규격** | 분쇄도 0 처리 시 일부 펌웨어 오류 가능성 | **공식 앱 규격 준수 (`isSetGrinderSize: 2`, 분쇄 OFF 정상 표기)** |
 | **기기 메모리 슬롯** | CLI 슬롯 저장 | **A / B / C 물리 버튼 원터치 원격 슬롯 프로그래밍** |
 | **추출 데이터 보관** | 세션 종료 시 차트 소멸 | **영구 로컬 히스토리 아카이빙, 듀얼 차트 복원, 원클릭 재추출(Re-brew)** |
+| **다국어 (i18n)** | 영어만 지원 | **글로벌 판매국 7개 언어 지원 & 스페셜티 커피 바리스타 전문 용어 최적화** |
 
 ---
 

@@ -631,81 +631,81 @@
     <div class="header-actions">
       <button class="update-badge-btn" id="updateBadgeBtn" style="display:none;" onclick="openUpdateModal()">
         <div class="update-pulse-dot"></div>
-        <span id="updateBadgeText">새 업데이트 발견</span>
+        <span id="updateBadgeText" data-i18n="update_badge">새 업데이트 발견</span>
       </button>
       <button class="badge-btn disconnected" id="bleStatusBtn" onclick="toggleBleConnection()">
         <div class="dot"></div>
         <span id="bleStatusText">BLE 연결 확인 중</span>
       </button>
-      <button class="btn-icon" onclick="openSettings()" title="설정">⚙️</button>
+      <button class="btn-icon" onclick="openSettings()" title="설정" data-i18n-title="btn_settings">⚙️</button>
     </div>
   </header>
 
   <div class="tab-bar">
-    <button class="tab-btn active" id="tabNavBrew" onclick="switchTab('brew')">실시간 추출 대시보드</button>
-    <button class="tab-btn" id="tabNavEditor" onclick="switchTab('editor')">레시피 스튜디오 / 클라우드</button>
+    <button class="tab-btn active" id="tabNavBrew" onclick="switchTab('brew')" data-i18n="nav_brew">실시간 추출 대시보드</button>
+    <button class="tab-btn" id="tabNavEditor" onclick="switchTab('editor')" data-i18n="nav_editor">레시피 스튜디오 / 클라우드</button>
   </div>
 
   <div class="tab-content active" id="tab-brew">
     <div class="desktop-split-grid">
       <div class="brew-left-col">
         <div class="card">
-          <div class="card-title">추출 레시피 제어</div>
-          <label>실행할 레시피 선택 (recipes/ 자동 연동)</label>
+          <div class="card-title" data-i18n="card_recipe_ctrl">추출 레시피 제어</div>
+          <label data-i18n="label_select_recipe">실행할 레시피 선택 (recipes/ 자동 연동)</label>
           <select id="recipeSelect" onchange="onRecipeSelectChanged()"></select>
 
           <div class="brew-action-grid" id="brewActionGrid">
-            <button class="btn-accent" id="brewBtn" onclick="startBrew()">추출 시작</button>
-            <button class="btn-stop" id="stopBtn" onclick="stopBrew()">비상 정지</button>
+            <button class="btn-accent" id="brewBtn" onclick="startBrew()" data-i18n="btn_start_brew">추출 시작</button>
+            <button class="btn-stop" id="stopBtn" onclick="stopBrew()" data-i18n="btn_stop_brew">비상 정지</button>
           </div>
         </div>
 
         <div class="card log-card">
-          <div class="card-title">BLE 이벤트 로그 모니터</div>
+          <div class="card-title" data-i18n="card_log_monitor">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div>[INIT] xBloom bleUI v0.8.8 구동 완료</div>
+            <div>[INIT] xBloom bleUI v0.9.0 구동 완료</div>
           </div>
         </div>
       </div>
 
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <div class="card-title" style="margin-bottom:0;">머신 실시간 상태 (Telemetry)</div>
-          <button class="btn-sub" onclick="openHistoryModal()">📜 추출 기록</button>
+          <div class="card-title" style="margin-bottom:0;" data-i18n="card_telemetry">머신 실시간 상태 (Telemetry)</div>
+          <button class="btn-sub" onclick="openHistoryModal()" data-i18n="btn_history">📜 추출 기록</button>
         </div>
 
         <div class="grid-4">
           <div class="metric-box">
-            <div class="metric-unit">시간</div>
+            <div class="metric-unit" data-i18n="metric_time">시간</div>
             <div class="metric-val theme-txt" id="timeVal">00:00</div>
           </div>
           <div class="metric-box">
-            <div class="metric-unit">실시간 수온</div>
+            <div class="metric-unit" data-i18n="metric_temp">실시간 수온</div>
             <div class="metric-val theme-txt" style="font-size:1.15rem;"><span id="tempVal">0°C</span></div>
           </div>
           <div class="metric-box">
-            <div class="metric-unit">푸어</div>
+            <div class="metric-unit" data-i18n="metric_pour">푸어</div>
             <div class="metric-val" style="color:var(--sky);"><span id="pourVal">0</span><span class="metric-unit">g</span></div>
           </div>
           <div class="metric-box">
-            <div class="metric-unit">추출</div>
+            <div class="metric-unit" data-i18n="metric_yield">추출</div>
             <div class="metric-val" style="color:var(--accent);"><span id="yieldVal">0</span><span class="metric-unit">g</span></div>
           </div>
         </div>
 
         <div class="chart-wrap">
           <div class="chart-legend">
-            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span>푸어</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span>추출</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--muted); border-radius:0; width:10px; height:2px;"></div><span>푸어 시작선</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span id="legendPourText" data-i18n="legend_pour">푸어</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span id="legendYieldText" data-i18n="legend_yield">추출</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--muted); border-radius:0; width:10px; height:2px;"></div><span data-i18n="legend_pourline">푸어 시작선</span></div>
           </div>
           <canvas id="brewChart"></canvas>
         </div>
 
         <div style="margin-top: 14px;">
           <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-bottom:2px;">
-            <span>상태: <b id="stateText" style="color:var(--text);">대기 중</b></span>
-            <span id="pctText" style="color:var(--text); font-weight:600;">단계: 0</span>
+            <span data-i18n="label_state_prefix">상태: </span><b id="stateText" style="color:var(--text);">대기 중</b></span>
+            <span id="pctText" style="color:var(--text); font-weight:600;"><span data-i18n="label_step_prefix">단계: </span>0</span>
           </div>
           <div class="progress-bar-bg">
             <div class="progress-bar" id="progressBar"></div>
@@ -721,37 +721,37 @@
       <div class="step-col-wrap">
         <div class="card step-manager-card">
           <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-            <span>푸어 구간 설정 (Pour Steps & Pattern)</span>
+            <span data-i18n="card_pour_steps">푸어 구간 설정 (Pour Steps & Pattern)</span>
             <span style="font-size:0.75rem; color:var(--sky);" id="totalPourSummary">총 푸어: 0g</span>
           </div>
 
           <div id="stepsContainer"></div>
 
-          <button class="btn-outline" onclick="addStep()">+ 새 푸어 단계 추가</button>
-          <div class="error-msg" id="err-totalWater" style="margin-top:6px; text-align:center;">총 푸어량은 머신 상한인 500g을 넘을 수 없습니다.</div>
+          <button class="btn-outline" onclick="addStep()" data-i18n="btn_add_pour_step">+ 새 푸어 단계 추가</button>
+          <div class="error-msg" id="err-totalWater" style="margin-top:6px; text-align:center;"><span data-i18n="err_total_water">총 푸어량은 머신 상한인 500g을 넘을 수 없습니다.</span></div>
         </div>
       </div>
 
       <div class="desktop-col">
         <div class="card">
-          <div class="card-title">레시피 저장 및 연동 관리</div>
+          <div class="card-title" data-i18n="card_recipe_storage">레시피 저장 및 연동 관리</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-save-server" onclick="saveRecipeToServer()">💾 서버에 저장 후 즉시 추출 대시보드로 이동</button>
+            <button class="btn-save-server" onclick="saveRecipeToServer()" data-i18n="btn_save_to_server">💾 서버에 저장 후 즉시 추출 대시보드로 이동</button>
             <div class="grid-4-buttons" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
               <input type="file" id="fileInput" accept=".yaml,.yml" style="display:none;" onchange="handleFileLoad(event)">
-              <button class="btn-secondary" onclick="openServerRecipeModal()" title="저장된 레시피 목록 확인 및 관리" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📋 레시피 목록</button>
-              <button class="btn-secondary" onclick="openShareUrlModal()" title="xBloom 공유 링크(URL)로 레시피 가져오기" style="color:var(--sky); border-color:rgba(56,189,248,0.4); font-size:0.75rem; padding:6px 2px; white-space:nowrap;">🔗 공유 링크</button>
-              <button class="btn-secondary" onclick="document.getElementById('fileInput').click()" title="YAML 파일 불러오기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📂 YAML 열기</button>
-              <button class="btn-secondary" onclick="exportYAML()" title="YAML 파일로 내보내기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📤 YAML 저장</button>
+              <button class="btn-secondary" onclick="openServerRecipeModal()" title="저장된 레시피 목록 확인 및 관리" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📋 레시피 목록</button data-i18n="btn_recipe_list">
+              <button class="btn-secondary" onclick="openShareUrlModal()" title="xBloom 공유 링크(URL)로 레시피 가져오기" style="color:var(--sky); border-color:rgba(56,189,248,0.4); font-size:0.75rem; padding:6px 2px; white-space:nowrap;">🔗 공유 링크</button data-i18n="btn_share_link">
+              <button class="btn-secondary" onclick="document.getElementById('fileInput').click()" title="YAML 파일 불러오기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📂 YAML 열기</button data-i18n="btn_open_yaml">
+              <button class="btn-secondary" onclick="exportYAML()" title="YAML 파일로 내보내기" style="font-size:0.75rem; padding:6px 2px; white-space:nowrap;">📤 YAML 저장</button data-i18n="btn_save_yaml">
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">기본 파라미터 및 그라인더 설정</div>
+          <div class="card-title" data-i18n="card_grinder_params">기본 파라미터 및 그라인더 설정</div>
 
           <div class="field-group">
-            <label>레시피 이름</label>
+            <label data-i18n="label_recipe_name">레시피 이름</label>
             <input type="text" id="recName" value="My Custom Brew" oninput="validateAll()">
             <span class="error-msg" id="err-recName">이름을 입력해주세요.</span>
           </div>
@@ -759,8 +759,8 @@
           <div class="toggle-row-grid">
             <div class="toggle-chip-box">
               <div class="toggle-chip-text">
-                <div class="toggle-chip-title">내장 그라인더 (Grind)</div>
-                <div class="toggle-chip-desc">OFF 시 분쇄 건너뜀</div>
+                <div class="toggle-chip-title" data-i18n="toggle_grinder">내장 그라인더 (Grind)</div>
+                <div class="toggle-chip-desc" data-i18n="toggle_grinder_desc">OFF 시 분쇄 건너뜀</div>
               </div>
               <label class="switch" title="내장 그라인더 분쇄 켜기/끄기">
                 <input type="checkbox" id="recGrindEnabled" checked onchange="toggleGrindSetting()">
@@ -770,8 +770,8 @@
 
             <div class="toggle-chip-box">
               <div class="toggle-chip-text">
-                <div class="toggle-chip-title">⏱️ 인터벌 보정 (Sync)</div>
-                <div class="toggle-chip-desc">푸어 간격 대기 자동 계산</div>
+                <div class="toggle-chip-title" data-i18n="toggle_sync">⏱️ 인터벌 보정 (Sync)</div>
+                <div class="toggle-chip-desc" data-i18n="toggle_sync_desc">푸어 간격 대기 자동 계산</div>
               </div>
               <label class="switch" title="핸드드립 인터벌 대기시간 보정 켜기/끄기">
                 <input type="checkbox" id="recIntervalSync" onchange="toggleIntervalSync()">
@@ -782,17 +782,17 @@
 
           <div class="grid-3">
             <div class="field-group">
-              <label>Dose (정수 g)</label>
+              <label data-i18n="label_dose_g">Dose (정수 g)</label>
               <input type="number" id="recDose" value="18" step="1" min="1" oninput="this.value = this.value.replace(/[^0-9]/g, ''); calcRatio(); validateAll();">
               <span class="error-msg" id="err-recDose">1g 이상 정수</span>
             </div>
             <div class="field-group" id="grindFieldWrap">
-              <label>분쇄도 (10~100)</label>
+              <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
               <input type="number" id="recGrind" value="45" oninput="validateAll()">
               <span class="error-msg" id="err-recGrind">10~100 입력</span>
             </div>
             <div class="field-group" id="rpmFieldWrap">
-              <label>그라인더 RPM (60~120)</label>
+              <label data-i18n="label_rpm_range">그라인더 RPM (60~120)</label>
               <select id="recGrindRpm" onchange="validateAll()">
                 <option value="60">60 RPM</option>
                 <option value="70">70 RPM</option>
@@ -808,7 +808,7 @@
 
           <div class="ratio-wrap" style="margin-top:4px;">
             <div class="ratio-banner" id="ratioBanner">
-              <span>추출 비율 (0.5 단위 배수 일치 필요)</span>
+              <span data-i18n="label_ratio_banner">추출 비율 (0.5 단위 배수 일치 필요)</span>
               <span class="ratio-badge" id="ratioText">1 : --</span>
             </div>
             <span class="error-msg" id="err-ratio" style="margin-top:4px;"></span>
@@ -816,10 +816,10 @@
         </div>
 
         <div class="card">
-          <div class="card-title">머신 메모리 및 클라우드 전송</div>
+          <div class="card-title" data-i18n="card_memory_cloud">머신 메모리 및 클라우드 전송</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn-accent" onclick="openSlotModal()">머신 슬롯에 직접 기록 (BLE)</button>
-            <button class="btn-cloud" onclick="uploadToCloud()">☁️ xBloom 앱 클라우드에 업로드 (Cloud API)</button>
+            <button class="btn-accent" onclick="openSlotModal()" data-i18n="btn_save_slot">머신 슬롯에 직접 기록 (BLE)</button>
+            <button class="btn-cloud" onclick="uploadToCloud()" data-i18n="btn_upload_cloud">☁️ xBloom 앱 클라우드에 업로드 (Cloud API)</button>
           </div>
         </div>
       </div>
@@ -830,14 +830,14 @@
 <div class="modal-overlay" id="slotModal" onclick="closeSlotModalOnBack(event)">
   <div class="modal-card" style="max-width:360px;">
     <div class="modal-header">
-      <div class="modal-title">머신 슬롯 지정 기록</div>
+      <div class="modal-title" data-i18n="slot_modal_title">머신 슬롯 지정 기록</div>
       <button class="btn-close" onclick="closeSlotModal()">&times;</button>
     </div>
-    <div style="font-size:0.75rem; color:var(--muted);">기록할 머신의 메모리 슬롯 번호를 선택하세요:</div>
+    <div style="font-size:0.75rem; color:var(--muted);"><span data-i18n="slot_modal_desc">기록할 머신의 메모리 슬롯 번호를 선택하세요:</span></div>
     <div style="display:flex; flex-direction:column; gap:8px; margin-top:6px;">
-      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(1)">슬롯 A (1번)에 기록</button>
-      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(2)">슬롯 B (2번)에 기록</button>
-      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(3)">슬롯 C (3번)에 기록</button>
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(1)">슬롯 A (1번)에 기록</button data-i18n="slot_1">
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(2)">슬롯 B (2번)에 기록</button data-i18n="slot_2">
+      <button class="btn-secondary" style="text-align:left;" onclick="executeSlotSave(3)">슬롯 C (3번)에 기록</button data-i18n="slot_3">
     </div>
   </div>
 </div>
@@ -946,9 +946,9 @@
 <div class="modal-overlay" id="historyModal" onclick="closeHistoryOnBack(event)">
   <div class="modal-card wide-modal">
     <div class="modal-header">
-      <div class="modal-title">📜 추출 히스토리 & 그래프 기록</div>
+      <div class="modal-title" data-i18n="hist_modal_title">📜 추출 히스토리 & 그래프 기록</div>
       <div style="display:flex; align-items:center; gap:8px;">
-        <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239, 68, 68, 0.4);" onclick="clearAllHistoryConfirm()">전체 삭제</button>
+        <button class="btn-secondary" style="font-size:0.75rem; padding:4px 8px; color:var(--danger); border-color:rgba(239, 68, 68, 0.4);" onclick="clearAllHistoryConfirm()" data-i18n="btn_clear_all">전체 삭제</button>
         <button class="btn-close" onclick="closeHistoryModal()">&times;</button>
       </div>
     </div>
@@ -963,9 +963,9 @@
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <span style="font-weight:700; font-size:0.85rem;" id="histDetailTitle">선택된 추출 로그</span>
           <div class="chart-legend" style="margin:0;">
-            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span>푸어</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span>추출</span></div>
-            <div class="legend-item"><div style="width:10px; height:0; border-top:1.5px dashed var(--muted);"></div><span>푸어선</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--sky);"></div><span id="legendPourText" data-i18n="legend_pour">푸어</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div><span id="legendYieldText" data-i18n="legend_yield">추출</span></div>
+            <div class="legend-item"><div style="width:10px; height:0; border-top:1.5px dashed var(--muted);"></div><span id="legendPourlineText" data-i18n="legend_pourline">푸어선</span></div>
           </div>
         </div>
         <div style="background:var(--card); border-radius:8px; border:1px solid var(--border); padding:6px; margin-top:4px;">
@@ -974,16 +974,16 @@
         <div id="histDetailSummary" style="font-size:0.75rem; color:var(--muted); line-height:1.4; margin-top:2px;"></div>
 
         <button class="btn-rebrew" id="btnLoadHistoryRecipe" onclick="loadRecipeFromCurrentHistory()">
-          <span>⚡ 이 레시피 스튜디오로 불러오기</span>
+          <span data-i18n="btn_load_to_studio">⚡ 이 레시피 스튜디오로 불러오기</span>
         </button>
 
         <div style="margin-top:6px; display:flex; flex-direction:column; gap:6px; background:var(--card); padding:8px 10px; border-radius:8px; border:1px solid var(--border);">
           <div style="font-size:0.75rem; font-weight:700; color:var(--text); display:flex; justify-content:space-between; align-items:center; gap:8px;">
             <span style="white-space:nowrap;">☕ 원두 정보 & 테이스팅 노트</span>
-            <button class="btn-secondary" style="font-size:0.7rem; padding:2px 8px; font-weight:600; white-space:nowrap;" onclick="saveHistoryNotes()">메모 저장</button>
+            <button class="btn-secondary" style="font-size:0.7rem; padding:2px 8px; font-weight:600; white-space:nowrap;" onclick="saveHistoryNotes()" data-i18n="btn_save_note">메모 저장</button>
           </div>
-          <input type="text" id="histBeanInput" placeholder="원두 종류 / 로스팅 일자 (예: 에티오피아 게이샤 워시드)" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text);" />
-          <textarea id="histNotesInput" rows="2" placeholder="맛 평가, 분쇄도 코멘트 등 (예: 분쇄도 45 적절, 클린컵 우수)" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text); resize:none; font-family:inherit;"></textarea>
+          <input type="text" id="histBeanInput" placeholder="원두 종류 / 로스팅 일자 (예: 에티오피아 게이샤 워시드)" data-i18n-placeholder="hist_bean_ph" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text);" />
+          <textarea id="histNotesInput" rows="2" placeholder="맛 평가, 분쇄도 코멘트 등 (예: 분쇄도 45 적절, 클린컵 우수)" data-i18n-placeholder="hist_notes_ph" style="font-size:0.75rem; padding:6px 8px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text); resize:none; font-family:inherit;"></textarea>
         </div>
       </div>
     </div>
@@ -993,25 +993,48 @@
 <div class="modal-overlay" id="settingsModal" onclick="closeSettingsOnBack(event)">
   <div class="modal-card">
     <div class="modal-header">
-      <div class="modal-title">⚙️ 환경 설정</div>
+      <div class="modal-title" data-i18n="settings_title">⚙️ 환경 설정</div>
       <button class="btn-close" onclick="closeSettings()">&times;</button>
+    </div>
+
+    <div class="setting-row" style="flex-direction:column; align-items:stretch; gap:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div class="setting-label" data-i18n="setting_lang">🌐 언어 설정 (Language)</div>
+          <div class="setting-desc" data-i18n="setting_lang_desc">시스템 기본 언어 또는 원하는 언어 선택</div>
+        </div>
+        <select id="settingLangSelect" onchange="setLanguage(this.value, true)" style="font-size:0.8rem; padding:6px 12px; background:var(--card-inner); border:1px solid var(--border); border-radius:6px; color:var(--text); cursor:pointer;">
+          <option value="auto" data-i18n="lang_auto">시스템 언어 자동 감지 (Auto)</option>
+          <option value="ko" data-i18n="lang_ko">한국어 (Korean)</option>
+          <option value="en" data-i18n="lang_en">English (Specialty Coffee Standard)</option>
+          <option value="ja" data-i18n="lang_ja">日本語 (Japanese Barista Standard)</option>
+          <option value="zh-TW" data-i18n="lang_zh_tw">繁體中文 (Taiwan / HK Specialty)</option>
+          <option value="zh-CN" data-i18n="lang_zh_cn">简体中文 (Chinese Specialty)</option>
+          <option value="de" data-i18n="lang_de">Deutsch (German Coffee Lab)</option>
+          <option value="fr" data-i18n="lang_fr">Français (French Specialty)</option>
+        </select>
+      </div>
+
+      <div id="langDisclaimerBox" style="margin-top:2px; padding:8px 12px; border-radius:6px; background:rgba(34, 197, 94, 0.08); border:1px solid rgba(34, 197, 94, 0.25); font-size:0.73rem; line-height:1.45; color:var(--text); transition:all 0.2s;">
+        <span id="langDisclaimerText">한국어는 기본 기준 언어로 모든 바리스타 용어가 표준화되어 있습니다.</span>
+      </div>
     </div>
 
     <div class="setting-row">
       <div>
-        <div class="setting-label">화면 테마</div>
-        <div class="setting-desc">다크 모드 또는 라이트 모드 전환</div>
+        <div class="setting-label" data-i18n="setting_theme">화면 테마</div>
+        <div class="setting-desc" data-i18n="setting_theme_desc">다크 모드 또는 라이트 모드 전환</div>
       </div>
       <div class="theme-switch">
-        <button class="theme-opt active" id="btnThemeDark" onclick="setTheme('dark', true)">다크</button>
-        <button class="theme-opt" id="btnThemeLight" onclick="setTheme('light', true)">라이트</button>
+        <button class="theme-opt active" id="btnThemeDark" onclick="setTheme('dark', true)" data-i18n="theme_dark">다크</button>
+        <button class="theme-opt" id="btnThemeLight" onclick="setTheme('light', true)" data-i18n="theme_light">라이트</button>
       </div>
     </div>
 
     <div class="setting-row">
       <div style="flex:1; padding-right:12px;">
-        <div class="setting-label">⏸️ 비상정지 기록 저장</div>
-        <div class="setting-desc">추출 중 비상정지 시에도 진행된 시점까지의 차트와 무게를 기록합니다.</div>
+        <div class="setting-label" data-i18n="setting_aborted">⏸️ 비상정지 기록 저장</div>
+        <div class="setting-desc" data-i18n="setting_aborted_desc">추출 중 비상정지 시에도 진행된 시점까지의 차트와 무게를 기록합니다.</div>
       </div>
       <label class="switch" title="비상정지 기록 저장 켜기/끄기">
         <input type="checkbox" id="recordAbortedToggle" onchange="setRecordAborted(this.checked, true)">
@@ -1021,37 +1044,37 @@
 
     <div class="setting-row">
       <div style="flex:1; padding-right:12px;">
-        <div class="setting-label">📍 푸어 시작 구분선 기준</div>
-        <div class="setting-desc">실시간 물 배출(저울 무게 증가) 감지 또는 레시피 설정 시간 기준</div>
+        <div class="setting-label" data-i18n="setting_marker">📍 푸어 시작 구분선 기준</div>
+        <div class="setting-desc" data-i18n="setting_marker_desc">실시간 물 배출(저울 무게 증가) 감지 또는 레시피 설정 시간 기준</div>
       </div>
       <div class="theme-switch" style="width:auto;">
-        <button class="theme-opt active" id="btnMarkerWeight" onclick="setMarkerMode('weight', true)">물 배출 감지</button>
-        <button class="theme-opt" id="btnMarkerTime" onclick="setMarkerMode('time', true)">시간 계산</button>
+        <button class="theme-opt active" id="btnMarkerWeight" onclick="setMarkerMode('weight', true)" data-i18n="marker_weight">물 배출 감지</button>
+        <button class="theme-opt" id="btnMarkerTime" onclick="setMarkerMode('time', true)" data-i18n="marker_time">시간 계산</button>
       </div>
     </div>
 
     <div class="setting-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
       <div>
-        <div class="setting-label">🖼️ 커스텀 배경화면</div>
-        <div class="setting-desc">사진 등록 시 각 카드 뒤로 부드러운 블러(Blur) 효과가 적용됩니다.</div>
+        <div class="setting-label" data-i18n="setting_wallpaper">🖼️ 커스텀 배경화면</div>
+        <div class="setting-desc" data-i18n="setting_wallpaper_desc">사진 등록 시 각 카드 뒤로 부드러운 블러(Blur) 효과가 적용됩니다.</div>
       </div>
       <div class="btn-group" style="width:100%;">
         <input type="file" id="wallpaperInput" accept="image/*" style="display:none;" onchange="handleWallpaperUpload(event)">
-        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="document.getElementById('wallpaperInput').click()">사진 선택</button>
-        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="clearWallpaper(true)">기본 배경 복원</button>
+        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="document.getElementById('wallpaperInput').click()" data-i18n="btn_choose_img">사진 선택</button>
+        <button class="btn-secondary" style="font-size:0.8rem; padding:8px;" onclick="clearWallpaper(true)" data-i18n="btn_reset_wallpaper">기본 배경 복원</button>
       </div>
     </div>
 
     <hr style="border:none; border-top:1px solid var(--border);">
 
     <div>
-      <div class="setting-label" style="margin-bottom:8px;">☁️ xBloom 클라우드 연동</div>
+      <div class="setting-label" style="margin-bottom:8px;" data-i18n="setting_cloud">☁️ xBloom 클라우드 연동</div>
       <div class="cloud-user-box" id="cloudStatusBox">
         <div class="cloud-status">
           <span id="cloudStatusDot" style="color:var(--muted); font-size:0.7rem;">●</span>
-          <span id="cloudStatusText">로그인되어 있지 않음</span>
+          <span id="cloudStatusText" data-i18n="cloud_logged_out">로그인되어 있지 않음</span>
         </div>
-        <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
+        <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo" data-i18n="cloud_desc_logged_out">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
       </div>
 
       <div id="cloudLoginForm" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
@@ -1063,24 +1086,24 @@
           <label>비밀번호</label>
           <input type="password" id="cloudPassword" placeholder="••••••••">
         </div>
-        <button class="btn-accent" style="margin-top:4px;" onclick="handleCloudLogin()">xBloom 로그인</button>
+        <button class="btn-accent" style="margin-top:4px;" onclick="handleCloudLogin()" data-i18n="btn_login">xBloom 로그인</button>
       </div>
 
       <div id="cloudLogoutWrap" style="margin-top:10px; display:none;">
-        <button class="btn-secondary" onclick="handleCloudLogout()">로그아웃 (토큰 해제)</button>
+        <button class="btn-secondary" onclick="handleCloudLogout()" data-i18n="btn_logout">로그아웃 (토큰 해제)</button>
       </div>
 
       <div class="setting-row" style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
         <div>
-          <div class="setting-label">🚀 버전 및 자동 업데이트</div>
-          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.8.8</div>
+          <div class="setting-label" data-i18n="setting_version">🚀 버전 및 자동 업데이트</div>
+          <div class="setting-desc" id="settingsVersionInfo">현재 버전: v0.9.0</div>
         </div>
-        <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="font-size:0.75rem; padding:6px 12px; cursor:pointer;">업데이트 확인</button>
+        <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="font-size:0.75rem; padding:6px 12px; cursor:pointer;" data-i18n="btn_check_update">업데이트 확인</button>
       </div>
     </div>
 
     <div class="settings-footer">
-      <span id="settingsFooterVer">v0.8.8 by 팽이팽이</span>
+      <span id="settingsFooterVer">v0.9.0 by 팽이팽이</span>
     </div>
   </div>
 </div>
@@ -1090,24 +1113,24 @@
     <div class="modal-header">
       <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
         <span>🚀</span>
-        <span id="updateModalTitle">새로운 버전 업데이트</span>
+        <span id="updateModalTitle" data-i18n="update_modal_title">새로운 버전 업데이트</span>
       </div>
       <button class="btn-close" onclick="closeUpdateModal()">&times;</button>
     </div>
 
     <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
       <div>
-        <div style="font-size:0.75rem; color:var(--muted);">현재 버전</div>
-        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.8.8</div>
+        <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_cur_ver">현재 버전</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v0.9.0</div>
       </div>
       <div style="font-size:1.1rem; color:var(--accent);">➔</div>
       <div>
-        <div style="font-size:0.75rem; color:var(--muted);">최신 릴리즈</div>
-        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.8.8</div>
+        <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_latest_ver">최신 릴리즈</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v0.9.0</div>
       </div>
     </div>
 
-    <div style="font-size:0.8rem; font-weight:600; margin-bottom:6px; color:var(--text);">릴리즈 변경 사항 (Release Notes)</div>
+    <div style="font-size:0.8rem; font-weight:600; margin-bottom:6px; color:var(--text);" data-i18n="update_notes_title">릴리즈 변경 사항 (Release Notes)</div>
     <div id="updateReleaseNotes" style="max-height: 220px; overflow-y: auto; background: var(--card-inner); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.78rem; line-height: 1.5; color: var(--text); white-space: pre-wrap;"></div>
 
     <div style="margin-top:12px; padding:10px 12px; border-radius:8px; background:rgba(34, 197, 94, 0.1); border:1px solid rgba(34, 197, 94, 0.3); font-size:0.74rem; color:var(--text); line-height:1.4;">
@@ -1125,13 +1148,1270 @@
     </div>
 
     <div class="modal-footer" id="updateModalButtons" style="margin-top:18px; display:flex; gap:8px;">
-      <button class="btn-secondary" id="updateCancelBtn" onclick="closeUpdateModal()" style="flex:1;">나중에 하기</button>
-      <button class="btn-accent" id="updateApplyBtn" onclick="applyUpdateNow()" style="flex:2; background: linear-gradient(135deg, var(--accent), #e05206); border:none;">🚀 지금 즉시 업데이트</button>
+      <button class="btn-secondary" id="updateCancelBtn" onclick="closeUpdateModal()" style="flex:1;" data-i18n="btn_update_later">나중에 하기</button>
+      <button class="btn-accent" id="updateApplyBtn" onclick="applyUpdateNow()" style="flex:2; background: linear-gradient(135deg, var(--accent), #e05206); border:none;" data-i18n="btn_update_now">🚀 지금 즉시 업데이트</button>
     </div>
   </div>
 </div>
 
 <script>
+  const TRANSLATIONS = {
+    ko: {
+      "metric_time": "\uc2dc\uac04",
+      "metric_temp": "\uc2e4\uc2dc\uac04 \uc218\uc628",
+      "metric_pour": "\ud478\uc5b4",
+      "metric_yield": "\ucd94\ucd9c",
+      "legend_pourline": "\ud478\uc5b4 \uc2dc\uc791\uc120",
+      "label_state_prefix": "\uc0c1\ud0dc: ",
+      "label_step_prefix": "\ub2e8\uacc4: ",
+      "card_pour_steps": "\ud478\uc5b4 \uad6c\uac04 \uc124\uc815 (Pour Steps & Pattern)",
+      "total_pour_prefix": "\ucd1d \ud478\uc5b4: ",
+      "btn_add_pour_step": "+ \uc0c8 \ud478\uc5b4 \ub2e8\uacc4 \ucd94\uac00",
+      "err_total_water": "\ucd1d \ud478\uc5b4\ub7c9\uc740 \uba38\uc2e0 \uc0c1\ud55c\uc778 500g\uc744 \ub118\uc744 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
+      "card_recipe_storage": "\ub808\uc2dc\ud53c \uc800\uc7a5 \ubc0f \uc5f0\ub3d9 \uad00\ub9ac",
+      "btn_save_to_server": "\ud83d\udcbe \uc11c\ubc84\uc5d0 \uc800\uc7a5 \ud6c4 \uc989\uc2dc \ucd94\ucd9c \ub300\uc2dc\ubcf4\ub4dc\ub85c \uc774\ub3d9",
+      "btn_recipe_list": "\ud83d\udccb \ub808\uc2dc\ud53c \ubaa9\ub85d",
+      "btn_share_link": "\ud83d\udd17 \uacf5\uc720 \ub9c1\ud06c",
+      "btn_open_yaml": "\ud83d\udcc2 YAML \uc5f4\uae30",
+      "btn_save_yaml": "\ud83d\udce4 YAML \uc800\uc7a5",
+      "card_grinder_params": "\uae30\ubcf8 \ud30c\ub77c\ubbf8\ud130 \ubc0f \uadf8\ub77c\uc778\ub354 \uc124\uc815",
+      "toggle_grinder": "\ub0b4\uc7a5 \uadf8\ub77c\uc778\ub354 (Grind)",
+      "toggle_grinder_desc": "OFF \uc2dc \ubd84\uc1c4 \uac74\ub108\ub700",
+      "toggle_sync": "\u23f1\ufe0f \uc778\ud130\ubc8c \ubcf4\uc815 (Sync)",
+      "toggle_sync_desc": "\ud478\uc5b4 \uac04\uaca9 \ub300\uae30 \uc790\ub3d9 \uacc4\uc0b0",
+      "label_dose_g": "Dose (\uc815\uc218 g)",
+      "label_grind_range": "\ubd84\uc1c4\ub3c4 (10~100)",
+      "label_rpm_range": "\uadf8\ub77c\uc778\ub354 RPM (60~120)",
+      "label_ratio_banner": "\ucd94\ucd9c \ube44\uc728 (0.5 \ub2e8\uc704 \ubc30\uc218 \uc77c\uce58 \ud544\uc694)",
+      "card_memory_cloud": "\uba38\uc2e0 \uba54\ubaa8\ub9ac \ubc0f \ud074\ub77c\uc6b0\ub4dc \uc804\uc1a1",
+      "btn_save_slot": "\uba38\uc2e0 \uc2ac\ub86f\uc5d0 \uc9c1\uc811 \uae30\ub85d (BLE)",
+      "btn_upload_cloud": "\u2601\ufe0f xBloom \uc571 \ud074\ub77c\uc6b0\ub4dc\uc5d0 \uc5c5\ub85c\ub4dc (Cloud API)",
+      "slot_modal_title": "\uba38\uc2e0 \uc2ac\ub86f \uc9c0\uc815 \uae30\ub85d",
+      "slot_modal_desc": "\uae30\ub85d\ud560 \uba38\uc2e0\uc758 \uba54\ubaa8\ub9ac \uc2ac\ub86f \ubc88\ud638\ub97c \uc120\ud0dd\ud558\uc138\uc694:",
+      "slot_1": "\uc2ac\ub86f A (1\ubc88)\uc5d0 \uae30\ub85d",
+      "slot_2": "\uc2ac\ub86f B (2\ubc88)\uc5d0 \uae30\ub85d",
+      "slot_3": "\uc2ac\ub86f C (3\ubc88)\uc5d0 \uae30\ub85d",
+      "step_bloom_title": "1\ub2e8\uacc4 (\ub738 \ub4e4\uc774\uae30/Bloom)",
+      "step_pour_title": "{n}\ucc28 \ud478\uc5b4 (Pour {n})",
+      "btn_del_step": "\uc0ad\uc81c",
+      "label_temp_input": "\uc218\uc628 (0, 40~95, 100\u00b0C)",
+      "tag_room_temp": "0 (\uc0c1\uc628)",
+      "label_water_input": "\ud478\uc5b4 (10~250g)",
+      "label_wait_input": "\ub300\uae30 (0~180s)",
+      "label_flow_input": "\uc720\uc18d (3.0~3.5ml/s)",
+      "label_pattern_select": "\ud478\uc5b4 \ud328\ud134 (Pour Pattern)",
+      "pat_center_opt": "\ud83c\udfaf Center (\uc911\uc559 \uc9d1\uc911 \ud478\uc5b4)",
+      "pat_spiral_opt": "\ud83c\udf00 Spiral (\ub098\uc120\ud615 \ud68c\uc804 \ud478\uc5b4)",
+      "pat_ring_opt": "\u2b55 Ring (\uc678\uacfd \ub9c1 \ud478\uc5b4)",
+      "agit_before_chip": "\ud83d\udcf3 \ud478\uc5b4 \uc804 \uad50\ubc18",
+      "agit_after_chip": "\ud83d\udcf3 \ud478\uc5b4 \ud6c4 \uad50\ubc18",
+      "cloud_success_title": "xBloom \ud074\ub77c\uc6b0\ub4dc \uc5c5\ub85c\ub4dc \uc644\ub8cc",
+      "cloud_success_desc": "\ub808\uc2dc\ud53c\uac00 \uacf5\uc2dd xBloom \ud074\ub77c\uc6b0\ub4dc \uacc4\uc815\uc5d0 \uc131\uacf5\uc801\uc73c\ub85c \ub3d9\uae30\ud654\ub418\uc5c8\uc2b5\ub2c8\ub2e4.",
+      "cloud_recipe_id_label": "\uacf5\uc2dd \ud074\ub77c\uc6b0\ub4dc \ub808\uc2dc\ud53c ID",
+      "cloud_share_link_label": "\uacf5\uc2dd \ub808\uc2dc\ud53c \uacf5\uc720 \ub9c1\ud06c (URL)",
+      "btn_copy_link": "\ud83d\udccb \ub9c1\ud06c \ubcf5\uc0ac",
+      "btn_open_app": "\ud83d\ude80 \ubaa8\ubc14\uc77c \uc571 \ub610\ub294 \uc6f9\uc5d0\uc11c \ub808\uc2dc\ud53c \uc5f4\uae30",
+      "btn_close": "\ub2eb\uae30",
+      nav_brew: "실시간 추출 대시보드",
+      nav_editor: "레시피 스튜디오 / 클라우드",
+      ble_checking: "BLE 연결 확인 중",
+      ble_connected: "BLE 연결됨",
+      ble_disconnected: "BLE 연결 끊김",
+      ble_connecting: "BLE 연결 시도 중...",
+      update_badge: "새 업데이트 발견",
+      btn_settings: "설정",
+      card_recipe_ctrl: "추출 레시피 제어",
+      label_select_recipe: "실행할 레시피 선택 (recipes/ 자동 연동)",
+      btn_start_brew: "추출 시작",
+      btn_stop_brew: "비상 정지",
+      card_log_monitor: "BLE 이벤트 로그 모니터",
+      card_telemetry: "머신 실시간 상태 (Telemetry)",
+      btn_history: "📜 추출 기록",
+      metric_state: "머신 상태",
+      metric_pour: "주수량 (Pour)",
+      metric_yield: "추출량 (Yield)",
+      metric_step: "진행 단계 (Step)",
+      metric_temp: "물 온도 (Temp)",
+      metric_flow: "유속 (Flow)",
+      metric_target_ratio: "목표 비율 (Ratio)",
+      metric_actual_ratio: "실제 비율",
+      metric_dose: "원두 투입량",
+      metric_time: "추출 시간",
+      card_chart: "실시간 추출 그래프 (듀얼 차트)",
+      btn_chart_smooth: "곡선 스무딩",
+      btn_chart_reset: "차트 초기화",
+      legend_pour: "푸어",
+      legend_yield: "추출",
+      legend_flow: "유속",
+      legend_temp: "온도",
+      legend_pourline: "푸어선",
+      studio_title: "레시피 스튜디오 (Recipe Studio)",
+      studio_local_title: "내 PC 로컬 레시피 (recipes/)",
+      btn_new_recipe: "새 레시피",
+      btn_dup_recipe: "복제",
+      btn_save_recipe: "저장",
+      btn_del_recipe: "삭제",
+      btn_cloud_upload: "☁️ 클라우드 업로드",
+      label_recipe_name: "레시피 이름",
+      label_dose: "원두 투입량 (Dose)",
+      card_grinder: "분쇄 설정 (그라인더)",
+      enable_grind: "레시피 시작 시 자동 분쇄 사용",
+      label_grind_size: "분쇄도 (클릭수: 1~80)",
+      label_grind_rpm: "RPM 회전수 (60~120)",
+      card_pours: "푸어 단계 설정 (Pours)",
+      btn_add_step: "단계 추가",
+      th_pattern: "패턴",
+      th_agitation: "교반",
+      th_flow: "유속",
+      th_water: "목표량",
+      th_temp: "온도",
+      th_pause: "대기(뜸)",
+      pat_center: "센터 (Center)",
+      pat_circle: "서클 (Circle)",
+      pat_spiral: "스파이럴 (Spiral)",
+      agit_none: "없음 (Off)",
+      agit_before: "주수 전 (Before)",
+      agit_after: "주수 후 (After)",
+      settings_title: "⚙️ 환경 설정",
+      setting_lang: "🌐 언어 설정 (Language)",
+      setting_lang_desc: "시스템 기본 언어 또는 원하는 언어 선택",
+      lang_auto: "시스템 언어 자동 감지 (Auto)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ 한국어를 제외한 다른 언어는 AI 번역을 기반으로 하여 현지 바리스타 전문 용어와 일부 차이가 있거나 부정확할 수 있습니다.",
+      disclaimer_ko: "한국어는 기본 기준 언어로 모든 바리스타 용어가 표준화되어 있습니다.",
+      setting_theme: "화면 테마",
+      setting_theme_desc: "다크 모드 또는 라이트 모드 전환",
+      theme_dark: "다크",
+      theme_light: "라이트",
+      setting_aborted: "⏸️ 비상정지 기록 저장",
+      setting_aborted_desc: "추출 중 비상정지 시에도 진행된 시점까지의 차트와 무게를 기록합니다.",
+      setting_marker: "📍 푸어 시작 구분선 기준",
+      setting_marker_desc: "실시간 물 배출(저울 무게 증가) 감지 또는 레시피 설정 시간 기준",
+      marker_weight: "물 배출 감지",
+      marker_time: "시간 계산",
+      setting_wallpaper: "🖼️ 커스텀 배경화면",
+      setting_wallpaper_desc: "사진 등록 시 각 카드 뒤로 부드러운 블러(Blur) 효과가 적용됩니다.",
+      btn_choose_img: "사진 선택",
+      btn_reset_wallpaper: "기본 배경 복원",
+      setting_cloud: "☁️ xBloom 클라우드 연동",
+      cloud_logged_out: "로그인되어 있지 않음",
+      cloud_desc_logged_out: "공식 앱 계정으로 로그인하여 레시피를 동기화하세요.",
+      label_email: "이메일 계정",
+      label_password: "비밀번호",
+      btn_login: "xBloom 로그인",
+      btn_logout: "로그아웃 (토큰 해제)",
+      setting_version: "🚀 버전 및 자동 업데이트",
+      current_ver_prefix: "현재 버전: ",
+      btn_check_update: "업데이트 확인",
+      hist_modal_title: "📜 추출 히스토리 & 그래프 기록",
+      btn_clear_all: "전체 삭제",
+      hist_list_title: "추출 이력 목록",
+      hist_detail_title: "선택된 추출 로그",
+      btn_load_to_studio: "⚡ 이 레시피 스튜디오로 불러오기",
+      hist_bean_title: "☕ 원두 정보 & 테이스팅 노트",
+      btn_save_note: "메모 저장",
+      hist_bean_ph: "원두 종류 / 로스팅 일자 (예: 에티오피아 게이샤 워시드)",
+      hist_notes_ph: "맛 평가, 분쇄도 코멘트 등 (예: 분쇄도 45 적절, 클린컵 우수)",
+      update_modal_title: "새로운 버전 업데이트",
+      update_cur_ver: "현재 버전",
+      update_latest_ver: "최신 릴리즈",
+      update_notes_title: "릴리즈 변경 사항 (Release Notes)",
+      update_guard_info: "🛡️ <b>데이터 보호 안내</b>: 개인 레시피(recipes/), 추출 기록(history.json), 설정 파일(config.json) 및 포터블 파이썬 환경은 <b>절대 덮어씌워지지 않고 100% 안전하게 유지</b>됩니다.",
+      btn_update_later: "나중에 하기",
+      btn_update_now: "🚀 지금 즉시 업데이트",
+      state_idle: "IDLE",
+      state_heating: "가열 중",
+      state_grinding: "분쇄 중",
+      state_brewing: "추출 중",
+      state_pouring: "주수 중",
+      state_blooming: "뜸들이기",
+      state_finished: "추출 완료",
+      state_aborted: "비상 정지",
+      state_error: "오류"
+    },
+    en: {
+      "metric_time": "Time",
+      "metric_temp": "Water Temp",
+      "metric_pour": "Pour",
+      "metric_yield": "Yield",
+      "legend_pourline": "Pour Marker",
+      "label_state_prefix": "State: ",
+      "label_step_prefix": "Step: ",
+      "card_pour_steps": "Pour Steps & Pattern",
+      "total_pour_prefix": "Total Pour: ",
+      "btn_add_pour_step": "+ Add Pour Step",
+      "err_total_water": "Total pour cannot exceed machine limit of 500g.",
+      "card_recipe_storage": "Recipe Storage & Actions",
+      "btn_save_to_server": "\ud83d\udcbe Save to Server & Go to Brew Dashboard",
+      "btn_recipe_list": "\ud83d\udccb Saved Recipes",
+      "btn_share_link": "\ud83d\udd17 Share Link",
+      "btn_open_yaml": "\ud83d\udcc2 Open YAML",
+      "btn_save_yaml": "\ud83d\udce4 Export YAML",
+      "card_grinder_params": "Brew Parameters & Grinder",
+      "toggle_grinder": "Built-in Grinder",
+      "toggle_grinder_desc": "Skip grinding when OFF",
+      "toggle_sync": "\u23f1\ufe0f Interval Sync",
+      "toggle_sync_desc": "Auto-calculate pour intervals",
+      "label_dose_g": "Dose (Integer g)",
+      "label_grind_range": "Grind Size (10~100)",
+      "label_rpm_range": "Grinder RPM (60~120)",
+      "label_ratio_banner": "Brew Ratio (Matches 0.5 increments)",
+      "card_memory_cloud": "Machine Hardware Slots & Cloud",
+      "btn_save_slot": "Save to Machine Hardware Slot (BLE)",
+      "btn_upload_cloud": "\u2601\ufe0f Upload to Official xBloom App (Cloud API)",
+      "slot_modal_title": "Save to Hardware Slot",
+      "slot_modal_desc": "Select hardware preset slot on machine:",
+      "slot_1": "Write to Slot A (#1)",
+      "slot_2": "Write to Slot B (#2)",
+      "slot_3": "Write to Slot C (#3)",
+      "step_bloom_title": "Step 1 (Bloom)",
+      "step_pour_title": "Pour {n}",
+      "btn_del_step": "Delete",
+      "label_temp_input": "Water Temp (0, 40~95, 100\u00b0C)",
+      "tag_room_temp": "0 (Cold/Ambient)",
+      "label_water_input": "Pour (10~250g)",
+      "label_wait_input": "Pause (0~180s)",
+      "label_flow_input": "Flow Rate (3.0~3.5ml/s)",
+      "label_pattern_select": "Pour Pattern",
+      "pat_center_opt": "\ud83c\udfaf Center Pour",
+      "pat_spiral_opt": "\ud83c\udf00 Spiral Pour",
+      "pat_ring_opt": "\u2b55 Ring Pour",
+      "agit_before_chip": "\ud83d\udcf3 Agitation Before Pour",
+      "agit_after_chip": "\ud83d\udcf3 Agitation After Pour",
+      "cloud_success_title": "xBloom Cloud Upload Successful",
+      "cloud_success_desc": "Recipe has been successfully synced to your official xBloom cloud account.",
+      "cloud_recipe_id_label": "Official Cloud Recipe ID",
+      "cloud_share_link_label": "Official Share Link (URL)",
+      "btn_copy_link": "\ud83d\udccb Copy Link",
+      "btn_open_app": "\ud83d\ude80 Open Recipe in App / Web",
+      "btn_close": "Close",
+      nav_brew: "Live Brew Dashboard",
+      nav_editor: "Recipe Studio / Cloud",
+      ble_checking: "Checking BLE...",
+      ble_connected: "BLE Connected",
+      ble_disconnected: "BLE Disconnected",
+      ble_connecting: "Connecting BLE...",
+      update_badge: "New Update Available",
+      btn_settings: "Settings",
+      card_recipe_ctrl: "Brew Recipe Control",
+      label_select_recipe: "Select Recipe (Syncs with recipes/)",
+      btn_start_brew: "Start Brew",
+      btn_stop_brew: "Emergency Stop",
+      card_log_monitor: "BLE Event Log Monitor",
+      card_telemetry: "Machine Live Telemetry",
+      btn_history: "📜 Brew History",
+      metric_state: "Machine State",
+      metric_pour: "Pour Weight",
+      metric_yield: "Yield (Weight)",
+      metric_step: "Brew Step",
+      metric_temp: "Water Temp",
+      metric_flow: "Flow Rate",
+      metric_target_ratio: "Target Ratio",
+      metric_actual_ratio: "Actual Ratio",
+      metric_dose: "Coffee Dose",
+      metric_time: "Brew Time",
+      card_chart: "Real-time Extraction Curve",
+      btn_chart_smooth: "Smooth Curve",
+      btn_chart_reset: "Reset Chart",
+      legend_pour: "Pour",
+      legend_yield: "Yield",
+      legend_flow: "Flow",
+      legend_temp: "Temp",
+      legend_pourline: "Pour Marker",
+      studio_title: "Recipe Studio",
+      studio_local_title: "Local Recipes (recipes/)",
+      btn_new_recipe: "New Recipe",
+      btn_dup_recipe: "Duplicate",
+      btn_save_recipe: "Save",
+      btn_del_recipe: "Delete",
+      btn_cloud_upload: "☁️ Cloud Upload",
+      label_recipe_name: "Recipe Name",
+      label_dose: "Coffee Dose (g)",
+      card_grinder: "Grinder Settings",
+      enable_grind: "Enable auto-grind on brew start",
+      label_grind_size: "Grind Size (Clicks: 1~80)",
+      label_grind_rpm: "Grinder RPM (60~120)",
+      card_pours: "Pour Steps (Pours)",
+      btn_add_step: "Add Step",
+      th_pattern: "Pattern",
+      th_agitation: "Agitation",
+      th_flow: "Flow",
+      th_water: "Target Pour",
+      th_temp: "Temp",
+      th_pause: "Pause (Bloom)",
+      pat_center: "Center",
+      pat_circle: "Circle",
+      pat_spiral: "Spiral",
+      agit_none: "Off",
+      agit_before: "Before Pour",
+      agit_after: "After Pour",
+      settings_title: "⚙️ Preferences & Settings",
+      setting_lang: "🌐 Language",
+      setting_lang_desc: "Select system default or custom UI language",
+      lang_auto: "System Default (Auto)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ Languages other than Korean are powered by AI translation and may contain slight barista terminology inaccuracies.",
+      disclaimer_ko: "Korean is the native baseline language with fully standardized barista terminology.",
+      setting_theme: "Theme",
+      setting_theme_desc: "Toggle between Dark and Light mode",
+      theme_dark: "Dark",
+      theme_light: "Light",
+      setting_aborted: "⏸️ Record Aborted Brews",
+      setting_aborted_desc: "Preserve chart and weight logs up to the moment an emergency stop occurs.",
+      setting_marker: "📍 Pour Marker Criterion",
+      setting_marker_desc: "Scale weight sensor detection (Real Pour) vs Recipe elapsed time",
+      marker_weight: "Scale Weight Sensor",
+      marker_time: "Time Elapsed",
+      setting_wallpaper: "🖼️ Custom Wallpaper",
+      setting_wallpaper_desc: "Cards will feature a frosted glass blur over your custom image.",
+      btn_choose_img: "Choose Image",
+      btn_reset_wallpaper: "Reset Default",
+      setting_cloud: "☁️ xBloom Cloud Sync",
+      cloud_logged_out: "Not logged in",
+      cloud_desc_logged_out: "Sign in with your official xBloom app account to sync recipes.",
+      label_email: "Email Account",
+      label_password: "Password",
+      btn_login: "Log In to xBloom",
+      btn_logout: "Log Out",
+      setting_version: "🚀 Version & Auto-Update",
+      current_ver_prefix: "Current Version: ",
+      btn_check_update: "Check for Updates",
+      hist_modal_title: "📜 Brew History & Extraction Logs",
+      btn_clear_all: "Clear All",
+      hist_list_title: "Extraction Logs",
+      hist_detail_title: "Selected Log Details",
+      btn_load_to_studio: "⚡ Load into Recipe Studio",
+      hist_bean_title: "☕ Coffee Beans & Tasting Notes",
+      btn_save_note: "Save Note",
+      hist_bean_ph: "Origin / Roast Date (e.g. Ethiopia Geisha Washed)",
+      hist_notes_ph: "Cup score, tasting notes (e.g. Clean cup, sweet citric acidity)",
+      update_modal_title: "New Version Available",
+      update_cur_ver: "Current Version",
+      update_latest_ver: "Latest Release",
+      update_notes_title: "Release Notes",
+      update_guard_info: "🛡️ <b>Data Guarantee</b>: Your custom recipes (recipes/), logs (history.json), settings (config.json), and Python runtime are <b>100% safely preserved and never overwritten</b>.",
+      btn_update_later: "Later",
+      btn_update_now: "🚀 Update Now",
+      state_idle: "IDLE",
+      state_heating: "HEATING",
+      state_grinding: "GRINDING",
+      state_brewing: "BREWING",
+      state_pouring: "POURING",
+      state_blooming: "BLOOMING",
+      state_finished: "FINISHED",
+      state_aborted: "STOPPED",
+      state_error: "ERROR"
+    },
+    ja: {
+      "metric_time": "\u62bd\u51fa\u6642\u9593",
+      "metric_temp": "\u73fe\u5728\u6e6f\u6e29",
+      "metric_pour": "\u6ce8\u6e6f\u91cf",
+      "metric_yield": "\u62bd\u51fa\u91cf",
+      "legend_pourline": "\u6ce8\u6e6f\u958b\u59cb\u7dda",
+      "label_state_prefix": "\u72b6\u614b: ",
+      "label_step_prefix": "\u30b9\u30c6\u30c3\u30d7: ",
+      "card_pour_steps": "\u6ce8\u6e6f\u30b9\u30c6\u30c3\u30d7\u30fb\u30d1\u30bf\u30fc\u30f3\u8a2d\u5b9a",
+      "total_pour_prefix": "\u7dcf\u6ce8\u6e6f\u91cf: ",
+      "btn_add_pour_step": "+ \u65b0\u898f\u6ce8\u6e6f\u30b9\u30c6\u30c3\u30d7\u8ffd\u52a0",
+      "err_total_water": "\u7dcf\u6ce8\u6e6f\u91cf\u306f\u30de\u30b7\u30f3\u306e\u4e0a\u9650\u3067\u3042\u308b500g\u3092\u8d85\u3048\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002",
+      "card_recipe_storage": "\u30ec\u30b7\u30d4\u4fdd\u5b58\u30fb\u9023\u643a\u7ba1\u7406",
+      "btn_save_to_server": "\ud83d\udcbe \u30b5\u30fc\u30d0\u30fc\u306b\u4fdd\u5b58\u3057\u3066\u62bd\u51fa\u753b\u9762\u3078\u79fb\u52d5",
+      "btn_recipe_list": "\ud83d\udccb \u30ec\u30b7\u30d4\u4e00\u89a7",
+      "btn_share_link": "\ud83d\udd17 \u5171\u6709URL\u8aad\u8fbc",
+      "btn_open_yaml": "\ud83d\udcc2 YAML\u3092\u958b\u304f",
+      "btn_save_yaml": "\ud83d\udce4 YAML\u4fdd\u5b58",
+      "card_grinder_params": "\u62bd\u51fa\u57fa\u672c\u30d1\u30e9\u30e1\u30fc\u30bf\uff06\u30df\u30eb\u8a2d\u5b9a",
+      "toggle_grinder": "\u5185\u8535\u30b0\u30e9\u30a4\u30f3\u30c0\u30fc",
+      "toggle_grinder_desc": "OFF\u6642\u306f\u633d\u8c46\u3092\u30b9\u30ad\u30c3\u30d7",
+      "toggle_sync": "\u23f1\ufe0f \u30a4\u30f3\u30bf\u30fc\u30d0\u30eb\u81ea\u52d5\u88dc\u6b63",
+      "toggle_sync_desc": "\u6ce8\u6e6f\u9593\u9694\u306e\u5f85\u6a5f\u6642\u9593\u3092\u81ea\u52d5\u8a08\u7b97",
+      "label_dose_g": "\u7c89\u91cf Dose (g)",
+      "label_grind_range": "\u633d\u304d\u76ee (10~100)",
+      "label_rpm_range": "\u30df\u30eb\u56de\u8ee2\u6570 RPM (60~120)",
+      "label_ratio_banner": "\u62bd\u51fa\u6bd4\u7387 (0.5\u523b\u307f\u306e\u500d\u6570)",
+      "card_memory_cloud": "\u30de\u30b7\u30f3\u30e1\u30e2\u30ea\u30b9\u30ed\u30c3\u30c8\uff06\u30af\u30e9\u30a6\u30c9",
+      "btn_save_slot": "\u30de\u30b7\u30f3\u30b9\u30ed\u30c3\u30c8\u306b\u4fdd\u5b58 (BLE)",
+      "btn_upload_cloud": "\u2601\ufe0f \u516c\u5f0fxBloom\u30af\u30e9\u30a6\u30c9\u306b\u4fdd\u5b58 (Cloud API)",
+      "slot_modal_title": "\u30de\u30b7\u30f3\u30b9\u30ed\u30c3\u30c8\u6307\u5b9a\u4fdd\u5b58",
+      "slot_modal_desc": "\u4fdd\u5b58\u3059\u308b\u30de\u30b7\u30f3\u306e\u30e1\u30e2\u30ea\u30b9\u30ed\u30c3\u30c8\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044:",
+      "slot_1": "\u30b9\u30ed\u30c3\u30c8A (1\u756a) \u306b\u66f8\u304d\u8fbc\u307f",
+      "slot_2": "\u30b9\u30ed\u30c3\u30c8B (2\u756a) \u306b\u66f8\u304d\u8fbc\u307f",
+      "slot_3": "\u30b9\u30ed\u30c3\u30c8C (3\u756a) \u306b\u66f8\u304d\u8fbc\u307f",
+      "step_bloom_title": "\u30b9\u30c6\u30c3\u30d71 (\u84b8\u3089\u3057/Bloom)",
+      "step_pour_title": "\u7b2c{n}\u6ce8 (Pour {n})",
+      "btn_del_step": "\u524a\u9664",
+      "label_temp_input": "\u6e6f\u6e29 (0, 40~95, 100\u00b0C)",
+      "tag_room_temp": "0 (\u5e38\u6e29\u6c34)",
+      "label_water_input": "\u6ce8\u6e6f\u91cf (10~250g)",
+      "label_wait_input": "\u5f85\u6a5f\u6642\u9593 (0~180\u79d2)",
+      "label_flow_input": "\u6ce8\u6e6f\u901f\u5ea6 (3.0~3.5ml/s)",
+      "label_pattern_select": "\u6ce8\u6e6f\u30d1\u30bf\u30fc\u30f3 (Pour Pattern)",
+      "pat_center_opt": "\ud83c\udfaf Center (\u4e2d\u5fc3\u4e00\u70b9\u6ce8\u6e6f)",
+      "pat_spiral_opt": "\ud83c\udf00 Spiral (\u306e\u306e\u5b57\u30b9\u30d1\u30a4\u30e9\u30eb)",
+      "pat_ring_opt": "\u2b55 Ring (\u5916\u5468\u30ea\u30f3\u30b0\u6ce8\u6e6f)",
+      "agit_before_chip": "\ud83d\udcf3 \u6ce8\u6e6f\u524d\u652a\u62cc",
+      "agit_after_chip": "\ud83d\udcf3 \u6ce8\u6e6f\u5f8c\u652a\u62cc",
+      "cloud_success_title": "xBloom \u30af\u30e9\u30a6\u30c9\u4fdd\u5b58\u5b8c\u4e86",
+      "cloud_success_desc": "\u30ec\u30b7\u30d4\u304c\u516c\u5f0fxBloom\u30af\u30e9\u30a6\u30c9\u30a2\u30ab\u30a6\u30f3\u30c8\u306b\u6b63\u5e38\u306b\u540c\u671f\u3055\u308c\u307e\u3057\u305f\u3002",
+      "cloud_recipe_id_label": "\u516c\u5f0f\u30af\u30e9\u30a6\u30c9\u30ec\u30b7\u30d4ID",
+      "cloud_share_link_label": "\u5171\u6709\u30ea\u30f3\u30af (URL)",
+      "btn_copy_link": "\ud83d\udccb \u30ea\u30f3\u30af\u3092\u30b3\u30d4\u30fc",
+      "btn_open_app": "\ud83d\ude80 \u30a2\u30d7\u30ea\u307e\u305f\u306f\u30d6\u30e9\u30a6\u30b6\u3067\u958b\u304f",
+      "btn_close": "\u9589\u3058\u308b",
+      nav_brew: "リアルタイム抽出",
+      nav_editor: "レシピスタジオ / クラウド",
+      ble_checking: "BLE接続確認中...",
+      ble_connected: "BLE接続完了",
+      ble_disconnected: "BLE切断中",
+      ble_connecting: "BLE接続試行中...",
+      update_badge: "新しい更新があります",
+      btn_settings: "設定",
+      card_recipe_ctrl: "抽出レシピ制御",
+      label_select_recipe: "実行レシピの選択 (recipes/ 自動同期)",
+      btn_start_brew: "抽出開始",
+      btn_stop_brew: "緊急停止",
+      card_log_monitor: "BLEイベントモニター",
+      card_telemetry: "マシンリアルタイム状態",
+      btn_history: "📜 抽出履歴",
+      metric_state: "マシン状態",
+      metric_pour: "注湯量 (Pour)",
+      metric_yield: "抽出量 (Yield)",
+      metric_step: "進行ステップ",
+      metric_temp: "湯温 (Temp)",
+      metric_flow: "注湯速度 (Flow)",
+      metric_target_ratio: "目標比率 (Ratio)",
+      metric_actual_ratio: "実測比率",
+      metric_dose: "粉量 (Dose)",
+      metric_time: "抽出時間",
+      card_chart: "リアルタイム抽出グラフ (デュアル曲線)",
+      btn_chart_smooth: "平滑化 (Smooth)",
+      btn_chart_reset: "グラフ初期化",
+      legend_pour: "注湯",
+      legend_yield: "抽出",
+      legend_flow: "流速",
+      legend_temp: "湯温",
+      legend_pourline: "注湯線",
+      studio_title: "レシピスタジオ (Recipe Studio)",
+      studio_local_title: "ローカルレシピ一覧 (recipes/)",
+      btn_new_recipe: "新規レシピ",
+      btn_dup_recipe: "複製",
+      btn_save_recipe: "保存",
+      btn_del_recipe: "削除",
+      btn_cloud_upload: "☁️ クラウド保存",
+      label_recipe_name: "レシピ名",
+      label_dose: "コーヒー粉量 (Dose)",
+      card_grinder: "ミル・グラインド設定",
+      enable_grind: "抽出開始時に自動ミルを使用する",
+      label_grind_size: "挽き目 (クリック数: 1~80)",
+      label_grind_rpm: "RPM回転数 (60~120)",
+      card_pours: "注湯ステップ設定 (Pours)",
+      btn_add_step: "ステップ追加",
+      th_pattern: "注湯パターン",
+      th_agitation: "攪拌",
+      th_flow: "流速",
+      th_water: "目標湯量",
+      th_temp: "湯温",
+      th_pause: "蒸らし・待機",
+      pat_center: "センター (Center)",
+      pat_circle: "サークル (Circle)",
+      pat_spiral: "スパイラル (Spiral)",
+      agit_none: "なし (Off)",
+      agit_before: "注湯前 (Before)",
+      agit_after: "注湯後 (After)",
+      settings_title: "⚙️ 環境設定",
+      setting_lang: "🌐 言語設定 (Language)",
+      setting_lang_desc: "OS標準またはUI言語を選択",
+      lang_auto: "システム標準 (自動)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ 韓国語以外の言語はAI翻訳を基にしており、一部のバリスタ専門用語が正確でない場合があります。",
+      disclaimer_ko: "韓国語は標準基準言語であり、バリスタ専門用語が正確に設定されています。",
+      setting_theme: "画面テーマ",
+      setting_theme_desc: "ダークモードまたはライトモード切替",
+      theme_dark: "ダーク",
+      theme_light: "ライト",
+      setting_aborted: "⏸️ 中断ログの保存",
+      setting_aborted_desc: "緊急停止された場合でも、その時点までの抽出曲線と重量を履歴に残します。",
+      setting_marker: "📍 注湯開始マーカー基準",
+      setting_marker_desc: "スケール重量検知（実測出水）またはレシピ指定経過時間",
+      marker_weight: "出水検知 (重量)",
+      marker_time: "時間計算",
+      setting_wallpaper: "🖼️ カスタム背景画像",
+      setting_wallpaper_desc: "写真設定時、各カードの背面にすりガラス（Blur）効果が適用されます。",
+      btn_choose_img: "画像選択",
+      btn_reset_wallpaper: "デフォルトに戻す",
+      setting_cloud: "☁️ xBloom クラウド連携",
+      cloud_logged_out: "未ログイン",
+      cloud_desc_logged_out: "公式アプリのアカウントでログインし、レシピを同期します。",
+      label_email: "メールアドレス",
+      label_password: "パスワード",
+      btn_login: "xBloom ログイン",
+      btn_logout: "ログアウト (解除)",
+      setting_version: "🚀 バージョン＆自動更新",
+      current_ver_prefix: "現在のバージョン: ",
+      btn_check_update: "更新を確認",
+      hist_modal_title: "📜 抽出履歴＆グラフ記録",
+      btn_clear_all: "全て削除",
+      hist_list_title: "抽出ログ一覧",
+      hist_detail_title: "選択されたログ詳細",
+      btn_load_to_studio: "⚡ このレシピをスタジオに読込",
+      hist_bean_title: "☕ 豆情報＆テイスティングノート",
+      btn_save_note: "メモ保存",
+      hist_bean_ph: "豆の銘柄 / 焙煎日 (例: エチオピア ゲイシャ ウォッシュド)",
+      hist_notes_ph: "風味評価、挽き目メモ (例: 挽き目45良好、クリーンカップ)",
+      update_modal_title: "新しいバージョンの更新",
+      update_cur_ver: "現在のバージョン",
+      update_latest_ver: "最新リリース",
+      update_notes_title: "変更点・リリースノート",
+      update_guard_info: "🛡️ <b>データ保護保証</b>: 個人レシピ(recipes/)、抽出ログ(history.json)、設定(config.json)、ポータブルPython環境は<b>上書きされず100%安全に保持</b>されます。",
+      btn_update_later: "後で",
+      btn_update_now: "🚀 今すぐ更新",
+      state_idle: "IDLE",
+      state_heating: "加熱中",
+      state_grinding: "粉砕中",
+      state_brewing: "抽出中",
+      state_pouring: "注湯中",
+      state_blooming: "蒸らし中",
+      state_finished: "抽出完了",
+      state_aborted: "緊急停止",
+      state_error: "エラー"
+    },
+    "zh-TW": {
+      nav_brew: "即時沖煮儀表板",
+      nav_editor: "沖煮配方工作室 / 雲端",
+      ble_checking: "確認BLE連線中...",
+      ble_connected: "BLE已連線",
+      ble_disconnected: "BLE已斷開",
+      ble_connecting: "嘗試連線BLE...",
+      update_badge: "發現新版本更新",
+      btn_settings: "偏好設定",
+      card_recipe_ctrl: "沖煮配方控制",
+      label_select_recipe: "選擇沖煮配方 (自動同步 recipes/)",
+      btn_start_brew: "開始沖煮",
+      btn_stop_brew: "緊急停止",
+      card_log_monitor: "BLE事件日誌監控",
+      card_telemetry: "機器即時狀態 (Telemetry)",
+      btn_history: "📜 沖煮紀錄",
+      metric_state: "機器狀態",
+      metric_pour: "注水量 (Pour)",
+      metric_yield: "萃取量 (Yield)",
+      metric_step: "沖煮步驟",
+      metric_temp: "水溫 (Temp)",
+      metric_flow: "注水流速",
+      metric_target_ratio: "目標粉水比",
+      metric_actual_ratio: "實際粉水比",
+      metric_dose: "咖啡粉重 (Dose)",
+      metric_time: "沖煮時間",
+      card_chart: "即時沖煮萃取曲線 (雙軸圖表)",
+      btn_chart_smooth: "平滑曲線",
+      btn_chart_reset: "重置圖表",
+      legend_pour: "注水",
+      legend_yield: "萃取",
+      legend_flow: "流速",
+      legend_temp: "水溫",
+      legend_pourline: "注水標線",
+      studio_title: "沖煮配方工作室 (Recipe Studio)",
+      studio_local_title: "本地配方庫 (recipes/)",
+      btn_new_recipe: "新增配方",
+      btn_dup_recipe: "複製配方",
+      btn_save_recipe: "儲存",
+      btn_del_recipe: "刪除",
+      btn_cloud_upload: "☁️ 上傳至雲端",
+      label_recipe_name: "配方名稱",
+      label_dose: "咖啡粉重 (Dose)",
+      card_grinder: "磨豆機設定",
+      enable_grind: "沖煮開始時自動研磨咖啡豆",
+      label_grind_size: "研磨度 (刻度點數: 1~80)",
+      label_grind_rpm: "磨豆轉速 RPM (60~120)",
+      card_pours: "注水步驟設定 (Pours)",
+      btn_add_step: "新增步驟",
+      th_pattern: "注水模式",
+      th_agitation: "擾動",
+      th_flow: "流速",
+      th_water: "目標水量",
+      th_temp: "水溫",
+      th_pause: "悶蒸/等待",
+      pat_center: "中心點 (Center)",
+      pat_circle: "同心圓 (Circle)",
+      pat_spiral: "螺旋擴散 (Spiral)",
+      agit_none: "關閉 (Off)",
+      agit_before: "注水前 (Before)",
+      agit_after: "注水後 (After)",
+      settings_title: "⚙️ 偏好設定",
+      setting_lang: "🌐 語言設定 (Language)",
+      setting_lang_desc: "選擇系統預設或慣用介面語言",
+      lang_auto: "跟隨系統 (自動)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ 除韓語外的其他語言均由AI翻譯提供，部分咖啡師專業術語可能不夠精準。",
+      disclaimer_ko: "韓語為基礎語言，所有咖啡師專業術語均已標準化校對。",
+      setting_theme: "外觀主題",
+      setting_theme_desc: "切換深色模式 (Dark) 或淺色模式 (Light)",
+      theme_dark: "深色",
+      theme_light: "淺色",
+      setting_aborted: "⏸️ 保存中斷沖煮紀錄",
+      setting_aborted_desc: "即便按下緊急停止，亦完整保留終止前的萃取曲線與數據紀錄。",
+      setting_marker: "📍 注水起點標記基準",
+      setting_marker_desc: "即時出水偵測 (電子秤重量上升) 或依配方預設時間推算",
+      marker_weight: "出水偵測 (秤重)",
+      marker_time: "時間計算",
+      setting_wallpaper: "🖼️ 自訂桌布背景",
+      setting_wallpaper_desc: "上傳圖片後，各功能面板背景將呈現霧面毛玻璃 (Blur) 質感效果。",
+      btn_choose_img: "選擇圖片",
+      btn_reset_wallpaper: "恢復預設",
+      setting_cloud: "☁️ xBloom 雲端帳號同步",
+      cloud_logged_out: "尚未登入",
+      cloud_desc_logged_out: "登入官方App帳號以同步專屬配方資料。",
+      label_email: "電子信箱帳號",
+      label_password: "密碼",
+      btn_login: "登入 xBloom",
+      btn_logout: "登出 (解除授權)",
+      setting_version: "🚀 版本與自動更新",
+      current_ver_prefix: "目前版本: ",
+      btn_check_update: "檢查更新",
+      hist_modal_title: "📜 沖煮紀錄與曲線檔案",
+      btn_clear_all: "清空全部",
+      hist_list_title: "沖煮歷程清單",
+      hist_detail_title: "所選紀錄詳情",
+      btn_load_to_studio: "⚡ 載入此配方至工作室",
+      hist_bean_title: "☕ 咖啡豆資訊與杯測筆記",
+      btn_save_note: "儲存筆記",
+      hist_bean_ph: "咖啡豆產區 / 烘焙度 (例如: 衣索比亞 藝妓 水洗)",
+      hist_notes_ph: "杯測風味評價、研磨備註 (例如: 乾淨度高、酸甜平衡)",
+      update_modal_title: "新版本更新可用",
+      update_cur_ver: "目前版本",
+      update_latest_ver: "最新發行版本",
+      update_notes_title: "版本更新日誌 (Release Notes)",
+      update_guard_info: "🛡️ <b>資料保護保證</b>: 您的個人配方(recipes/)、沖煮紀錄(history.json)、設定檔(config.json)及綠色便攜Python環境將<b>100%安全保留，絕不被覆寫</b>。",
+      btn_update_later: "稍後再說",
+      btn_update_now: "🚀 立即升級更新",
+      state_idle: "IDLE",
+      state_heating: "加熱中",
+      state_grinding: "磨豆中",
+      state_brewing: "沖煮中",
+      state_pouring: "注水中",
+      state_blooming: "悶蒸中",
+      state_finished: "沖煮完成",
+      state_aborted: "緊急停止",
+      state_error: "異常"
+    },
+    "zh-CN": {
+      nav_brew: "实时冲煮仪表板",
+      nav_editor: "冲煮配方工作室 / 云端",
+      ble_checking: "确认BLE连接中...",
+      ble_connected: "BLE已连接",
+      ble_disconnected: "BLE已断开",
+      ble_connecting: "尝试连接BLE...",
+      update_badge: "发现新版本更新",
+      btn_settings: "偏好设置",
+      card_recipe_ctrl: "冲煮配方控制",
+      label_select_recipe: "选择冲煮配方 (自动同步 recipes/)",
+      btn_start_brew: "开始冲煮",
+      btn_stop_brew: "紧急停止",
+      card_log_monitor: "BLE事件日志监控",
+      card_telemetry: "机器实时状态 (Telemetry)",
+      btn_history: "📜 冲煮记录",
+      metric_state: "机器状态",
+      metric_pour: "注水量 (Pour)",
+      metric_yield: "萃取量 (Yield)",
+      metric_step: "冲煮步骤",
+      metric_temp: "水温 (Temp)",
+      metric_flow: "注水流速",
+      metric_target_ratio: "目标粉水比",
+      metric_actual_ratio: "实际粉水比",
+      metric_dose: "咖啡粉重 (Dose)",
+      metric_time: "冲煮时间",
+      card_chart: "实时冲煮萃取曲线 (双轴图表)",
+      btn_chart_smooth: "平滑曲线",
+      btn_chart_reset: "重置图表",
+      legend_pour: "注水",
+      legend_yield: "萃取",
+      legend_flow: "流速",
+      legend_temp: "水温",
+      legend_pourline: "注水标线",
+      studio_title: "冲煮配方工作室 (Recipe Studio)",
+      studio_local_title: "本地配方库 (recipes/)",
+      btn_new_recipe: "新建配方",
+      btn_dup_recipe: "复制配方",
+      btn_save_recipe: "保存",
+      btn_del_recipe: "删除",
+      btn_cloud_upload: "☁️ 上传至云端",
+      label_recipe_name: "配方名称",
+      label_dose: "咖啡粉重 (Dose)",
+      card_grinder: "磨豆机设置",
+      enable_grind: "冲煮开始时自动研磨咖啡豆",
+      label_grind_size: "研磨度 (刻度点数: 1~80)",
+      label_grind_rpm: "磨豆转速 RPM (60~120)",
+      card_pours: "注水步骤设置 (Pours)",
+      btn_add_step: "添加步骤",
+      th_pattern: "注水模式",
+      th_agitation: "扰动",
+      th_flow: "流速",
+      th_water: "目标水量",
+      th_temp: "水温",
+      th_pause: "闷蒸/等待",
+      pat_center: "中心点 (Center)",
+      pat_circle: "同心圆 (Circle)",
+      pat_spiral: "螺旋扩散 (Spiral)",
+      agit_none: "关闭 (Off)",
+      agit_before: "注水前 (Before)",
+      agit_after: "注水后 (After)",
+      settings_title: "⚙️ 偏好设置",
+      setting_lang: "🌐 语言设置 (Language)",
+      setting_lang_desc: "选择系统默认或常用界面语言",
+      lang_auto: "跟随系统 (自动)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ 除韩语外的其他语言均由AI翻译提供，部分咖啡师专业术语可能不够精准。",
+      disclaimer_ko: "韩语为基准语言，所有咖啡师专业术语均已标准化校对。",
+      setting_theme: "外观主题",
+      setting_theme_desc: "切换深色模式 (Dark) 或浅色模式 (Light)",
+      theme_dark: "深色",
+      theme_light: "浅色",
+      setting_aborted: "⏸️ 保存中断冲煮记录",
+      setting_aborted_desc: "即便按下紧急停止，亦完整保留终止前的萃取曲线与数据记录。",
+      setting_marker: "📍 注水起点标记基准",
+      setting_marker_desc: "实时出水检测 (电子秤重量上升) 或依配方预设时间推算",
+      marker_weight: "出水检测 (秤重)",
+      marker_time: "时间计算",
+      setting_wallpaper: "🖼️ 自定义壁纸背景",
+      setting_wallpaper_desc: "上传图片后，各功能面板背景将呈现磨砂毛玻璃 (Blur) 质感效果。",
+      btn_choose_img: "选择图片",
+      btn_reset_wallpaper: "恢复默认",
+      setting_cloud: "☁️ xBloom 云端账号同步",
+      cloud_logged_out: "尚未登录",
+      cloud_desc_logged_out: "登录官方App账号以同步专属配方数据。",
+      label_email: "电子邮箱账号",
+      label_password: "密码",
+      btn_login: "登录 xBloom",
+      btn_logout: "退出登录 (解除授权)",
+      setting_version: "🚀 版本与自动更新",
+      current_ver_prefix: "当前版本: ",
+      btn_check_update: "检查更新",
+      hist_modal_title: "📜 冲煮记录与曲线档案",
+      btn_clear_all: "清空全部",
+      hist_list_title: "冲煮历程清单",
+      hist_detail_title: "所选记录详情",
+      btn_load_to_studio: "⚡ 载入此配方至工作室",
+      hist_bean_title: "☕ 咖啡豆信息与杯测笔记",
+      btn_save_note: "保存笔记",
+      hist_bean_ph: "咖啡豆产区 / 烘焙度 (例如: 埃塞俄比亚 瑰夏 水洗)",
+      hist_notes_ph: "杯测风味评价、研磨备注 (例如: 干净度高、酸甜平衡)",
+      update_modal_title: "新版本更新可用",
+      update_cur_ver: "当前版本",
+      update_latest_ver: "最新发布版本",
+      update_notes_title: "版本更新日志 (Release Notes)",
+      update_guard_info: "🛡️ <b>数据保护保证</b>: 您的个人配方(recipes/)、冲煮记录(history.json)、配置文件(config.json)及绿色便携Python环境将<b>100%安全保留，绝不被覆盖</b>。",
+      btn_update_later: "稍后再说",
+      btn_update_now: "🚀 立即升级更新",
+      state_idle: "IDLE",
+      state_heating: "加热中",
+      state_grinding: "磨豆中",
+      state_brewing: "冲煮中",
+      state_pouring: "注水中",
+      state_blooming: "闷蒸中",
+      state_finished: "冲煮完成",
+      state_aborted: "紧急停止",
+      state_error: "异常"
+    },
+    de: {
+      "metric_time": "Zeit",
+      "metric_temp": "Wassertemp.",
+      "metric_pour": "Aufguss",
+      "metric_yield": "Ausbeute",
+      "legend_pourline": "Gie\u00dflinie",
+      "label_state_prefix": "Status: ",
+      "label_step_prefix": "Schritt: ",
+      "card_pour_steps": "Aufguss-Schritte & Muster",
+      "total_pour_prefix": "Gesamtwasser: ",
+      "btn_add_pour_step": "+ Schritt hinzuf\u00fcgen",
+      "err_total_water": "Gesamtmenge darf 500g Maschinenlimit nicht \u00fcberschreiten.",
+      "card_recipe_storage": "Rezeptspeicher & Aktionen",
+      "btn_save_to_server": "\ud83d\udcbe Speichern & zum Br\u00fch-Dashboard wechseln",
+      "btn_recipe_list": "\ud83d\udccb Rezeptliste",
+      "btn_share_link": "\ud83d\udd17 Share-Link laden",
+      "btn_open_yaml": "\ud83d\udcc2 YAML \u00f6ffnen",
+      "btn_save_yaml": "\ud83d\udce4 YAML speichern",
+      "card_grinder_params": "Br\u00fchparameter & M\u00fchle",
+      "toggle_grinder": "Integrierte M\u00fchle",
+      "toggle_grinder_desc": "Mahlen \u00fcberspringen wenn AUS",
+      "toggle_sync": "\u23f1\ufe0f Intervall-Kompensation",
+      "toggle_sync_desc": "Wartezeiten automatisch anpassen",
+      "label_dose_g": "Dosis (Ganzzahl g)",
+      "label_grind_range": "Mahlgrad (10~100)",
+      "label_rpm_range": "Drehzahl RPM (60~120)",
+      "label_ratio_banner": "Br\u00fchverh\u00e4ltnis (0,5er Schritte)",
+      "card_memory_cloud": "Hardware-Slots & Cloud",
+      "btn_save_slot": "In Maschinenslot speichern (BLE)",
+      "btn_upload_cloud": "\u2601\ufe0f In xBloom-Cloud laden (Cloud API)",
+      "slot_modal_title": "Hardware-Slot belegen",
+      "slot_modal_desc": "Ziel-Speicherplatz ausw\u00e4hlen:",
+      "slot_1": "Auf Slot A (#1) schreiben",
+      "slot_2": "Auf Slot B (#2) schreiben",
+      "slot_3": "Auf Slot C (#3) schreiben",
+      "step_bloom_title": "Schritt 1 (Bloom)",
+      "step_pour_title": "Aufguss {n}",
+      "btn_del_step": "L\u00f6schen",
+      "label_temp_input": "Wassertemp. (0, 40~95, 100\u00b0C)",
+      "tag_room_temp": "0 (Kalt)",
+      "label_water_input": "Menge (10~250g)",
+      "label_wait_input": "Pause (0~180s)",
+      "label_flow_input": "Durchfluss (3.0~3.5ml/s)",
+      "label_pattern_select": "Gie\u00dfmuster",
+      "pat_center_opt": "\ud83c\udfaf Zentrumsguss",
+      "pat_spiral_opt": "\ud83c\udf00 Spiralguss",
+      "pat_ring_opt": "\u2b55 Kreisguss",
+      "agit_before_chip": "\ud83d\udcf3 Agitation vor Aufguss",
+      "agit_after_chip": "\ud83d\udcf3 Agitation nach Aufguss",
+      "cloud_success_title": "xBloom Cloud-Upload abgeschlossen",
+      "cloud_success_desc": "Rezept wurde erfolgreich mit Ihrem offiziellen Konto synchronisiert.",
+      "cloud_recipe_id_label": "Offizielle Cloud-Rezept-ID",
+      "cloud_share_link_label": "Offizieller Share-Link (URL)",
+      "btn_copy_link": "\ud83d\udccb Link kopieren",
+      "btn_open_app": "\ud83d\ude80 In App oder Browser \u00f6ffnen",
+      "btn_close": "Schlie\u00dfen",
+      nav_brew: "Live-Brüh-Dashboard",
+      nav_editor: "Rezept-Studio / Cloud",
+      ble_checking: "BLE prüfen...",
+      ble_connected: "BLE verbunden",
+      ble_disconnected: "BLE getrennt",
+      ble_connecting: "Verbinde BLE...",
+      update_badge: "Neues Update verfügbar",
+      btn_settings: "Einstellungen",
+      card_recipe_ctrl: "Brührezept-Steuerung",
+      label_select_recipe: "Rezept auswählen (recipes/)",
+      btn_start_brew: "Brühung starten",
+      btn_stop_brew: "Not-Stopp",
+      card_log_monitor: "BLE-Ereignisprotokoll",
+      card_telemetry: "Maschinen-Echtzeitstatus",
+      btn_history: "📜 Historie",
+      metric_state: "Status",
+      metric_pour: "Aufguss (Pour)",
+      metric_yield: "Ausbeute (Yield)",
+      metric_step: "Brühschritt",
+      metric_temp: "Wassertemp.",
+      metric_flow: "Durchfluss",
+      metric_target_ratio: "Ziel-Verhältnis",
+      metric_actual_ratio: "Ist-Verhältnis",
+      metric_dose: "Kaffeedosis",
+      metric_time: "Brühzeit",
+      card_chart: "Echtzeit-Extraktionskurve",
+      btn_chart_smooth: "Glättung",
+      btn_chart_reset: "Zurücksetzen",
+      legend_pour: "Aufguss",
+      legend_yield: "Ausbeute",
+      legend_flow: "Fluss",
+      legend_temp: "Temp",
+      legend_pourline: "Gießlinie",
+      studio_title: "Rezept-Studio",
+      studio_local_title: "Lokale Rezepte (recipes/)",
+      btn_new_recipe: "Neues Rezept",
+      btn_dup_recipe: "Duplizieren",
+      btn_save_recipe: "Speichern",
+      btn_del_recipe: "Löschen",
+      btn_cloud_upload: "☁️ In Cloud laden",
+      label_recipe_name: "Rezeptname",
+      label_dose: "Kaffeemenge (Dose)",
+      card_grinder: "Mühleneinstellungen",
+      enable_grind: "Automatisches Mahlen bei Start",
+      label_grind_size: "Mahlgrad (Klicks: 1~80)",
+      label_grind_rpm: "Drehzahl RPM (60~120)",
+      card_pours: "Aufguss-Schritte (Pours)",
+      btn_add_step: "Schritt hinzufügen",
+      th_pattern: "Muster",
+      th_agitation: "Agitation",
+      th_flow: "Fluss",
+      th_water: "Zielwasser",
+      th_temp: "Temp.",
+      th_pause: "Pause (Bloom)",
+      pat_center: "Zentrum (Center)",
+      pat_circle: "Kreis (Circle)",
+      pat_spiral: "Spirale (Spiral)",
+      agit_none: "Aus (Off)",
+      agit_before: "Vor Aufguss",
+      agit_after: "Nach Aufguss",
+      settings_title: "⚙️ Einstellungen",
+      setting_lang: "🌐 Sprache (Language)",
+      setting_lang_desc: "Systemstandard oder Sprache wählen",
+      lang_auto: "Systemstandard (Auto)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ Andere Sprachen als Koreanisch basieren auf KI-Übersetzung. Einige Barista-Fachbegriffe können geringfügige Abweichungen aufweisen.",
+      disclaimer_ko: "Koreanisch ist die native Standardsprache mit vollständig standardisierten Barista-Begriffen.",
+      setting_theme: "Farbschema",
+      setting_theme_desc: "Zwischen Dunkel- und Hellmodus wechseln",
+      theme_dark: "Dunkel",
+      theme_light: "Hell",
+      setting_aborted: "⏸️ Abgebrochene Brühungen speichern",
+      setting_aborted_desc: "Behält Diagramm und Gewicht auch bei Not-Stopp bis zum Abbruch bei.",
+      setting_marker: "📍 Aufguss-Markierung",
+      setting_marker_desc: "Waagen-Gewichtserkennung oder Rezeptzeit",
+      marker_weight: "Gewichtserkennung",
+      marker_time: "Zeitbasiert",
+      setting_wallpaper: "🖼️ Eigenes Hintergrundbild",
+      setting_wallpaper_desc: "Karten erhalten einen edlen Milchglas-Effekt (Blur) über dem Bild.",
+      btn_choose_img: "Bild wählen",
+      btn_reset_wallpaper: "Zurücksetzen",
+      setting_cloud: "☁️ xBloom Cloud-Konto",
+      cloud_logged_out: "Nicht angemeldet",
+      cloud_desc_logged_out: "Melden Sie sich mit Ihrem xBloom-Konto an, um Rezepte zu synchronisieren.",
+      label_email: "E-Mail-Adresse",
+      label_password: "Passwort",
+      btn_login: "Anmelden",
+      btn_logout: "Abmelden",
+      setting_version: "🚀 Version & Update",
+      current_ver_prefix: "Aktuelle Version: ",
+      btn_check_update: "Updates suchen",
+      hist_modal_title: "📜 Brühhistorie & Extraktionskurven",
+      btn_clear_all: "Alles löschen",
+      hist_list_title: "Protokollliste",
+      hist_detail_title: "Ausgewähltes Protokoll",
+      btn_load_to_studio: "⚡ In Recipe Studio laden",
+      hist_bean_title: "☕ Bohnen & Verkostungsnotizen",
+      btn_save_note: "Notiz speichern",
+      hist_bean_ph: "Kaffeesorte / Röstdatum (z.B. Äthiopien Geisha)",
+      hist_notes_ph: "Geschmacksprofil, Mahlgrad (z.B. Saubere Tasse, süße Säure)",
+      update_modal_title: "Neues Update verfügbar",
+      update_cur_ver: "Aktuelle Version",
+      update_latest_ver: "Neueste Version",
+      update_notes_title: "Versionshinweise (Changelog)",
+      update_guard_info: "🛡️ <b>Datenschutz-Garantie</b>: Ihre Rezepte (recipes/), Protokolle (history.json), Einstellungen (config.json) und Python-Laufzeit bleiben <b>zu 100% geschützt</b>.",
+      btn_update_later: "Später",
+      btn_update_now: "🚀 Jetzt aktualisieren",
+      state_idle: "IDLE",
+      state_heating: "HEIZEN",
+      state_grinding: "MAHLEN",
+      state_brewing: "BRÜHEN",
+      state_pouring: "AUFGUSS",
+      state_blooming: "BLOOMING",
+      state_finished: "FERTIG",
+      state_aborted: "GESTOPPT",
+      state_error: "FEHLER"
+    },
+    fr: {
+      "metric_time": "Temps",
+      "metric_temp": "Temp\u00e9rature",
+      "metric_pour": "Vers\u00e9",
+      "metric_yield": "Extrait",
+      "legend_pourline": "Ligne de versement",
+      "label_state_prefix": "\u00c9tat: ",
+      "label_step_prefix": "\u00c9tape: ",
+      "card_pour_steps": "\u00c9tapes de versement & Mod\u00e8le",
+      "total_pour_prefix": "Eau totale: ",
+      "btn_add_pour_step": "+ Ajouter une \u00e9tape",
+      "err_total_water": "L'eau totale ne peut pas d\u00e9passer 500g.",
+      "card_recipe_storage": "Gestion des recettes",
+      "btn_save_to_server": "\ud83d\udcbe Enregistrer et aller au tableau de bord",
+      "btn_recipe_list": "\ud83d\udccb Liste des recettes",
+      "btn_share_link": "\ud83d\udd17 Importer un lien",
+      "btn_open_yaml": "\ud83d\udcc2 Ouvrir YAML",
+      "btn_save_yaml": "\ud83d\udce4 Exporter YAML",
+      "card_grinder_params": "Param\u00e8tres d'extraction & Moulin",
+      "toggle_grinder": "Moulin int\u00e9gr\u00e9",
+      "toggle_grinder_desc": "D\u00e9sactiver pour sauter la mouture",
+      "toggle_sync": "\u23f1\ufe0f Synchronisation des intervalles",
+      "toggle_sync_desc": "Calcul automatique des pauses",
+      "label_dose_g": "Dose (Entier g)",
+      "label_grind_range": "Taille de mouture (10~100)",
+      "label_rpm_range": "Vitesse RPM (60~120)",
+      "label_ratio_banner": "Ratio d'infusion (Multiples de 0,5)",
+      "card_memory_cloud": "Slots machine & Cloud",
+      "btn_save_slot": "Enregistrer dans la machine (BLE)",
+      "btn_upload_cloud": "\u2601\ufe0f T\u00e9l\u00e9verser sur xBloom Cloud (API)",
+      "slot_modal_title": "Enregistrer dans un slot",
+      "slot_modal_desc": "S\u00e9lectionnez le slot m\u00e9moire de la machine:",
+      "slot_1": "\u00c9crire dans le Slot A (#1)",
+      "slot_2": "\u00c9crire dans le Slot B (#2)",
+      "slot_3": "\u00c9crire dans le Slot C (#3)",
+      "step_bloom_title": "\u00c9tape 1 (Pr\u00e9-infusion/Bloom)",
+      "step_pour_title": "Versement {n}",
+      "btn_del_step": "Supprimer",
+      "label_temp_input": "Temp\u00e9rature (0, 40~95, 100\u00b0C)",
+      "tag_room_temp": "0 (Ambiante)",
+      "label_water_input": "Versement (10~250g)",
+      "label_wait_input": "Pause (0~180s)",
+      "label_flow_input": "D\u00e9bit (3.0~3.5ml/s)",
+      "label_pattern_select": "Mod\u00e8le de versement",
+      "pat_center_opt": "\ud83c\udfaf Versement au centre",
+      "pat_spiral_opt": "\ud83c\udf00 Versement en spirale",
+      "pat_ring_opt": "\u2b55 Versement circulaire",
+      "agit_before_chip": "\ud83d\udcf3 Agitation avant versement",
+      "agit_after_chip": "\ud83d\udcf3 Agitation apr\u00e8s versement",
+      "cloud_success_title": "Synchronisation Cloud r\u00e9ussie",
+      "cloud_success_desc": "La recette a \u00e9t\u00e9 synchronis\u00e9e avec votre compte officiel xBloom.",
+      "cloud_recipe_id_label": "ID officiel de recette Cloud",
+      "cloud_share_link_label": "Lien de partage officiel (URL)",
+      "btn_copy_link": "\ud83d\udccb Copier le lien",
+      "btn_open_app": "\ud83d\ude80 Ouvrir dans l'application",
+      "btn_close": "Fermer",
+      nav_brew: "Tableau de bord en direct",
+      nav_editor: "Studio de Recettes / Cloud",
+      ble_checking: "Vérification BLE...",
+      ble_connected: "BLE Connecté",
+      ble_disconnected: "BLE Déconnecté",
+      ble_connecting: "Connexion BLE...",
+      update_badge: "Mise à jour disponible",
+      btn_settings: "Paramètres",
+      card_recipe_ctrl: "Contrôle de la Recette",
+      label_select_recipe: "Sélectionner la recette (recipes/)",
+      btn_start_brew: "Démarrer l'extraction",
+      btn_stop_brew: "Arrêt d'urgence",
+      card_log_monitor: "Journal des événements BLE",
+      card_telemetry: "Télémétrie en temps réel",
+      btn_history: "📜 Historique",
+      metric_state: "État machine",
+      metric_pour: "Poids versé (Pour)",
+      metric_yield: "Extrait (Yield)",
+      metric_step: "Étape de versement",
+      metric_temp: "Température",
+      metric_flow: "Débit d'eau",
+      metric_target_ratio: "Ratio cible",
+      metric_actual_ratio: "Ratio réel",
+      metric_dose: "Dose de café",
+      metric_time: "Temps d'extraction",
+      card_chart: "Courbe d'extraction en direct",
+      btn_chart_smooth: "Lissage",
+      btn_chart_reset: "Réinitialiser",
+      legend_pour: "Versé",
+      legend_yield: "Extrait",
+      legend_flow: "Débit",
+      legend_temp: "Temp",
+      legend_pourline: "Repère",
+      studio_title: "Studio de Recettes",
+      studio_local_title: "Recettes locales (recipes/)",
+      btn_new_recipe: "Nouvelle Recette",
+      btn_dup_recipe: "Dupliquer",
+      btn_save_recipe: "Enregistrer",
+      btn_del_recipe: "Supprimer",
+      btn_cloud_upload: "☁️ Téléverser",
+      label_recipe_name: "Nom de la recette",
+      label_dose: "Dose de café (g)",
+      card_grinder: "Réglages du Moulin",
+      enable_grind: "Activer la mouture auto au démarrage",
+      label_grind_size: "Taille de mouture (1~80)",
+      label_grind_rpm: "Vitesse RPM (60~120)",
+      card_pours: "Étapes de versement (Pours)",
+      btn_add_step: "Ajouter une étape",
+      th_pattern: "Modèle",
+      th_agitation: "Agitation",
+      th_flow: "Débit",
+      th_water: "Volume d'eau",
+      th_temp: "Temp.",
+      th_pause: "Pause (Bloom)",
+      pat_center: "Centre (Center)",
+      pat_circle: "Cercle (Circle)",
+      pat_spiral: "Spirale (Spiral)",
+      agit_none: "Désactivé (Off)",
+      agit_before: "Avant versement",
+      agit_after: "Après versement",
+      settings_title: "⚙️ Préférences",
+      setting_lang: "🌐 Langue (Language)",
+      setting_lang_desc: "Choisir la langue par défaut ou personnalisée",
+      lang_auto: "Système par défaut (Auto)",
+      lang_ko: "한국어 (Korean)",
+      lang_en: "English (Specialty Coffee Standard)",
+      lang_ja: "日本語 (Japanese Barista Standard)",
+      lang_zh_tw: "繁體中文 (Taiwan / HK Specialty)",
+      lang_zh_cn: "简体中文 (Chinese Specialty)",
+      lang_de: "Deutsch (German Coffee Lab)",
+      lang_fr: "Français (French Specialty)",
+      disclaimer_ai: "⚠️ Les langues autres que le coréen sont issues de la traduction par IA et peuvent comporter de légères imprécisions dans les termes de barista.",
+      disclaimer_ko: "Le coréen est la langue de référence native avec des termes de barista entièrement standardisés.",
+      setting_theme: "Thème d'affichage",
+      setting_theme_desc: "Basculer entre le mode sombre et le mode clair",
+      theme_dark: "Sombre",
+      theme_light: "Clair",
+      setting_aborted: "⏸️ Enregistrer les arrêts d'urgence",
+      setting_aborted_desc: "Conserve le graphique et le poids même en cas d'arrêt d'urgence.",
+      setting_marker: "📍 Repère de début de versement",
+      setting_marker_desc: "Détection de débit réel (balance) ou calcul du temps",
+      marker_weight: "Détection de débit",
+      marker_time: "Calcul du temps",
+      setting_wallpaper: "🖼️ Fond d'écran personnalisé",
+      setting_wallpaper_desc: "Effet verre dépoli (Blur) appliqué sous chaque carte.",
+      btn_choose_img: "Choisir une photo",
+      btn_reset_wallpaper: "Rétablir par défaut",
+      setting_cloud: "☁️ Compte xBloom Cloud",
+      cloud_logged_out: "Non connecté",
+      cloud_desc_logged_out: "Connectez-vous à l'application officielle pour synchroniser vos recettes.",
+      label_email: "Adresse e-mail",
+      label_password: "Mot de passe",
+      btn_login: "Se connecter",
+      btn_logout: "Se déconnecter",
+      setting_version: "🚀 Version et mise à jour",
+      current_ver_prefix: "Version actuelle: ",
+      btn_check_update: "Vérifier",
+      hist_modal_title: "📜 Historique & Courbes d'extraction",
+      btn_clear_all: "Tout effacer",
+      hist_list_title: "Liste des extractions",
+      hist_detail_title: "Détails de l'extraction",
+      btn_load_to_studio: "⚡ Charger dans le Studio",
+      hist_bean_title: "☕ Café & Notes de dégustation",
+      btn_save_note: "Enregistrer la note",
+      hist_bean_ph: "Origine / Date de torréfaction (ex: Éthiopie Geisha)",
+      hist_notes_ph: "Profil aromatique, mouture (ex: Tasse propre, acidité douce)",
+      update_modal_title: "Mise à jour disponible",
+      update_cur_ver: "Version actuelle",
+      update_latest_ver: "Dernière version",
+      update_notes_title: "Notes de version (Release Notes)",
+      update_guard_info: "🛡️ <b>Garantie des données</b>: Vos recettes (recipes/), historiques (history.json), paramètres (config.json) et environnement Python sont <b>protégés à 100%</b>.",
+      btn_update_later: "Plus tard",
+      btn_update_now: "🚀 Mettre à jour",
+      state_idle: "IDLE",
+      state_heating: "CHAUFFE",
+      state_grinding: "MOUTURE",
+      state_brewing: "EXTRACTION",
+      state_pouring: "VERSEMENT",
+      state_blooming: "PRÉ-INFUSION",
+      state_finished: "TERMINÉ",
+      state_aborted: "INTERROMPU",
+      state_error: "ERREUR"
+    }
+  };
+  let currentLangSetting = "auto";
+  let activeLang = "ko";
+  function detectSystemLanguage() {
+    const navLang = (navigator.language || (navigator.languages && navigator.languages[0]) || "ko").toLowerCase();
+    if (navLang.startsWith("ko")) return "ko";
+    if (navLang.startsWith("ja")) return "ja";
+    if (navLang.includes("tw") || navLang.includes("hk") || navLang.includes("mo") || navLang.includes("hant")) return "zh-TW";
+    if (navLang.startsWith("zh")) return "zh-CN";
+    if (navLang.startsWith("de")) return "de";
+    if (navLang.startsWith("fr")) return "fr";
+    return "en";
+  }
+  function resolveLanguage(code) {
+    if (!code || code === "auto") {
+      return detectSystemLanguage();
+    }
+    return TRANSLATIONS[code] ? code : "en";
+  }
+  function t(key, fallback = "") {
+    const dict = TRANSLATIONS[activeLang] || TRANSLATIONS["ko"];
+    if (dict && dict[key] !== undefined) {
+      return dict[key];
+    }
+    const koDict = TRANSLATIONS["ko"];
+    return (koDict && koDict[key] !== undefined) ? koDict[key] : fallback;
+  }
+  function setLanguage(langCode, saveToServer = true) {
+    currentLangSetting = langCode || "auto";
+    activeLang = resolveLanguage(currentLangSetting);
+    document.documentElement.lang = activeLang;
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      const trans = t(key);
+      if (trans) {
+        if (trans.includes("<b>") || trans.includes("</")) {
+          el.innerHTML = trans;
+        } else {
+          el.innerText = trans;
+        }
+      }
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      const trans = t(key);
+      if (trans) el.placeholder = trans;
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach(el => {
+      const key = el.getAttribute("data-i18n-title");
+      const trans = t(key);
+      if (trans) el.title = trans;
+    });
+    const langSelect = document.getElementById("settingLangSelect");
+    if (langSelect) langSelect.value = currentLangSetting;
+    updateLangDisclaimerUI();
+    updateChartLegendLabels();
+    if (typeof renderSteps === "function") {
+      try { renderSteps(); } catch(e) {}
+    }
+    updateBleStatusUI();
+    const verDesc = document.getElementById("settingsVersionInfo");
+    if (verDesc && latestReleaseData) {
+      verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${latestReleaseData.current_version || "0.9.0"}`;
+    }
+    try {
+      localStorage.setItem("xbloom_language", currentLangSetting);
+    } catch(e) {}
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: currentLangSetting })
+      }).catch(err => console.warn("언어 설정 서버 저장 실패:", err));
+    }
+  }
+  function updateLangDisclaimerUI() {
+    const box = document.getElementById("langDisclaimerBox");
+    const textEl = document.getElementById("langDisclaimerText");
+    if (!box || !textEl) return;
+    if (activeLang === "ko") {
+      box.style.background = "rgba(34, 197, 94, 0.08)";
+      box.style.borderColor = "rgba(34, 197, 94, 0.25)";
+      textEl.innerText = t("disclaimer_ko");
+    } else {
+      box.style.background = "rgba(217, 119, 54, 0.12)";
+      box.style.borderColor = "rgba(217, 119, 54, 0.35)";
+      textEl.innerText = t("disclaimer_ai");
+    }
+  }
+  function updateChartLegendLabels() {
+    const elPour = document.getElementById("legendPourText");
+    const elYield = document.getElementById("legendYieldText");
+    const elFlow = document.getElementById("legendFlowText");
+    const elTemp = document.getElementById("legendTempText");
+    const elPourline = document.getElementById("legendPourlineText");
+    if (elPour) elPour.innerText = t("legend_pour");
+    if (elYield) elYield.innerText = t("legend_yield");
+    if (elFlow) elFlow.innerText = t("legend_flow");
+    if (elTemp) elTemp.innerText = t("legend_temp");
+    if (elPourline) elPourline.innerText = t("legend_pourline");
+  }
+  function updateBleStatusUI() {
+    const bleStatusText = document.getElementById("bleStatusText");
+    const bleBtn = document.getElementById("bleStatusBtn");
+    if (!bleStatusText || !bleBtn) return;
+    if (bleBtn.classList.contains("connected")) {
+      bleStatusText.innerText = t("ble_connected");
+    } else if (bleBtn.classList.contains("connecting")) {
+      bleStatusText.innerText = t("ble_connecting");
+    } else {
+      bleStatusText.innerText = t("ble_disconnected");
+    }
+  }
   let recordAbortedBrews = false;
   let latestReleaseData = null;
   async function loadServerSettings() {
@@ -1153,6 +2433,16 @@
         cloudUser = cfg.cloud_user;
         updateCloudUI();
       }
+      let initLang = "auto";
+      if (cfg.language) {
+        initLang = cfg.language;
+      } else {
+        try {
+          const savedLang = localStorage.getItem("xbloom_language");
+          if (savedLang) initLang = savedLang;
+        } catch(e) {}
+      }
+      setLanguage(initLang, false);
     } catch (e) {
       console.warn("서버 설정 로드 실패:", e);
     }
@@ -1173,11 +2463,11 @@
       const badgeText = document.getElementById("updateBadgeText");
       const verDesc = document.getElementById("settingsVersionInfo");
       if (verDesc) {
-        verDesc.innerText = `현재 버전: v${data.current_version || "0.8.8"}`;
+        verDesc.innerText = `현재 버전: v${data.current_version || "0.9.0"}`;
       }
       const footerVer = document.getElementById("settingsFooterVer");
       if (footerVer) {
-        footerVer.innerText = `v${data.current_version || "0.8.8"} by 팽이팽이`;
+        footerVer.innerText = `v${data.current_version || "0.9.0"} by 팽이팽이`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -1190,7 +2480,7 @@
       } else {
         if (badgeBtn) badgeBtn.style.display = "none";
         if (manual) {
-          alert(`현재 최신 버전(v${data.current_version || "0.8.8"})을 사용 중입니다.`);
+          alert(`현재 최신 버전(v${data.current_version || "0.9.0"})을 사용 중입니다.`);
         }
       }
     } catch (e) {
@@ -1217,8 +2507,8 @@
     const latestSpan = document.getElementById("updateLatestVer");
     const titleSpan = document.getElementById("updateModalTitle");
     const notesBox = document.getElementById("updateReleaseNotes");
-    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.8.8"}`;
-    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.8.8"}`;
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "0.9.0"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "0.9.0"}`;
     if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || `xBloom bleUI v${latestReleaseData.latest_version} 업데이트`;
     if (notesBox) {
       notesBox.innerText = latestReleaseData.release_notes || "새로운 기능 개선 및 버그 수정이 포함되어 있습니다.";
@@ -2853,50 +4143,50 @@
       container.innerHTML += `
         <div class="step-card">
           <div class="step-header">
-            <span class="step-title">${isBloom ? '1단계 (뜸 들이기/Bloom)' : `${idx + 1}차 푸어 (Pour ${idx + 1})`}</span>
-            ${steps.length > 1 ? `<button class="btn-del" onclick="removeStep(${idx})">삭제</button>` : ''}
+            <span class="step-title">${isBloom ? t('step_bloom_title', '1단계 (뜸 들이기/Bloom)') : t('step_pour_title', `${idx + 1}차 푸어 (Pour ${idx + 1})`).replace('{n}', idx + 1)}</span>
+            ${steps.length > 1 ? `<button class="btn-del" onclick="removeStep(${idx})">${t('btn_del_step', '삭제')}</button>` : ''}
           </div>
           <div class="step-grid">
             <div class="field-group">
-              <label>수온 (0, 40~95, 100°C)</label>
+              <label>${t('label_temp_input', '수온 (0, 40~95, 100°C)')}</label>
               <div class="temp-input-wrap">
                 <input type="number" id="input-temp-${idx}" value="${step.temp}" oninput="updateStep(${idx}, 'temp', this.value)" placeholder="0 / 40~95 / 100">
-                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 0)">0 (상온)</button>
+                <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 0)">${t('tag_room_temp', '0 (상온)')}</button>
                 <button type="button" class="btn-tag" onclick="setTempTag(${idx}, 100)">100</button>
               </div>
               <span class="error-msg" id="err-temp-${idx}">0 또는 40~95, 100 입력</span>
             </div>
             <div class="field-group">
-              <label>푸어 (10~250g)</label>
+              <label>${t('label_water_input', '푸어 (10~250g)')}</label>
               <input type="number" id="input-water-${idx}" value="${step.water}" oninput="updateStep(${idx}, 'water', this.value)">
               <span class="error-msg" id="err-water-${idx}">10~250g 입력</span>
             </div>
             <div class="field-group">
-              <label>대기 (0~180s)</label>
+              <label>${t('label_wait_input', '대기 (0~180s)')}</label>
               <input type="number" id="input-wait-${idx}" value="${step.wait}" oninput="updateStep(${idx}, 'wait', this.value)">
               <span class="error-msg" id="err-wait-${idx}">0~180s 입력</span>
             </div>
             <div class="field-group">
-              <label>유속 (3.0~3.5ml/s)</label>
+              <label>${t('label_flow_input', '유속 (3.0~3.5ml/s)')}</label>
               <input type="number" step="0.1" id="input-flow-${idx}" value="${step.flow}" oninput="updateStep(${idx}, 'flow', this.value)">
               <span class="error-msg" id="err-flow-${idx}">3.0~3.5 입력</span>
             </div>
           </div>
           <div class="field-group" style="margin-top:6px; margin-bottom:0;">
-            <label>푸어 패턴 (Pour Pattern)</label>
+            <label>${t('label_pattern_select', '푸어 패턴 (Pour Pattern)')}</label>
             <select onchange="updateStep(${idx}, 'pattern', this.value)">
-              <option value="center" ${currentPat === 'center' ? 'selected' : ''}>🎯 Center (중앙 집중 푸어)</option>
-              <option value="spiral" ${currentPat === 'spiral' ? 'selected' : ''}>🌀 Spiral (나선형 회전 푸어)</option>
-              <option value="ring" ${currentPat === 'ring' ? 'selected' : ''}>⭕ Ring (외곽 링 푸어)</option>
+              <option value="center" ${currentPat === 'center' ? 'selected' : ''}>${t('pat_center_opt', '🎯 Center (중앙 집중 푸어)')}</option>
+              <option value="spiral" ${currentPat === 'spiral' ? 'selected' : ''}>${t('pat_spiral_opt', '🌀 Spiral (나선형 회전 푸어)')}</option>
+              <option value="ring" ${currentPat === 'ring' ? 'selected' : ''}>${t('pat_ring_opt', '⭕ Ring (외곽 링 푸어)')}</option>
             </select>
           </div>
           <div class="agitation-chip-group">
             <button type="button" class="agitation-chip ${hasBefore ? 'active' : ''}" onclick="toggleStepAgitation(${idx}, 'agitation_before')">
-              <span>📳 푸어 전 교반<span class="chip-en"> (Before)</span></span>
+              <span>${t('agit_before_chip', '📳 푸어 전 교반')}</span>
               <span class="agitation-status">${hasBefore ? 'ON' : 'OFF'}</span>
             </button>
             <button type="button" class="agitation-chip ${hasAfter ? 'active' : ''}" onclick="toggleStepAgitation(${idx}, 'agitation_after')">
-              <span>📳 푸어 후 교반<span class="chip-en"> (After)</span></span>
+              <span>${t('agit_after_chip', '📳 푸어 후 교반')}</span>
               <span class="agitation-status">${hasAfter ? 'ON' : 'OFF'}</span>
             </button>
           </div>

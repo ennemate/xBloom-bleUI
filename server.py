@@ -1,5 +1,5 @@
 import shutil
-'\nxBloom bleUI Local Web Server (v0.8.8)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n'
+'\nxBloom bleUI Local Web Server (v0.9.0)\n- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)\n- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단\n- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑\n- 그라인더 RPM 60~120 10단위 제어 지원\n- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)\n- 글로벌 판매국 스페셜티 커피 바리스타 전문 용어 다국어(i18n) 지원\n'
 import sys
 import os
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,7 +19,7 @@ from contextlib import asynccontextmanager
 from typing import Dict, Any, Optional, List
 import urllib.request
 import urllib.parse
-CURRENT_VERSION = '0.8.8'
+CURRENT_VERSION = '0.9.0'
 GITHUB_REPO = 'ennemate/xBloom-bleUI'
 import uvicorn
 import yaml
@@ -76,7 +76,7 @@ def normalize_pattern(pat: Optional[str]) -> str:
     return 'center'
 
 def load_server_config() -> Dict[str, Any]:
-    default_config = {'theme': 'dark', 'wallpaper': None, 'cloud_user': None, 'record_aborted_brews': False, 'pour_marker_mode': 'weight', 'chart_smoothing': True, 'handdrip_interval_sync': False}
+    default_config = {'theme': 'dark', 'wallpaper': None, 'language': 'auto', 'cloud_user': None, 'record_aborted_brews': False, 'pour_marker_mode': 'weight', 'chart_smoothing': True, 'handdrip_interval_sync': False}
     if os.path.exists(CONFIG_FILE):
         try:
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
@@ -204,6 +204,7 @@ class FetchSharedRecipeRequest(BaseModel):
 class SettingsUpdateModel(BaseModel):
     theme: Optional[str] = None
     wallpaper: Optional[str] = None
+    language: Optional[str] = None
     record_aborted_brews: Optional[bool] = None
     pour_marker_mode: Optional[str] = None
     chart_smoothing: Optional[bool] = None
@@ -525,6 +526,8 @@ async def update_settings(cfg_update: SettingsUpdateModel):
         server_config['theme'] = cfg_update.theme
     if cfg_update.wallpaper is not None:
         server_config['wallpaper'] = cfg_update.wallpaper if cfg_update.wallpaper != '' else None
+    if cfg_update.language is not None:
+        server_config['language'] = str(cfg_update.language)
     if cfg_update.record_aborted_brews is not None:
         server_config['record_aborted_brews'] = bool(cfg_update.record_aborted_brews)
     if cfg_update.pour_marker_mode is not None:
