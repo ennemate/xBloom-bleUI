@@ -209,6 +209,7 @@ class SettingsUpdateModel(BaseModel):
     pour_marker_mode: Optional[str] = None
     chart_smoothing: Optional[bool] = None
     handdrip_interval_sync: Optional[bool] = None
+    show_micron: Optional[bool] = None
 
 class HistoryItemModel(BaseModel):
     id: Optional[str] = None
@@ -536,6 +537,8 @@ async def update_settings(cfg_update: SettingsUpdateModel):
         server_config['chart_smoothing'] = bool(cfg_update.chart_smoothing)
     if cfg_update.handdrip_interval_sync is not None:
         server_config['handdrip_interval_sync'] = bool(cfg_update.handdrip_interval_sync)
+    if cfg_update.show_micron is not None:
+        server_config['show_micron'] = bool(cfg_update.show_micron)
     save_server_config(server_config)
     return {'status': 'ok', 'config': server_config}
 

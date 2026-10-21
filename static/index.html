@@ -709,8 +709,11 @@
               <span class="error-msg" id="err-recDose" data-i18n="err_rec_dose">1g 이상 정수</span>
             </div>
             <div class="field-group" id="grindFieldWrap">
-              <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
-              <input type="number" id="recGrind" value="45" oninput="validateAll()">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
+                <span id="grindMicronBadge" style="display:none; font-size:0.75rem; font-weight:600; color:var(--primary); background:rgba(34,197,94,0.12); padding:1px 7px; border-radius:5px; border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; transition:all 0.2s;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836 µm</span>
+              </div>
+              <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();">
               <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">10~100 입력</span>
             </div>
             <div class="field-group" id="rpmFieldWrap">
@@ -949,6 +952,21 @@
         <button class="theme-opt" id="btnMarkerTime" onclick="setMarkerMode('time', true)" data-i18n="marker_time">시간 계산</button>
       </div>
     </div>
+    <div class="setting-row" style="flex-direction:column; align-items:stretch; gap:6px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="flex:1; padding-right:12px;">
+          <div class="setting-label" data-i18n="setting_micron">🔬 분쇄도 마이크론(µm) 환산치 표시</div>
+          <div class="setting-desc" data-i18n="setting_micron_desc">분쇄도(클릭) 입력 시 48mm 코니컬 버 간극 기준 이론적 환산 마이크론(µm)을 함께 표시합니다.</div>
+        </div>
+        <label class="switch" title="분쇄도 마이크론 환산치 표시 켜기/끄기" data-i18n-title="title_toggle_micron">
+          <input type="checkbox" id="showMicronToggle" onchange="setShowMicron(this.checked, true)">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div style="margin-top:2px; padding:7px 10px; border-radius:6px; background:rgba(234, 179, 8, 0.08); border:1px solid rgba(234, 179, 8, 0.25); font-size:0.72rem; line-height:1.45; color:var(--text-muted);">
+        <span data-i18n="setting_micron_disclaimer">⚠️ <b>안내</b>: 원두 배전도·밀도, 버 제로점(캘리브레이션) 오차 및 실제 입도 분포(미분 등)에 따라 실측 입도와 차이가 있을 수 있으며, 참고용 근사치입니다.</span>
+      </div>
+    </div>
     <div class="setting-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
       <div>
         <div class="setting-label" data-i18n="setting_wallpaper">🖼️ 커스텀 배경화면</div>
@@ -1040,6 +1058,11 @@
 <script>
   const TRANSLATIONS = {
     ko: {
+      "setting_micron": "🔬 분쇄도 마이크론(µm) 환산치 표시",
+      "setting_micron_desc": "분쇄도(클릭) 입력 시 48mm 코니컬 버 간극 기준 이론적 환산 마이크론(µm)을 함께 표시합니다.",
+      "setting_micron_disclaimer": "⚠️ <b>안내</b>: 원두 배전도·밀도, 버 제로점(캘리브레이션) 오차 및 실제 입도 분포(미분 등)에 따라 실측 입도와 차이가 있을 수 있으며, 참고용 근사치입니다.",
+      "title_toggle_micron": "분쇄도 마이크론 환산치 표시 켜기/끄기",
+      "micron_approx_tooltip": "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)",
       "btn_close": "닫기",
       "btn_cancel": "취소",
       "btn_load": "불러오기",
@@ -1328,6 +1351,11 @@
       state_error: "오류"
     },
     en: {
+      "setting_micron": "🔬 Show Grind Micron (µm) Estimate",
+      "setting_micron_desc": "Displays theoretical micron (µm) estimates based on 48mm conical burr vertical gap.",
+      "setting_micron_disclaimer": "⚠️ <b>Notice</b>: Values are theoretical approximations. Actual particle size distribution varies depending on roast level, bean density, burr zero-point calibration, and fines.",
+      "title_toggle_micron": "Toggle grind micron estimate display",
+      "micron_approx_tooltip": "⚠️ Theoretical approximation based on burr gap (for reference only)",
       "btn_close": "Close",
       "btn_cancel": "Cancel",
       "btn_load": "Load",
@@ -1616,6 +1644,11 @@
       state_error: "ERROR"
     },
     ja: {
+      "setting_micron": "🔬 挽き目ミクロン(µm)換算値の表示",
+      "setting_micron_desc": "クリック数入力時、48mmコニカル刃の移動間隙に基づく理論上のミクロン(µm)換算値を表示します。",
+      "setting_micron_disclaimer": "⚠️ <b>ご注意</b>: 焙煎度・豆の密度・刃のゼロ点調整・微粉等の粒度分布により実測値と差異が生じる場合があるため、あくまで目安の参考値です。",
+      "title_toggle_micron": "挽き目ミクロン換算表示のON/OFF",
+      "micron_approx_tooltip": "⚠️ 刃の間隙に基づく理論値（焙煎度・微粉により差異あり・参考用）",
       "btn_close": "閉じる",
       "btn_cancel": "キャンセル",
       "btn_load": "読み込む",
@@ -1904,6 +1937,11 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "setting_micron": "🔬 顯示研磨度微米(µm)換算值",
+      "setting_micron_desc": "輸入刻度時，一併顯示基於 48mm 錐刀間隙之理論換算微米 (µm) 數值。",
+      "setting_micron_disclaimer": "⚠️ <b>說明</b>：數值僅為理論參考值。實際研磨顆粒大小會因烘焙度、咖啡豆密度、零點校準誤差及細粉分佈而有所不同。",
+      "title_toggle_micron": "切換研磨度微米換算顯示",
+      "micron_approx_tooltip": "⚠️ 基於刀盤間距之理論估算值 (僅供參考)",
       "label_step_prefix": "步驟: ",
       "btn_close": "關閉",
       "btn_cancel": "取消",
@@ -2166,6 +2204,11 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "setting_micron": "🔬 显示研磨度微米(µm)换算值",
+      "setting_micron_desc": "输入刻度时，一并显示基于 48mm 锥刀间隙之理论换算微米 (µm) 数值。",
+      "setting_micron_disclaimer": "⚠️ <b>说明</b>：数值仅为理论参考值。实际研磨颗粒大小会因烘焙度、咖啡豆密度、零点校准误差及细粉分布而有所不同。",
+      "title_toggle_micron": "切换研磨度微米换算显示",
+      "micron_approx_tooltip": "⚠️ 基于刀盘间隙之理论估算值 (仅供参考)",
       "label_step_prefix": "步骤: ",
       "btn_close": "关闭",
       "btn_cancel": "取消",
@@ -2428,6 +2471,11 @@
       state_error: "异常"
     },
     de: {
+      "setting_micron": "🔬 Mahlgrad-Mikron (µm) Schätzwert anzeigen",
+      "setting_micron_desc": "Zeigt theoretische Mikron-Schätzwerte (µm) basierend auf dem 48-mm-Konusmahlwerk-Spalt an.",
+      "setting_micron_disclaimer": "⚠️ <b>Hinweis</b>: Theoretische Richtwerte. Die tatsächliche Partikelgröße variiert je nach Röstgrad, Bohnendichte, Nullpunktkalibrierung und Feinanteil.",
+      "title_toggle_micron": "Mahlgrad-Mikron-Schätzwert ein-/ausschalten",
+      "micron_approx_tooltip": "⚠️ Theoretischer Schätzwert basierend auf Mahlspalt (nur als Richtwert)",
       "btn_close": "Schließen",
       "btn_cancel": "Abbrechen",
       "btn_load": "Laden",
@@ -2716,6 +2764,11 @@
       state_error: "FEHLER"
     },
     fr: {
+      "setting_micron": "🔬 Afficher l'estimation en microns (µm)",
+      "setting_micron_desc": "Affiche une estimation théorique en microns (µm) basée sur l'écart des meules coniques 48mm.",
+      "setting_micron_disclaimer": "⚠️ <b>Remarque</b> : Valeurs indicatives théoriques. La taille réelle des particules varie selon la torréfaction, la densité du grain, l'étalonnage du point zéro et les fines.",
+      "title_toggle_micron": "Activer/Désactiver l'estimation en microns",
+      "micron_approx_tooltip": "⚠️ Estimation théorique selon l'écart des meules (à titre indicatif)",
       "btn_close": "Fermer",
       "btn_cancel": "Annuler",
       "btn_load": "Charger",
@@ -3076,6 +3129,9 @@
     }
     updateBleStatusUI();
     updateIntervalBadges();
+    if (typeof updateGrindMicronBadge === "function") {
+      try { updateGrindMicronBadge(); } catch(e) {}
+    }
     const verDesc = document.getElementById("settingsVersionInfo");
     if (verDesc) {
       const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "0.9.2";
@@ -3149,6 +3205,49 @@
     }
   }
   let recordAbortedBrews = false;
+  let showGrindMicron = false;
+  function clickToMicron(click) {
+    const c = Number(click);
+    if (isNaN(c) || c <= 0) return null;
+    const micron = Math.round(180 + (c - 10) * 18.75);
+    return Math.max(10, micron);
+  }
+  function updateGrindMicronBadge() {
+    const badge = document.getElementById("grindMicronBadge");
+    if (!badge) return;
+    if (!showGrindMicron) {
+      badge.style.display = "none";
+      return;
+    }
+    const input = document.getElementById("recGrind");
+    const c = input ? Number(input.value) : null;
+    const micron = clickToMicron(c);
+    if (micron !== null) {
+      badge.textContent = `≈ ${micron.toLocaleString()} µm`;
+      badge.title = t("micron_approx_tooltip", "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)");
+      badge.style.display = "inline-block";
+    } else {
+      badge.style.display = "none";
+    }
+  }
+  function setShowMicron(enabled, saveToServer = true) {
+    showGrindMicron = !!enabled;
+    const toggle = document.getElementById("showMicronToggle");
+    if (toggle) toggle.checked = showGrindMicron;
+    try { localStorage.setItem("xbloom_show_micron", showGrindMicron ? "true" : "false"); } catch(e) {}
+    if (saveToServer) {
+      fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ show_micron: showGrindMicron })
+      }).catch(() => {});
+    }
+    updateGrindMicronBadge();
+    const serverModal = document.getElementById("serverRecipeModal");
+    if (serverModal && serverModal.classList.contains("active")) {
+      renderServerRecipeCards();
+    }
+  }
   let latestReleaseData = null;
   async function loadServerSettings() {
     try {
@@ -3161,6 +3260,14 @@
       }
       if (cfg.pour_marker_mode) {
         setMarkerMode(cfg.pour_marker_mode, false);
+      }
+      if (cfg.show_micron !== undefined) {
+        setShowMicron(cfg.show_micron, false);
+      } else {
+        try {
+          const savedMicron = localStorage.getItem("xbloom_show_micron");
+          if (savedMicron !== null) setShowMicron(savedMicron === "true", false);
+        } catch(e) {}
       }
       if (cfg.chart_smoothing !== undefined) {
         setChartSmoothing(cfg.chart_smoothing, false);
@@ -4680,8 +4787,9 @@
       card.onmouseleave = () => { card.style.borderColor = "var(--border)"; };
       const totalWater = rec.total_water || (Array.isArray(rec.steps) ? rec.steps.reduce((a, b) => a + (Number(b.water) || 0), 0) : 0);
       const ratio = rec.dose > 0 ? (totalWater / rec.dose).toFixed(1) : "-";
+      const grindMicron = (showGrindMicron && rec.grind_size) ? ` (≈${clickToMicron(rec.grind_size)}µm)` : '';
       const grindText = rec.grind_enabled 
-        ? `<span style="color:var(--text);">⚙️ ${t('grind_label', '분쇄')} ${rec.grind_size} (${rec.grind_rpm} RPM)</span>`
+        ? `<span style="color:var(--text);">⚙️ ${t('grind_label', '분쇄')} ${rec.grind_size}${grindMicron} (${rec.grind_rpm} RPM)</span>`
         : `<span style="color:var(--muted); font-weight:600;">🛑 ${t('no_grind', '분쇄 OFF')}</span>`;
       const intervalBadge = rec.interval_sync
         ? `<span style="background:rgba(249,115,22,0.12); color:var(--accent); font-size:0.68rem; padding:2px 6px; border-radius:4px; border:1px solid rgba(249,115,22,0.3);">⏱️ ${t('interval_badge', '인터벌 보정')}</span>`
@@ -5120,6 +5228,7 @@
     }
   }
   function validateAll() {
+    updateGrindMicronBadge();
     let isValid = true;
     const name = document.getElementById("recName").value.trim();
     if (!name) { setFieldError("recName", "err-recName", true); isValid = false; }
