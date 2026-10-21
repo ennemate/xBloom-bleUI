@@ -1108,7 +1108,7 @@ async def api_apply_update():
 async def serve_index():
     index_path = os.path.join(STATIC_DIR, 'index.html')
     if os.path.exists(index_path):
-        return FileResponse(index_path)
+        return FileResponse(index_path, headers={'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'})
     return JSONResponse(status_code=404, content={'message': 'static/index.html 파일을 찾을 수 없습니다.'})
 app.mount('/', StaticFiles(directory=STATIC_DIR), name='static')
 if __name__ == '__main__':

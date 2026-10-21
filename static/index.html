@@ -1080,7 +1080,7 @@
     </div>
 
     <div class="settings-footer">
-      <span>v0.8.8 by 팽이팽이</span>
+      <span id="settingsFooterVer">v0.8.8 by 팽이팽이</span>
     </div>
   </div>
 </div>
@@ -1174,6 +1174,10 @@
       const verDesc = document.getElementById("settingsVersionInfo");
       if (verDesc) {
         verDesc.innerText = `현재 버전: v${data.current_version || "0.8.8"}`;
+      }
+      const footerVer = document.getElementById("settingsFooterVer");
+      if (footerVer) {
+        footerVer.innerText = `v${data.current_version || "0.8.8"} by 팽이팽이`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -1415,7 +1419,15 @@
       }).catch(() => {});
     }
   }
-  function openSettings() { document.getElementById("settingsModal").classList.add("active"); }
+  function openSettings() {
+    document.getElementById("settingsModal").classList.add("active");
+    if (latestReleaseData && latestReleaseData.current_version) {
+      const verDesc = document.getElementById("settingsVersionInfo");
+      const footerVer = document.getElementById("settingsFooterVer");
+      if (verDesc) verDesc.innerText = `현재 버전: v${latestReleaseData.current_version}`;
+      if (footerVer) footerVer.innerText = `v${latestReleaseData.current_version} by 팽이팽이`;
+    }
+  }
   function closeSettings() { document.getElementById("settingsModal").classList.remove("active"); }
   function closeSettingsOnBack(e) { if (e.target.id === "settingsModal") closeSettings(); }
   function toggleGrindSetting() {
