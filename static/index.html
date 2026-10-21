@@ -709,11 +709,11 @@
               <span class="error-msg" id="err-recDose" data-i18n="err_rec_dose">1g 이상 정수</span>
             </div>
             <div class="field-group" id="grindFieldWrap">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
-                <span id="grindMicronBadge" style="display:none; font-size:0.75rem; font-weight:600; color:var(--primary); background:rgba(34,197,94,0.12); padding:1px 7px; border-radius:5px; border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; transition:all 0.2s;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836 µm</span>
+              <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
+              <div class="grind-input-wrap" style="display:flex; gap:6px; align-items:center;">
+                <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();" style="flex:1; min-width:0;">
+                <span id="grindMicronBadge" style="display:none; align-items:center; justify-content:center; padding:0 8px; height:36px; border-radius:8px; font-size:0.78rem; font-weight:700; font-family:monospace; white-space:nowrap; color:var(--primary); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; box-sizing:border-box; flex-shrink:0;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836 µm</span>
               </div>
-              <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();">
               <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">10~100 입력</span>
             </div>
             <div class="field-group" id="rpmFieldWrap">
@@ -984,9 +984,9 @@
       <div class="cloud-user-box" id="cloudStatusBox">
         <div class="cloud-status">
           <span id="cloudStatusDot" style="color:var(--muted); font-size:0.7rem;">●</span>
-          <span id="cloudStatusText" data-i18n="cloud_logged_out">로그인되어 있지 않음</span>
+          <span id="cloudStatusText">로그인되어 있지 않음</span>
         </div>
-        <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo" data-i18n="cloud_desc_logged_out">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
+        <div style="font-size:0.7rem; color:var(--muted);" id="cloudTokenInfo">공식 앱 계정으로 로그인하여 레시피를 동기화하세요.</div>
       </div>
       <div id="cloudLoginForm" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
         <div class="field-group" style="margin:0;">
@@ -3155,6 +3155,9 @@
     if (typeof renderServerRecipeList === "function" && typeof cachedServerRecipes !== "undefined" && cachedServerRecipes && cachedServerRecipes.length > 0) {
       try { renderServerRecipeList(cachedServerRecipes); } catch(e) {}
     }
+    if (typeof updateCloudUI === "function") {
+      try { updateCloudUI(); } catch(e) {}
+    }
     try {
       localStorage.setItem("xbloom_language", currentLangSetting);
     } catch(e) {}
@@ -3225,10 +3228,12 @@
     if (micron !== null) {
       badge.textContent = `≈ ${micron.toLocaleString()} µm`;
       badge.title = t("micron_approx_tooltip", "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)");
-      badge.style.display = "inline-block";
+      badge.style.display = "inline-flex";
     } else {
       badge.style.display = "none";
     }
+    const grindEnabled = document.getElementById("recGrindEnabled") ? document.getElementById("recGrindEnabled").checked : true;
+    badge.style.opacity = grindEnabled ? "1" : "0.45";
   }
   function setShowMicron(enabled, saveToServer = true) {
     showGrindMicron = !!enabled;
@@ -3560,6 +3565,9 @@
       if (verDesc) verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${latestReleaseData.current_version}`;
       if (footerVer) footerVer.innerText = `v${latestReleaseData.current_version} by 팽이팽이`;
     }
+    if (typeof updateCloudUI === "function") {
+      try { updateCloudUI(); } catch(e) {}
+    }
   }
   function closeSettings() { document.getElementById("settingsModal").classList.remove("active"); }
   function closeSettingsOnBack(e) { if (e.target.id === "settingsModal") closeSettings(); }
@@ -3567,6 +3575,8 @@
     const enabled = document.getElementById("recGrindEnabled").checked;
     document.getElementById("recGrind").disabled = !enabled;
     document.getElementById("recGrindRpm").disabled = !enabled;
+    const badge = document.getElementById("grindMicronBadge");
+    if (badge) badge.style.opacity = enabled ? "1" : "0.45";
     validateAll();
   }
   function setRpmPreset(val) {
@@ -4451,6 +4461,7 @@
     const tokenInfo = document.getElementById("cloudTokenInfo");
     const loginForm = document.getElementById("cloudLoginForm");
     const logoutWrap = document.getElementById("cloudLogoutWrap");
+    if (!statusText || !statusDot || !tokenInfo || !loginForm || !logoutWrap) return;
     if (cloudUser && cloudUser.email) {
       statusText.innerText = `${t("cloud_synced_prefix", "동기화됨: ")}${cloudUser.email}`;
       statusText.style.color = "var(--success)";
