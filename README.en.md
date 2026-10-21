@@ -51,33 +51,35 @@ This project thrives on the spirit of open-source sharing and community collabor
 
 ---
 
-## ⚡ Comparison with Original (`xbloom-ble`) & Key Innovations
+## ⚡ Core Extensions & Dedicated Web Controller Features
 
-| Feature | Original Project (`xbloom-ble`) | **xBloom bleUI (This Project)** |
+This project adopts **Janczykkkko**'s foundational BLE communication library (`xbloom-ble`) as its core engine, while developing dedicated extensions to deliver an optimal web-based barista workflow and user experience:
+
+| Feature & Domain | Underlying Library (`xbloom-ble`) | **xBloom bleUI (Web Controller Extensions)** |
 | :--- | :--- | :--- |
+| **Interface (UI)** | Terminal CLI and TUI (Textual) | **Modern responsive web dashboard (Dark/Light themes, custom wallpapers)** |
+| **Extraction Phase Sync** | Raw machine telemetry streaming | **2-Phase separation: Grinding vs. Brewing (00:00 timer synced with water flow)** |
+| **Flow Detection** | Scale raw weight readings | **Smart Flow Detection: real-time pin badges & dashed line markers** |
+| **Pour Intervals** | Standard machine pause (`wait`) in seconds | **Cumulative interval calculation & automatic machine pause conversion** |
+| **Cloud Integration** | Basic recipe push function | **Two-way sync + Web share URL generation + External URL import parsing** |
+| **Pre-Ground Mode** | Standard recipe payload | **Official app compliance (`isSetGrinderSize: 2`, Grind OFF cleanly rendered)** |
+| **Slot Memory** | CLI slot writing commands | **A / B / C physical button remote flash programming from browser** |
+| **Brew Archive** | Real-time session monitoring | **Permanent local history, dual curve chart restore, and one-click re-brew** |
 | **Auto Update** | Manual git pull or reinstall | **GitHub Releases-based one-click update (100% user data preserved)** |
-| **Interface (UI)** | Terminal CLI and TUI (Textual) | **Modern responsive web dashboard (Dark/Light themes, custom wallpaper)** |
-| **Timer Sync** | Timer runs during bean grinding | **2-Phase separation: Grinding vs. Brewing (00:00 synchronized with water delivery)** |
-| **Pour Markers** | Fixed time calculation | **Smart Flow Detection: real-time pin badges & dashed line markers** |
-| **Pour Intervals** | Simple machine wait pause | **Automatic overhead calculation & duplicate deduction protection** |
-| **Cloud Sync** | One-way recipe push | **Two-way sync + Web share URL generation + External URL import parsing** |
-| **Pre-Ground Mode** | Grind size 0 may cause firmware glitch | **Official app compliance (`isSetGrinderSize: 2`, Grind OFF cleanly rendered)** |
-| **Slot Memory** | CLI slot writing | **A / B / C physical button remote flash programming** |
-| **Brew Archive** | Session lost upon exit | **Permanent local history, dual curve chart restore, and one-click re-brew** |
-| **Multilingual (i18n)** | English only | **7 Global languages supported with specialty barista terminology** |
+| **Multilingual (i18n)** | English based | **7 Global languages supported with specialty barista terminology** |
 
 ---
 
 ### 1. 2-Phase Separation: Grinding vs. Actual Water Delivery
-- **The Problem**: When running recipes with the built-in grinder enabled, previous systems started the extraction timer during the ~20-25s grinding phase, resulting in a flat 0g plateau line on the chart and an inaccurate 1st pour marker.
-- **bleUI Solution**: Detects the machine's `STARTING (0x22)` grinding state to display **`Grinding Beans ⚙️`**, synchronizing the `00:00` timer and 1st pour marker at the exact instant water begins spraying or the machine switches to `BREWING`.
+- **Implementation Context**: Recipes utilizing the built-in grinder involve a ~20-25s grinding phase before water begins flowing. bleUI intelligently separates bean grinding from active extraction so the 00:00 timer reflects actual water contact.
+- **bleUI Behavior**: Detects the machine's `STARTING (0x22)` grinding state to display **`Grinding Beans ⚙️`**, synchronizing the `00:00` timer and 1st pour marker at the exact instant water begins spraying or the machine transitions to `BREWING`.
 
 ### 2. Smart Flow Detection Pour Markers
 - Even if heating delays or pre-pour agitation (`agitation_before`) delay water delivery, real-time scale telemetry detects when water actually touches the coffee bed (`pour_weight >= 0.8g`), auto-aligning the 1st pour marker.
 - Subsequent pours (2nd, 3rd...) are accurately detected right after scale stabilization plateaus, marked with vertical dashed lines and pin badges (`Pour 1 00:00`, `Pour 2 00:45`...).
 
-### 3. Hand-Drip Interval Compensation & Double Deduction Prevention
-- Converts cumulative hand-drip intervals (e.g. 0s 1st, 40s 2nd, 70s 3rd) into machine pause durations by automatically subtracting water flow duration and agitation overheads.
+### 3. Cumulative Hand-Drip Interval Calculation & Safe Synchronization
+- Converts cumulative hand-drip intervals (e.g., 0s 1st, 40s 2nd, 70s 3rd) into machine pauses by automatically subtracting water flow duration and agitation overheads.
 - When saving, only the calculated machine pauses are written, avoiding repetitive overhead subtraction when recipes are re-opened.
 
 ### 4. Official xBloom Cloud Two-Way Sync & Web URL Parsing
