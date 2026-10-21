@@ -35,7 +35,7 @@
 | 프로필 | 기여자 | 기여 및 역할 |
 | :---: | :---: | :--- |
 | <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • 원본 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** 프로젝트 저작자<br>• xBloom Studio 블루투스(BLE) 통신 프로토콜 리버스 엔지니어링 및 코어 패킷 디코더 설계<br>• 머신 통신 프레임워크 및 기기 물리 슬롯 제어 기반 구축 |
-| <a href="https://github.com/YOUR_USERNAME"><img src="https://github.com/identicons/xbloom-bleui.png" width="55" style="border-radius:50%;" alt="Contributor"></a> | **[xBloom bleUI Contributors](https://github.com/YOUR_USERNAME/xbloom-bleui)** | • **xBloom bleUI** 로컬 웹 대시보드 기획 및 풀스택 아키텍처 설계<br>• 실시간 듀얼 추출 차트(Chart.js) & 스마트 유속 감지 푸어 마커 알고리즘<br>• 원두 분쇄(Grind)와 추출(Brew) 2단계 분리 및 타이머 동기화<br>• 핸드드립 누적 인터벌 보정 & 이중 적용 방지 시스템<br>• xBloom 공식 클라우드 양방향 연동 & 웹 공유 링크 자동 발급/파싱<br>• 영구 추출 히스토리 아카이브 및 Windows 포터블 무설치판 패키징 |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate (xBloom bleUI Contributors)](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** 로컬 웹 대시보드 기획 및 풀스택 아키텍처 설계<br>• 실시간 듀얼 추출 차트(Chart.js) & 스마트 유속 감지 푸어 마커 알고리즘<br>• 원두 분쇄(Grind)와 추출(Brew) 2단계 분리 및 타이머 동기화<br>• 핸드드립 누적 인터벌 보정 & 이중 적용 방지 시스템<br>• xBloom 공식 클라우드 양방향 연동 & 웹 공유 링크 자동 발급/파싱<br>• 영구 추출 히스토리 아카이브 및 Windows 포터블 무설치판 패키징 |
 
 > [!NOTE]
 > 훌륭한 BLE 프로토콜 기반과 코어 통신 라이브러리를 오픈소스로 공유하여 본 프로젝트의 토대를 마련해 주신 **Janczykkkko** 님께 깊은 감사를 표합니다.
@@ -141,11 +141,8 @@
 
 | 배포판 | 대상 및 권장 환경 | 다운로드 링크 |
 | :--- | :--- | :--- |
-| **🚀 Windows 포터블 무설치판**<br>*(Standalone Portable)* | **파이썬 설치가 번거롭거나 어려운 일반 사용자 추천**<br>• Python 3.10 임베디드(Embedded) 런타임 및 필수 라이브러리 일체 내장<br>• 시스템 파이썬 설치/환경변수 설정 불필요<br>• 압축 풀고 `run.bat` 더블 클릭 즉시 구동 | [⬇️ 최신 포터블 릴리즈 다운로드 (Releases)](https://github.com/YOUR_USERNAME/xbloom-bleui/releases) <!-- 릴리즈 업로드 후 링크 수정 필요 --> |
-| **💻 일반 소스 배포판**<br>*(Standard / Cross-platform)* | **Windows, macOS, Linux 크로스플랫폼 지원**<br>• 이미 시스템에 Python 3.10 이상이 설치된 사용자/개발자<br>• `git clone` 또는 Source Code ZIP 다운로드 후 직접 구동 | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/YOUR_USERNAME/xbloom-bleui/releases) <!-- 릴리즈 업로드 후 링크 수정 필요 --> |
-
-> [!TIP]
-> **릴리즈 다운로드 링크 안내**: 위 링크는 저장소 업로드 시 본인 GitHub 저장소의 Releases 주소(`https://github.com/<사용자명>/<저장소명>/releases`)로 수정하여 사용하실 수 있습니다.
+| **🚀 Windows 포터블 무설치판**<br>*(Standalone Portable)* | **파이썬 설치가 번거롭거나 어려운 일반 사용자 추천**<br>• Python 3.10 임베디드(Embedded) 런타임 및 필수 라이브러리 일체 내장<br>• 시스템 파이썬 설치/환경변수 설정 불필요<br>• 압축 풀고 `run.bat` 더블 클릭 즉시 구동 | [⬇️ 최신 포터블 릴리즈 다운로드 (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **💻 일반 소스 배포판**<br>*(Standard / Cross-platform)* | **Windows, macOS, Linux 크로스플랫폼 지원**<br>• 이미 시스템에 Python 3.10 이상이 설치된 사용자/개발자<br>• `git clone` 또는 Source Code ZIP 다운로드 후 직접 구동 | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/ennemate/xBloom-bleUI/releases) |
 
 ---
 
@@ -160,7 +157,7 @@
 ---
 
 ### 방법 A. Windows 포터블 무설치판 실행 (가장 추천)
-1. [Releases 페이지](https://github.com/YOUR_USERNAME/xbloom-bleui/releases)에서 `xBloom-bleUI-v0.8.0-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v0.8.0-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    - 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -170,8 +167,8 @@
 ### 방법 B. 일반 배포판 소스 실행 (Windows / macOS / Linux)
 1. 저장소 클론 또는 소스코드 다운로드:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/xbloom-bleui.git
-   cd xbloom-bleui
+   git clone https://github.com/ennemate/xBloom-bleUI.git
+   cd xBloom-bleUI
    ```
 2. 필수 의존성 패키지 설치:
    ```bash
@@ -253,7 +250,7 @@ dist/
 MIT License
 
 Copyright (c) 2024 Janczykkkko (Original xbloom-ble)
-Copyright (c) 2026 xBloom bleUI Contributors (https://github.com/YOUR_USERNAME/xbloom-bleui)
+Copyright (c) 2026 xBloom bleUI Contributors (https://github.com/ennemate/xBloom-bleUI)
 ```
 
 ## ⚠️ 면책 조항 (Disclaimer)
