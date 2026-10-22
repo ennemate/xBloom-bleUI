@@ -606,12 +606,39 @@
       border: 1px solid rgba(34, 197, 94, 0.42);
       font-size: 0.82rem;
       color: var(--text);
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
     }
     .micron-banner:hover {
-      background: rgba(34, 197, 94, 0.18);
-      border-color: rgba(34, 197, 94, 0.6);
+      background: rgba(34, 197, 94, 0.22);
+      border-color: rgba(34, 197, 94, 0.7);
+      box-shadow: 0 2px 10px rgba(34, 197, 94, 0.25);
+      transform: translateY(-1px);
+    }
+    .micron-banner:active {
+      transform: translateY(0);
+    }
+    .micron-info-icon {
+      font-size: 0.74rem;
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      border-radius: 50%;
+      width: 17px;
+      height: 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 2px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .micron-banner:hover .micron-info-icon {
+      background: #22c55e;
+      color: #0b1e13;
+      border-color: #22c55e;
+      font-weight: 800;
     }
     .micron-banner-title {
       color: var(--text);
@@ -837,7 +864,7 @@
               <span class="error-msg" id="err-recRpm" data-i18n="err_rec_rpm">60~120 (10단위)</span>
             </div>
           </div>
-          <div id="grindMicronBanner" class="micron-banner" style="display:none;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">
+          <div id="grindMicronBanner" class="micron-banner" style="display:none;" onclick="openMicronInfoModal()" data-i18n-title="micron_click_hint" title="클릭하여 환산 근거 및 가이드 보기">
             <span class="micron-banner-title">
               <span>🔬</span>
               <span data-i18n="label_micron_banner">마이크론 환산 (이론치)</span>
@@ -845,6 +872,7 @@
             <div class="micron-banner-val">
               <span id="grindMicronVal">≈ 665 µm</span>
               <span id="grindMicronCategory" class="micron-category-tag">핸드드립</span>
+              <span class="micron-info-icon" title="환산 근거 보기">ℹ</span>
             </div>
           </div>
           <div class="ratio-wrap" style="margin-top:4px;">
@@ -1172,6 +1200,101 @@
     </div>
   </div>
 </div>
+<div class="modal-overlay" id="micronInfoModal" onclick="closeMicronInfoModalOnBack(event)">
+  <div class="modal-card" style="max-width: 520px; width: 94%; max-height: 88vh; display: flex; flex-direction: column; padding: 20px;">
+    <div class="modal-header" style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 4px;">
+      <div class="modal-title" style="display:flex; align-items:center; gap:8px; font-size:1.02rem;">
+        <span style="font-size:1.15rem;">🔬</span>
+        <span data-i18n="micron_modal_title">분쇄도 마이크론(µm) 환산 안내</span>
+      </div>
+      <button class="btn-close" onclick="closeMicronInfoModal()">&times;</button>
+    </div>
+    <div style="overflow-y:auto; padding-right:2px; display:flex; flex-direction:column; gap:12px;">
+      <div style="background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.45); border-radius: 10px; padding: 10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-bottom:2px;" data-i18n="micron_modal_current_label">현재 레시피 설정</div>
+          <div style="font-size:0.95rem; font-weight:700; color:var(--text);">
+            <span data-i18n="grind_label">분쇄</span> <span id="micronModalClickVal" style="color:var(--accent);">--</span><span data-i18n="unit_step">단계</span>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:1.05rem; font-weight:800; color:#4ade80;" id="micronModalUmVal">≈ -- µm</div>
+          <span class="micron-category-tag" id="micronModalCatVal">--</span>
+        </div>
+      </div>
+      <div style="background:var(--card-inner); border:1px solid var(--border); border-radius:10px; padding:12px 14px;">
+        <div style="font-weight:700; font-size:0.86rem; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <span>📐</span>
+          <span data-i18n="micron_modal_basis_title">환산 산출 근거</span>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text); line-height:1.55;" data-i18n="micron_modal_basis_desc">
+          xBloom 내장 <b>48mm 칠각(Heptagonal) 스테인리스 코니컬 버</b>의 나사선 피치에 의해 1클릭당 수직 버 간격이 <b>약 13.8 µm</b>씩 정밀 이동합니다. 1단계(버 0점 맞닿는 지점, D50 약 25µm)를 기준으로 이론적 평균 입도(D50)를 산출합니다.
+        </div>
+        <div style="margin-top:8px; padding:6px 10px; background:var(--card); border:1px dashed var(--border); border-radius:6px; font-family:monospace; font-size:0.75rem; color:#4ade80; text-align:center;">
+          이론 입도(µm) ≈ 25 + (클릭수 - 1) × 13.8
+        </div>
+      </div>
+      <div style="background:var(--card-inner); border:1px solid var(--border); border-radius:10px; padding:12px 14px;">
+        <div style="font-weight:700; font-size:0.86rem; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <span>☕</span>
+          <span data-i18n="micron_modal_table_title">추출 방식별 권장 분쇄도 가이드</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:0.75rem; text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border); color:var(--muted);">
+                <th style="padding:6px 8px;" data-i18n="th_brew_method">추출 방식</th>
+                <th style="padding:6px 8px;" data-i18n="th_grind_click">클릭수</th>
+                <th style="padding:6px 8px;" data-i18n="th_micron_range">이론 입도(µm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:6px 8px; font-weight:600;"><span style="color:#ef4444;">●</span> <span data-i18n="method_espresso">에스프레소</span></td>
+                <td style="padding:6px 8px;">1 ~ 15</td>
+                <td style="padding:6px 8px; color:#4ade80; font-family:monospace;">≈ 25 ~ 220 µm</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:6px 8px; font-weight:600;"><span style="color:#f59e0b;">●</span> <span data-i18n="method_moka">모카포트 / 에어로프레스</span></td>
+                <td style="padding:6px 8px;">16 ~ 30</td>
+                <td style="padding:6px 8px; color:#4ade80; font-family:monospace;">≈ 230 ~ 420 µm</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05); background:rgba(34, 197, 94, 0.08);">
+                <td style="padding:6px 8px; font-weight:700;"><span style="color:#22c55e;">★</span> <span data-i18n="method_pourover">핸드드립 / 푸어오버 (추천)</span></td>
+                <td style="padding:6px 8px; font-weight:700;">31 ~ 48</td>
+                <td style="padding:6px 8px; font-weight:700; color:#4ade80; font-family:monospace;">≈ 430 ~ 670 µm</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:6px 8px; font-weight:600;"><span style="color:#3b82f6;">●</span> <span data-i18n="method_chemex">케멕스 / 굵은 드립</span></td>
+                <td style="padding:6px 8px;">49 ~ 65</td>
+                <td style="padding:6px 8px; color:#4ade80; font-family:monospace;">≈ 680 ~ 900 µm</td>
+              </tr>
+              <tr>
+                <td style="padding:6px 8px; font-weight:600;"><span style="color:#8b5cf6;">●</span> <span data-i18n="method_coldbrew">콜드브루 / 프렌치프레스</span></td>
+                <td style="padding:6px 8px;">66 ~ 80</td>
+                <td style="padding:6px 8px; color:#4ade80; font-family:monospace;">≈ 910 ~ 1,115 µm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="background:rgba(234, 88, 12, 0.08); border:1px solid rgba(234, 88, 12, 0.25); border-radius:10px; padding:10px 12px; font-size:0.75rem; color:var(--text); line-height:1.45;">
+        <div style="font-weight:700; color:var(--accent); margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+          <span>💡</span>
+          <span data-i18n="micron_modal_tips_title">바리스타 참고 팁</span>
+        </div>
+        <ul style="margin:0; padding-left:16px; color:var(--muted); display:flex; flex-direction:column; gap:4px;">
+          <li data-i18n="micron_modal_tip_1"><b>원두 배전도</b>: 약배전은 원두 조직이 단단하여 미분이 적고 입도가 고른 반면, 강배전은 잘 부서져 미분이 상대적으로 증가합니다.</li>
+          <li data-i18n="micron_modal_tip_2"><b>0점 캘리브레이션</b>: 버 청소나 기기 상태에 따라 실제 측정 입도와 ±10~20µm 오차가 있을 수 있습니다.</li>
+          <li data-i18n="micron_modal_tip_3">타 브랜드 그라인더(코만단테, 오드 등)와 레시피를 비교·설계할 때 유용한 참고용 이론치입니다.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer" style="margin-top:14px; display:flex; justify-content:flex-end;">
+      <button class="btn-secondary" onclick="closeMicronInfoModal()" style="min-width:90px;" data-i18n="btn_close">닫기</button>
+    </div>
+  </div>
+</div>
 <script>
   const TRANSLATIONS = {
     ko: {
@@ -1466,7 +1589,25 @@
       state_blooming: "뜸들이기",
       state_finished: "추출 완료",
       state_aborted: "비상 정지",
-      state_error: "오류"
+      state_error: "오류",
+      "micron_click_hint": "클릭하여 환산 근거 및 가이드 보기",
+      "micron_modal_title": "분쇄도 마이크론(µm) 환산 안내",
+      "micron_modal_current_label": "현재 레시피 설정",
+      "micron_modal_basis_title": "환산 산출 근거",
+      "micron_modal_basis_desc": "xBloom 내장 <b>48mm 칠각(Heptagonal) 스테인리스 코니컬 버</b>의 나사선 피치에 의해 1클릭당 수직 버 간격이 <b>약 13.8 µm</b>씩 정밀 이동합니다. 1단계(버 0점 맞닿는 지점, D50 약 25µm)를 기준으로 이론적 평균 입도(D50)를 산출합니다.",
+      "micron_modal_table_title": "추출 방식별 권장 분쇄도 가이드",
+      "micron_modal_tips_title": "바리스타 참고 팁",
+      "micron_modal_tip_1": "<b>원두 배전도</b>: 약배전은 원두 조직이 단단하여 미분이 적고 입도가 고른 반면, 강배전은 잘 부서져 미분이 상대적으로 증가합니다.",
+      "micron_modal_tip_2": "<b>0점 캘리브레이션</b>: 버 청소나 기기 상태에 따라 실제 측정 입도와 ±10~20µm 오차가 있을 수 있습니다.",
+      "micron_modal_tip_3": "타 브랜드 그라인더(코만단테, 오드 등)와 레시피를 비교·설계할 때 유용한 참고용 이론치입니다.",
+      "th_brew_method": "추출 방식",
+      "th_grind_click": "클릭수",
+      "th_micron_range": "이론 입도(µm)",
+      "method_espresso": "에스프레소",
+      "method_moka": "모카포트 / 에어로프레스",
+      "method_pourover": "핸드드립 / 푸어오버 (추천)",
+      "method_chemex": "케멕스 / 굵은 드립",
+      "method_coldbrew": "콜드브루 / 프렌치프레스",
     },
     en: {
       "label_micron_disp": "Est. Micron (µm)",
@@ -1761,7 +1902,25 @@
       state_blooming: "BLOOMING",
       state_finished: "FINISHED",
       state_aborted: "STOPPED",
-      state_error: "ERROR"
+      state_error: "ERROR",
+      "micron_click_hint": "Click to view conversion basis & barista guide",
+      "micron_modal_title": "Grind Micron (µm) Conversion Guide",
+      "micron_modal_current_label": "Current Recipe Setting",
+      "micron_modal_basis_title": "Calculation Basis",
+      "micron_modal_basis_desc": "Based on xBloom's built-in <b>48mm heptagonal conical burr</b>, each click adjusts the vertical burr gap by <b>approx. 13.8 µm</b>. Median particle size (D50) is estimated starting from Click 1 (True Zero touch point, D50 ≈ 25 µm).",
+      "micron_modal_table_title": "Recommended Grind Range by Brewing Method",
+      "micron_modal_tips_title": "Barista Practical Tips",
+      "micron_modal_tip_1": "<b>Roast Level</b>: Light roasts are denser and produce fewer fines, whereas dark roasts shatter easily, yielding more fines.",
+      "micron_modal_tip_2": "<b>Zero Calibration</b>: Actual particle size may vary by ±10~20 µm depending on burr cleaning and factory alignment.",
+      "micron_modal_tip_3": "Useful theoretical estimate when adapting recipes from other grinders (e.g. Comandante, Fellow Ode).",
+      "th_brew_method": "Brew Method",
+      "th_grind_click": "Clicks",
+      "th_micron_range": "Est. Size (µm)",
+      "method_espresso": "Espresso",
+      "method_moka": "Moka Pot / AeroPress",
+      "method_pourover": "Pour-over / Hand Drip (Recommended)",
+      "method_chemex": "Chemex / Coarse Drip",
+      "method_coldbrew": "Cold Brew / French Press",
     },
     ja: {
       "label_micron_disp": "ミクロン換算 (µm)",
@@ -2055,7 +2214,25 @@
       state_blooming: "蒸らし中",
       state_finished: "抽出完了",
       state_aborted: "緊急停止",
-      state_error: "エラー"
+      state_error: "エラー",
+      "micron_click_hint": "クリックして換算根拠とガイドを表示",
+      "micron_modal_title": "粒度ミクロン(µm)換算ガイド",
+      "micron_modal_current_label": "現在のレシピ設定",
+      "micron_modal_basis_title": "換算の算出根拠",
+      "micron_modal_basis_desc": "xBloom内蔵の<b>48mm七角コニカル刃</b>のピッチ設計に基づき、1クリックあたり刃の垂直隙間が<b>約13.8 µm</b>移動します。1段階(刃の接触ゼロ点、D50約25µm)を基準に理論中央粒径(D50)を算出しています。",
+      "micron_modal_table_title": "抽出方式別 推奨粒度ガイド",
+      "micron_modal_tips_title": "バリスタ参考ヒント",
+      "micron_modal_tip_1": "<b>焙煎度</b>: 浅煎りは豆が硬く微粉が少ない一方、深煎りは砕けやすく微粉比率が高くなります。",
+      "micron_modal_tip_2": "<b>ゼロ点校正</b>: 刃の清掃状態や初期組立により±10~20µmの誤差が生じる場合があります。",
+      "micron_modal_tip_3": "他社ミル(コマンダンテ、Odeなど)との粒度合わせやレシピ設計の参考値として活用できます。",
+      "th_brew_method": "抽出方式",
+      "th_grind_click": "クリック数",
+      "th_micron_range": "理論粒度(µm)",
+      "method_espresso": "エスプレッソ",
+      "method_moka": "モカエキスプレス / エアロプレス",
+      "method_pourover": "ハンドドリップ / プアオーバー (推奨)",
+      "method_chemex": "ケメックス / 粗挽きドリップ",
+      "method_coldbrew": "水出し(コールドブリュー) / フレンチプレス",
     },
     "zh-TW": {
       "label_micron_disp": "微米換算 (µm)",
@@ -2324,7 +2501,25 @@
       state_blooming: "悶蒸中",
       state_finished: "沖煮完成",
       state_aborted: "緊急停止",
-      state_error: "異常"
+      state_error: "異常",
+      "micron_click_hint": "點擊查看換算依據與咖啡師指南",
+      "micron_modal_title": "研磨度微米(µm)換算指南",
+      "micron_modal_current_label": "當前配方設定",
+      "micron_modal_basis_title": "換算計算依據",
+      "micron_modal_basis_desc": "依據 xBloom 內建 <b>48mm 七角錐刀</b> 螺紋螺距，每調整 1 格垂直刀盤間距移動 <b>約 13.8 µm</b>。以第 1 格 (刀盤碰觸歸零點，D50 約 25µm) 為基準推算理論中位粒徑 (D50)。",
+      "micron_modal_table_title": "沖煮方式建議研磨度區間",
+      "micron_modal_tips_title": "咖啡師參考提示",
+      "micron_modal_tip_1": "<b>烘焙度影響</b>: 淺焙豆質地堅硬細粉少且均勻，深焙豆脆易碎細粉比例相對增加。",
+      "micron_modal_tip_2": "<b>歸零校準</b>: 刀盤清潔拆裝或設備初始組裝可能存在 ±10~20µm 微小公差。",
+      "micron_modal_tip_3": "適合在參考其他磨豆機 (C40、Fellow Ode 等) 配方時作為理論換算對照依據。",
+      "th_brew_method": "沖煮方式",
+      "th_grind_click": "格數 (Clicks)",
+      "th_micron_range": "理論粒徑(µm)",
+      "method_espresso": "義式濃縮 (Espresso)",
+      "method_moka": "摩卡壺 / 愛樂壓",
+      "method_pourover": "手沖 / 濾泡 (推薦)",
+      "method_chemex": "Chemex / 粗研磨手沖",
+      "method_coldbrew": "冷萃 / 法壓壺",
     },
     "zh-CN": {
       "label_micron_disp": "微米换算 (µm)",
@@ -2593,7 +2788,25 @@
       state_blooming: "闷蒸中",
       state_finished: "冲煮完成",
       state_aborted: "紧急停止",
-      state_error: "异常"
+      state_error: "异常",
+      "micron_click_hint": "点击查看换算依据与咖啡师指南",
+      "micron_modal_title": "研磨度微米(µm)换算指南",
+      "micron_modal_current_label": "当前配方设定",
+      "micron_modal_basis_title": "换算计算依据",
+      "micron_modal_basis_desc": "依据 xBloom 内置 <b>48mm 七角锥刀</b> 螺纹螺距，每调整 1 格垂直刀盘间隙移动 <b>约 13.8 µm</b>。以第 1 格 (刀盘碰触归零点，D50 约 25µm) 为基准推算理论中位粒径 (D50)。",
+      "micron_modal_table_title": "冲煮方式推荐研磨度区间",
+      "micron_modal_tips_title": "咖啡师参考提示",
+      "micron_modal_tip_1": "<b>烘焙度影响</b>: 浅烘豆质地坚硬细粉少且均匀，深烘豆脆易碎细粉比例相对增加。",
+      "micron_modal_tip_2": "<b>归零校准</b>: 刀盘清洁拆装或设备初始组装可能存在 ±10~20µm 微小公差。",
+      "micron_modal_tip_3": "适合在参考其他磨豆机 (C40、Fellow Ode 等) 配方时作为理论换算对照依据。",
+      "th_brew_method": "冲煮方式",
+      "th_grind_click": "格数 (Clicks)",
+      "th_micron_range": "理论粒径(µm)",
+      "method_espresso": "意式浓缩 (Espresso)",
+      "method_moka": "摩卡壶 / 爱乐压",
+      "method_pourover": "手冲 / 滤泡 (推荐)",
+      "method_chemex": "Chemex / 粗研磨手冲",
+      "method_coldbrew": "冷萃 / 法压壶",
     },
     de: {
       "label_micron_disp": "Geschätzt (µm)",
@@ -2887,7 +3100,25 @@
       state_blooming: "BLOOMING",
       state_finished: "FERTIG",
       state_aborted: "GESTOPPT",
-      state_error: "FEHLER"
+      state_error: "FEHLER",
+      "micron_click_hint": "Klicken für Umrechnungsgrundlage & Barista-Leitfaden",
+      "micron_modal_title": "Mahlgrad-Mikron (µm) Leitfaden",
+      "micron_modal_current_label": "Aktuelle Rezepteinstellung",
+      "micron_modal_basis_title": "Berechnungsgrundlage",
+      "micron_modal_basis_desc": "Basierend auf dem <b>48-mm-Kegelmahlwerk</b> des xBloom bewegt jeder Klick den Mahlwerksabstand um <b>ca. 13,8 µm</b>. Die theoretische Partikelgröße (D50) beginnt ab Klick 1 (Nullpunkt, D50 ≈ 25 µm).",
+      "micron_modal_table_title": "Empfohlener Mahlgrad nach Brühmethode",
+      "micron_modal_tips_title": "Barista-Praxistipps",
+      "micron_modal_tip_1": "<b>Röstgrad</b>: Helle Röstungen sind dichter mit weniger Feinanteil, dunkle Röstungen brechen leichter.",
+      "micron_modal_tip_2": "<b>Kalibrierung</b>: Je nach Reinigung und Nullpunkt kann eine Toleranz von ±10~20 µm auftreten.",
+      "micron_modal_tip_3": "Dient als hilfreicher theoretischer Richtwert beim Anpassen von Rezepten anderer Mühlen (z. B. Comandante, Ode).",
+      "th_brew_method": "Brühmethode",
+      "th_grind_click": "Klicks",
+      "th_micron_range": "Geschätzte Partikelgröße (µm)",
+      "method_espresso": "Espresso",
+      "method_moka": "Mokkakanne / AeroPress",
+      "method_pourover": "Handfilter / Pour-Over (Empfohlen)",
+      "method_chemex": "Chemex / Grober Filter",
+      "method_coldbrew": "Cold Brew / French Press",
     },
     fr: {
       "label_micron_disp": "Mouture est. (µm)",
@@ -3181,7 +3412,25 @@
       state_blooming: "PRÉ-INFUSION",
       state_finished: "TERMINÉ",
       state_aborted: "INTERROMPU",
-      state_error: "ERREUR"
+      state_error: "ERREUR",
+      "micron_click_hint": "Cliquez pour afficher la base de conversion et le guide barista",
+      "micron_modal_title": "Guide de Conversion Microns (µm)",
+      "micron_modal_current_label": "Réglage Actuel de la Recette",
+      "micron_modal_basis_title": "Base de Calcul",
+      "micron_modal_basis_desc": "Basé sur la meule conique <b>48 mm heptagonale</b> de xBloom, chaque cran déplace l'espacement de <b>env. 13,8 µm</b>. La taille médiane (D50) commence au cran 1 (point zéro, D50 ≈ 25 µm).",
+      "micron_modal_table_title": "Plages Recommandées par Méthode d'Extraction",
+      "micron_modal_tips_title": "Conseils du Barista",
+      "micron_modal_tip_1": "<b>Degré de torréfaction</b>: Les torréfactions claires génèrent moins de fines, tandis que les foncées s'effritent plus vite.",
+      "micron_modal_tip_2": "<b>Calibration zéro</b>: Un écart de ±10~20 µm peut survenir selon l'état de nettoyage et l'alignement.",
+      "micron_modal_tip_3": "Une estimation théorique précieuse pour adapter les recettes d'autres moulins (ex. Comandante, Ode).",
+      "th_brew_method": "Méthode d'extraction",
+      "th_grind_click": "Crans",
+      "th_micron_range": "Taille estimée (µm)",
+      "method_espresso": "Espresso",
+      "method_moka": "Cafetière Moka / AeroPress",
+      "method_pourover": "Pour Over / Filtre Manuel (Recommandé)",
+      "method_chemex": "Chemex / Filtre Gros",
+      "method_coldbrew": "Cold Brew / French Press"
     }
   };
   let currentLangSetting = "auto";
@@ -3378,6 +3627,30 @@
       const grindEnabled = document.getElementById("recGrindEnabled") ? document.getElementById("recGrindEnabled").checked : true;
       banner.style.opacity = grindEnabled ? "1" : "0.5";
     }
+  }
+  function openMicronInfoModal() {
+    const input = document.getElementById("recGrind");
+    const c = input ? Number(input.value) : 45;
+    const clickEl = document.getElementById("micronModalClickVal");
+    const umEl = document.getElementById("micronModalUmVal");
+    const catEl = document.getElementById("micronModalCatVal");
+    if (clickEl) clickEl.textContent = (!isNaN(c) && c >= 1 && c <= 80) ? c : "--";
+    if (umEl) {
+      const micron = clickToMicron(c);
+      umEl.textContent = (micron !== null) ? `≈ ${micron} µm` : "≈ -- µm";
+    }
+    if (catEl) {
+      catEl.textContent = (!isNaN(c) && c >= 1 && c <= 80) ? getMicronCategory(c) : "--";
+    }
+    const modal = document.getElementById("micronInfoModal");
+    if (modal) modal.classList.add("active");
+  }
+  function closeMicronInfoModal() {
+    const modal = document.getElementById("micronInfoModal");
+    if (modal) modal.classList.remove("active");
+  }
+  function closeMicronInfoModalOnBack(e) {
+    if (e.target.id === "micronInfoModal") closeMicronInfoModal();
   }
   function setShowMicron(enabled, saveToServer = true) {
     showGrindMicron = !!enabled;
@@ -5611,6 +5884,18 @@
   window.addEventListener('resize', () => {
     drawChart();
     if (currentHistRecord) drawHistoryChart(currentHistRecord);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMicronInfoModal();
+      closeSettings();
+      closeServerRecipeModal();
+      closeShareUrlModal();
+      closeHistoryModal();
+      closeSlotModal();
+      closeCloudSuccessModal();
+      if (typeof closeUpdateModal === 'function') closeUpdateModal();
+    }
   });
   renderSteps();
   setTimeout(drawChart, 100);
