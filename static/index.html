@@ -248,14 +248,6 @@
     [data-theme="light"] input.input-error, [data-theme="light"] select.input-error { background: #fee2e2; }
     .error-msg { color: var(--danger); font-size: 0.68rem; margin-top: 2px; display: none; line-height: 1.2; font-weight: 600; }
     .error-msg.visible { display: block; }
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
     .temp-input-wrap { display: flex; gap: 4px; }
     .btn-tag { padding: 4px 6px; font-size: 0.7rem; border-radius: 6px; background: var(--tag-bg); color: var(--sky); border: 1px solid var(--border); cursor: pointer; font-weight: 700; white-space: nowrap; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
@@ -570,6 +562,124 @@
       background: #22c55e;
       box-shadow: 0 0 6px #22c55e;
     }
+    #grindParamGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      align-items: flex-start;
+      transition: all 0.25s ease;
+    }
+    @media (max-width: 680px) {
+      #grindParamGrid {
+        gap: 6px;
+      }
+      #grindParamGrid .field-group label {
+        font-size: 0.72rem;
+        letter-spacing: -0.3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    @media (max-width: 480px) {
+      .tab-btn {
+        font-size: 0.82rem;
+        padding: 8px 4px;
+      }
+      .grid-4-buttons {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+      }
+      .grid-4-buttons .btn-secondary {
+        padding: 8px 4px !important;
+        font-size: 0.76rem !important;
+      }
+    }
+    .micron-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.42);
+      font-size: 0.82rem;
+      color: var(--text);
+      transition: all 0.2s ease;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+    .micron-banner:hover {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: rgba(34, 197, 94, 0.6);
+    }
+    .micron-banner-title {
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .micron-banner-val {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 800;
+      color: #4ade80;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .micron-category-tag {
+      font-size: 0.72rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(34, 197, 94, 0.24);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #86efac;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    @media (max-width: 480px) {
+      .micron-banner {
+        padding: 7px 10px;
+      }
+      .micron-banner-title {
+        font-size: 0.72rem;
+        gap: 4px;
+      }
+      .micron-banner-val {
+        font-size: 0.86rem;
+        gap: 5px;
+      }
+      .micron-category-tag {
+        font-size: 0.68rem;
+        padding: 1px 5px;
+      }
+    }
+    [data-theme="light"] .micron-banner {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      color: #064e3b;
+    }
+    [data-theme="light"] .micron-banner-title {
+      color: #065f46;
+    }
+    [data-theme="light"] .micron-banner-val {
+      color: #047857;
+    }
+    [data-theme="light"] .micron-category-tag {
+      background: #d1fae5;
+      border-color: #a7f3d0;
+      color: #065f46;
+    }
   </style>
 </head>
 <body class="custom-wallpaper-container">
@@ -710,32 +820,31 @@
               </label>
             </div>
           </div>
-          <div class="grid-3">
-            <div class="field-group">
+          <div class="grid-3" id="grindParamGrid">
+            <div class="field-group" id="doseFieldWrap">
               <label data-i18n="label_dose_g">Dose (정수 g)</label>
-              <input type="number" id="recDose" value="18" step="1" min="1" oninput="this.value = this.value.replace(/[^0-9]/g, ''); calcRatio(); validateAll();">
+              <input type="number" id="recDose" value="18" step="1" min="1" max="18" oninput="this.value = this.value.replace(/[^0-9]/g, ''); calcRatio(); validateAll();">
               <span class="error-msg" id="err-recDose" data-i18n="err_rec_dose">1g 이상 정수</span>
             </div>
             <div class="field-group" id="grindFieldWrap">
-              <label data-i18n="label_grind_range">분쇄도 (10~100)</label>
-              <div class="grind-input-wrap" style="display:flex; gap:4px; align-items:center;">
-                <input type="number" id="recGrind" value="45" oninput="updateGrindMicronBadge(); validateAll();" style="flex:1; min-width:44px; text-align:center; padding:8px 4px; font-weight:600;">
-                <span id="grindMicronBadge" style="display:none; align-items:center; justify-content:center; padding:0 5px; height:36px; border-radius:8px; font-size:0.68rem; font-weight:700; font-family:monospace; letter-spacing:-0.2px; white-space:nowrap; color:var(--primary); background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); cursor:help; user-select:none; box-sizing:border-box; flex-shrink:0;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">≈ 836µm</span>
-              </div>
-              <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">10~100 입력</span>
+              <label data-i18n="label_grind_range">분쇄도 (1~80)</label>
+              <input type="number" id="recGrind" value="45" min="1" max="80" step="1" oninput="updateGrindMicronBadge(); validateAll();">
+              <span class="error-msg" id="err-recGrind" data-i18n="err_rec_grind">1~80 입력</span>
             </div>
             <div class="field-group" id="rpmFieldWrap">
-              <label data-i18n="label_rpm_range">그라인더 RPM (60~120)</label>
-              <select id="recGrindRpm" onchange="validateAll()">
-                <option value="60">60 RPM</option>
-                <option value="70">70 RPM</option>
-                <option value="80" selected>80 RPM</option>
-                <option value="90">90 RPM</option>
-                <option value="100">100 RPM</option>
-                <option value="110">110 RPM</option>
-                <option value="120">120 RPM</option>
-              </select>
-              <span class="error-msg" id="err-recRpm" data-i18n="err_rec_rpm">60~120 사이 10단위만 가능</span>
+              <label data-i18n="label_rpm_range">RPM (60~120)</label>
+              <input type="number" id="recGrindRpm" value="80" min="60" max="120" step="10" oninput="validateAll();">
+              <span class="error-msg" id="err-recRpm" data-i18n="err_rec_rpm">60~120 (10단위)</span>
+            </div>
+          </div>
+          <div id="grindMicronBanner" class="micron-banner" style="display:none;" data-i18n-title="micron_approx_tooltip" title="⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)">
+            <span class="micron-banner-title">
+              <span>🔬</span>
+              <span data-i18n="label_micron_banner">마이크론 환산 (이론치)</span>
+            </span>
+            <div class="micron-banner-val">
+              <span id="grindMicronVal">≈ 665 µm</span>
+              <span id="grindMicronCategory" class="micron-category-tag">핸드드립</span>
             </div>
           </div>
           <div class="ratio-wrap" style="margin-top:4px;">
@@ -1066,6 +1175,7 @@
 <script>
   const TRANSLATIONS = {
     ko: {
+      "label_micron_disp": "마이크론 환산 (µm)",
       "setting_micron": "🔬 분쇄도 마이크론(µm) 환산치 표시",
       "setting_micron_desc": "분쇄도(클릭) 입력 시 48mm 코니컬 버 간극 기준 이론적 환산 마이크론(µm)을 함께 표시합니다.",
       "setting_micron_disclaimer": "⚠️ <b>안내</b>: 원두 배전도·밀도, 버 영점(캘리브레이션) 오차 및 실제 입도 분포(미분 등)에 따라 실측 입도와 차이가 있을 수 있으며, 참고용 근사치입니다.",
@@ -1154,8 +1264,8 @@
       "current_ver_prefix": "현재 버전: ",
       "ble_disconnect_hover": " (연결 끊기)",
       "err_share_url": "올바른 공유 링크를 입력해주세요.",
-      "err_rec_rpm": "60~120 사이 10단위만 가능",
-      "err_rec_grind": "10~100 입력",
+      "err_rec_rpm": "60~120 (10단위)",
+      "err_rec_grind": "1~80 입력",
       "err_rec_dose": "1g 이상 정수",
       "err_rec_name": "이름을 입력해주세요.",
       "btn_refresh": "🔄 새로고침",
@@ -1203,7 +1313,7 @@
       "toggle_sync": "\u23f1\ufe0f \uc778\ud130\ubc8c \ubcf4\uc815 (Sync)",
       "toggle_sync_desc": "\ud478\uc5b4 \uac04\uaca9 \ub300\uae30 \uc790\ub3d9 \uacc4\uc0b0",
       "label_dose_g": "Dose (\uc815\uc218 g)",
-      "label_grind_range": "\ubd84\uc1c4\ub3c4 (10~100)",
+      "label_grind_range": "분쇄도 (1~80)",
       "label_rpm_range": "\uadf8\ub77c\uc778\ub354 RPM (60~120)",
       "label_ratio_banner": "\ucd94\ucd9c \ube44\uc728 (0.5 \ub2e8\uc704 \ubc30\uc218 \uc77c\uce58 \ud544\uc694)",
       "card_memory_cloud": "\uba38\uc2e0 \uba54\ubaa8\ub9ac \ubc0f \ud074\ub77c\uc6b0\ub4dc \uc804\uc1a1",
@@ -1359,6 +1469,7 @@
       state_error: "오류"
     },
     en: {
+      "label_micron_disp": "Est. Micron (µm)",
       "setting_micron": "🔬 Show Grind Micron (µm) Estimate",
       "setting_micron_desc": "Displays theoretical micron (µm) estimates based on 48mm conical burr vertical gap.",
       "setting_micron_disclaimer": "⚠️ <b>Notice</b>: Values are theoretical approximations. Actual particle size may vary depending on roast level, bean density, zero-point calibration, and fines distribution.",
@@ -1447,8 +1558,8 @@
       "current_ver_prefix": "Current Version: ",
       "ble_disconnect_hover": " (Disconnect)",
       "err_share_url": "Please enter a valid share link.",
-      "err_rec_rpm": "60~120 in increments of 10",
-      "err_rec_grind": "Enter 10~100",
+      "err_rec_rpm": "60~120 (step 10)",
+      "err_rec_grind": "Enter 1~80",
       "err_rec_dose": "Integer >= 1g",
       "err_rec_name": "Please enter a recipe name.",
       "btn_refresh": "🔄 Refresh",
@@ -1496,8 +1607,9 @@
       "toggle_sync": "\u23f1\ufe0f Interval Sync",
       "toggle_sync_desc": "Auto-calculate pour intervals",
       "label_dose_g": "Dose (Integer g)",
-      "label_grind_range": "Grind Size (10~100)",
-      "label_rpm_range": "Grinder RPM (60~120)",
+      "label_grind_range": "Grind Size (1~80)",
+      "label_rpm_range": "RPM (60~120)",
+    "label_micron_banner": "Est. Particle Size (Microns)",
       "label_ratio_banner": "Brew Ratio (Matches 0.5 increments)",
       "card_memory_cloud": "Machine Hardware Slots & Cloud",
       "btn_save_slot": "Save to Machine Hardware Slot (BLE)",
@@ -1652,6 +1764,7 @@
       state_error: "ERROR"
     },
     ja: {
+      "label_micron_disp": "ミクロン換算 (µm)",
       "setting_micron": "🔬 挽き目ミクロン(µm)換算値の表示",
       "setting_micron_desc": "クリック数入力時、48mmコニカル刃の移動間隙に基づく理論上のミクロン(µm)換算値を表示します。",
       "setting_micron_disclaimer": "⚠️ <b>ご注意</b>: 焙煎度や豆の密度、刃のゼロ点調整（校正）の個体差、微粉を含む粒度分布により実測値と異なる場合があるため、あくまで目安の参考値です。",
@@ -1740,8 +1853,8 @@
       "current_ver_prefix": "現在のバージョン: ",
       "ble_disconnect_hover": " (切断)",
       "err_share_url": "有効な共有リンクを入力してください。",
-      "err_rec_rpm": "60〜120(10単位)",
-      "err_rec_grind": "10〜100を入力",
+      "err_rec_rpm": "60〜120（10単位）",
+      "err_rec_grind": "1〜80を入力",
       "err_rec_dose": "1g以上の整数",
       "err_rec_name": "レシピ名を入力してください。",
       "btn_refresh": "🔄 更新",
@@ -1789,7 +1902,7 @@
       "toggle_sync": "\u23f1\ufe0f \u30a4\u30f3\u30bf\u30fc\u30d0\u30eb\u81ea\u52d5\u88dc\u6b63",
       "toggle_sync_desc": "\u6ce8\u6e6f\u9593\u9694\u306e\u5f85\u6a5f\u6642\u9593\u3092\u81ea\u52d5\u8a08\u7b97",
       "label_dose_g": "\u7c89\u91cf Dose (g)",
-      "label_grind_range": "\u633d\u304d\u76ee (10~100)",
+      "label_grind_range": "挽き目 (1~80)",
       "label_rpm_range": "\u30df\u30eb\u56de\u8ee2\u6570 RPM (60~120)",
       "label_ratio_banner": "\u62bd\u51fa\u6bd4\u7387 (0.5\u523b\u307f\u306e\u500d\u6570)",
       "card_memory_cloud": "\u30de\u30b7\u30f3\u30e1\u30e2\u30ea\u30b9\u30ed\u30c3\u30c8\uff06\u30af\u30e9\u30a6\u30c9",
@@ -1945,6 +2058,8 @@
       state_error: "エラー"
     },
     "zh-TW": {
+      "label_micron_disp": "微米換算 (µm)",
+      "label_grind_range": "研磨度 (1~80)",
       "setting_micron": "🔬 顯示研磨度微米(µm)換算值",
       "setting_micron_desc": "輸入刻度時，一併顯示基於 48mm 錐刀間隙之理論換算微米 (µm) 數值。",
       "setting_micron_disclaimer": "⚠️ <b>說明</b>：數值僅為理論參考值。實際研磨顆粒大小會因烘焙度、咖啡豆密度、磨豆機零點校準誤差及細粉分佈而有所差異。",
@@ -2034,8 +2149,8 @@
       "current_ver_prefix": "目前版本: ",
       "ble_disconnect_hover": " (中斷連線)",
       "err_share_url": "請輸入有效的分享連結。",
-      "err_rec_rpm": "60~120 (以 10 為單位)",
-      "err_rec_grind": "請輸入 10~100",
+      "err_rec_rpm": "60~120 (以10為單位)",
+      "err_rec_grind": "請輸入 1~80",
       "err_rec_dose": "大於或等於 1g 的整數",
       "err_rec_name": "請輸入配方名稱。",
       "btn_refresh": "🔄 重新整理",
@@ -2212,6 +2327,8 @@
       state_error: "異常"
     },
     "zh-CN": {
+      "label_micron_disp": "微米换算 (µm)",
+      "label_grind_range": "研磨度 (1~80)",
       "setting_micron": "🔬 显示研磨度微米(µm)换算值",
       "setting_micron_desc": "输入刻度时，一并显示基于 48mm 锥刀间隙之理论换算微米 (µm) 数值。",
       "setting_micron_disclaimer": "⚠️ <b>说明</b>：数值仅为理论参考值。实际研磨颗粒大小会因烘焙度、咖啡豆密度、磨豆机零点校准误差及细粉分布而有所差异。",
@@ -2301,8 +2418,8 @@
       "current_ver_prefix": "当前版本: ",
       "ble_disconnect_hover": " (断开连接)",
       "err_share_url": "请输入有效的分享链接。",
-      "err_rec_rpm": "60~120 (以 10 为单位)",
-      "err_rec_grind": "请输入 10~100",
+      "err_rec_rpm": "60~120 (以10为单位)",
+      "err_rec_grind": "请输入 1~80",
       "err_rec_dose": "大于或等于 1g 的整数",
       "err_rec_name": "请输入配方名称。",
       "btn_refresh": "🔄 刷新",
@@ -2479,6 +2596,7 @@
       state_error: "异常"
     },
     de: {
+      "label_micron_disp": "Geschätzt (µm)",
       "setting_micron": "🔬 Mahlgrad-Mikron (µm) Schätzwert anzeigen",
       "setting_micron_desc": "Zeigt theoretische Mikron-Schätzwerte (µm) basierend auf dem 48-mm-Konusmahlwerk-Spalt an.",
       "setting_micron_disclaimer": "⚠️ <b>Hinweis</b>: Theoretische Richtwerte. Die tatsächliche Partikelgröße kann je nach Röstgrad, Bohnendichte, Nullpunktkalibrierung des Mahlwerks und Feinanteil abweichen.",
@@ -2567,8 +2685,8 @@
       "current_ver_prefix": "Aktuelle Version: ",
       "ble_disconnect_hover": " (Trennen)",
       "err_share_url": "Bitte gültigen Freigabelink eingeben.",
-      "err_rec_rpm": "60~120 in 10er-Schritten",
-      "err_rec_grind": "10~100 eingeben",
+      "err_rec_rpm": "60~120 (10er-Schritte)",
+      "err_rec_grind": "1~80 eingeben",
       "err_rec_dose": "Ganzzahl >= 1g",
       "err_rec_name": "Bitte Rezeptnamen eingeben.",
       "btn_refresh": "🔄 Aktualisieren",
@@ -2616,7 +2734,7 @@
       "toggle_sync": "\u23f1\ufe0f Intervall-Kompensation",
       "toggle_sync_desc": "Wartezeiten automatisch anpassen",
       "label_dose_g": "Dosis (Ganzzahl g)",
-      "label_grind_range": "Mahlgrad (10~100)",
+      "label_grind_range": "Mahlgrad (1~80)",
       "label_rpm_range": "Drehzahl RPM (60~120)",
       "label_ratio_banner": "Br\u00fchverh\u00e4ltnis (0,5er Schritte)",
       "card_memory_cloud": "Hardware-Slots & Cloud",
@@ -2772,6 +2890,7 @@
       state_error: "FEHLER"
     },
     fr: {
+      "label_micron_disp": "Mouture est. (µm)",
       "setting_micron": "🔬 Afficher l'estimation en microns (µm)",
       "setting_micron_desc": "Affiche une estimation théorique en microns (µm) basée sur l'écart des meules coniques 48mm.",
       "setting_micron_disclaimer": "⚠️ <b>Remarque</b> : Valeurs indicatives théoriques. La granulométrie réelle peut varier selon le niveau de torréfaction, la densité du grain, l'étalonnage du point zéro et la présence de fines.",
@@ -2860,8 +2979,8 @@
       "current_ver_prefix": "Version actuelle: ",
       "ble_disconnect_hover": " (Déconnecter)",
       "err_share_url": "Veuillez entrer un lien valide.",
-      "err_rec_rpm": "60~120 par pas de 10",
-      "err_rec_grind": "Entrer entre 10 et 100",
+      "err_rec_rpm": "60~120 (par pas de 10)",
+      "err_rec_grind": "Entrer entre 1 et 80",
       "err_rec_dose": "Entier >= 1g",
       "err_rec_name": "Veuillez entrer un nom de recette.",
       "btn_refresh": "🔄 Actualiser",
@@ -2909,7 +3028,7 @@
       "toggle_sync": "\u23f1\ufe0f Synchronisation des intervalles",
       "toggle_sync_desc": "Calcul automatique des pauses",
       "label_dose_g": "Dose (Entier g)",
-      "label_grind_range": "Taille de mouture (10~100)",
+      "label_grind_range": "Taille de mouture (1~80)",
       "label_rpm_range": "Vitesse RPM (60~120)",
       "label_ratio_banner": "Ratio d'infusion (Multiples de 0,5)",
       "card_memory_cloud": "Slots machine & Cloud",
@@ -3219,29 +3338,46 @@
   let showGrindMicron = false;
   function clickToMicron(click) {
     const c = Number(click);
-    if (isNaN(c) || c <= 0) return null;
-    const micron = Math.round(180 + (c - 10) * 18.75);
-    return Math.max(10, micron);
+    if (isNaN(c) || c < 1 || c > 80) return null;
+    return Math.round(180 + (c - 1) * (870 / 79));
+  }
+  function getMicronCategory(click) {
+    const c = Number(click);
+    const lang = (typeof currentLang === "string") ? currentLang : "ko";
+    const categories = {
+      ko: ["에스프레소", "모카포트", "핸드드립", "케멕스/굵은드립", "프렌치프레스/콜드브루"],
+      en: ["Espresso", "Moka Pot", "Pour Over", "Chemex/Drip", "French Press/Cold Brew"],
+      ja: ["エスプレッソ", "モカエキスプレス", "ハンドドリップ", "ケメックス", "フレンチプレス/コールドブリュー"],
+      "zh-TW": ["義式濃縮", "摩卡壺", "手沖咖啡", "濾泡/手沖", "法壓/冷萃"],
+      "zh-CN": ["意式浓缩", "摩卡壶", "手冲咖啡", "滤泡/手冲", "法压/冷萃"],
+      de: ["Espresso", "Mokkakanne", "Filterkaffee", "Chemex/Grob", "French Press/Cold Brew"],
+      fr: ["Espresso", "Cafetière Moka", "Pour Over", "Chemex", "French Press/Cold Brew"]
+    };
+    const list = categories[lang] || categories["ko"];
+    if (c <= 11) return list[0];
+    if (c <= 26) return list[1];
+    if (c <= 48) return list[2];
+    if (c <= 65) return list[3];
+    return list[4];
   }
   function updateGrindMicronBadge() {
-    const badge = document.getElementById("grindMicronBadge");
-    if (!badge) return;
-    if (!showGrindMicron) {
-      badge.style.display = "none";
-      return;
-    }
+    const valEl = document.getElementById("grindMicronVal");
+    const catEl = document.getElementById("grindMicronCategory");
+    const banner = document.getElementById("grindMicronBanner");
     const input = document.getElementById("recGrind");
     const c = input ? Number(input.value) : null;
     const micron = clickToMicron(c);
-    if (micron !== null) {
-      badge.textContent = `≈ ${micron}µm`;
-      badge.title = t("micron_approx_tooltip", "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)");
-      badge.style.display = "inline-flex";
-    } else {
-      badge.style.display = "none";
+    if (valEl) {
+      valEl.textContent = (micron !== null) ? `≈ ${micron} µm` : "-";
     }
-    const grindEnabled = document.getElementById("recGrindEnabled") ? document.getElementById("recGrindEnabled").checked : true;
-    badge.style.opacity = grindEnabled ? "1" : "0.45";
+    if (catEl && c !== null && !isNaN(c)) {
+      catEl.textContent = getMicronCategory(c);
+    }
+    if (banner) {
+      banner.title = t("micron_approx_tooltip", "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)");
+      const grindEnabled = document.getElementById("recGrindEnabled") ? document.getElementById("recGrindEnabled").checked : true;
+      banner.style.opacity = grindEnabled ? "1" : "0.5";
+    }
   }
   function setShowMicron(enabled, saveToServer = true) {
     showGrindMicron = !!enabled;
@@ -3254,6 +3390,10 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ show_micron: showGrindMicron })
       }).catch(() => {});
+    }
+    const banner = document.getElementById("grindMicronBanner");
+    if (banner) {
+      banner.style.display = showGrindMicron ? "flex" : "none";
     }
     updateGrindMicronBadge();
     const serverModal = document.getElementById("serverRecipeModal");
@@ -3583,8 +3723,8 @@
     const enabled = document.getElementById("recGrindEnabled").checked;
     document.getElementById("recGrind").disabled = !enabled;
     document.getElementById("recGrindRpm").disabled = !enabled;
-    const badge = document.getElementById("grindMicronBadge");
-    if (badge) badge.style.opacity = enabled ? "1" : "0.45";
+    const banner = document.getElementById("grindMicronBanner");
+    if (banner) banner.style.opacity = enabled ? "1" : "0.5";
     validateAll();
   }
   function setRpmPreset(val) {
@@ -5262,7 +5402,7 @@
     const grindEnabled = document.getElementById("recGrindEnabled").checked;
     if (grindEnabled) {
       const grind = Number(document.getElementById("recGrind").value);
-      if (isNaN(grind) || grind < 10 || grind > 100) { setFieldError("recGrind", "err-recGrind", true); isValid = false; }
+      if (isNaN(grind) || grind < 1 || grind > 80 || !Number.isInteger(grind)) { setFieldError("recGrind", "err-recGrind", true); isValid = false; }
       else { setFieldError("recGrind", "err-recGrind", false); }
       const rpm = Number(document.getElementById("recGrindRpm").value);
       const isRpmValid = !isNaN(rpm) && rpm >= 60 && rpm <= 120 && rpm % 10 === 0;
