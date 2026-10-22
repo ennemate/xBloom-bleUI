@@ -3673,7 +3673,9 @@
     updateGrindMicronBadge();
     const serverModal = document.getElementById("serverRecipeModal");
     if (serverModal && serverModal.classList.contains("active")) {
-      renderServerRecipeCards();
+      if (typeof renderServerRecipeList === "function" && typeof cachedServerRecipes !== "undefined") {
+        renderServerRecipeList(cachedServerRecipes);
+      }
     }
   }
   let latestReleaseData = null;
