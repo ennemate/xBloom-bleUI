@@ -1109,7 +1109,7 @@
         </label>
       </div>
       <div style="margin-top:2px; padding:7px 10px; border-radius:6px; background:rgba(234, 179, 8, 0.08); border:1px solid rgba(234, 179, 8, 0.25); font-size:0.72rem; line-height:1.45; color:var(--text-muted);">
-        <span data-i18n="setting_micron_disclaimer">⚠️ <b>안내</b>: 원두 배전도·밀도, 버 영점(캘리브레이션) 오차 및 실제 입도 분포(미분 등)에 따라 실측 입도와 차이가 있을 수 있으며, 참고용 근사치입니다.</span>
+        <span data-i18n="setting_micron_disclaimer">⚠️ <b>안내</b>: 원두 배전도·밀도, 버 영점(캘리브레이션) 오차 및 원두 상태나 미분 등에 따라 실제 분쇄 굵기와 차이가 있을 수 있으며, 참고용 근사치입니다.</span>
       </div>
     </div>
     <div class="setting-row" style="align-items:flex-start; flex-direction:column; gap:6px;">
@@ -1224,10 +1224,10 @@
       </div>
       <div style="background:var(--card-inner); border:1px solid var(--border); border-radius:10px; padding:10px 14px; display:flex; flex-direction:column; gap:6px;">
         <div style="font-size:0.78rem; color:var(--text); line-height:1.45;" data-i18n="micron_modal_basis_desc">
-          xBloom 48mm 버 기준, <b>1클릭당 약 13.8 µm</b>씩 증가하는 이론적 입도입니다.
+          xBloom 48mm 버 기준, <b>1클릭당 약 13.8 µm</b>씩 커지는 이론적 분쇄 굵기입니다.
         </div>
         <div style="padding:5px 8px; background:var(--card); border:1px dashed var(--border); border-radius:6px; font-family:monospace; font-size:0.75rem; color:#4ade80; text-align:center;" data-i18n="micron_modal_formula_label">
-          입도(µm) ≈ 25 + (클릭수 - 1) × 13.8
+          분쇄 굵기(µm) ≈ 25 + (클릭수 - 1) × 13.8
         </div>
       </div>
       <div style="background:var(--card-inner); border:1px solid var(--border); border-radius:10px; padding:12px 14px;">
@@ -1241,7 +1241,7 @@
               <tr style="border-bottom:1px solid var(--border); color:var(--muted);">
                 <th style="padding:6px 8px;" data-i18n="th_brew_method">추출 방식</th>
                 <th style="padding:6px 8px;" data-i18n="th_grind_click">클릭수</th>
-                <th style="padding:6px 8px;" data-i18n="th_micron_range">이론 입도(µm)</th>
+                <th style="padding:6px 8px;" data-i18n="th_micron_range">환산 굵기(µm)</th>
               </tr>
             </thead>
             <tbody>
@@ -1289,7 +1289,7 @@
       "label_micron_disp": "마이크론 환산 (µm)",
       "setting_micron": "🔬 분쇄도 마이크론(µm) 환산치 표시",
       "setting_micron_desc": "분쇄도(클릭) 입력 시 48mm 코니컬 버 간극 기준 이론적 환산 마이크론(µm)을 함께 표시합니다.",
-      "setting_micron_disclaimer": "⚠️ <b>안내</b>: 원두 배전도·밀도, 버 영점(캘리브레이션) 오차 및 실제 입도 분포(미분 등)에 따라 실측 입도와 차이가 있을 수 있으며, 참고용 근사치입니다.",
+      "setting_micron_disclaimer": "⚠️ <b>안내</b>: 원두 배전도·밀도, 버 영점(캘리브레이션) 오차 및 원두 상태나 미분 등에 따라 실제 분쇄 굵기와 차이가 있을 수 있으며, 참고용 근사치입니다.",
       "title_toggle_micron": "분쇄도 마이크론 환산치 표시 켜기/끄기",
       "micron_approx_tooltip": "⚠️ 원두 배전도·밀도 및 버 캘리브레이션에 따른 이론적 근사치 (참고용)",
       "btn_close": "닫기",
@@ -1579,24 +1579,24 @@
       state_aborted: "비상 정지",
       state_error: "오류",
       "micron_click_hint": "클릭하여 환산 근거 및 가이드 보기",
-      "micron_modal_title": "분쇄도 마이크론(µm) 환산 안내",
+      "micron_modal_title": "마이크론(µm) 분쇄 굵기 안내",
       "micron_modal_current_label": "현재 레시피 설정",
       "micron_modal_basis_title": "환산 산출 근거",
-      "micron_modal_basis_desc": "xBloom 48mm 버 기준, <b>1클릭당 약 13.8 µm</b>씩 증가하는 이론적 입도입니다.",
+      "micron_modal_basis_desc": "xBloom 48mm 버 기준, <b>1클릭당 약 13.8 µm</b>씩 커지는 이론적 분쇄 굵기입니다.",
       "micron_modal_table_title": "추출 방식별 권장 분쇄도 가이드",
       "micron_modal_tips_title": "바리스타 참고 팁",
-      "micron_modal_tip_1": "<b>원두 배전도</b>: 약배전은 원두 조직이 단단하여 미분이 적고 입도가 고른 반면, 강배전은 잘 부서져 미분이 상대적으로 증가합니다.",
-      "micron_modal_tip_2": "<b>0점 캘리브레이션</b>: 버 청소나 기기 상태에 따라 실제 측정 입도와 ±10~20µm 오차가 있을 수 있습니다.",
+      "micron_modal_tip_1": "<b>원두 배전도</b>: 약배전은 원두 조직이 단단하여 미분이 적고 분쇄 크기가 고른 반면, 강배전은 잘 부서져 미분이 상대적으로 증가합니다.",
+      "micron_modal_tip_2": "<b>0점 캘리브레이션</b>: 버 청소나 기기 상태에 따라 실제 분쇄 크기와 ±10~20µm 오차가 있을 수 있습니다.",
       "micron_modal_tip_3": "타 브랜드 그라인더(코만단테, 오드 등)와 레시피를 비교·설계할 때 유용한 참고용 이론치입니다.",
       "th_brew_method": "추출 방식",
       "th_grind_click": "클릭수",
-      "th_micron_range": "이론 입도(µm)",
+      "th_micron_range": "환산 굵기(µm)",
       "method_espresso": "에스프레소",
       "method_moka": "모카포트 / 에어로프레스",
       "method_pourover": "핸드드립 / 푸어오버 (추천)",
       "method_chemex": "케멕스 / 굵은 드립",
       "method_coldbrew": "콜드브루 / 프렌치프레스",
-      "micron_modal_formula_label": "입도(µm) ≈ 25 + (클릭수 - 1) × 13.8",
+      "micron_modal_formula_label": "분쇄 굵기(µm) ≈ 25 + (클릭수 - 1) × 13.8",
       "micron_modal_simple_tip": "💡 로스팅 배전도나 버 상태에 따라 차이가 있을 수 있는 <b>레시피 설계 참고용 이론치</b>입니다.",
     },
     en: {
@@ -1894,10 +1894,10 @@
       state_aborted: "STOPPED",
       state_error: "ERROR",
       "micron_click_hint": "Click to view conversion basis & barista guide",
-      "micron_modal_title": "Grind Micron (µm) Conversion Guide",
+      "micron_modal_title": "Grind Size Micron (µm) Guide",
       "micron_modal_current_label": "Current Recipe Setting",
       "micron_modal_basis_title": "Calculation Basis",
-      "micron_modal_basis_desc": "Theoretical particle size increasing by <b>approx. 13.8 µm per click</b> (xBloom 48mm burr).",
+      "micron_modal_basis_desc": "Theoretical grind size increasing by <b>approx. 13.8 µm per click</b> (xBloom 48mm burr).",
       "micron_modal_table_title": "Recommended Grind Range by Brewing Method",
       "micron_modal_tips_title": "Barista Practical Tips",
       "micron_modal_tip_1": "<b>Roast Level</b>: Light roasts are denser and produce fewer fines, whereas dark roasts shatter easily, yielding more fines.",
@@ -1905,13 +1905,13 @@
       "micron_modal_tip_3": "Useful theoretical estimate when adapting recipes from other grinders (e.g. Comandante, Fellow Ode).",
       "th_brew_method": "Brew Method",
       "th_grind_click": "Clicks",
-      "th_micron_range": "Est. Size (µm)",
+      "th_micron_range": "Grind Size (µm)",
       "method_espresso": "Espresso",
       "method_moka": "Moka Pot / AeroPress",
       "method_pourover": "Pour-over / Hand Drip (Recommended)",
       "method_chemex": "Chemex / Coarse Drip",
       "method_coldbrew": "Cold Brew / French Press",
-      "micron_modal_formula_label": "Size(µm) ≈ 25 + (Click - 1) × 13.8",
+      "micron_modal_formula_label": "Grind Size(µm) ≈ 25 + (Click - 1) × 13.8",
       "micron_modal_simple_tip": "💡 Theoretical reference for recipe crafting; actual sizes vary with roast level and burr condition.",
     },
     ja: {
@@ -2208,24 +2208,24 @@
       state_aborted: "緊急停止",
       state_error: "エラー",
       "micron_click_hint": "クリックして換算根拠とガイドを表示",
-      "micron_modal_title": "粒度ミクロン(µm)換算ガイド",
+      "micron_modal_title": "挽き目ミクロン(µm)換算ガイド",
       "micron_modal_current_label": "現在のレシピ設定",
       "micron_modal_basis_title": "換算の算出根拠",
-      "micron_modal_basis_desc": "xBloom 48mm刃を基準に、<b>1クリックあたり約13.8 µm</b>増加する理論粒度です。",
-      "micron_modal_table_title": "抽出方式別 推奨粒度ガイド",
+      "micron_modal_basis_desc": "xBloom 48mmコニカル刃を基準に、<b>1クリックあたり約13.8 µm</b>変化する理論上の挽き目です。",
+      "micron_modal_table_title": "抽出方式別 推奨挽き目ガイド",
       "micron_modal_tips_title": "バリスタ参考ヒント",
       "micron_modal_tip_1": "<b>焙煎度</b>: 浅煎りは豆が硬く微粉が少ない一方、深煎りは砕けやすく微粉比率が高くなります。",
       "micron_modal_tip_2": "<b>ゼロ点校正</b>: 刃の清掃状態や初期組立により±10~20µmの誤差が生じる場合があります。",
       "micron_modal_tip_3": "他社ミル(コマンダンテ、Odeなど)との粒度合わせやレシピ設計の参考値として活用できます。",
       "th_brew_method": "抽出方式",
       "th_grind_click": "クリック数",
-      "th_micron_range": "理論粒度(µm)",
+      "th_micron_range": "換算挽き目(µm)",
       "method_espresso": "エスプレッソ",
       "method_moka": "モカエキスプレス / エアロプレス",
       "method_pourover": "ハンドドリップ / プアオーバー (推奨)",
-      "method_chemex": "ケメックス / 粗挽きドリップ",
+      "method_chemex": "ケメックス / 粗挽き",
       "method_coldbrew": "水出し(コールドブリュー) / フレンチプレス",
-      "micron_modal_formula_label": "粒度(µm) ≈ 25 + (クリック数 - 1) × 13.8",
+      "micron_modal_formula_label": "挽き目(µm) ≈ 25 + (クリック数 - 1) × 13.8",
       "micron_modal_simple_tip": "💡 焙煎度や刃の状態により差が生じる場合がある、<b>レシピ設計用の参考値</b>です。",
     },
     "zh-TW": {
@@ -2497,10 +2497,10 @@
       state_aborted: "緊急停止",
       state_error: "異常",
       "micron_click_hint": "點擊查看換算依據與咖啡師指南",
-      "micron_modal_title": "研磨度微米(µm)換算指南",
+      "micron_modal_title": "研磨粗細微米(µm)指南",
       "micron_modal_current_label": "當前配方設定",
       "micron_modal_basis_title": "換算計算依據",
-      "micron_modal_basis_desc": "以 xBloom 48mm 刀盤為基準，<b>每 1 格約增加 13.8 µm</b> 的理論研磨粒徑。",
+      "micron_modal_basis_desc": "以 xBloom 48mm 錐刀為基準，<b>每 1 格約變化 13.8 µm</b> 的理論研磨粗細。",
       "micron_modal_table_title": "沖煮方式建議研磨度區間",
       "micron_modal_tips_title": "咖啡師參考提示",
       "micron_modal_tip_1": "<b>烘焙度影響</b>: 淺焙豆質地堅硬細粉少且均勻，深焙豆脆易碎細粉比例相對增加。",
@@ -2508,13 +2508,13 @@
       "micron_modal_tip_3": "適合在參考其他磨豆機 (C40、Fellow Ode 等) 配方時作為理論換算對照依據。",
       "th_brew_method": "沖煮方式",
       "th_grind_click": "格數 (Clicks)",
-      "th_micron_range": "理論粒徑(µm)",
+      "th_micron_range": "換算粗細(µm)",
       "method_espresso": "義式濃縮 (Espresso)",
       "method_moka": "摩卡壺 / 愛樂壓",
       "method_pourover": "手沖 / 濾泡 (推薦)",
       "method_chemex": "Chemex / 粗研磨手沖",
       "method_coldbrew": "冷萃 / 法壓壺",
-      "micron_modal_formula_label": "粒徑(µm) ≈ 25 + (格數 - 1) × 13.8",
+      "micron_modal_formula_label": "研磨粗細(µm) ≈ 25 + (格數 - 1) × 13.8",
       "micron_modal_simple_tip": "💡 僅供沖煮配方設計參考，實際粒徑可能因烘焙度與刀盤狀態略有差異。",
     },
     "zh-CN": {
@@ -2786,10 +2786,10 @@
       state_aborted: "紧急停止",
       state_error: "异常",
       "micron_click_hint": "点击查看换算依据与咖啡师指南",
-      "micron_modal_title": "研磨度微米(µm)换算指南",
+      "micron_modal_title": "研磨粗细微米(µm)指南",
       "micron_modal_current_label": "当前配方设定",
       "micron_modal_basis_title": "换算计算依据",
-      "micron_modal_basis_desc": "以 xBloom 48mm 刀盘为基准，<b>每 1 格约增加 13.8 µm</b> 的理论研磨粒径。",
+      "micron_modal_basis_desc": "以 xBloom 48mm 锥刀为基准，<b>每 1 格约变化 13.8 µm</b> 的理论研磨粗细。",
       "micron_modal_table_title": "冲煮方式推荐研磨度区间",
       "micron_modal_tips_title": "咖啡师参考提示",
       "micron_modal_tip_1": "<b>烘焙度影响</b>: 浅烘豆质地坚硬细粉少且均匀，深烘豆脆易碎细粉比例相对增加。",
@@ -2797,13 +2797,13 @@
       "micron_modal_tip_3": "适合在参考其他磨豆机 (C40、Fellow Ode 等) 配方时作为理论换算对照依据。",
       "th_brew_method": "冲煮方式",
       "th_grind_click": "格数 (Clicks)",
-      "th_micron_range": "理论粒径(µm)",
+      "th_micron_range": "换算粗细(µm)",
       "method_espresso": "意式浓缩 (Espresso)",
       "method_moka": "摩卡壶 / 爱乐压",
       "method_pourover": "手冲 / 滤泡 (推荐)",
       "method_chemex": "Chemex / 粗研磨手冲",
       "method_coldbrew": "冷萃 / 法压壶",
-      "micron_modal_formula_label": "粒径(µm) ≈ 25 + (格数 - 1) × 13.8",
+      "micron_modal_formula_label": "研磨粗细(µm) ≈ 25 + (格数 - 1) × 13.8",
       "micron_modal_simple_tip": "💡 仅供冲煮配方设计参考，实际粒径可能因烘焙度与刀盘状态略有差异。",
     },
     de: {
@@ -3100,10 +3100,10 @@
       state_aborted: "GESTOPPT",
       state_error: "FEHLER",
       "micron_click_hint": "Klicken für Umrechnungsgrundlage & Barista-Leitfaden",
-      "micron_modal_title": "Mahlgrad-Mikron (µm) Leitfaden",
+      "micron_modal_title": "Mahlfeinheit in Mikron (µm)",
       "micron_modal_current_label": "Aktuelle Rezepteinstellung",
       "micron_modal_basis_title": "Berechnungsgrundlage",
-      "micron_modal_basis_desc": "Theoretische Partikelgröße: <b>ca. 13,8 µm Zunahme pro Klick</b> (xBloom 48mm Mahlwerk).",
+      "micron_modal_basis_desc": "Theoretische Mahlfeinheit: <b>ca. 13,8 µm Zunahme pro Klick</b> (xBloom 48mm Kegelmahlwerk).",
       "micron_modal_table_title": "Empfohlener Mahlgrad nach Brühmethode",
       "micron_modal_tips_title": "Barista-Praxistipps",
       "micron_modal_tip_1": "<b>Röstgrad</b>: Helle Röstungen sind dichter mit weniger Feinanteil, dunkle Röstungen brechen leichter.",
@@ -3111,13 +3111,13 @@
       "micron_modal_tip_3": "Dient als hilfreicher theoretischer Richtwert beim Anpassen von Rezepten anderer Mühlen (z. B. Comandante, Ode).",
       "th_brew_method": "Brühmethode",
       "th_grind_click": "Klicks",
-      "th_micron_range": "Geschätzte Partikelgröße (µm)",
+      "th_micron_range": "Mahlfeinheit (µm)",
       "method_espresso": "Espresso",
       "method_moka": "Mokkakanne / AeroPress",
       "method_pourover": "Handfilter / Pour-Over (Empfohlen)",
       "method_chemex": "Chemex / Grober Filter",
       "method_coldbrew": "Cold Brew / French Press",
-      "micron_modal_formula_label": "Größe(µm) ≈ 25 + (Klick - 1) × 13.8",
+      "micron_modal_formula_label": "Mahlgrad(µm) ≈ 25 + (Klick - 1) × 13.8",
       "micron_modal_simple_tip": "💡 Theoretischer Richtwert für Rezepte; variiert je nach Röstgrad und Mahlwerkszustand.",
     },
     fr: {
@@ -3414,10 +3414,10 @@
       state_aborted: "INTERROMPU",
       state_error: "ERREUR",
       "micron_click_hint": "Cliquez pour afficher la base de conversion et le guide barista",
-      "micron_modal_title": "Guide de Conversion Microns (µm)",
+      "micron_modal_title": "Finesse de Mouture en Microns (µm)",
       "micron_modal_current_label": "Réglage Actuel de la Recette",
       "micron_modal_basis_title": "Base de Calcul",
-      "micron_modal_basis_desc": "Taille théorique augmentant d'<b>env. 13,8 µm par cran</b> (meule 48mm xBloom).",
+      "micron_modal_basis_desc": "Finesse de mouture augmentant d'<b>env. 13,8 µm par cran</b> (meule 48mm xBloom).",
       "micron_modal_table_title": "Plages Recommandées par Méthode d'Extraction",
       "micron_modal_tips_title": "Conseils du Barista",
       "micron_modal_tip_1": "<b>Degré de torréfaction</b>: Les torréfactions claires génèrent moins de fines, tandis que les foncées s'effritent plus vite.",
@@ -3425,13 +3425,13 @@
       "micron_modal_tip_3": "Une estimation théorique précieuse pour adapter les recettes d'autres moulins (ex. Comandante, Ode).",
       "th_brew_method": "Méthode d'extraction",
       "th_grind_click": "Crans",
-      "th_micron_range": "Taille estimée (µm)",
+      "th_micron_range": "Mouture (µm)",
       "method_espresso": "Espresso",
       "method_moka": "Cafetière Moka / AeroPress",
       "method_pourover": "Pour Over / Filtre Manuel (Recommandé)",
       "method_chemex": "Chemex / Filtre Gros",
       "method_coldbrew": "Cold Brew / French Press",
-      "micron_modal_formula_label": "Taille(µm) ≈ 25 + (Cran - 1) × 13.8",
+      "micron_modal_formula_label": "Mouture(µm) ≈ 25 + (Cran - 1) × 13.8",
       "micron_modal_simple_tip": "💡 Valeur théorique indicative pour vos recettes; varie selon la torréfaction et la meule."
     }
   };

@@ -109,7 +109,13 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
   <img src="docs/img/recipe-studio.png" alt="Recipe Studio" width="800">
 </p>
 
-- **Precision Grinder Control & Real-time Micron (µm) Display**: Grind size (10~100) and motor RPM (60~120), featuring real-time micron badges (e.g., `≈ 836 µm`) with a Settings toggle.
+- **Precision Grinder Control & Micron (µm) Conversion**: Official grind range (1~80 clicks) and motor RPM (60~120), featuring real-time grind size banners (`≈ 808 µm`).
+- **Interactive Conversion Guide Modal**: Click the banner to view the calculation formula (`Grind Size(µm) ≈ 25 + (Click - 1) × 13.8`) and recommended ranges across 5 brew methods (Espresso to Cold Brew).
+  * **📚 Calculation Basis & References**:
+    1. **xBloom 48mm Conical Burr Spec**: 80 micro-click mechanism (approx. 13.8 µm vertical burr pitch per click).
+    2. **xBloom Official Guidelines**: Recommended pour-over grind range (35~45 clicks) in official presets.
+    3. **Specialty Coffee & Community Data**: Home-Barista conical pitch measurements & SCA particle size standards.
+    > 💡 Theoretical reference for recipe crafting; actual sizes vary with roast level and burr condition.
 - **Pour Patterns**: Center, Spiral, and Ring patterns fully supported.
 - **Dual Agitation**: Independent pre-pour bed leveling and post-pour extraction agitation.
 - **YAML Standards**: Export and import standard YAML recipe files.
