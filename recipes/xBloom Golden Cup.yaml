@@ -1,0 +1,31 @@
+name: xBloom Golden Cup
+dose: 16
+grind_size: 58
+grind_enabled: true
+grind_rpm: 80
+interval_sync: true
+bypass_enabled: false
+bypass_volume: 0.0
+bypass_temp: 85.0
+steps:
+- temp: 93
+  pour: 50
+  wait: 35
+  flow_rate: 3.2
+  pattern: center
+  agitation_before: true
+  agitation_after: false
+- temp: 92
+  pour: 100
+  wait: 10
+  flow_rate: 3.2
+  pattern: spiral
+  agitation_before: false
+  agitation_after: false
+- temp: 90
+  pour: 106
+  wait: 5
+  flow_rate: 3.2
+  pattern: spiral
+  agitation_before: false
+  agitation_after: false

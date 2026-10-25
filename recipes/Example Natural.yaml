@@ -1,0 +1,31 @@
+name: Example Natural
+dose: 15
+grind_size: 55
+grind_enabled: true
+grind_rpm: 90
+interval_sync: true
+bypass_enabled: false
+bypass_volume: 0.0
+bypass_temp: 85.0
+steps:
+- temp: 94
+  pour: 50
+  wait: 40
+  flow_rate: 3.0
+  pattern: spiral
+  agitation_before: true
+  agitation_after: false
+- temp: 92
+  pour: 100
+  wait: 5
+  flow_rate: 3.0
+  pattern: spiral
+  agitation_before: false
+  agitation_after: false
+- temp: 90
+  pour: 90
+  wait: 5
+  flow_rate: 3.0
+  pattern: spiral
+  agitation_before: false
+  agitation_after: false

@@ -2,7 +2,29 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.bak
+*.bak*
+*.user_bak
 config.json
 history.json
 .DS_Store
 Thumbs.db
+
+# Build & Dist artifacts
+dist/
+dist_portable/
+dist_apk/
+*.zip
+*.apk
+*.egg-info/
+
+# Development, Scratch & Assistant metadata
+scratch/
+.claude/
+CLAUDE.md
+HANDOFF.md
+HANDOFF_*.md
+task.md
+implementation_plan.md
+walkthrough.md
+recipes/테스트.yaml
+official_example_recipes/

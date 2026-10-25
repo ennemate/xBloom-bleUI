@@ -1,15 +1,15 @@
-# xBloom bleUI (v0.9.2)
+# xBloom bleUI (v1.0.0)
 
 <p align="center">
-  <strong>Modern Local Web Dashboard & Real-Time Extraction Controller for xBloom Studio</strong>
+  <strong>Standalone Android App & Local Web Controller for xBloom Studio Coffee Machines</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-0.9.2-orange.svg" alt="Version 0.9.2">
+  <img src="https://img.shields.io/badge/Version-1.0.0-orange.svg" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
+  <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
-  <img src="https://img.shields.io/badge/Interface-FastAPI%20%7C%20Web%20WebSocket-success.svg" alt="Interface Web">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License MIT">
 </p>
 
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/img/dashboard-chart.png" alt="xBloom bleUI Real-Time Extraction Dashboard Dual Chart" width="850">
+  <img src="docs/img/dashboard-chart.png" alt="xBloom bleUI Real-time Brewing Dashboard Dual Chart" width="850">
   <br>
   <em>Real-time Water Pour & Coffee Yield Dual Curve Chart with Smart Flow Detection Pour Markers</em>
 </p>
@@ -31,9 +31,11 @@
 
 ## ☕ Introduction
 
-**xBloom bleUI** connects your **xBloom Studio** coffee machine over Bluetooth Low Energy (BLE), allowing you to wirelessly control brewing recipes and visualize extraction telemetry (water temperature, pour volume, yield weight, ratio) in real time via a web browser on your PC, tablet, or smartphone.
+**xBloom bleUI** connects your **xBloom Studio** coffee machine over Bluetooth Low Energy (BLE), allowing you to precisely control machine operations from your smartphone or PC and visualize real-time extraction telemetry (water temperature, water pour, coffee yield, extraction ratio) with dual live curves.
 
-It overcomes existing official mobile app limitations (such as lack of cumulative interval calculations, absence of web share URL parsing, unseparated grind/brew phases, etc.) and provides the ultimate pour-over coffee extraction experience.
+The **v1.0.0 Major Release** breaks free from the PC-dependent web environment, introducing the official **Standalone Android Native App (APK)** that allows full, direct wireless control from your smartphone without a computer.
+
+Featuring **Unattended Wake-up Scheduled Auto-Brew**, **Bypass Water Control** (dispensing pure hot water directly into the carafe without passing through the dripper) with **large-dose capacity (20g / 40g)**, and **AI Recipe Extraction & Real-time AI Barista Lab**, it delivers an unmatched pour-over coffee experience for both desktop and mobile users.
 
 ---
 
@@ -41,155 +43,228 @@ It overcomes existing official mobile app limitations (such as lack of cumulativ
 
 This project thrives on the spirit of open-source sharing and community collaboration.
 
-| Avatar | Contributor | Role & Contributions |
+| Profile | Contributor | Roles & Contributions |
 | :---: | :---: | :--- |
-| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • Original **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** author<br>• xBloom Studio Bluetooth LE communication protocol reverse-engineering & core packet decoder design<br>• Machine communication framework & hardware slot control architecture |
-| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate (xBloom bleUI Contributors)](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** web dashboard architecture & full-stack development<br>• Zero-dependency pure Python GitHub one-click auto-updater<br>• Dual live brewing curves (Chart.js) & smart flow detection pour markers<br>• 2-phase separation for Grinding and Brewing with timer synchronization<br>• Hand-drip cumulative interval timing overhead compensation<br>• Official xBloom cloud 2-way sync & web recipe link parser<br>• Permanent brew log archive & Windows Standalone Portable packaging |
+| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • Creator of the foundational **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** project<br>• xBloom Studio Bluetooth LE protocol reverse engineering & core packet decoder design<br>• Established machine BLE communication framework and terminal-based real-time telemetry graph monitoring |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** Standalone Android App (APK) & full-stack cross-platform web architecture<br>• Wake-up Scheduled Auto-Brew (Android Doze-bypass alarm & persistent foreground service)<br>• Hardware Bypass water delivery & 20g/40g large-dose recipe pipeline<br>• Intelligent AI Recipe Extraction & telemetry-linked Real-time AI Barista Lab<br>• High-resolution live dual brewing curves (Chart.js) & smart flow detection pour markers<br>• 2-phase grind/brew timer sync, hand-drip interval compensation, 2-way official cloud integration |
 
 > [!NOTE]
-> Special thanks to **Janczykkkko** for pioneering the open-source BLE protocol implementation and core communication library that laid the foundation for this project.
+> Special thanks to **Janczykkkko** for pioneering the open-source BLE protocol implementation and core communication library that laid the foundation for this project. While the original `xbloom-ble` provided excellent terminal-based TUI telemetry monitoring, bleUI was able to advance this into interactive high-resolution dual curves for web and mobile.
 
 ---
 
-## ⚡ Core Extensions & Dedicated Web Controller Features
+## 🌟 v1.0.0 Core New Features
 
-This project adopts **Janczykkkko**'s foundational BLE communication library (`xbloom-ble`) as its core engine, while developing dedicated extensions to deliver an optimal web-based barista workflow and user experience:
+### 1. 📱 Standalone Android Native App (APK)
 
-| Feature & Domain | Underlying Library (`xbloom-ble`) | **xBloom bleUI (Web Controller Extensions)** |
-| :--- | :--- | :--- |
-| **Interface (UI)** | Terminal CLI and TUI (Textual) | **Modern responsive web dashboard (Dark/Light themes, custom wallpapers)** |
-| **Extraction Phase Sync** | Raw machine telemetry streaming | **2-Phase separation: Grinding vs. Brewing (00:00 timer synced with water flow)** |
-| **Flow Detection** | Scale raw weight readings | **Smart Flow Detection: real-time pin badges & dashed line markers** |
-| **Pour Intervals** | Standard machine pause (`wait`) in seconds | **Cumulative interval calculation & automatic machine pause conversion** |
-| **Cloud Integration** | Basic recipe push function | **Two-way sync + Web share URL generation + External URL import parsing** |
-| **Pre-Ground Mode** | Standard recipe payload | **Official app compliance (`isSetGrinderSize: 2`, Grind OFF cleanly rendered)** |
-| **Slot Memory** | CLI slot writing commands | **A / B / C physical button remote flash programming from browser** |
-| **Brew Archive** | Real-time session monitoring | **Permanent local history, dual curve chart restore, and one-click re-brew** |
-| **Auto Update** | Manual git pull or reinstall | **GitHub Releases-based one-click update (100% user data preserved)** |
-| **Grinder Micron (µm) Display** | Clicks only | **Real-time micron (µm) display on click input & settings toggle** |
-| **Multilingual (i18n)** | English based | **7 Global languages supported (English, Korean, Japanese, Chinese, German, French)** |
-
----
-
-### 1. 2-Phase Separation: Grinding vs. Actual Water Delivery
-- **Implementation Context**: Recipes utilizing the built-in grinder involve a ~20-25s grinding phase before water begins flowing. bleUI intelligently separates bean grinding from active extraction so the 00:00 timer reflects actual water contact.
-- **bleUI Behavior**: Detects the machine's `STARTING (0x22)` grinding state to display **`Grinding Beans ⚙️`**, synchronizing the `00:00` timer and 1st pour marker at the exact instant water begins spraying or the machine transitions to `BREWING`.
-
-### 2. Smart Flow Detection Pour Markers
-- Even if heating delays or pre-pour agitation (`agitation_before`) delay water delivery, real-time scale telemetry detects when water actually touches the coffee bed (`pour_weight >= 0.8g`), auto-aligning the 1st pour marker.
-- Subsequent pours (2nd, 3rd...) are accurately detected right after scale stabilization plateaus, marked with vertical dashed lines and pin badges (`Pour 1 00:00`, `Pour 2 00:45`...).
-
-### 3. Cumulative Hand-Drip Interval Calculation & Safe Synchronization
-- Converts cumulative hand-drip intervals (e.g., 0s 1st, 40s 2nd, 70s 3rd) into machine pauses by automatically subtracting water flow duration and agitation overheads.
-- When saving, only the calculated machine pauses are written, avoiding repetitive overhead subtraction when recipes are re-opened.
-
-### 4. Official xBloom Cloud Two-Way Sync & Web URL Parsing
-- **Official App Login**: Seamlessly log in with your xBloom email/password to sync custom recipes directly to the cloud.
-- **Instant Web Share Link**: Automatically generates shareable URLs (`https://share-h5.xbloom.com/?id=...`) with one-click clipboard copy.
-- **One-Click URL Import**: Paste any recipe link or ID to parse parameters (name, dose, grind size, RPM, all pour steps and agitation) into the studio.
-- **Full Grind-OFF Support**: Correctly flags `isSetGrinderSize: 2` so cloud recipe pages display "Grind OFF" rather than size 0.
-
----
-
-## 🌟 Screenshots & Feature Walkthrough
-
-### 1. 📊 Real-Time Brewing Dashboard
 <p align="center">
-  <img src="docs/img/dashboard-chart.png" alt="Real-Time Brewing Dashboard" width="800">
+  <img src="docs/img/mobile-app-preview.png" alt="xBloom bleUI Standalone Android App Screen" width="380">
+  <br>
+  <em>Standalone Android Native App directly controlling the machine over BLE without a PC</em>
 </p>
 
-- **8 Live Telemetry Metrics**: Water temperature, extraction time, water pour, coffee yield, flow rate, actual ratio, target ratio, and dose.
-- **Dual Live Curve Chart**: Plots water pour vs. coffee yield with cubic spline smoothing.
-- **Emergency Stop Safety**: One-click immediate machine shutdown while maintaining BLE connection.
+A dedicated native Android application (`APK`) that eliminates the need to turn on a PC, allowing you to control your xBloom Studio directly from your smartphone.
+
+* **Complete PC Independence & Direct BLE Pairing**:
+  * Powered by an embedded pure JavaScript xBloom BLE binary protocol engine (`protocol.js`) and mobile local backend.
+  * Connects directly to your machine via Bluetooth upon opening the app—no Python server or PC relay required.
+* **Official Cloud Account Sync**:
+  * Log in with your official xBloom credentials directly inside the app to load personal cloud recipes or upload new creations.
+* **Permanent Developer Signing**:
+  * Pre-signed with an official developer key (`bleui-release.jks`) using Android APK Signature Scheme v2 for secure, hassle-free installation.
+* **Mobile-Optimized Responsive UX**:
+  * Single-row compact header, quick-glance status badges, and safe-area padding avoiding gesture bar interference.
+* **Seamless Desktop Companion**:
+  * Desktop users can continue enjoying the wide-screen experience via Windows Standalone Portable or standard web browsers.
+
+---
+
+### 2. ⏰ Wake-up Scheduled Auto-Brew
+
+<p align="center">
+  <img src="docs/img/auto-brew-modal.png" alt="Wake-up Scheduled Auto-Brew Modal" width="700">
+  <br>
+  <em>Scheduled time picker and real-time pre-flight water tank level indicator</em>
+</p>
+
+An automated morning brew pipeline that wakes the machine up at your designated time to brew fresh specialty coffee.
+
+* **Android Doze-Bypass Alarm & Screen Wake**:
+  * Even in deep sleep (Doze mode) or with the screen locked, the native `AlarmManager` wakes the device on the exact second.
+  * `BrewForegroundService` guarantees uninterruptible Bluetooth telemetry recording throughout the entire extraction.
+* **Water Tank Pre-flight Check**:
+  * Reads the non-invasive capacitive water sensor (`0x56`) before engaging the pump, preventing dry-run motor damage if water is low.
+* **One-shot Safety & History Archiving**:
+  * Triggers once at the scheduled time and safely disarms upon completion.
+  * Brew records automatically receive a `[⏰ Scheduled]` badge with full dual-curve graph data.
+* **Desktop Background Scheduler**:
+  * PC users running local home servers benefit from an automatic background scheduler executing at the scheduled time.
+
+---
+
+### 3. 🧊 Bypass Water Control & Dose Limit Removal
+
+<p align="center">
+  <img src="docs/img/bypass-water-studio.png" alt="Recipe Studio Bypass Water and Dose Settings" width="800">
+  <br>
+  <em>Bypass toggle dispensing water directly into carafe and large-dose 20g brewing settings</em>
+</p>
+
+Expands hardware motor control capabilities for advanced specialty coffee brewing recipes.
+
+* **Hardware Bypass Water Delivery**:
+  * Moves the dispenser off-center to deliver pure hot water straight into the server without passing through the coffee bed.
+  * Perfect for concentration adjustment (clean cup), iced pour-overs, and Americano-style recipes.
+* **Dose Limit Removal (20g / 40g Capacity)**:
+  * Overcomes the traditional 18g limitation, enabling full-ratio recipes for 20g, 40g, and multi-cup brewing.
+
+---
+
+### 4. 🧠 Intelligent AI Recipe Extraction & Real-time AI Barista Lab
+
+<p align="center">
+  <img src="docs/img/ai-recipe-extract.png" alt="AI Recipe Extraction Modal" width="700">
+  <br>
+  <em>Auto-converts video links or recipe text into exact machine parameters</em>
+</p>
+
+<p align="center">
+  <img src="docs/img/ai-barista-lab.png" alt="Real-time AI Barista Lab Modal" width="700">
+  <br>
+  <em>Evaluates extraction telemetry to diagnose flavor and apply one-click recipe adjustments</em>
+</p>
+
+Cutting-edge AI capabilities make specialty brewing intuitive and scientifically reproducible.
+
+* **Link & Text AI Recipe Conversion**:
+  * Paste a coffee brewing video URL, blog link, or clipboard screenshot: the AI transcribes speech/text into water temperatures, volumes, pour patterns, and intervals.
+  * Automatically separates multi-recipe content (Hot vs Iced, 1-cup vs 2-cup).
+  * Converts generic grind sizes or micron (µm) metrics into exact xBloom physical click numbers.
+  * One-click import pushes all parameters directly into Recipe Studio.
+* **Real-time AI Barista Lab**:
+  * Share sensory feedback like *"a bit too bitter"* or *"needs more brightness"*; the AI evaluates actual **extraction time, water poured, and scale yield data** from your latest brew.
+  * Offers tailored adjustments (grind tweaks, late-stage temperature drops, interval padding) applied via `[One-Click Patch]`.
+* **Flagship Model Support**:
+  * Officially supports **Google Gemini 3.8 Flash** and **OpenAI GPT-4o**.
+* **Physically Grounded Decision Layer**:
+  * Pre-verified against bed resistance hydrodynamics and multi-turn dialing-in convergence benchmarks.
+
+---
+
+## ⚡ Feature Comparison
+
+| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.0)** |
+| :--- | :--- | :--- |
+| **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
+| **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
+| **Automated Brewing** | Not supported | **Wake-up Scheduled Auto-Brew (Doze-bypass & water level check)** |
+| **Water Bypass** | Not supported | **Bypass water delivery & 20g/40g large-dose support** |
+| **AI Capabilities** | Not supported | **Video/Web Link AI Recipe Extraction & Real-time AI Barista Lab** |
+| **Extraction Visualization** | Terminal TUI real-time telemetry graph | **High-resolution Chart.js Dual Curves (Water vs Yield) & Smart Flow Markers** |
+| **Hand-Drip Intervals** | Standard pause (`wait`) seconds | **Automatic cumulative interval tracking & overhead subtraction** |
+| **Cloud Integration** | One-way recipe upload | **2-way cloud sync + Official Web Share URL generator & parser** |
+| **Brew Log Archiving** | Session-only monitoring | **Permanent local history, interactive chart restoration, 1-click re-brew** |
+| **Auto Update** | Manual git pull or re-download | **GitHub Release 1-click update with 100% user data preservation** |
+| **Multilingual (i18n)** | English based | **Global 7 languages (Korean, English, Japanese, Traditional/Simplified Chinese, German, French)** |
+
+---
+
+## 🌟 Interface Showcase
+
+### 1. 📊 Real-time Brewing Dashboard
+<p align="center">
+  <img src="docs/img/dashboard-chart.png" alt="Real-time Brewing Dashboard Screen" width="800">
+</p>
+
+* **4 Live Metrics**: 0.1s refresh rate for Water Temp, Elapsed Time, Water Poured, and Yield Weight.
+* **Dual Live Curves**: Simultaneous tracking of Water Pour and Coffee Yield with spline curve smoothing.
+* **Smart Flow Detection Markers**: Accurately detects the exact moment water impacts the scale bed, pinning numbered markers (`1st 00:00`, `2nd 00:35`...).
+* **Real-time Ratio Calculation**: Live brew ratio updating (e.g. `1 : 16.0`).
+* **Emergency Stop Guard**: Immediate motor shut-off upon emergency button click while preserving BLE connection.
 
 ---
 
 ### 2. 🎛️ Recipe Studio
 <p align="center">
-  <img src="docs/img/recipe-studio.png" alt="Recipe Studio" width="800">
+  <img src="docs/img/recipe-studio.png" alt="Recipe Studio Editor" width="800">
 </p>
 
-- **Precision Grinder Control & Micron (µm) Conversion**: Official grind range (1~80 clicks) and motor RPM (60~120), featuring real-time grind size banners (`≈ 808 µm`).
-- **Interactive Conversion Guide Modal**: Click the banner to view the calculation formula (`Grind Size(µm) ≈ 25 + (Click - 1) × 13.8`) and recommended ranges across 5 brew methods (Espresso to Cold Brew).
-  * **📚 Calculation Basis & References**:
-    1. **xBloom 48mm Conical Burr Spec**: 80 micro-click mechanism (approx. 13.8 µm vertical burr pitch per click).
-    2. **xBloom Official Guidelines**: Recommended pour-over grind range (35~45 clicks) in official presets.
-    3. **Specialty Coffee & Community Data**: Home-Barista conical pitch measurements & SCA particle size standards.
-    > 💡 Theoretical reference for recipe crafting; actual sizes vary with roast level and burr condition.
-- **Pour Patterns**: Center, Spiral, and Ring patterns fully supported.
-- **Dual Agitation**: Independent pre-pour bed leveling and post-pour extraction agitation.
-- **YAML Standards**: Export and import standard YAML recipe files.
+* **Precision Grinder Control**: 1~80 clicks & 60~120 RPM control with real-time micron (`≈ 808 µm`) banner.
+* **Pour Patterns**: Center, Ring, and Spiral rotation modes.
+* **Smart Agitation**: Separate pre-pour leveling and post-pour agitation settings.
+* **Hand-Drip Interval Sync**: Live hints showing actual pause times minus pouring duration.
+* **YAML Compatibility**: Local file import and export.
 
 ---
 
-### 3. 📋 Saved Recipes & Machine Slot Presets
+### 3. 📋 Saved Recipes
 <p align="center">
   <img src="docs/img/server-recipes.png" alt="Saved Recipes Modal" width="600">
 </p>
 
-- Manage and search local recipe files in `recipes/`.
-- Wirelessly program machine physical buttons (**A, B, C**) with preset recipes.
+* Manage, search, and recall saved recipes instantly.
+* Remotely flash recipes into machine physical **A, B, C hardware buttons**.
 
 ---
 
-### 4. ☁️ xBloom Cloud Sync & Share Links
+### 4. ☁️ xBloom Cloud Sync & Web Sharing
 <p align="center">
-  <img src="docs/img/cloud-share.png" alt="Cloud Share Modal" width="600">
+  <img src="docs/img/cloud-share.png" alt="Cloud Upload Success and Web Share Modal" width="600">
 </p>
 
-- Upload custom recipes to the official cloud.
-- Open generated share URLs in a new browser tab or import recipes shared by other baristas.
+* 1-click sync with your official xBloom cloud account.
+* Auto-generates official share URLs (`https://share-h5.xbloom.com/?id=...`).
+* Paste any shared xBloom URL to import directly into the Studio.
 
 ---
 
-### 5. 📜 Permanent Brew History & Chart Archiving
+### 5. 📜 Permanent Brew History Archive
 <p align="center">
-  <img src="docs/img/brew-history.png" alt="Brew History Modal" width="800">
+  <img src="docs/img/brew-history.png" alt="Brew History and Chart Restoration Modal" width="800">
 </p>
 
-- Preserves completed and emergency-stopped brew sessions.
-- Review past pour curves, markers, tasting notes, and click **[⚡ Load to Studio]** for one-click re-brewing.
+* Archives every brew session, including emergency-stopped runs.
+* Full dual-curve restoration with pour markers and 1-click recipe reload.
 
 ---
 
-### 6. 🚀 Pure Python One-Click Auto-Updater
-<p align="center">
-  <img src="docs/img/auto-update-badge.png" alt="Auto-Update Badge" width="750">
-  <br>
-  <em>Update notification badge in header (zero startup delay with asynchronous checking)</em>
-</p>
+## 📦 Downloads & Releases
 
-<p align="center">
-  <img src="docs/img/auto-update-modal.png" alt="Auto-Update Modal" width="550">
-  <br>
-  <em>One-click update modal with release notes and 100% data preservation</em>
-</p>
-
-- **Standalone Operation**: Runs purely on Python standard libraries without requiring Git.
-- **100% User Data Protection**: Updates only code files, ensuring `recipes/`, `history.json`, and `config.json` remain untouched.
-
----
-
-## 📦 Download & Releases
+Choose the distribution suited for your setup:
 
 | Edition | Recommended For | Download Link |
 | :--- | :--- | :--- |
-| **🚀 Windows Standalone Portable** | **General Windows users (No Python installation required)**<br>• Bundles Embedded Python 3.10 and all dependencies<br>• Just extract and double-click `run.bat` | [⬇️ Latest Portable Release](https://github.com/ennemate/xBloom-bleUI/releases) |
-| **💻 Source Code Package** | **Windows, macOS, Linux (Cross-Platform)**<br>• For users with Python 3.10+ already installed<br>• Clone or download source archive | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **📱 Android Release APK**<br>*(Highly Recommended for Mobile ⭐)* | **Control without a PC directly from smartphone**<br>• Download APK & install directly on Android<br>• Fully signed with v2 Signature Scheme | [⬇️ Download APK (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **🚀 Windows Standalone Portable**<br>*(Recommended for PC ⭐)* | **Zero Python setup required on Windows**<br>• Embedded Python 3.10 runtime & dependencies pre-packaged<br>• Unzip and double-click `run.bat` | [⬇️ Download Portable ZIP (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **💻 Standard Source Edition**<br>*(Cross-platform)* | **Windows, macOS, Linux**<br>• Python 3.10+ installed<br>• Run via `git clone` or source ZIP | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/ennemate/xBloom-bleUI/releases) |
 
 ---
 
 ## 🚀 Quick Start
 
-### Method A. Windows Standalone Portable (Recommended)
-1. Download `xBloom-bleUI-v0.9.2-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
-2. Extract the archive into any folder.
-3. Double-click **`run.bat`**.
-   - Starts the server and automatically opens `http://localhost:8000` in your default browser.
+### System Requirements
+* **Mobile**: Android 8.0 (Oreo) or higher with Bluetooth BLE
+* **PC**: Windows 10/11, macOS, Linux (Bluetooth 4.2 / 5.0+ adapter required)
+* **Machine**: xBloom Studio powered on and in range
 
 ---
 
-### Method B. Source Installation (Windows / macOS / Linux)
+### Method A. Install APK on Android (Recommended)
+1. Open [Releases Page](https://github.com/ennemate/xBloom-bleUI/releases) on your smartphone.
+2. Download **`xBloom-bleUI-release.apk`** and install.
+3. Open the app and tap **[Connect BLE]** at the top right to discover and pair with your machine.
+
+---
+
+### Method B. Windows Standalone Portable (PC Recommended)
+1. Download `xBloom-bleUI-v1.0.0-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+2. Unzip into any directory.
+3. Double-click **`run.bat`**.
+   * The server starts automatically and opens your default browser at `http://localhost:8000`.
+
+---
+
+### Method C. Run from Source (Cross-Platform)
 1. Clone the repository:
    ```bash
    git clone https://github.com/ennemate/xBloom-bleUI.git
@@ -199,41 +274,19 @@ This project adopts **Janczykkkko**'s foundational BLE communication library (`x
    ```bash
    pip install -r requirements.txt
    ```
-3. Run the application:
+3. Start the server:
    ```bash
    python run.py
    ```
+4. Access `http://localhost:8000` in your browser.
 
 ---
 
-## 📁 Package Directory Structure
-
-```text
-xBloom-bleUI/
-├── run.bat               # Windows one-click launcher
-├── run.py                # Cross-platform auto-browser launcher
-├── server.py             # Optimized FastAPI backend server (v0.9.2)
-├── requirements.txt      # Python dependencies
-├── config.example.json   # Configuration template
-├── README.md             # Korean documentation
-├── README.en.md          # English documentation
-├── README.ja.md          # Japanese documentation
-├── README.zh-TW.md       # Traditional Chinese documentation
-├── docs/
-│   └── img/              # Demonstration screenshots
-├── static/
-│   └── index.html        # Single-page modern frontend with i18n
-├── recipes/              # Local recipe storage
-└── xbloom_ble/           # BLE communication & control modules
-```
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## ⚠️ Disclaimer
-
-- This is an **unofficial open-source project** developed for research and hobby purposes. It is not affiliated with or endorsed by TBDx Inc. (xBloom).
-- Always ensure safe coffee brewing conditions (adequate water supply, properly positioned cup, etc.) before initiating extraction.
+### 🔄 Data-Safe Updates
+* **1-Click Update**: Upgrade seamlessly via the top update notification badge or Settings (⚙️).
+* **100% User Data Preserved**:
+  * Updates never overwrite your user data:
+    * 📂 `recipes/` (custom recipes & slot presets)
+    * 📄 `history.json` (all past extraction logs & dual curves)
+    * ⚙️ `config.json` (themes, wallpaper, cloud settings)
+    * 🐍 `python/` (embedded runtime in portable editions)

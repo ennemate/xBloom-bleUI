@@ -1,0 +1,25 @@
+{
+  "name": "Example Natural",
+  "dose": 15,
+  "grind_size": 55,
+  "steps": [
+    {
+      "temp": 92,
+      "water": 50,
+      "wait": 15,
+      "flow": 3.2
+    },
+    {
+      "temp": 92,
+      "water": 100,
+      "wait": 15,
+      "flow": 3.2
+    },
+    {
+      "temp": 92,
+      "water": 90,
+      "wait": 15,
+      "flow": 3.2
+    }
+  ]
+}
