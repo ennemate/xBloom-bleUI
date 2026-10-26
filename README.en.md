@@ -79,7 +79,7 @@ A dedicated native Android application (`APK`) that eliminates the need to turn 
 <p align="center">
   <img src="docs/img/auto-brew-modal.png" alt="Wake-up Scheduled Auto-Brew Modal" width="700">
   <br>
-  <em>Scheduled time picker and real-time pre-flight water tank level indicator</em>
+  <em>Scheduled time picker and morning brew pre-flight checklist</em>
 </p>
 
 An automated morning brew pipeline that wakes the machine up at your designated time to brew fresh specialty coffee.
@@ -87,8 +87,8 @@ An automated morning brew pipeline that wakes the machine up at your designated 
 * **Android Doze-Bypass Alarm & Screen Wake**:
   * Even in deep sleep (Doze mode) or with the screen locked, the native `AlarmManager` wakes the device on the exact second.
   * `BrewForegroundService` guarantees uninterruptible Bluetooth telemetry recording throughout the entire extraction.
-* **Water Tank Pre-flight Check**:
-  * Reads the non-invasive capacitive water sensor (`0x56`) before engaging the pump, preventing dry-run motor damage if water is low.
+* **Pre-flight Preparation Checklist**:
+  * Provides an intuitive checklist reminder for coffee beans, cup placement, and water tank fill to ensure safe, unattended morning brewing.
 * **One-shot Safety & History Archiving**:
   * Triggers once at the scheduled time and safely disarms upon completion.
   * Brew records automatically receive a `[⏰ Scheduled]` badge with full dual-curve graph data.
@@ -152,7 +152,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 | :--- | :--- | :--- |
 | **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
 | **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
-| **Automated Brewing** | Not supported | **Wake-up Scheduled Auto-Brew (Doze-bypass & water level check)** |
+| **Automated Brewing** | Not supported | **Wake-up Scheduled Auto-Brew (Doze-bypass & Background Completion)** |
 | **Water Bypass** | Not supported | **Bypass water delivery & 20g/40g large-dose support** |
 | **AI Capabilities** | Not supported | **Video/Web Link AI Recipe Extraction & Real-time AI Barista Lab** |
 | **Extraction Visualization** | Terminal TUI real-time telemetry graph | **High-resolution Chart.js Dual Curves (Water vs Yield) & Smart Flow Markers** |
