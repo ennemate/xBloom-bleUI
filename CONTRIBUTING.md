@@ -1,7 +1,7 @@
 # Contributing to xbloom-ble
 
 Thanks for your interest — contributions are very welcome! This is an unofficial,
-community, MIT-licensed effort to make the [xBloom Studio](https://xbloom.com)
+community, GPLv3-licensed effort to make the [xBloom Studio](https://xbloom.com)
 scriptable over Bluetooth LE. Whether you're fixing a bug, decoding more of the
 protocol, wiring it into your smart home, or improving the TUI, you're in the right
 place.
@@ -180,4 +180,4 @@ leaks before you push.
 ## License
 
 By contributing, you agree your contributions are licensed under the project's
-**MIT License** (see [LICENSE](LICENSE)).
+**GNU General Public License v3.0** (see [LICENSE](LICENSE)).

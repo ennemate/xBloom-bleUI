@@ -8,13 +8,13 @@ version = "2.3.0"
 description = "Unofficial Bluetooth LE control for the xBloom Studio coffee machine — version recipes, brew remotely (loading only arms; starting is always explicit), program the dial presets, and stream live scale weights."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = { text = "GPL-3.0-or-later" }
 authors = [{ name = "Janczykkkko" }]
 keywords = ["xbloom", "coffee", "bluetooth", "ble", "bleak", "pour-over"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Topic :: Home Automation",

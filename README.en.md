@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue.svg" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License MIT">
+  <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License GPLv3">
 </p>
 
 <p align="center">
