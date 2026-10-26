@@ -386,7 +386,7 @@ async def connect_ble_task():
         devices = await BleakScanner.discover(timeout=6.0)
         for d in devices:
             d_name = (d.name or "").lower()
-            if "xbloom" in d_name or "bloom" in d_name:
+            if "xbloom" in d_name:
                 target_address = d.address
                 print(f"[BLE] Device found: {d.name} ({d.address})")
                 await broadcast_msg({"type": "log", "msg": f"[BLE] 기기 발견: {d.name} ({d.address})"})
