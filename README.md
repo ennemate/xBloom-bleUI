@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.0)
+# xBloom bleUI (v1.0.1)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 독립형 안드로이드 앱 & 로컬 웹 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-orange.svg" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -29,31 +29,26 @@
 
 ---
 
-## ☕ 프로젝트 소개
+## 프로젝트 소개
 
 **xBloom bleUI**는 프리미엄 올인원 커피 머신인 **xBloom Studio**를 블루투스(Bluetooth LE)로 연결하여, 스마트폰이나 PC에서 머신을 정밀 제어하고 실시간 추출 데이터(수온, 물 투입량, 추출액, 추출 비율)를 듀얼 그래프로 시각화해 주는 올인원 커피 컨트롤 시스템입니다.
 
-**v1.0.0 메이저 릴리즈**에서는 기존 PC 웹 브라우저 환경에서 벗어나, 컴퓨터 없이 스마트폰 하나로 머신을 직접 제어할 수 있는 **독립형 안드로이드 네이티브 앱(APK)**을 공식 지원합니다.
-
-아침 기상 시각에 맞춘 **무인 자동 예약 브루잉**, 드리퍼를 통과하지 않고 순수 온수만 별도로 공급하는 **바이패스(Bypass) 가수 제어 및 대용량 원두 지원**, 콘텐츠 링크를 분석하는 **AI 레시피 추출기와 실시간 AI 바리스타 연구소**가 결합되어 데스크톱과 모바일 사용자 모두에게 한층 진보된 커피 추출 경험을 제공합니다.
+컴퓨터 없이 스마트폰 하나로 머신을 직접 제어할 수 있는 **독립형 안드로이드 앱(APK)**을 지원하며, 원하는 시간에 맞춰 커피를 내려두는 **무인 자동 예약 브루잉**, 순수 온수만 별도로 공급하는 **바이패스(Bypass) 가수 제어**, 웹 링크와 연동되는 **AI 레시피 추출 및 바리스타 튜닝 가이드**를 제공합니다.
 
 ---
 
-## 👥 기여자 및 크레딧 (Contributors & Credits)
+## 기여자 및 크레딧 (Contributors & Credits)
 
-본 프로젝트는 오픈소스 커뮤니티의 나눔과 기여를 기반으로 발전하고 있습니다.
+본 프로젝트는 오픈소스 커뮤니티의 기여를 바탕으로 제작되었습니다.
 
 | 프로필 | 기여자 | 기여 및 역할 |
 | :---: | :---: | :--- |
-| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • 원본 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** 프로젝트 저작자<br>• xBloom Studio 블루투스(BLE) 통신 프로토콜 리버스 엔지니어링 및 코어 패킷 디코더 설계<br>• 머신 BLE 통신 프레임워크 및 터미널 기반 실시간 텔레메트리 그래프 모니터링 구축 |
-| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** 독립형 안드로이드 앱(APK) 및 풀스택 크로스플랫폼 웹 아키텍처 설계<br>• 모닝콜 연동 무인 자동 예약 브루잉 (Doze 모드 자동 기상 & 상주 서비스)<br>• 바이패스(Bypass) 가수 제어 및 20g/40g 대용량 레시피 파이프라인 구축<br>• 지능형 AI 레시피 추출 및 실측 텔레메트리 연동 AI 바리스타 연구소<br>• 웹 고해상도 실시간 듀얼 추출 차트(Chart.js) & 스마트 유속 감지 푸어 마커 알고리즘 확장<br>• 분쇄와 추출 2단계 타이머 동기화, 핸드드립 인터벌 보정, 공식 클라우드 양방향 연동 |
-
-> [!NOTE]
-> 견고한 BLE 프로토콜 기반과 코어 통신 라이브러리를 오픈소스로 공유해 주신 **Janczykkkko** 님께 깊은 감사를 표합니다. 기존 `xbloom-ble`이 터미널 TUI 환경에서 훌륭한 텔레메트리 모니터링을 제공해 주었기에, bleUI에서는 이를 웹 및 모바일 고해상도 듀얼 인터랙티브 차트로 한 단계 더 발전시킬 수 있었습니다.
+| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)** | • 원본 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** 라이브러리 및 코어 BLE 통신 프로토콜 기초 구축 |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** 독립형 안드로이드 앱(APK) 및 웹 UI 개발, 예약 브루잉 및 AI 레시피 기능 구현 |
 
 ---
 
-## 🌟 v1.0.0 핵심 신규 기능 (New Features)
+## 주요 기능 (Features)
 
 ### 1. 📱 독립형 안드로이드 네이티브 앱 (Standalone Android App)
 
@@ -152,9 +147,9 @@
 
 ---
 
-## ⚡ 핵심 기능 비교
+## 기능 비교
 
-| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v1.0.0)** |
+| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
 | :--- | :--- | :--- |
 | **실행 플랫폼** | 터미널 기반 CLI 및 TUI (Linux 중심) | **독립형 안드로이드 네이티브 앱(APK) + 크로스플랫폼 PC 웹 대시보드** |
 | **PC 의존성** | PC 파이썬 환경 필수 | **스마트폰 단독 구동 (PC 없이 스마트폰에서 BLE 직결)** |
@@ -170,7 +165,7 @@
 
 ---
 
-## 🌟 주요 화면 안내
+## 주요 화면 안내
 
 ### 1. 📊 실시간 추출 대시보드
 <p align="center">
@@ -241,7 +236,7 @@
 
 ---
 
-## 🚀 빠른 시작 (Quick Start)
+## 빠른 시작 (Quick Start)
 
 ### 시스템 요구사항
 * **모바일**: Android 8.0 (Oreo) 이상, Bluetooth BLE 지원 스마트폰
@@ -258,7 +253,7 @@
 ---
 
 ### 방법 B. Windows 포터블 무설치판 실행 (PC 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v1.0.0-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v1.0.1-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    * 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.

@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.0)
+# xBloom bleUI (v1.0.1)
 
 <p align="center">
   <strong>xBloom Studio コーヒーマシンのためのスタンドアロンAndroidアプリ＆ローカルWebコントローラー</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-orange.svg" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -29,31 +29,26 @@
 
 ---
 
-## ☕ プロジェクト概要
+## プロジェクト概要
 
 **xBloom bleUI** は、プレミアムオールインワンコーヒーマシン **xBloom Studio** とBluetooth LEで接続し、スマートフォンやPCからマシンを精密に遠隔制御し、抽出データ（水温、注水量、抽出量、抽出比率）をリアルタイムにデュアルグラフで可視化する統合コーヒーコントロールシステムです。
 
-**v1.0.0 メジャーリリース** では、従来のPC Webブラウザ依存から脱却し、パソコンを起動することなくスマートフォン単独でマシンを直接操作できる **スタンドアロンAndroidネイティブアプリ(APK)** を公式サポートしました。
-
-朝の目覚まし時刻に合わせた **無人自動予約抽出(Auto-Brew)**、ドリッパーを通さずピュアな温水のみを直接サーバーへ供給する **バイパス(Bypass)加水制御＆大容量(20g/40g)対応**、動画やWebリンクから抽出手順を自動解析する **AIレシピ抽出＆リアルタイムAIバリスタ研究所** が統合され、デスクトップとモバイルの双方において最高峰のハンドドリップ抽出体験をお届けします。
+**v1.0.1** では、PC不要でスマートフォン単独でマシンを操作できる **スタンドアロンAndroidアプリ(APK)** に対応し、指定時刻に合わせた **無人自動予約抽出**、温水のみを直接供給する **バイパス(Bypass)加水制御**、Webリンクと連動する **AIレシピ抽出＆バリスタチューニングガイド** を提供します。
 
 ---
 
-## 👥 コントリビューター＆クレジット (Contributors & Credits)
+## コントリビューター＆クレジット (Contributors & Credits)
 
-本プロジェクトはオープンソースコミュニティの貢献によって進化しています。
+本プロジェクトはオープンソースコミュニティの貢献によって支えられています。
 
 | プロフィール | 貢献者 | 役割と主な貢献 |
 | :---: | :---: | :--- |
-| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • 原作 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** プロジェクト創設者<br>• xBloom Studio BLE通信プロトコルのリバースエンジニアリングおよびコアパケットデコーダー設計<br>• マシンBLE通信フレームワークおよびターミナルベースのリアルタイムテレメトリグラフ構築 |
-| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** スタンドアロンAndroidアプリ(APK)およびクロスプラットフォームWebアーキテクチャ設計<br>• 目覚まし連動の無人自動予約抽出（Android Dozeモード自動解除＆フォアグラウンドサービス）<br>• バイパス(Bypass)加水制御および20g/40g大容量レシピパイプライン構築<br>• 知能型AIレシピ抽出および実測テレメトリ連動AIバリスタ研究所<br>• Web/モバイル高解像度リアルタイムデュアル抽出チャート(Chart.js)＆スマート流速検知プアマーカー拡張<br>• 豆挽きと抽出の2段階タイマー同期、ハンドドリップ累積インターバル補正、公式クラウド双方向連携 |
-
-> [!NOTE]
-> 堅牢なBLE通信の基盤をオープンソースとして共有してくださった **Janczykkkko** 氏に深く感謝いたします。従来の `xbloom-ble` がターミナルTUI環境で優れたテレメトリ監視を提供していたからこそ、bleUIにおいてWebおよびモバイル向けのインタラクティブな高解像度デュアルチャートへとさらに発展させることができました。
+| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)** | • 原作 **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** ライブラリおよびコアBLE通信プロトコルの基礎構築 |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** スタンドアロンAndroidアプリ(APK)およびWeb UI開発、予約抽出＆AI機能の実装 |
 
 ---
 
-## 🌟 v1.0.0 コア新機能 (New Features)
+## 主な機能 (Features)
 
 ### 1. 📱 スタンドアロンAndroidネイティブアプリ (Standalone Android App)
 
@@ -152,9 +147,9 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ---
 
-## ⚡ コア機能比較表
+## 機能比較表
 
-| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v1.0.0)** |
+| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
 | :--- | :--- | :--- |
 | **実行プラットフォーム** | ターミナルベース CLI / TUI (Linux中心) | **スタンドアロンAndroidネイティブアプリ(APK) ＋ クロスプラットフォームPC Web** |
 | **PC依存度** | PCのPython環境が必須 | **スマートフォン単独駆動（PC不要でスマホからBLE直接接続）** |
@@ -165,14 +160,14 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 | **ハンドドリップ間隔** | マシン標準待機(`wait`)秒数入力 | **総経過時間基準の累積インターバル自動計算＆マシン待機時間精密変換** |
 | **クラウド連携** | 一方行レシピ送信機能 | **双方向連携 ＋ 公式Web共有URL発行 ＋ 外部共有リンク自動解析** |
 | **抽出データ保存** | セッション中のみのリアルタイム監視 | **ローカル永続履歴アーカイブ、デュアルチャート完全復元、ワンクリック再抽出** |
-| **自動アップデート** | 手動 git pull または再インストール | **GitHubリリース連動ワンクリック自動アップデート（ユーザーデータ100%保護）** |
+| **自動アップデート** | 手動 git pull または再インストール | **GitHubリリース連動ワンクリック自動アップデート（ユーザーデータ保護）** |
 | **多言語 (i18n)** | 英語ベース | **グローバル7言語対応（日本語、한국어、English、繁體/简体中文、Deutsch、Français）** |
 
 ---
 
-## 🌟 主な画面紹介
+## 主な機能と画面
 
-### 1. 📊 リアルタイム抽出ダッシュボード
+### 1. リアルタイム抽出ダッシュボード
 <p align="center">
   <img src="docs/img/dashboard-chart.png" alt="リアルタイム抽出ダッシュボード画面" width="800">
 </p>
@@ -181,11 +176,11 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 * **デュアルリアルタイムチャート**: 注水量（Water Pour）とカップ抽出液量（Coffee Yield）を秒単位で記録し、滑らかなスプライン曲線をレンダリング。
 * **スマート流速／スケール検知プアマーカー**: 加熱遅延や撹拌が含まれて実際の出水が遅れた場合でも、スケール上の重量増加をリアルタイムに検知し、チャート上に垂直点線とピンバッジ（`1st 00:00`, `2nd 00:40`...）を表示。
 * **抽出比率自動計算**: リアルタイム注水量と豆量（Dose）に基づき、現在の抽出比率（例: `1 : 16.0`）をリアルタイム更新。
-* **緊急停止セーフティシステム**: 異常検知時、ワンクリックでマシン動作を即座に停止し、安全に接続を維持。
+* **緊急停止機能**: 異常検知時、ワンクリックでマシン動作を即座に停止し、安全に接続を維持。
 
 ---
 
-### 2. 🎛️ レシピスタジオ (Recipe Studio)
+### 2. レシピスタジオ (Recipe Studio)
 <p align="center">
   <img src="docs/img/recipe-studio.png" alt="レシピスタジオ詳細編集画面" width="800">
 </p>
@@ -198,7 +193,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ---
 
-### 3. 📋 保存済みレシピ管理
+### 3. 保存済みレシピ管理
 <p align="center">
   <img src="docs/img/server-recipes.png" alt="サーバー保存済みレシピ一覧モーダル" width="600">
 </p>
@@ -208,7 +203,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ---
 
-### 4. ☁️ xBloomクラウド連携＆Web共有URL自動発行
+### 4. xBloomクラウド連携＆Web共有URL発行
 <p align="center">
   <img src="docs/img/cloud-share.png" alt="クラウドアップロード成功およびWeb共有リンクモーダル" width="600">
 </p>
@@ -219,29 +214,29 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ---
 
-### 5. 📜 永続抽出履歴＆グラフアーカイブ
+### 5. 抽出履歴＆グラフアーカイブ
 <p align="center">
   <img src="docs/img/brew-history.png" alt="抽出履歴およびチャート復元モーダル" width="800">
 </p>
 
-* 完了した抽出だけでなく、緊急停止した抽出データまでローカルストレージへ永続保存。
-* 過去の履歴をクリックすると、当時の注水曲線、抽出曲線、プアマーカー、所要時間、抽出比率を完全復元して閲覧でき、**[⚡ このレシピをスタジオへ読み込む]** ボタンでワンクリック再抽出が可能です。
+* 完了した抽出だけでなく、緊急停止した抽出データまでローカルストレージへ保存。
+* 過去の履歴をクリックすると、当時の注水曲線、抽出曲線、プアマーカー、所要時間、抽出比率を完全復元して閲覧でき、**[このレシピをスタジオへ読み込む]** ボタンで再抽出が可能です。
 
 ---
 
-## 📦 ダウンロード＆リリース (Download & Releases)
+## ダウンロード＆リリース
 
 ご使用の環境に合わせて適切なエディションを選択してダウンロードしてください：
 
 | エディション | 対象および推奨環境 | ダウンロードリンク |
 | :--- | :--- | :--- |
-| **📱 Android 正式リリース APK**<br>*(モバイルユーザーに強く推奨 ⭐)* | **PCなしでスマートフォン単独でマシンを操作したい方**<br>• APKファイルをダウンロード後、スマホに直接インストール<br>• 恒久的な開発者署名（v2 Signature）完了 | [⬇️ APKダウンロード (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
-| **🚀 Windows ポータブル無インストール版**<br>*(PCユーザーに推奨 ⭐)* | **Pythonの導入が手間に感じるPCユーザー**<br>• Python 3.10組込みランタイムおよび必須ライブラリを完全内包<br>• 解凍して `run.bat` をダブルクリックするだけで即起動 | [⬇️ 最新ポータブル版ダウンロード (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
-| **💻 一般ソースコード配布版**<br>*(Standard / Cross-platform)* | **Windows, macOS, Linux クロスプラットフォーム対応**<br>• Python 3.10以上がインストール済みのユーザーおよび開発者<br>• `git clone` または Source Code ZIP から直接実行 | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **Android 正式リリース APK**<br>*(モバイル)* | **PCなしでスマートフォン単独でマシンを操作したい場合**<br>• APKファイルをダウンロード後、スマホに直接インストール<br>• 開発者署名（v2 Signature）完了 | [⬇️ APKダウンロード (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **Windows ポータブル版**<br>*(PC)* | **Pythonの環境構築なしで使用したい場合**<br>• Python 3.10組込みランタイムおよび必須ライブラリを完全内包<br>• 解凍して `run.bat` をダブルクリックするだけで起動 | [⬇️ 最新ポータブル版ダウンロード (Releases)](https://github.com/ennemate/xBloom-bleUI/releases) |
+| **ソースコード配布版**<br>*(Cross-platform)* | **Windows, macOS, Linux クロスプラットフォーム対応**<br>• Python 3.10以上がインストール済みのユーザーおよび開発者<br>• `git clone` または Source Code ZIP から直接実行 | [⬇️ Source Code (ZIP / tar.gz)](https://github.com/ennemate/xBloom-bleUI/releases) |
 
 ---
 
-## 🚀 クイックスタート (Quick Start)
+## クイックスタート
 
 ### システム要件
 * **モバイル**: Android 8.0 (Oreo) 以上、Bluetooth BLE対応スマートフォン
@@ -258,7 +253,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 ---
 
 ### 方法 B. Windows ポータブル版を実行 (PC推奨)
-1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v1.0.0-Windows-Portable.zip` をダウンロード
+1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v1.0.1-Windows-Portable.zip` をダウンロード
 2. お好みのフォルダーに解凍
 3. フォルダー内の **`run.bat`** ファイルをダブルクリック
    * 内蔵されたPython環境でサーバーが自動起動し、既定のWebブラウザ（`http://localhost:8000`）が自動で開きます。
@@ -287,11 +282,11 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ---
 
-### 🔄 バージョンアップデート＆ユーザーデータ保護 (Data Safe Update)
+### バージョンアップデート＆ユーザーデータ保護
 
 * **ワンクリック自動アップデート**: Web画面上部のアップデート通知バッジまたは設定（⚙️）の [アップデート確認] から、最新バージョンへ安全にアップグレードできます。
-* **ユーザーデータ 100% 無損失保護**:
-  * アップデート時はソースコードと静的UIファイルのみが選択的に更新されるため、以下のユーザーデータは **決して上書きされず安全に保持** されます:
+* **ユーザーデータ保護**:
+  * アップデート時はソースコードと静的UIファイルのみが選択的に更新されるため、以下のユーザーデータは上書きされず安全に保持されます:
     * 📂 `recipes/` (ユーザー作成のレシピおよびスロットプリセット)
     * 📄 `history.json` (過去の全抽出履歴およびデュアルチャートアーカイブ)
     * ⚙️ `config.json` (テーマ、壁紙、クラウドアカウント設定)

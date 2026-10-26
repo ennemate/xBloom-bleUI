@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-xBloom bleUI AI Service Module (v1.0.0)
+xBloom bleUI AI Service Module (v1.0.1)
 - Pure Python standard library implementation (no heavy third-party SDK required)
 - Supports Google Gemini (gemini-2.0-flash) and OpenAI ChatGPT (gpt-4o-mini)
 - Full 7-language i18n support (ko, en, ja, zh-TW, zh-CN, de, fr)

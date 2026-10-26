@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.0)
+# xBloom bleUI (v1.0.1)
 
 <p align="center">
   <strong>Standalone Android App & Local Web Controller for xBloom Studio Coffee Machines</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-orange.svg" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -29,31 +29,26 @@
 
 ---
 
-## ☕ Introduction
+## Introduction
 
 **xBloom bleUI** connects your **xBloom Studio** coffee machine over Bluetooth Low Energy (BLE), allowing you to precisely control machine operations from your smartphone or PC and visualize real-time extraction telemetry (water temperature, water pour, coffee yield, extraction ratio) with dual live curves.
 
-The **v1.0.0 Major Release** breaks free from the PC-dependent web environment, introducing the official **Standalone Android Native App (APK)** that allows full, direct wireless control from your smartphone without a computer.
-
-Featuring **Unattended Wake-up Scheduled Auto-Brew**, **Bypass Water Control** (dispensing pure hot water directly into the carafe without passing through the dripper) with **large-dose capacity (20g / 40g)**, and **AI Recipe Extraction & Real-time AI Barista Lab**, it delivers an unmatched pour-over coffee experience for both desktop and mobile users.
+Starting with **v1.0.1**, it supports a **Standalone Android App (APK)** for direct control without a computer, alongside **Scheduled Auto-Brew**, **Bypass Water Control**, and **AI Recipe Extraction & Barista Tuning Guide**.
 
 ---
 
-## 👥 Contributors & Credits
+## Contributors & Credits
 
-This project thrives on the spirit of open-source sharing and community collaboration.
+This project is built upon open-source community contributions.
 
 | Profile | Contributor | Roles & Contributions |
 | :---: | :---: | :--- |
-| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)**<br>*(Original Author)* | • Creator of the foundational **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** project<br>• xBloom Studio Bluetooth LE protocol reverse engineering & core packet decoder design<br>• Established machine BLE communication framework and terminal-based real-time telemetry graph monitoring |
-| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** Standalone Android App (APK) & full-stack cross-platform web architecture<br>• Wake-up Scheduled Auto-Brew (Android Doze-bypass alarm & persistent foreground service)<br>• Hardware Bypass water delivery & 20g/40g large-dose recipe pipeline<br>• Intelligent AI Recipe Extraction & telemetry-linked Real-time AI Barista Lab<br>• High-resolution live dual brewing curves (Chart.js) & smart flow detection pour markers<br>• 2-phase grind/brew timer sync, hand-drip interval compensation, 2-way official cloud integration |
-
-> [!NOTE]
-> Special thanks to **Janczykkkko** for pioneering the open-source BLE protocol implementation and core communication library that laid the foundation for this project. While the original `xbloom-ble` provided excellent terminal-based TUI telemetry monitoring, bleUI was able to advance this into interactive high-resolution dual curves for web and mobile.
+| <a href="https://github.com/Janczykkkko"><img src="https://github.com/Janczykkkko.png" width="55" style="border-radius:50%;" alt="Janczykkkko"></a> | **[Janczykkkko](https://github.com/Janczykkkko)** | • Creator of the foundational **[xbloom-ble](https://github.com/Janczykkkko/xbloom-ble)** library & core BLE communication protocol |
+| <a href="https://github.com/ennemate"><img src="https://github.com/ennemate.png" width="55" style="border-radius:50%;" alt="ennemate"></a> | **[ennemate](https://github.com/ennemate/xBloom-bleUI)** | • **xBloom bleUI** Standalone Android App (APK) & web UI development, scheduled brewing & AI recipe features |
 
 ---
 
-## 🌟 v1.0.0 Core New Features
+## Features
 
 ### 1. 📱 Standalone Android Native App (APK)
 
@@ -151,9 +146,9 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 
 ---
 
-## ⚡ Feature Comparison
+## Feature Comparison
 
-| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.0)** |
+| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
 | :--- | :--- | :--- |
 | **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
 | **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
@@ -169,7 +164,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 
 ---
 
-## 🌟 Interface Showcase
+## Interface Showcase
 
 ### 1. 📊 Real-time Brewing Dashboard
 <p align="center">
@@ -240,7 +235,7 @@ Choose the distribution suited for your setup:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### System Requirements
 * **Mobile**: Android 8.0 (Oreo) or higher with Bluetooth BLE
@@ -257,7 +252,7 @@ Choose the distribution suited for your setup:
 ---
 
 ### Method B. Windows Standalone Portable (PC Recommended)
-1. Download `xBloom-bleUI-v1.0.0-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+1. Download `xBloom-bleUI-v1.0.1-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
 2. Unzip into any directory.
 3. Double-click **`run.bat`**.
    * The server starts automatically and opens your default browser at `http://localhost:8000`.

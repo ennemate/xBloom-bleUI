@@ -2230,7 +2230,7 @@
         <div class="card log-card">
           <div class="card-title" data-i18n="card_log_monitor">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v1.0.0 Ready</div>
+            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v1.0.1 Ready</div>
           </div>
         </div>
       </div>
@@ -2444,24 +2444,33 @@
       </select>
     </div>
 
-    
-    <div style="margin-top:12px; padding:12px 14px; background:var(--card-inner); border-radius:12px; border:1px solid var(--border);">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:1.1rem; line-height:1;">💧</span>
-          <div>
-            <div style="font-size:0.82rem; font-weight:700; color:var(--text);" data-i18n="schedule_supply_check">물탱크 잔량 자동 점검</div>
-            <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;" id="schedSupplyDesc">
-              모터 보호를 위해 추출 직전 수위를 안전 점검합니다.
-            </div>
-          </div>
+    <!-- 📋 모닝 브루잉 사전 준비 체크리스트 리마인더 카드 -->
+    <div style="margin-top:12px; padding:12px 14px; background:var(--card-inner); border-radius:12px; border:1px solid var(--border); box-sizing:border-box; width:100%;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-size:1.05rem; line-height:1;">📋</span>
+          <div style="font-size:0.84rem; font-weight:700; color:var(--text);" data-i18n="schedule_checklist_title">모닝 브루잉 사전 준비 체크</div>
         </div>
-        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-          <span id="schedSupplyStatusBadge" style="display:inline-flex; align-items:center; font-size:0.74rem; font-weight:600; padding:4px 10px; border-radius:999px; background:rgba(245, 158, 11, 0.12); color:#f59e0b; border:1px solid rgba(245, 158, 11, 0.28); white-space:nowrap;">
-            ⚠️ 미연결
-          </span>
-          <button type="button" class="btn-secondary" onclick="checkWaterSupplyForSchedule(true)" style="padding:4px 8px; font-size:0.75rem; border-radius:8px; cursor:pointer; line-height:1;" title="물탱크 상태 실시간 재점검">🔄</button>
+        <span style="font-size:0.7rem; font-weight:700; color:#10b981; background:rgba(16, 185, 129, 0.12); padding:3px 8px; border-radius:999px; border:1px solid rgba(16, 185, 129, 0.28);">
+          리마인더
+        </span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; font-size:0.75rem; color:var(--text); line-height:1.4;">
+        <div style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="flex-shrink:0;">💧</span>
+          <span><strong>물탱크:</strong> 신선한 물 300ml 이상 보충 (가열 린싱 포함)</span>
         </div>
+        <div style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="flex-shrink:0;">🫘</span>
+          <span><strong>원두 호퍼:</strong> 설정된 레시피 원두 투입 완료 확인</span>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:6px;">
+          <span style="flex-shrink:0;">☕</span>
+          <span><strong>드리퍼 & 서버:</strong> 필터 및 빈 컵/서버 머신 거치 확인</span>
+        </div>
+      </div>
+      <div style="font-size:0.68rem; color:var(--muted); margin-top:8px; padding-top:6px; border-top:1px dashed var(--border); line-height:1.35;">
+        💡 xBloom 머신 센서는 대기 중엔 수위를 측정하지 않으며, 예약 시각 추출 시동 직전에 물/원두를 최종 안전 검사합니다.
       </div>
     </div>
 
@@ -2883,7 +2892,7 @@
         <span>업데이트 확인</span>
       </button>
       <a href="https://github.com/ennemate/xBloom-bleUI" target="_blank" rel="noopener noreferrer" id="settingsFooterLink" style="font-size:0.75rem; color:var(--muted); text-decoration:none; cursor:pointer; transition:color 0.15s ease; display:inline-flex; align-items:center; gap:5px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'" title="GitHub 저장소 바로가기">
-        <span id="settingsFooterVer">v1.0.0 by 팽이팽이</span>
+        <span id="settingsFooterVer">v1.0.1 by 팽이팽이</span>
       </a>
     </div>
   </div>
@@ -2901,12 +2910,12 @@
     <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_cur_ver">현재 버전</div>
-        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v1.0.0</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v1.0.1</div>
       </div>
       <div style="font-size:1.1rem; color:var(--accent);">➔</div>
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_latest_ver">최신 릴리즈</div>
-        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v1.0.0</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v1.0.1</div>
       </div>
     </div>
 
@@ -3245,7 +3254,7 @@
     "alert_stop_failed": "정지 명령 전송 실패",
     "grind_label": "분쇄",
     "no_grind": "원두분쇄 안함",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 구동 완료",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 구동 완료",
     "log_ws_connected": "[BLE] 웹소켓 채널 연결 완료",
     "log_ble_not_found": "[BLE ERROR] 주변에서 xBloom 기기를 찾지 못했습니다. 전원을 확인해주세요.",
     "log_ble_reconnecting": "[BLE] 머신 수동 재연결 시도 중...",
@@ -3267,7 +3276,7 @@
     "schedule_label_time": "추출 예약 시각 (Time)",
     "schedule_label_repeat": "반복 주기 (Repeat)",
     "schedule_label_recipe": "실행할 커피 레시피 (Recipe)",
-    "schedule_supply_check": "💧 물탱크 수위 점검",
+    "schedule_checklist_title": "모닝 브루잉 사전 준비 체크",
     "schedule_alarm_toggle": "🔔 추출 완료 시 모닝콜 알림 & 차임벨 울림",
     "schedule_btn_test": "🧪 지금 테스트",
     "schedule_btn_cancel": "❌ 예약 끄기",
@@ -3462,7 +3471,7 @@
     "label_password": "비밀번호",
     "btn_login": "xBloom 로그인",
     "btn_logout": "로그아웃 (토큰 해제)",
-    "setting_version": "🚀 버전 및 자동 업데이트",
+    "setting_version": "버전 및 자동 업데이트",
     "btn_check_update": "업데이트 확인",
     "hist_modal_title": "📜 추출 히스토리 & 그래프 기록",
     "btn_clear_all": "전체 삭제",
@@ -3549,7 +3558,7 @@
     "nav_settings_general": "⚙️ General",
     "nav_settings_cloud": "☁️ Cloud",
     "nav_settings_ai": "🤖 AI Settings",
-    "nav_settings_ver": "🚀 Version",
+    "nav_settings_ver": "Version",
 
     "unit_clicks": "clicks",
     "label_total": "Total",
@@ -3737,7 +3746,7 @@
     "alert_stop_failed": "Failed to send emergency stop command",
     "grind_label": "Grind",
     "no_grind": "No Grind",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 Ready",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 Ready",
     "log_ws_connected": "[BLE] WebSocket telemetry channel connected",
     "log_ble_not_found": "[BLE ERROR] xBloom machine not found nearby. Please check machine power.",
     "log_ble_reconnecting": "[BLE] Attempting manual BLE reconnection...",
@@ -3941,7 +3950,7 @@
     "label_password": "Password",
     "btn_login": "Log In to xBloom",
     "btn_logout": "Log Out",
-    "setting_version": "🚀 Version & Auto-Update",
+    "setting_version": "Version & Auto-Update",
     "btn_check_update": "Check for Updates",
     "hist_modal_title": "📜 Brew History & Extraction Logs",
     "btn_clear_all": "Clear All",
@@ -4215,7 +4224,7 @@
     "alert_stop_failed": "緊急停止コマンドの送信に失敗しました",
     "grind_label": "粉砕",
     "no_grind": "粉砕なし",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 起動完了",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 起動完了",
     "log_ws_connected": "[BLE] WebSocketチャンネル接続完了",
     "log_ble_not_found": "[BLE ERROR] 周辺でxBloom機器が見つかりませんでした。電源をご確認ください。",
     "log_ble_reconnecting": "[BLE] マシン手動再接続を試行中...",
@@ -4418,7 +4427,7 @@
     "label_password": "パスワード",
     "btn_login": "xBloom ログイン",
     "btn_logout": "ログアウト (解除)",
-    "setting_version": "🚀 バージョン＆自動更新",
+    "setting_version": "バージョン＆自動更新",
     "btn_check_update": "更新を確認",
     "hist_modal_title": "📜 抽出履歴＆グラフ記録",
     "btn_clear_all": "全て削除",
@@ -4695,7 +4704,7 @@
     "alert_stop_failed": "發送緊急停止指令失敗",
     "grind_label": "研磨",
     "no_grind": "不研磨",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 啟動完成",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 啟動完成",
     "log_ws_connected": "[BLE] WebSocket 連線頻道已建立",
     "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 機器，請確認電源是否開啟。",
     "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線咖啡機...",
@@ -4851,7 +4860,7 @@
     "label_password": "密碼",
     "btn_login": "登入 xBloom",
     "btn_logout": "登出 (解除授權)",
-    "setting_version": "🚀 版本與自動更新",
+    "setting_version": "版本與自動更新",
     "btn_check_update": "檢查更新",
     "hist_modal_title": "📜 沖煮紀錄與曲線檔案",
     "btn_clear_all": "清空全部",
@@ -5173,7 +5182,7 @@
     "alert_stop_failed": "发送紧急停止指令失败",
     "grind_label": "研磨",
     "no_grind": "不研磨",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 启动完成",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 启动完成",
     "log_ws_connected": "[BLE] WebSocket 连接已建立",
     "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 机器，请确认电源是否开启。",
     "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接咖啡机...",
@@ -5329,7 +5338,7 @@
     "label_password": "密码",
     "btn_login": "登录 xBloom",
     "btn_logout": "退出登录 (解除授权)",
-    "setting_version": "🚀 版本与自动更新",
+    "setting_version": "版本与自动更新",
     "btn_check_update": "检查更新",
     "hist_modal_title": "📜 冲煮记录与曲线档案",
     "btn_clear_all": "清空全部",
@@ -5461,7 +5470,7 @@
     "nav_settings_general": "⚙️ Allgemein",
     "nav_settings_cloud": "☁️ Cloud",
     "nav_settings_ai": "🤖 AI-Setup",
-    "nav_settings_ver": "🚀 Version",
+    "nav_settings_ver": "Version",
 
     "unit_clicks": "Klicks",
     "label_total": "Gesamt",
@@ -5649,7 +5658,7 @@
     "alert_stop_failed": "Not-Aus-Befehl konnte nicht gesendet werden",
     "grind_label": "Mahlung",
     "no_grind": "Kein Mahlen",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 Bereit",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 Bereit",
     "log_ws_connected": "[BLE] WebSocket-Kanal verbunden",
     "log_ble_not_found": "[BLE ERROR] xBloom-Gerät nicht gefunden. Bitte Stromversorgung prüfen.",
     "log_ble_reconnecting": "[BLE] Versuche manuelle Wiederverbindung...",
@@ -5852,7 +5861,7 @@
     "label_password": "Passwort",
     "btn_login": "Anmelden",
     "btn_logout": "Abmelden",
-    "setting_version": "🚀 Version & Update",
+    "setting_version": "Version & Update",
     "btn_check_update": "Updates suchen",
     "hist_modal_title": "📜 Brühhistorie & Extraktionskurven",
     "btn_clear_all": "Alles löschen",
@@ -5939,7 +5948,7 @@
     "nav_settings_general": "⚙️ Général",
     "nav_settings_cloud": "☁️ Cloud",
     "nav_settings_ai": "🤖 Réglages IA",
-    "nav_settings_ver": "🚀 Version",
+    "nav_settings_ver": "Version",
 
     "unit_clicks": "crans",
     "label_total": "Total",
@@ -6127,7 +6136,7 @@
     "alert_stop_failed": "Échec de l'envoi de la commande d'arrêt d'urgence",
     "grind_label": "Mouture",
     "no_grind": "Sans mouture",
-    "log_init_ready": "[INIT] xBloom bleUI v1.0.0 Prêt",
+    "log_init_ready": "[INIT] xBloom bleUI v1.0.1 Prêt",
     "log_ws_connected": "[BLE] Canal WebSocket connecté",
     "log_ble_not_found": "[BLE ERROR] Appareil xBloom introuvable. Veuillez vérifier l'alimentation.",
     "log_ble_reconnecting": "[BLE] Tentative de reconnexion manuelle...",
@@ -6330,7 +6339,7 @@
     "label_password": "Mot de passe",
     "btn_login": "Se connecter",
     "btn_logout": "Se déconnecter",
-    "setting_version": "🚀 Version et mise à jour",
+    "setting_version": "Version et mise à jour",
     "btn_check_update": "Vérifier",
     "hist_modal_title": "📜 Historique & Courbes d'extraction",
     "btn_clear_all": "Tout effacer",
@@ -6479,11 +6488,11 @@
     const verDesc = document.getElementById("settingsVersionInfo");
     const verBadge = document.getElementById("settingsVersionBadge");
     if (verDesc) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "1.0.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "1.0.1";
       verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${curVer}`;
     }
     if (verBadge) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "1.0.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "1.0.1";
       verBadge.innerText = `v${curVer}`;
     }
     const pctEl = document.getElementById("pctText");
@@ -6716,14 +6725,14 @@
       const verDesc = document.getElementById("settingsVersionInfo");
       const verBadge = document.getElementById("settingsVersionBadge");
       if (verDesc) {
-        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "1.0.0"}`;
+        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "1.0.1"}`;
       }
       if (verBadge) {
-        verBadge.innerText = `v${data.current_version || "1.0.0"}`;
+        verBadge.innerText = `v${data.current_version || "1.0.1"}`;
       }
       const footerVer = document.getElementById("settingsFooterVer");
       if (footerVer) {
-        footerVer.innerText = `v${data.current_version || "1.0.0"} by 팽이팽이`;
+        footerVer.innerText = `v${data.current_version || "1.0.1"} by 팽이팽이`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -6736,7 +6745,7 @@
       } else {
         if (badgeBtn) badgeBtn.style.display = "none";
         if (manual) {
-          alert(t("alert_latest_version", { ver: data.current_version || "1.0.0" }));
+          alert(t("alert_latest_version", { ver: data.current_version || "1.0.1" }));
         }
       }
     } catch (e) {
@@ -6763,8 +6772,8 @@
     const latestSpan = document.getElementById("updateLatestVer");
     const titleSpan = document.getElementById("updateModalTitle");
     const notesBox = document.getElementById("updateReleaseNotes");
-    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "1.0.0"}`;
-    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "1.0.0"}`;
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "1.0.1"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "1.0.1"}`;
     if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || `xBloom bleUI v${latestReleaseData.latest_version} 업데이트`;
     if (notesBox) {
       notesBox.innerText = latestReleaseData.release_notes || "새로운 기능 개선 및 버그 수정이 포함되어 있습니다.";
@@ -7359,7 +7368,9 @@ function focusAiSettingsSection() {
     const wsUrl = `${protocol}//${location.host}/ws/telemetry`;
     ws = new WebSocket(wsUrl);
     ws.onopen = () => {
-      addLog("[BLE] 웹소켓 채널 연결 완료");
+      if (typeof isNative === 'function' ? !isNative() : true) {
+        addLog("[BLE] 웹소켓 채널 연결 완료");
+      }
       checkServerStatus();
       loadServerLocalRecipes();
       loadServerSettings();
@@ -7401,7 +7412,7 @@ function focusAiSettingsSection() {
     if (s === "LOADING") return t("state_loading", "레시피 전송 중");
     if (s === "BREWING") return t("state_brewing", "추출 진행 중");
     if (s === "BYPASS" || s.includes("BYPASS")) return t("state_bypass", "드리퍼 자동 이동 및 바이패스 가수 중...");
-    if (s === "READY" || s === "COMPLETE" || s === "FINISHED") return t("state_finished", "추출 완료");
+    if (s === "READY" || s === "COMPLETE" || s === "COMPLETED" || s === "FINISHED") return t("state_finished", "추출 완료");
     if (s === "NO_WATER") return t("state_no_water", "물 부족");
     if (s === "NO_BEANS") return t("state_no_beans", "원두 부족");
     if (s === "SAVING_SLOTS") return t("state_saving_slots", "슬롯 저장 중");
@@ -7425,16 +7436,16 @@ function focusAiSettingsSection() {
       if (firstStepHasPreAgitation) {
         pourMarkers = [{ step: 0, time: 0, label: "추출 시작" }];
         hasFirstPourStarted = false;
-        addLog("[BREW] 🚀 실제 커피 추출 시작! (추출 전 교반 후 1차 푸어 물 투입 개시)");
+        addLog("[BREW] 실제 커피 추출 시작 (추출 전 교반 후 1차 푸어 물 투입 개시)");
       } else {
         pourMarkers = [{ step: 1, time: 0, label: "1차 00:00" }];
         hasFirstPourStarted = true;
-        addLog(`[BREW] 🚀 실제 커피 추출 시작! (1차 푸어 물 공급 개시: ${p0.toFixed(1)}g)`);
+        addLog(`[BREW] 실제 커피 추출 시작 (1차 푸어 물 공급 개시: ${p0.toFixed(1)}g)`);
       }
     } else {
       pourMarkers = [{ step: 1, time: 0, label: "1차 00:00" }];
       hasFirstPourStarted = true;
-      addLog("[BREW] 🚀 실제 커피 추출 시작! (1차 푸어 개시)");
+      addLog("[BREW] 실제 커피 추출 시작 (1차 푸어 개시)");
     }
     document.getElementById("timeVal").innerText = "00:00";
     document.getElementById("stateText").innerText = t("state_brewing", "추출 진행 중");
@@ -7520,7 +7531,7 @@ function focusAiSettingsSection() {
     
     if (!isBrewActive && !isBrewCompletedCooling) {
       const isBrewingSignal = (stUpper === "BREWING" || stUpper === "POURING" || stUpper === "0X10" || stUpper === "0X3B" || stUpper === "0X23");
-      const hasWaterFlowed = (curPour >= 0.5);
+      const hasWaterFlowed = (curPour >= 0.2); // 0.2g 출수 감지
       if (isGrindingPhase) {
         if (stUpper !== "STARTING" && (isBrewingSignal || hasWaterFlowed)) {
           isGrindingPhase = false;
@@ -7533,7 +7544,10 @@ function focusAiSettingsSection() {
       }
     }
     if (isBrewActive) {
-      const nowSec = Math.floor((Date.now() - brewStartTime) / 1000);
+      let nowSec = Math.floor((Date.now() - brewStartTime) / 1000);
+      if (data && typeof data.elapsed === 'number' && data.elapsed > 0) {
+        nowSec = Math.floor(data.elapsed);
+      }
       const mm = String(Math.floor(nowSec / 60)).padStart(2, '0');
       const ss = String(nowSec % 60).padStart(2, '0');
       document.getElementById("timeVal").innerText = `${mm}:${ss}`;
@@ -7550,7 +7564,7 @@ function focusAiSettingsSection() {
         }
       }
       if (pourMarkerMode === "weight") {
-        if (!hasFirstPourStarted && curPour >= 0.8) {
+        if (!hasFirstPourStarted && curPour >= 0.2) { // 0.2g 1차 푸어 마커 트리거
           hasFirstPourStarted = true;
           if (!pourMarkers.some(m => m.step === 1)) {
             if (nowSec <= 2 && pourMarkers.length > 0 && pourMarkers[0].step === 0) {
@@ -7618,21 +7632,28 @@ function focusAiSettingsSection() {
       }
       const pVal = isBrewActive ? Math.max(maxWaterPoured, rawPour) : rawPour;
       const yVal = Number(data.yield_weight) || 0;
-      if (chartData.length > 0 && chartData[chartData.length - 1].time === nowSec) {
-        chartData[chartData.length - 1].pour = Math.max(chartData[chartData.length - 1].pour, pVal);
-        chartData[chartData.length - 1].yield = Math.max(chartData[chartData.length - 1].yield, yVal);
+      const lastPt = (chartData && chartData.length > 0) ? chartData[chartData.length - 1] : null;
+      const safeSec = (lastPt && nowSec < lastPt.time) ? lastPt.time : nowSec;
+
+      if (lastPt && lastPt.time === safeSec) {
+        lastPt.pour = Math.max(lastPt.pour, pVal);
+        lastPt.yield = Math.max(lastPt.yield, yVal);
       } else {
         chartData.push({
-          time: nowSec,
+          time: safeSec,
           pour: pVal,
           yield: yVal
         });
       }
       drawChart();
-      const isTerminalState = (stUpper === "READY" || stUpper === "COMPLETE" || stUpper === "FINISHED");
+      const isTerminalState = (stUpper === "READY" || stUpper === "COMPLETE" || stUpper === "COMPLETED" || stUpper === "FINISHED");
       if (nowSec >= 8 && isTerminalState && !isAbortedByEmergency) {
         addLog(`[BREW] 머신 완료 신호 수신 (${stUpper}) -> 추출 완료 및 저장 처리`);
-        finishBrew(nowSec);
+        finishBrew(nowSec, true);
+      }
+      if (isBrewActive && (stUpper === "IDLE" || stUpper === "STANDBY") && nowSec >= 10 && !isAbortedByEmergency) {
+        addLog(`[BREW] 머신 대기 상태(${stUpper}) 복귀 감지 -> 추출 완료 정리`);
+        finishBrew(nowSec, true);
       }
     }
   }
@@ -7682,7 +7703,44 @@ function focusAiSettingsSection() {
     }
     return { text: fallbackMsg, key: '', params: {} };
   }
+  let lastLoggedMsgText = "";
+  let lastLoggedMsgTimestamp = 0;
+
   function addLog(msg, key = null, params = {}) {
+    if (!msg) return;
+
+    // 파이썬 버전 수준으로 콘솔창을 정갈하게 유지하기 위해 내부 저수준/중복 노이즈 로그 차단
+    const rawStr = String(msg).trim();
+    const noiseFilterPatterns = [
+      /^\[BLE\] 웹소켓 채널 연결 완료/,
+      /^\[BLE\] 머신 연결 시도 중/,
+      /^\[BLE\] 머신 연결 성공, 서비스 확인 중/,
+      /^\[BLE\] 머신 연결 완료 \(준비됨\)/,
+      /^\[BLE\] 🚀 머신 추출 승인 명령/,
+      /^\[BLE\] 🚀 머신 동작 개시 명령/,
+      /^\[BREW\] 대기 상태/,
+      /^\[BREW\] 머신 준비 완료 \(ARMED\)$/,
+      /^\[CMD\] 비상 정지 명령 전송 중/,
+      /^\[CMD\] 비상 정지 명령 전송 완료$/,
+      /^\[BLE\] 🛑 머신 비상 정지 명령\(0x47\) 3회 연속 전송 완료/,
+      /^\[BREW\] 비상 정지되었습니다\./
+    ];
+
+    for (const pat of noiseFilterPatterns) {
+      if (pat.test(rawStr)) {
+        console.log("[Filtered UI Log]", rawStr);
+        return;
+      }
+    }
+
+    // 2.5초 내 동일 메시지 연속 중복 방지 (De-duplication)
+    const now = Date.now();
+    if (rawStr === lastLoggedMsgText && (now - lastLoggedMsgTimestamp < 2500)) {
+      return;
+    }
+    lastLoggedMsgText = rawStr;
+    lastLoggedMsgTimestamp = now;
+
     const b = document.getElementById("logBox");
     if (!b) return;
     const tStr = new Date().toTimeString().split(' ')[0];
@@ -7783,29 +7841,20 @@ function focusAiSettingsSection() {
   }
 
   async function releaseBrewStayAwake() {
-    
     if (activeScreenWakeLock) {
       try {
         await activeScreenWakeLock.release();
       } catch(e) {}
       activeScreenWakeLock = null;
     }
-    
     const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
     if (fgService) {
       try {
         if (typeof fgService.setKeepScreenOn === 'function') {
           await fgService.setKeepScreenOn({ enable: false });
         }
-        if (!activeSchedule || !activeSchedule.enabled) {
-          await fgService.stopService();
-        } else {
-          
-          await fgService.startService({
-            title: `☕ xBloom 예약 브루잉 대기 중 (${activeSchedule.time})`,
-            text: `'${(activeSchedule.recipe && activeSchedule.recipe.name) || "커피"}' 무인 추출이 예약되어 있습니다.`
-          });
-        }
+        // 추출 완료 시 보안 및 배터리 절약을 위해 포그라운드 서비스 즉시 완전 종료!
+        await fgService.stopService();
       } catch(e) {}
     }
   }
@@ -7839,7 +7888,6 @@ function focusAiSettingsSection() {
         addLog(`[SYNC] ${i + 1}차: 인터벌 ${info.target}s ➔ 머신 대기 ${info.machineWait}s (${info.overhead}s 차감)`);
       }
     }
-    addLog(`[CMD] 추출 시작 요청 전송: ${payload.name}`);
     try {
       const res = await fetch("/api/brew/start", {
         method: "POST",
@@ -7891,13 +7939,12 @@ function focusAiSettingsSection() {
         isBrewStaging = true;
         document.getElementById("stateText").innerText = t("state_armed", "추출 준비 중");
         document.getElementById("timeVal").innerText = "--:--";
-        addLog(`[BREW] 🚀 '${payload.name}' 추출 명령 전송 완료... 머신 물 공급 개시 시 타이머가 시작됩니다.`);
+        addLog(`[BREW] 🚀 '${payload.name}' 추출 시작...`);
       }
       const actionGrid = document.getElementById("brewActionGrid");
       if (actionGrid) actionGrid.classList.add("is-brewing");
       const stopBtn = document.getElementById("stopBtn");
       if (stopBtn) stopBtn.innerHTML = t("btn_stop_active", "🛑 비상 정지 (추출 중단)");
-      addLog("[OK] 머신이 명령을 수락했습니다.");
       acquireBrewStayAwake(payload.name);
     } catch (e) {
       alert(e.message);
@@ -7908,19 +7955,41 @@ function focusAiSettingsSection() {
     }
   }
   async function stopBrew() {
+    // 1. UI 상태 즉각 초기화 (버튼 및 상태 텍스트 즉시 복귀 - 0ms 반응)
+    const wasActive = isBrewActive || isBrewStaging || isGrindingPhase;
     isAbortedByEmergency = true;
+    isBrewActive = false;
+    isGrindingPhase = false;
+    isBrewStaging = false;
     isBrewCompletedCooling = true;
+    resetBrewButton();
+    const stEl = document.getElementById("stateText");
+    if (stEl) stEl.innerText = t("state_aborted", "정지됨");
+    const tmEl = document.getElementById("timeVal");
+    if (tmEl) tmEl.innerText = "00:00";
+
+    // 2. 모바일 네이티브 BLE 또는 로컬 브릿지에 즉각 정지 명령 전송 (다중 안전망)
     try {
-      await fetch("/api/brew/stop", { method: "POST" });
-      const wasActive = isBrewActive || isBrewStaging || isGrindingPhase;
-      isBrewActive = false;
-      isGrindingPhase = false;
-      isBrewStaging = false;
-      isBrewCompletedCooling = true;
-      resetBrewButton();
-      document.getElementById("stateText").innerText = t("state_aborted", "정지됨");
-      document.getElementById("timeVal").innerText = "00:00";
-      addLog("[CMD] 비상 정지 명령 전송 완료");
+      if (window.XBloomBridge && typeof window.XBloomBridge.cancelBrew === 'function') {
+        await window.XBloomBridge.cancelBrew().catch(e => console.warn("[Bridge cancelBrew]", e));
+      }
+      const fg = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
+      if (fg && typeof fg.bleCancelBrew === 'function') {
+        await fg.bleCancelBrew().catch(e => console.warn("[ForegroundService bleCancelBrew]", e));
+      }
+    } catch (bleErr) {
+      console.warn("[stopBrew BLE trigger error]", bleErr);
+    }
+
+    // 3. 백엔드 REST API 호출 (/api/brew/stop) - 비동기 안전 호출
+    try {
+      fetch("/api/brew/stop", { method: "POST" }).catch(e => console.warn("[stopBrew fetch error]", e));
+    } catch (e) {
+      console.warn("[stopBrew fetch dispatch error]", e);
+    }
+
+    // 4. 히스토리 기록 (안전 격리 try-catch)
+    try {
       let finalAbortWater = maxWaterPoured;
       if (chartData && chartData.length > 0) {
         for (const pt of chartData) {
@@ -7928,16 +7997,28 @@ function focusAiSettingsSection() {
         }
       }
       if (finalAbortWater <= 0) {
-        finalAbortWater = Number(document.getElementById("pourVal").innerText) || 0;
+        const pEl = document.getElementById("pourVal");
+        finalAbortWater = pEl ? (Number(pEl.innerText) || 0) : 0;
       }
       finalAbortWater = Math.round(finalAbortWater * 10) / 10;
       const curPour = finalAbortWater;
-      const curYield = Number(document.getElementById("yieldVal").innerText) || 0;
+      const yEl = document.getElementById("yieldVal");
+      const curYield = yEl ? (Number(yEl.innerText) || 0) : 0;
       const durationSec = brewStartTime ? Math.floor((Date.now() - brewStartTime) / 1000) : 0;
+
       if (wasActive && recordAbortedBrews && (chartData.length > 2 || curPour > 0 || durationSec > 2)) {
         const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
         const ss = String(durationSec % 60).padStart(2, '0');
-        const payload = getRecipePayload();
+        let payload = null;
+        try {
+          payload = typeof getRecipePayload === 'function' ? getRecipePayload() : null;
+        } catch (pe) {
+          console.warn("[stopBrew] getRecipePayload fallback:", pe);
+        }
+        if (!payload) {
+          payload = { name: "Custom Brew", dose: 15, steps: [] };
+        }
+
         const abortedRecord = {
           id: "hist_" + Date.now(),
           date: new Date().toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
@@ -7948,14 +8029,14 @@ function focusAiSettingsSection() {
           duration: `${mm}:${ss}`,
           durationSec: durationSec,
           status: "aborted",
-          chartData: JSON.parse(JSON.stringify(chartData)),
-          markers: JSON.parse(JSON.stringify(pourMarkers)),
+          chartData: JSON.parse(JSON.stringify(chartData || [])),
+          markers: JSON.parse(JSON.stringify(pourMarkers || [])),
           recipe: JSON.parse(JSON.stringify(payload)),
           beanName: "",
           notes: "비상 정지됨"
         };
         historyRecords.unshift(abortedRecord);
-        updateHistoryCount();
+        if (typeof updateHistoryCount === 'function') updateHistoryCount();
         addLog("[HIST] 비상정지 추출 데이터가 히스토리에 기록되었습니다.");
         fetch("/api/history", {
           method: "POST",
@@ -7963,14 +8044,70 @@ function focusAiSettingsSection() {
           body: JSON.stringify(abortedRecord)
         }).catch(err => console.warn("비상정지 히스토리 서버 저장 실패:", err));
       }
-    } catch (e) {
-      alert(t("alert_stop_failed"));
+    } catch (histErr) {
+      console.warn("[stopBrew history record error]", histErr);
+    } finally {
+      if (typeof releaseBrewStayAwake === 'function') {
+        try { releaseBrewStayAwake(); } catch(e){}
+      }
     }
   }
   let isScheduledBrew = false;
-  function finishBrew(durationSec) {
+
+  // 안드로이드 네이티브 BLE 텔레메트리 수신 핸들러
+  window.onNativeRealtimeTelemetry = function(elapsedSec, waterG, coffeeG, stateName, desc) {
+    try {
+      const isBrewState = (stateName === "BREWING" || stateName === "POURING" || stateName === "STARTING");
+      const pEl = document.getElementById("pourVal");
+      if (pEl) pEl.innerText = Math.round(waterG);
+      const yEl = document.getElementById("yieldVal");
+      if (yEl) yEl.innerText = Math.round(coffeeG);
+      const tmEl = document.getElementById("timeVal");
+      // 💡 브루잉 진행 중일 때만 실시간 경과 시간을 표시하여 완료 후 시간이 흘러가지 않도록 방어
+      if (tmEl && elapsedSec > 0 && isBrewState) {
+        const mm = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+        const ss = String(Math.floor(elapsedSec % 60)).padStart(2, '0');
+        tmEl.innerText = `${mm}:${ss}`;
+      }
+      const stEl = document.getElementById("stateText");
+      if (stEl && desc) stEl.innerText = desc;
+    } catch (e) {}
+  };
+
+  // 안드로이드 네이티브 추출 완료 신호 핸들러
+  window.onNativeBrewCompleted = function(durationSec, finalWater, finalYield) {
+    console.log(`[UI] 네이티브 백그라운드 추출 완료 직통 신호 수신 (${durationSec}초, 온수: ${finalWater}g, 추출: ${finalYield}g)`);
+    try {
+      isBrewActive = false;
+      isGrindingPhase = false;
+      isBrewStaging = false;
+      isBrewCompletedCooling = true;
+      resetBrewButton();
+      const stEl = document.getElementById("stateText");
+      if (stEl) stEl.innerText = t("state_finished", "추출 완료");
+      const pEl = document.getElementById("pourVal");
+      if (pEl && finalWater > 0) pEl.innerText = Math.round(finalWater);
+      const yEl = document.getElementById("yieldVal");
+      if (yEl && finalYield > 0) yEl.innerText = Math.round(finalYield);
+      const tmEl = document.getElementById("timeVal");
+      if (tmEl && durationSec > 0) {
+        const mm = String(Math.floor(durationSec / 60)).padStart(2, '0');
+        const ss = String(Math.floor(durationSec % 60)).padStart(2, '0');
+        tmEl.innerText = `${mm}:${ss}`;
+      }
+      if (typeof finishBrew === 'function') {
+        finishBrew(durationSec, true);
+      }
+    } catch (e) {}
+    loadHistoryFromServer();
+  };
+
+  function finishBrew(durationSec, isForceNative = false) {
     if (isAbortedByEmergency) return;
-    if (!isBrewActive && !isBrewStaging && !isGrindingPhase) return;
+    if (!isForceNative && !isBrewActive && !isBrewStaging && !isGrindingPhase) {
+      loadHistoryFromServer();
+      return;
+    }
     isBrewActive = false;
     isGrindingPhase = false;
     isBrewStaging = false;
@@ -8020,6 +8157,17 @@ function focusAiSettingsSection() {
     }).then(res => {
       if (res.ok) addLog("[HIST] 추출 기록이 로컬 스토리지에 영구 보존되었습니다.");
     }).catch(err => console.warn("히스토리 서버 저장 실패:", err));
+
+    // ⏰ 예약 추출 완료 처리: 활성화된 1회성 예약이 있었다면 즉시 깔끔하게 해제/삭제!
+    if (wasSched || (activeSchedule && activeSchedule.enabled)) {
+      addLog("[SCHEDULE] ⏰ 1회 예약 무인 추출 완수! 예약이 자동으로 정상 해제되었습니다.");
+      try { cancelCurrentSchedule(false); } catch(e) {}
+    }
+
+    // 🔒 보안 및 배터리 보호: 저울 안정화 및 기록 완료 후 백그라운드 포그라운드 서비스 완전 종료!
+    setTimeout(() => {
+      releaseBrewStayAwake();
+    }, 2500);
   }
   function getRecipePayload() {
     const bpOn = isBypassEnabled();
@@ -8276,6 +8424,16 @@ function focusAiSettingsSection() {
   }
   function closeHistoryModal() { document.getElementById("historyModal").classList.remove("active"); }
   function closeHistoryOnBack(e) { if (e.target.id === "historyModal") closeHistoryModal(); }
+
+  // 🚀 사용자가 앱으로 복귀했을 때(화면 켬 / 백그라운드 복귀) 최신 네이티브 추출 기록 즉시 동기화
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      loadHistoryFromServer();
+    }
+  });
+  window.addEventListener("focus", () => {
+    loadHistoryFromServer();
+  });
   function renderHistoryList() {
     updateHistoryCount();
     const list = document.getElementById("historyListContainer");
@@ -8684,10 +8842,25 @@ function focusAiSettingsSection() {
       const p1 = points[i];
       const p2 = points[i + 1];
       const p3 = i < points.length - 2 ? points[i + 2] : p2;
+
+      // x축이 역전되었거나 동일한 점이면 단순 직선으로 연결
+      if (p2.x <= p1.x) {
+        ctx.lineTo(p2.x, p2.y);
+        continue;
+      }
+
       let cp1x = p1.x + (p2.x - p0.x) * tension;
       let cp1y = p1.y + (p2.y - p0.y) * tension;
       let cp2x = p2.x - (p3.x - p1.x) * tension;
       let cp2y = p2.y - (p3.y - p1.y) * tension;
+
+      // 🛡️ x축 단조성(Monotonicity) 엄격 보장:
+      // 점 간격이 불균등할 때(백그라운드 복귀 등) 제어점이 p2.x를 초월하여 루프/유턴을 그리는 왜곡 완전 차단!
+      const minX = p1.x;
+      const maxX = p2.x;
+      cp1x = Math.max(minX, Math.min(maxX, cp1x));
+      cp2x = Math.max(minX, Math.min(maxX, cp2x));
+
       if (p1.y === p2.y) {
         cp1y = p1.y;
         cp2y = p2.y;
@@ -11745,38 +11918,47 @@ function focusAiSettingsSection() {
   function getSelectedScheduleRecipe() {
     const sel = document.getElementById('scheduleRecipeSelect');
     const list = getAllAvailableRecipes();
+    let r = null;
     if (sel && sel.value && sel.value.startsWith('saved_')) {
       const idx = parseInt(sel.value.replace('saved_', ''), 10);
-      if (list[idx]) return list[idx];
+      if (list[idx]) r = Object.assign({}, list[idx]);
     }
     // If __current__ or default, extract active studio recipe from form
-    if (typeof getRecipePayload === 'function') {
+    if (!r && typeof getRecipePayload === 'function') {
       try {
-        const r = getRecipePayload();
-        if (r && (r.name || (r.steps && r.steps.length > 0))) return r;
+        const payload = getRecipePayload();
+        if (payload && (payload.name || (payload.steps && payload.steps.length > 0))) r = Object.assign({}, payload);
       } catch(e) {}
     }
-    if (typeof getRecipeFromForm === 'function') {
+    if (!r && typeof getRecipeFromForm === 'function') {
       try {
-        const r = getRecipeFromForm();
-        if (r) return r;
+        const formR = getRecipeFromForm();
+        if (formR) r = Object.assign({}, formR);
       } catch(e) {}
     }
-    if (list && list.length > 0) return list[0];
-    if (typeof window.XBLOOM_DEFAULT_RECIPES !== 'undefined' && window.XBLOOM_DEFAULT_RECIPES[0]) {
-      return window.XBLOOM_DEFAULT_RECIPES[0];
+    if (!r && list && list.length > 0) r = Object.assign({}, list[0]);
+    if (!r && typeof window.XBLOOM_DEFAULT_RECIPES !== 'undefined' && window.XBLOOM_DEFAULT_RECIPES[0]) {
+      r = Object.assign({}, window.XBLOOM_DEFAULT_RECIPES[0]);
     }
-    return {
-      name: "xBloom Signature",
-      dose: 15,
-      grind_size: 45,
-      grind_enabled: true,
-      steps: [
-        { temp: 93, water: 50, wait: 35, flow: 3.2, pattern: "center" },
-        { temp: 92, water: 100, wait: 20, flow: 3.5, pattern: "ring" },
-        { temp: 90, water: 90, wait: 0, flow: 3.5, pattern: "center" }
-      ]
-    };
+    if (!r) {
+      r = {
+        name: "xBloom Signature",
+        dose: 15,
+        grind_size: 45,
+        grind_enabled: true,
+        steps: [
+          { temp: 93, water: 50, wait: 35, flow: 3.2, pattern: "center" },
+          { temp: 92, water: 100, wait: 20, flow: 3.5, pattern: "ring" },
+          { temp: 90, water: 90, wait: 0, flow: 3.5, pattern: "center" }
+        ]
+      };
+    }
+    if (r) {
+      const g = (r.grind_size !== undefined && r.grind_size !== null) ? Number(r.grind_size) : (r.grind !== undefined && r.grind !== null ? Number(r.grind) : 58);
+      r.grind_size = g;
+      r.grind = g;
+    }
+    return r;
   }
 
   async function openScheduleModal() {
@@ -11784,7 +11966,13 @@ function focusAiSettingsSection() {
     if (!modal) return;
     modal.classList.add('active');
 
-    
+    // 최신 서버/로컬 레시피 비동기 로드
+    if (typeof loadServerLocalRecipes === 'function') {
+      try {
+        await loadServerLocalRecipes();
+      } catch(e) {}
+    }
+
     const sel = document.getElementById('scheduleRecipeSelect');
     if (sel) {
       const currentSelected = sel.value;
@@ -11793,7 +11981,9 @@ function focusAiSettingsSection() {
       list.forEach((r, idx) => {
         const opt = document.createElement('option');
         opt.value = `saved_${idx}`;
-        opt.textContent = `${r.name || 'Untitled'} (${r.dose || 15}g, ${r.grind || 58}클릭)`;
+        const grindVal = (r.grind_size !== undefined && r.grind_size !== null) ? r.grind_size : (r.grind !== undefined && r.grind !== null ? r.grind : 58);
+        const grindTxt = (r.grind_enabled !== false) ? `${grindVal}클릭` : (typeof t === 'function' ? t('no_grind', '원두분쇄 안함') : '원두분쇄 안함');
+        opt.textContent = `${r.name || 'Untitled'} (${r.dose || 15}g, ${grindTxt})`;
         sel.appendChild(opt);
       });
       if (currentSelected && [...sel.options].some(o => o.value === currentSelected)) {
@@ -11801,11 +11991,7 @@ function focusAiSettingsSection() {
       }
     }
 
-    
     await loadActiveSchedule();
-
-    
-    checkWaterSupplyForSchedule(false);
   }
 
   function closeScheduleModal() {
@@ -11822,84 +12008,14 @@ function focusAiSettingsSection() {
   }
 
   function renderSupplyBadge(status, text, descText) {
-    const badge = document.getElementById('schedSupplyStatusBadge');
-    const desc = document.getElementById('schedSupplyDesc');
-    if (!badge) return;
-    badge.textContent = text;
-    badge.style.whiteSpace = "nowrap";
-    badge.style.display = "inline-flex";
-    badge.style.alignItems = "center";
-    if (status === 'checking') {
-      badge.style.background = "rgba(148, 163, 184, 0.15)";
-      badge.style.color = "var(--muted)";
-      badge.style.border = "1px solid var(--border)";
-    } else if (status === 'ok') {
-      badge.style.background = "rgba(34, 197, 94, 0.15)";
-      badge.style.color = "#22c55e";
-      badge.style.border = "1px solid rgba(34, 197, 94, 0.3)";
-    } else if (status === 'no_water') {
-      badge.style.background = "rgba(239, 68, 68, 0.15)";
-      badge.style.color = "#ef4444";
-      badge.style.border = "1px solid rgba(239, 68, 68, 0.3)";
-    } else { // not_connected / waiting
-      badge.style.background = "rgba(245, 158, 11, 0.15)";
-      badge.style.color = "#f59e0b";
-      badge.style.border = "1px solid rgba(245, 158, 11, 0.3)";
-    }
-    if (desc && descText) desc.textContent = descText;
+    // 💡 xBloom 하드웨어 특성상 대기 중엔 수위 측정이 작동하지 않으므로
+    // 예약 모달은 상시 체크리스트 리마인더 카드로 운영됩니다. (하위 호환용 no-op)
   }
 
-  async function checkWaterSupplyForSchedule(showAlert = true) {
-    renderSupplyBadge('checking', '확인 중...', '머신 물탱크 수위를 실시간으로 측정하고 있습니다...');
-
-    if (window.XBloomBridge && typeof window.XBloomBridge.checkMachineSupply === 'function') {
-      try {
-        const res = await window.XBloomBridge.checkMachineSupply();
-        if (!res.success) {
-          if (res.reason === 'NO_WATER') {
-            renderSupplyBadge('no_water', '❌ 물 부족', res.message || '물탱크에 물이 부족합니다. 물을 채운 후 다시 예약해주세요.');
-            if (showAlert) alert(res.message || '물탱크에 물이 부족합니다. 물을 채운 후 다시 예약해주세요.');
-            return false;
-          } else if (res.reason === 'NOT_CONNECTED') {
-            renderSupplyBadge('not_connected', '⚠️ 미연결', res.message || '머신 전원 및 BLE 연결 상태를 확인해주세요.');
-            if (showAlert) alert(res.message || '머신과 BLE가 연결되어 있지 않습니다. 머신 전원을 확인해주세요.');
-            return false;
-          }
-        }
-        renderSupplyBadge('ok', '✅ 정상', '물탱크에 충분한 물이 감지되었습니다.');
-        if (showAlert) alert('💧 물탱크 수위 정상!\n물탱크에 충분한 물이 감지되었습니다.');
-        return true;
-      } catch(err) {
-        console.error('BLE 물탱크 점검 오류:', err);
-      }
-    }
-
-    try {
-      const res = await fetch('/api/schedule/check-supply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
-
-      if (data.reason === 'NO_WATER') {
-        renderSupplyBadge('no_water', '❌ 물 부족', t('schedule_water_empty', '물탱크에 물이 부족합니다. 물을 채운 후 다시 예약해주세요.'));
-        if (showAlert) alert(t('schedule_water_empty', '물탱크에 물이 부족합니다. 물을 채운 후 다시 예약해주세요.'));
-        return false;
-      }
-
-      if (data.reason === 'NOT_CONNECTED') {
-        renderSupplyBadge('not_connected', '⚠️ 미연결', data.message || '머신 전원 및 BLE 연결 상태를 확인해주세요.');
-        if (showAlert) alert(data.message || '머신과 연결되어 있지 않습니다. 머신 전원을 확인해주세요.');
-        return false;
-      }
-
-      renderSupplyBadge('ok', '✅ 정상', '물탱크에 충분한 물이 감지되었습니다.');
-      if (showAlert) alert('💧 물탱크 수위 정상!\n물탱크에 충분한 물이 감지되었습니다.');
-      return true;
-    } catch(e) {
-      renderSupplyBadge('ok', '✅ 정상', '물탱크 상태 확인 완료 (연결 대기)');
-      return true;
-    }
+  async function checkWaterSupplyForSchedule(showAlert = false) {
+    // 💡 xBloom은 0x42 Commit(추출 시동) 시점에만 실시간 수위를 측정하므로
+    // 예약 설정 시점에는 수위 측정을 건너뛰고 정상 통과시킵니다.
+    return true;
   }
 
   function calculateNextTriggerDate(timeStr, repeatMode) {
@@ -11926,11 +12042,6 @@ function focusAiSettingsSection() {
       return;
     }
 
-    
-    const supplyOk = await checkWaterSupplyForSchedule(false);
-    if (!supplyOk) return;
-
-    
     const targetRecipe = getSelectedScheduleRecipe();
     if (!targetRecipe) {
       alert("추출할 레시피를 찾을 수 없습니다.");
@@ -11973,18 +12084,42 @@ function focusAiSettingsSection() {
     }
 
     
+    // 🔋 배터리 0% 절전 모드: 밤새 불필요하게 상주 서비스를 켜두지 않고
+    // 안드로이드 시스템 AlarmManager에 정각 기상 알람만 등록합니다!
     const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
     if (fgService) {
       try {
-        await fgService.startService({
-          title: `☕ xBloom 예약 브루잉 대기 중 (${timeVal})`,
-          text: `'${targetRecipe.name || "커피"}' 무인 추출이 예약되어 있습니다.`
-        });
         if (typeof fgService.scheduleWakeAlarm === 'function') {
-          await fgService.scheduleWakeAlarm({ triggerTimestamp: nextDate.getTime() });
+          let scheduleFrames = [];
+          try {
+            if (window.XBloomProtocol && typeof window.XBloomProtocol.buildFullScheduledFrames === 'function') {
+              scheduleFrames = window.XBloomProtocol.buildFullScheduledFrames(targetRecipe);
+            } else if (window.XBloomProtocol && typeof window.XBloomProtocol.buildLoadFrames === 'function') {
+              const norm = window.XBloomProtocol.normalizeRecipe(targetRecipe);
+              const lf = window.XBloomProtocol.buildLoadFrames(norm);
+              const sq = window.XBloomProtocol.buildStatusQuery ? window.XBloomProtocol.buildStatusQuery() : new Uint8Array([0x58, 0x01, 0x01, 0x56, 0x1F, 0x0C, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00]);
+              const cm = window.XBloomProtocol.buildCommit ? window.XBloomProtocol.buildCommit() : new Uint8Array([0x58, 0x01, 0x01, 0x42, 0x1F, 0x0C, 0x00, 0x00, 0x00, 0x01, 0x7F, 0xCF]);
+              const allF = [lf[0], sq, lf[1], lf[2], lf[3], cm];
+              scheduleFrames = allF.map(f => Array.from(f).map(b => b.toString(16).padStart(2, '0')).join(''));
+            }
+          } catch (pe) {
+            console.warn("Failed to build schedule frames:", pe);
+          }
+
+          const currentDeviceId = (window.XBloomBridge && window.XBloomBridge.deviceId) || localStorage.getItem('xbloom_ble_device_id') || "";
+
+          await fgService.scheduleWakeAlarm({
+            triggerTimestamp: nextDate.getTime(),
+            leadMs: 0,
+            deviceId: currentDeviceId,
+            recipeName: targetRecipe.name || "예약 커피",
+            recipeJson: JSON.stringify(targetRecipe),
+            pourMarkerMode: pourMarkerMode || "weight",
+            frames: scheduleFrames
+          });
         }
       } catch(e) {
-        console.warn("ForegroundService start error:", e);
+        console.warn("ForegroundService alarm registration error:", e);
       }
     }
 
@@ -12028,7 +12163,17 @@ function focusAiSettingsSection() {
         if (typeof fgService.cancelWakeAlarm === 'function') {
           await fgService.cancelWakeAlarm();
         }
-        await fgService.stopService();
+        // 머신이 추출 중인 상태라면 백그라운드 무인 추출 유지를 위해 서비스를 중단하지 않음
+        let canStop = true;
+        if (typeof fgService.getNativeScheduleStatus === 'function') {
+          try {
+            const stat = await fgService.getNativeScheduleStatus();
+            if (stat && stat.isBrewing) canStop = false;
+          } catch(e) {}
+        }
+        if (canStop) {
+          await fgService.stopService();
+        }
       } catch(e) {}
     }
 
@@ -12115,15 +12260,6 @@ function focusAiSettingsSection() {
 
     if (list && list.length > 0 && list[0].enabled) {
       activeSchedule = list[0];
-      const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
-      if (fgService) {
-        try {
-          fgService.startService({
-            title: `☕ xBloom 예약 브루잉 대기 중 (${activeSchedule.time})`,
-            text: `'${(activeSchedule.recipe && activeSchedule.recipe.name) || "커피"}' 무인 추출이 예약되어 있습니다.`
-          });
-        } catch(e) {}
-      }
     } else {
       activeSchedule = null;
     }
@@ -12153,8 +12289,20 @@ function focusAiSettingsSection() {
       }
 
       if (activeDetails) {
-        const recipeName = activeSchedule.recipe ? (activeSchedule.recipe.name || "커피") : "선택된 레시피";
-        activeDetails.innerHTML = `<strong>${activeSchedule.time}</strong> [${recipeName}] 무인 추출 예약 (1회)`;
+        const r = activeSchedule.recipe;
+        const recipeName = r ? (r.name || "커피") : "선택된 레시피";
+        const grindVal = r ? ((r.grind_size !== undefined && r.grind_size !== null) ? r.grind_size : (r.grind !== undefined && r.grind !== null ? r.grind : 58)) : 58;
+        const grindTxt = (r && r.grind_enabled === false) ? '분쇄 안함' : `${grindVal}클릭`;
+        activeDetails.innerHTML = `<strong>${activeSchedule.time}</strong> [${recipeName}] (${grindTxt}) 무인 추출 예약 (1회)`;
+      }
+
+      const sel = document.getElementById('scheduleRecipeSelect');
+      if (sel && activeSchedule.recipe) {
+        const list = getAllAvailableRecipes();
+        const foundIdx = list.findIndex(r => r.name === activeSchedule.recipe.name);
+        if (foundIdx >= 0) {
+          sel.value = `saved_${foundIdx}`;
+        }
       }
 
       startScheduleCountdown();
@@ -12189,40 +12337,22 @@ function focusAiSettingsSection() {
       let targetTime = activeSchedule.next_timestamp;
 
       
-      if (targetTime && (now - targetTime > 60000)) {
-        addLog(`[SCHEDULE] ⚠️ 예약 시각(${activeSchedule.time})이 지나 1회성 예약이 자동 만료되었습니다.`);
+      if (targetTime && (now - targetTime > 15000)) {
         cancelCurrentSchedule(false);
         return;
       }
 
       const diffSec = Math.round((targetTime - now) / 1000);
 
-      
-      if (diffSec <= 0 && diffSec >= -60) {
+      // 정각 도달 감지: 네이티브 서비스가 무인 추출을 단독 수행하므로 웹뷰는 startBrew()를 실행하지 않습니다!
+      if (diffSec <= 0) {
         if (!activeSchedule._hasTriggered) {
           activeSchedule._hasTriggered = true;
-          addLog(`[SCHEDULE] 🚀 ⏰ 정각 도달! 1회 무인 추출을 자동 시동합니다!`);
-          
-          const runBrew = async () => {
-            try {
-              isScheduledBrew = true;
-              if (activeSchedule && activeSchedule.recipe) {
-                applyRecipeToUI(activeSchedule.recipe);
-              }
-              
-              await startBrew();
-            } catch(err) {
-              console.error("[SCHEDULE ERROR]", err);
-              addLog(`[SCHEDULE] ❌ 추출 가동 중 예외: ${err.message}`);
-            }
-          };
-          runBrew();
-
-          
+          addLog(`[SCHEDULE] 예약 시각 도달: 백그라운드 추출 진행 중`);
           setTimeout(() => {
             activeSchedule.enabled = false;
             cancelCurrentSchedule(false);
-          }, 180000);
+          }, 30000);
         }
         return;
       }
@@ -12251,96 +12381,210 @@ function focusAiSettingsSection() {
   }
 
   
+  // 비정상 타이머 및 상태 리셋 핸들러:
+  // 네이티브 엔진이나 머신이 추출 중이 아닌데 웹뷰 혼자 타이머를 돌리고 있다면 즉시 00:00으로 강제 초기화!
+  function checkAndSanitizeBrewState() {
+    const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
+    if (fgService && typeof fgService.getNativeScheduleStatus === 'function') {
+      fgService.getNativeScheduleStatus().then(status => {
+        if (status && !status.isBrewing) {
+          if (isBrewActive || isBrewStaging || isGrindingPhase) {
+            console.warn("[BLE SAFETY] 머신이 추출 중이 아니므로 비정상적으로 흐르던 타이머 및 브루잉 상태 강제 리셋");
+            resetBrewButton();
+            const tmEl = document.getElementById("timeVal");
+            if (tmEl) tmEl.innerText = "00:00";
+            const pEl = document.getElementById("pourVal");
+            if (pEl) pEl.innerText = "0";
+            const yEl = document.getElementById("yieldVal");
+            if (yEl) yEl.innerText = "0";
+            const stEl = document.getElementById("stateText");
+            if (stEl) stEl.innerText = t("state_finished", "추출 완료");
+          }
+        }
+      }).catch(()=>{});
+    }
+  }
+
+  let isExecutingScheduledBrew = false;
+  async function triggerScheduledBrewExecution(triggerSource = "alarm") {
+    // 네이티브 백그라운드 서비스가 추출을 전담하므로,
+    // 웹뷰는 절대로 중복으로 startBrew()를 실행하지 않습니다!
+    console.log(`[SCHEDULE] 네이티브 백그라운드 서비스가 추출을 전담하므로 웹뷰 중복 startBrew() 차단 (triggerSource: ${triggerSource})`);
+    if (activeSchedule) {
+      activeSchedule._hasTriggered = true;
+      activeSchedule.enabled = false;
+      cancelCurrentSchedule(false);
+    }
+    checkAndSanitizeBrewState();
+    loadHistoryFromServer();
+  }
+
   if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
     try {
       const ln = window.Capacitor.Plugins.LocalNotifications;
       ln.addListener('localNotificationReceived', async (notif) => {
         console.log('[LOCAL NOTIF RECEIVED]', notif);
-        if (notif.id === 77777 && activeSchedule && activeSchedule.enabled && !activeSchedule._hasTriggered) {
-          activeSchedule._hasTriggered = true;
-          addLog(`[SCHEDULE] ⏰ 안드로이드 시스템 알람 수신 감지! 즉시 추출 자동 가동!`);
-          try {
-            isScheduledBrew = true;
-            if (activeSchedule && activeSchedule.recipe) {
-              applyRecipeToUI(activeSchedule.recipe);
-            }
-            await startBrew();
-          } catch(err) {
-            console.error("[SCHEDULE NOTIF ERROR]", err);
-            addLog(`[SCHEDULE] ❌ 추출 가동 중 예외: ${err.message}`);
-          }
+        if (notif && notif.id === 77777) {
+          triggerScheduledBrewExecution("시스템 알람");
         }
       });
       ln.addListener('localNotificationActionPerformed', async (action) => {
         console.log('[LOCAL NOTIF ACTION]', action);
-        if (action.notification && action.notification.id === 77777 && activeSchedule && activeSchedule.enabled && !activeSchedule._hasTriggered) {
-          activeSchedule._hasTriggered = true;
-          addLog(`[SCHEDULE] ⏰ 알림 터치 감지! 즉시 추출 자동 가동!`);
-          try {
-            isScheduledBrew = true;
-            if (activeSchedule && activeSchedule.recipe) {
-              applyRecipeToUI(activeSchedule.recipe);
-            }
-            await startBrew();
-          } catch(err) {
-            console.error("[SCHEDULE ACTION ERROR]", err);
-            addLog(`[SCHEDULE] ❌ 추출 가동 중 예외: ${err.message}`);
-          }
-        }
+        // 🛡️ 알림 터치는 사용자가 완료/진행 알림을 확인하려고 앱을 연 것이므로 절대 추출을 시동하지 않음!
+        checkAndSanitizeBrewState();
+        loadHistoryFromServer();
       });
     } catch(e) {
       console.warn("LocalNotifications listener setup error:", e);
     }
   }
 
-  
+  // 🚀 네이티브 Java에서 직접 호출할 수 있도록 글로벌 window에 노출
+  window.triggerScheduledBrewExecution = triggerScheduledBrewExecution;
+
+  window.addEventListener('xbloom-alarm-prewarm', async (e) => {
+    console.log('[NATIVE ALARM PREWARM EVENT]', e);
+    addLog(`[SCHEDULE] ☕ ⏰ [사전 예열] 추출 준비 백그라운드 기상 성공!`);
+    if (activeSchedule && activeSchedule.recipe) {
+      applyRecipeToUI(activeSchedule.recipe);
+    }
+  });
+
   window.addEventListener('xbloom-alarm-wake', async (e) => {
     console.log('[NATIVE ALARM WAKE EVENT]', e);
-    addLog("[SCHEDULE] ⏰ 안드로이드 네이티브 화면 기상 알람 수신! 예약 브루잉 즉시 가동!");
-    if (activeSchedule && activeSchedule.enabled && !activeSchedule._hasTriggered) {
-      activeSchedule._hasTriggered = true;
-      try {
-        isScheduledBrew = true;
-        if (activeSchedule.recipe) {
-          applyRecipeToUI(activeSchedule.recipe);
-        }
-        await startBrew();
-      } catch(err) {
-        console.error("[NATIVE ALARM WAKE BREW ERROR]", err);
-        addLog(`[SCHEDULE] ❌ 추출 가동 중 예외: ${err.message}`);
-      }
-    }
+    triggerScheduledBrewExecution("네이티브 기상 알람");
   });
 
-  
+  function attachRunningBrewToUI(snapshot) {
+    if (!snapshot) return;
+    isBrewActive = true;
+    isBrewStaging = false;
+    isGrindingPhase = (snapshot.machineState === "STARTING");
+    if (snapshot.recipeName) {
+      activeRecipeName = snapshot.recipeName;
+      const tEl = document.getElementById("loadedRecipeTitle");
+      if (tEl) tEl.innerText = snapshot.recipeName;
+    }
+    if (snapshot.dose) currentDose = snapshot.dose;
+
+    if (snapshot.recipe) {
+      try {
+        syncBrewingUIFromRecipe(snapshot.recipe);
+      } catch(e){}
+    }
+
+    const btn = document.getElementById("brewBtn");
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = t("btn_stop_brew", "비상 정지 (STOP)");
+      btn.classList.add("btn-brewing");
+      btn.classList.remove("btn-brew");
+    }
+
+    if (snapshot.machineDesc) {
+      const stEl = document.getElementById("stateText");
+      if (stEl) stEl.innerText = snapshot.machineDesc;
+    }
+
+    const pEl = document.getElementById("pourVal");
+    if (pEl && snapshot.currentWater !== undefined) pEl.innerText = Math.round(snapshot.currentWater);
+    const yEl = document.getElementById("yieldVal");
+    if (yEl && snapshot.currentYield !== undefined) yEl.innerText = Math.round(snapshot.currentYield);
+
+    const elapsedSec = snapshot.elapsedSec || 0;
+    const tmEl = document.getElementById("timeVal");
+    if (tmEl && elapsedSec > 0) {
+      const mm = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+      const ss = String(Math.floor(elapsedSec % 60)).padStart(2, '0');
+      tmEl.innerText = `${mm}:${ss}`;
+    }
+
+    // 차트 데이터 및 마커 복원
+    if (Array.isArray(snapshot.chartData) && snapshot.chartData.length > 0) {
+      chartData = snapshot.chartData.map(p => ({
+        time: p.time,
+        pour: p.pour,
+        yield: p.yield
+      }));
+      if (chart) {
+        chart.data.labels = chartData.map(d => d.time);
+        chart.data.datasets[0].data = chartData.map(d => d.pour);
+        chart.data.datasets[1].data = chartData.map(d => d.yield);
+        chart.update('none');
+      }
+    }
+    if (Array.isArray(snapshot.markers) && snapshot.markers.length > 0) {
+      pourMarkers = snapshot.markers.slice();
+    }
+    console.log(`[ATTACH] 백그라운드 추출 화면 UI 복원 완료 (${snapshot.recipeName}, ${elapsedSec}초, 포인트 ${chartData.length}개)`);
+  }
+
   document.addEventListener('visibilitychange', async () => {
     if (document.visibilityState === 'visible') {
-      if (activeSchedule && activeSchedule.enabled && !activeSchedule._hasTriggered) {
+      const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
+      let isNativeBrewing = false;
+
+      if (fgService && typeof fgService.getNativeScheduleStatus === 'function') {
+        try {
+          const status = await fgService.getNativeScheduleStatus();
+          if (status) {
+            isNativeBrewing = Boolean(status.isBrewing);
+            if (status.connected) {
+              if (window.XBloomBridge) window.XBloomBridge.connected = true;
+              updateBleBadgeUI("CONNECTED");
+            }
+            if (isNativeBrewing && status.runningSnapshot) {
+              attachRunningBrewToUI(status.runningSnapshot);
+            } else if (status.isExecuted && !isNativeBrewing) {
+              console.log("[SCHEDULE] 네이티브 예약 추출 완주 확인: 웹뷰 상태 리셋 및 예약 만료");
+              if (activeSchedule) {
+                activeSchedule._hasTriggered = true;
+                activeSchedule.enabled = false;
+                cancelCurrentSchedule(false);
+              }
+              resetBrewButton();
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (!isNativeBrewing) {
+        checkAndSanitizeBrewState();
+      }
+      loadHistoryFromServer();
+
+      // 만약 예약 시간이 이미 지난 상태에서 화면이 켜졌다면, 현재 추출 중이 아닐 때만 만료 처리
+      if (activeSchedule && activeSchedule.enabled && !isNativeBrewing) {
         const now = Date.now();
         const targetTime = activeSchedule.next_timestamp;
-        const diffSec = Math.round((targetTime - now) / 1000);
-        
-        if (diffSec <= 0 && diffSec >= -120) {
+        if (targetTime && now >= targetTime) {
+          console.log("[SCHEDULE] 화면 복귀 시점에 이미 지난 예약 감지: 뒤늦은 시동 차단 및 만료 처리");
           activeSchedule._hasTriggered = true;
-          addLog("[SCHEDULE] 🚀 ⏰ 화면 켜짐 감지: 정각 도달 확인 즉시 추출 가동!");
-          try {
-            isScheduledBrew = true;
-            if (activeSchedule.recipe) {
-              applyRecipeToUI(activeSchedule.recipe);
-            }
-            await startBrew();
-          } catch(err) {
-            console.error("[VISIBILITY BREW ERROR]", err);
-          }
+          activeSchedule.enabled = false;
+          cancelCurrentSchedule(false);
         }
       }
     }
   });
 
-  
-  setTimeout(() => {
+  window.addEventListener('focus', checkAndSanitizeBrewState);
+
+  setTimeout(async () => {
     try { loadActiveSchedule(); } catch(e){}
-  }, 1000);
+    const fgService = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.ForegroundService;
+    if (fgService && typeof fgService.getNativeScheduleStatus === 'function') {
+      try {
+        const status = await fgService.getNativeScheduleStatus();
+        if (status && status.isBrewing && status.runningSnapshot) {
+          if (status.connected && window.XBloomBridge) window.XBloomBridge.connected = true;
+          updateBleBadgeUI("CONNECTED");
+          attachRunningBrewToUI(status.runningSnapshot);
+          return;
+        }
+      } catch(e) {}
+    }
+    try { checkAndSanitizeBrewState(); } catch(e){}
+  }, 500);
 
 </script>
 
