@@ -1,7 +1,7 @@
 import shutil
 import ai_service
 """
-xBloom bleUI Local Web Server (v1.0.1)
+xBloom bleUI Local Web Server (v1.0.2)
 - 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)
 - BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단
 - recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑
@@ -33,7 +33,7 @@ from typing import Dict, Any, Optional, List
 import urllib.request
 import urllib.parse
 
-CURRENT_VERSION = "1.0.1"
+CURRENT_VERSION = "1.0.2"
 GITHUB_REPO = "ennemate/xBloom-bleUI"
 
 import uvicorn
@@ -386,7 +386,7 @@ async def connect_ble_task():
         devices = await BleakScanner.discover(timeout=6.0)
         for d in devices:
             d_name = (d.name or "").lower()
-            if "xbloom" in d_name:
+            if "xbloom" in d_name or "bloom" in d_name:
                 target_address = d.address
                 print(f"[BLE] Device found: {d.name} ({d.address})")
                 await broadcast_msg({"type": "log", "msg": f"[BLE] 기기 발견: {d.name} ({d.address})"})

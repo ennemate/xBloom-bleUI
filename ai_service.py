@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-xBloom bleUI AI Service Module (v1.0.1)
+xBloom bleUI AI Service Module (v1.0.2)
 - Pure Python standard library implementation (no heavy third-party SDK required)
 - Supports Google Gemini (gemini-2.0-flash) and OpenAI ChatGPT (gpt-4o-mini)
 - Full 7-language i18n support (ko, en, ja, zh-TW, zh-CN, de, fr)
@@ -589,20 +589,53 @@ xBloom Studio Machine Protocol & Hardware Constraints (APPLIES ONLY WHEN is_coff
    - Extract the EXACT dose mentioned in the source (e.g. 20g, 40g, 15g, 16g).
    - NEVER artificially clamp or cap the dose to 18g if the source clearly states 20g, 30g, 40g, etc. (e.g. 2-cup or 4-cup batch). Extract the true dose faithfully!
 2. Grind clicks & Micron Mapping:
-   - xBloom theoretical micron formula: µm ≈ 180 + (click - 1) * 11.013  <=>  click ≈ round((µm - 180) / 11.013) + 1.
+   - xBloom theoretical micron formula: µm ≈ 180 + (click - 1) * 11.013  <=>  click ≈ round((µm - 180) / 11.013) + 1 (clamped between 1 and 80).
    - Reference click benchmarks:
      * 600 µm ≈ 39 clicks (Fine)
      * 800 µm ≈ 57 clicks (Standard specialty medium sweetspot)
      * 1000 µm ≈ 75 clicks (Coarse / fast water-drain pourover)
      * 1050 µm ≈ 80 clicks (Maximum coarse limit)
+   - STANDARD COMMERCIAL GRINDERS FORMULA MAPPING:
+     When the source recipe mentions any of these 3 major grinders, YOU MUST FIRST calculate the micron (µm) using their formula, then convert to xBloom click! NEVER default or fall back to 58 clicks when a specific grinder, dial, or click is named!
+     1) Mahlkönig EK43 (Dial 1 ~ 16, ~60µm per dial step):
+        * Formula: µm ≈ 180 + (dial - 1) * 60
+        * Benchmarks:
+          - EK43 Dial 8.0  ≈ 600 µm -> xBloom 39 clicks
+          - EK43 Dial 10.0 ≈ 720 µm -> xBloom 50 clicks
+          - EK43 Dial 11.0 ≈ 780 µm -> xBloom 55 clicks
+          - EK43 Dial 12.0 ≈ 840 µm -> xBloom 61 clicks
+          - EK43 Dial 13.0 ≈ 900 µm -> xBloom 66 clicks (e.g. EK43 13 = 66 clicks, NOT 58 clicks!)
+          - EK43 Dial 14.0 ≈ 960 µm -> xBloom 72 clicks
+          - EK43 Dial 14.5 ≈ 990 µm -> xBloom 75 clicks
+     2) Comandante C40 MK4 (Standard Axle 0 ~ 40 clicks, calibrated median particle size / Kruve D50):
+        * Formula: µm ≈ 100 + (clicks * 30) (If Red Clix mentioned: µm ≈ 100 + clicks * 15)
+        * Benchmarks:
+          - C40 10 clicks ≈ 400 µm -> xBloom 21 clicks (Espresso upper range)
+          - C40 16 clicks ≈ 580 µm -> xBloom 37 clicks (Moka / AeroPress)
+          - C40 20 clicks ≈ 700 µm -> xBloom 48 clicks (Fine drip)
+          - C40 22 clicks ≈ 760 µm -> xBloom 54 clicks (Medium-fine drip)
+          - C40 24 clicks ≈ 820 µm -> xBloom 59 clicks (Standard V60 pour over sweetspot)
+          - C40 26 clicks ≈ 880 µm -> xBloom 65 clicks (Medium pour over)
+          - C40 28 clicks ≈ 940 µm -> xBloom 70 clicks (Coarse pour over / Chemex)
+          - C40 30 clicks ≈ 1000 µm -> xBloom 75 clicks (French Press / Cold Brew)
+     3) Fellow Ode Gen 2 (Dial 1 ~ 11, calibrated median particle size / Kruve D50, ~43µm per 1/3 notch):
+        * Formula: µm ≈ 380 + (setting - 1) * 130
+        * Benchmarks:
+          - Ode Setting 1.0 ≈ 380 µm -> xBloom 19 clicks (Fine limit)
+          - Ode Setting 3.0 ≈ 640 µm -> xBloom 43 clicks (AeroPress / Moka)
+          - Ode Setting 4.0 ≈ 770 µm -> xBloom 55 clicks (Light roast V60 pour over)
+          - Ode Setting 4.2 ≈ 813 µm -> xBloom 58 clicks (Standard V60 pour over sweetspot)
+          - Ode Setting 5.0 ≈ 900 µm -> xBloom 66 clicks (Medium pour over / Kalita)
+          - Ode Setting 6.0 ≈ 1030 µm -> xBloom 78 clicks (Chemex / French Press)
    - RULES:
-     * If the source mentions grind size in microns (e.g. 1000~1100µm), specific grinders (e.g. EK43 14.5, Ode coarse, Comandante), or coarseness descriptors (e.g. "굵게", "coarse", "fast drainage"):
-       You MUST calculate and assign the appropriate xBloom click according to the formula (e.g., 1000µm -> 75 clicks). Do NOT use default 58 clicks!
-     * ONLY if NO grind size or coarseness is mentioned in the authentic recipe, use standard 56 ~ 58 clicks (≈786 ~ 808 µm).
+     * If the source mentions grind size in microns (e.g. 1000~1100µm), specific grinders (e.g. EK43 13, Ode 5, C40 24), or coarseness descriptors (e.g. "굵게", "coarse", "fast drainage"):
+       You MUST calculate and assign the appropriate xBloom click according to the formulas above. Do NOT use default 58 clicks!
+     * ONLY if NO grind size or coarseness is mentioned at all in the authentic recipe, use standard 56 ~ 58 clicks (≈786 ~ 808 µm).
    - Always produce 3 localized options for the user to fine-tune:
      * Option A: "{opt_body}" -> Recommended click minus 2
      * Option B: "{opt_rec}" -> Recommended click (marked "recommended": true)
      * Option C: "{opt_cup}" -> Recommended click plus 2
+     * Calculate each option's "micron" property accurately using: round(180 + (click - 1) * 11.013)
 3. Pour Pattern for each step:
    - Must be strictly one of: "spiral", "center", "ring"
    - Natural language mapping:
@@ -762,6 +795,18 @@ def robust_parse_recipe_json(raw_text: str) -> Dict[str, Any]:
     raise ValueError(f"AI 응답을 JSON으로 파싱할 수 없습니다: {clean_json[:200]}")
 
 
+def convert_micron_to_xbloom(micron: float) -> int:
+    """마이크론(µm)을 xBloom 클릭수(1~80)로 변환"""
+    clk = int(round((float(micron) - 180.0) / 11.013)) + 1
+    return max(1, min(80, clk))
+
+
+def convert_xbloom_to_micron(click: int) -> int:
+    """xBloom 클릭수를 마이크론(µm)으로 변환"""
+    c = max(1, min(80, int(click)))
+    return int(round(180.0 + (c - 1) * 11.013))
+
+
 def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text: Optional[str] = None, model: Optional[str] = None, lang: str = "ko", images: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
     """URL 또는 텍스트에서 레시피 추출 실행 (Gemini/OpenAI 네이티브 멀티모달 비디오/이미지 이해 및 사용자 언어 동기화)"""
     source_content = ""
@@ -819,7 +864,19 @@ def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text:
         
     for r in recipes:
         r["dose"] = int(r.get("dose", 16))
-        r["grind"] = int(r.get("grind", 58))
+        r["grind"] = max(1, min(80, int(r.get("grind", 58))))
+
+        # Ensure accurate grind_options with calculated micron
+        rec_click = r["grind"]
+        opt_b_click = rec_click
+        opt_a_click = max(1, rec_click - 2)
+        opt_c_click = min(80, rec_click + 2)
+        r["grind_options"] = [
+            {"title": lang_info["opt_body"], "clicks": opt_a_click, "micron": convert_xbloom_to_micron(opt_a_click)},
+            {"title": lang_info["opt_rec"], "clicks": opt_b_click, "micron": convert_xbloom_to_micron(opt_b_click), "recommended": True},
+            {"title": lang_info["opt_cup"], "clicks": opt_c_click, "micron": convert_xbloom_to_micron(opt_c_click)}
+        ]
+
         r["rpm"] = int(r.get("rpm", 80))
         if r["rpm"] % 10 != 0:
             r["rpm"] = round(r["rpm"] / 10) * 10
