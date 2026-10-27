@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.1)
+# xBloom bleUI (v1.0.2)
 
 <p align="center">
   <strong>Standalone Android App & Local Web Controller for xBloom Studio Coffee Machines</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
+  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -65,6 +65,8 @@ A dedicated native Android application (`APK`) that eliminates the need to turn 
   * Connects directly to your machine via Bluetooth upon opening the app—no Python server or PC relay required.
 * **Official Cloud Account Sync**:
   * Log in with your official xBloom credentials directly inside the app to load personal cloud recipes or upload new creations.
+* **Seamless Background Telemetry & Live Notifications**:
+  * Turning off the screen or switching apps preserves the full extraction curve starting from 0s. The status bar notification displays real-time water pour and coffee yield updates.
 * **Permanent Developer Signing**:
   * Pre-signed with an official developer key (`bleui-release.jks`) using Android APK Signature Scheme v2 for secure, hassle-free installation.
 * **Mobile-Optimized Responsive UX**:
@@ -134,7 +136,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 * **Link & Text AI Recipe Conversion**:
   * Paste a coffee brewing video URL, blog link, or clipboard screenshot: the AI transcribes speech/text into water temperatures, volumes, pour patterns, and intervals.
   * Automatically separates multi-recipe content (Hot vs Iced, 1-cup vs 2-cup).
-  * Converts generic grind sizes or micron (µm) metrics into exact xBloom physical click numbers.
+  * Accurately converts grind descriptions and microns (µm) from popular grinders (Mahlkönig EK43, Comandante C40, Fellow Ode Gen 2) into exact xBloom physical clicks.
   * One-click import pushes all parameters directly into Recipe Studio.
 * **Real-time AI Barista Lab**:
   * Share sensory feedback like *"a bit too bitter"* or *"needs more brightness"*; the AI evaluates actual **extraction time, water poured, and scale yield data** from your latest brew.
@@ -148,7 +150,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 
 ## Feature Comparison
 
-| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
+| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
 | :--- | :--- | :--- |
 | **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
 | **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
@@ -252,7 +254,7 @@ Choose the distribution suited for your setup:
 ---
 
 ### Method B. Windows Standalone Portable (PC Recommended)
-1. Download `xBloom-bleUI-v1.0.1-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+1. Download `xBloom-bleUI-v1.0.2-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
 2. Unzip into any directory.
 3. Double-click **`run.bat`**.
    * The server starts automatically and opens your default browser at `http://localhost:8000`.

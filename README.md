@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.1)
+# xBloom bleUI (v1.0.2)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 독립형 안드로이드 앱 & 로컬 웹 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
+  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -65,6 +65,8 @@
   * 별도의 파이썬 서버나 PC 중계 없이 앱 실행 즉시 머신과 블루투스로 직결되어 실시간 추출, 레시피 편집, 머신 제어를 스마트폰 하나로 완결합니다.
 * **공식 클라우드 계정 직결 연동**:
   * 스마트폰 앱 안에서 xBloom 공식 계정으로 로그인하여 나만의 클라우드 레시피를 바로 불러오거나 새 레시피를 업로드할 수 있습니다.
+* **완벽한 백그라운드 텔레메트리 & 실시간 알림**:
+  * 추출 중 화면을 끄거나 다른 앱으로 전환해도 0초부터 누적된 그래프가 완벽히 보존되며, 상단바 알림을 통해 실시간 물 투입량과 추출량을 확인할 수 있습니다.
 * **정식 개발자 서명 적용**:
   * 영구 개발자 서명 키(`bleui-release.jks`) 및 Android APK Signature Scheme v2 서명이 완료되어 신뢰성 있고 안전하게 설치할 수 있습니다.
 * **모바일 최적화 반응형 UX**:
@@ -134,7 +136,7 @@
 * **영상 및 웹 링크 기반 레시피 자동 추출**:
   * 커피 추출 영상 링크나 웹페이지 주소를 입력하면, AI가 음성 자막과 본문 텍스트를 분석하여 단계별 수온, 물량, 푸어 패턴, 대기시간을 레시피로 자동 변환합니다.
   * 단일 콘텐츠 안에 핫/아이스, 1인용/2인용 등 여러 레시피가 소개되어 있어도 각각 분리하여 원하는 레시피를 선택할 수 있습니다.
-  * 분쇄 굵기 표기나 마이크론(µm) 수치를 xBloom 머신의 물리적 클릭 수로 정밀 계산하여 [권장 / 단맛·바디 / 클린컵·산미] 3종으로 제시합니다.
+  * EK43, Comandante C40, Fellow Ode 등 상용 그라인더의 분쇄도 표기나 마이크론(µm) 수치를 xBloom 머신의 물리적 클릭 수로 정밀 계산하여 [권장 / 단맛·바디 / 클린컵·산미] 3종으로 제시합니다.
   * `[스튜디오로 불러오기]` 버튼 클릭 한 번으로 모든 파라미터가 편집기에 즉시 세팅됩니다.
 * **실시간 AI 바리스타 연구소**:
   * 추출된 커피 맛을 보고 "조금 써요", "산미를 더 살리고 싶어요" 등 간단한 피드백을 전달하면 원인을 진단해 줍니다.
@@ -149,7 +151,7 @@
 
 ## 기능 비교
 
-| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
+| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
 | :--- | :--- | :--- |
 | **실행 플랫폼** | 터미널 기반 CLI 및 TUI (Linux 중심) | **독립형 안드로이드 네이티브 앱(APK) + 크로스플랫폼 PC 웹 대시보드** |
 | **PC 의존성** | PC 파이썬 환경 필수 | **스마트폰 단독 구동 (PC 없이 스마트폰에서 BLE 직결)** |
@@ -253,7 +255,7 @@
 ---
 
 ### 방법 B. Windows 포터블 무설치판 실행 (PC 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v1.0.1-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v1.0.2-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    * 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.

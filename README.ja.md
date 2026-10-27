@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.1)
+# xBloom bleUI (v1.0.2)
 
 <p align="center">
   <strong>xBloom Studio コーヒーマシンのためのスタンドアロンAndroidアプリ＆ローカルWebコントローラー</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
+  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -65,6 +65,8 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
   * 外部PythonサーバーやPCの仲介なしに、アプリ起動後ワンタップでマシンとBluetooth直結し、リアルタイム抽出、レシピ編集、マシン制御をスマートフォン単体で完結します。
 * **公式クラウドアカウント直結連携**:
   * スマートフォンアプリ内からxBloom公式アカウントへログインし、クラウドアカウント内のマイレシピを即座に読み込んだり新規アップロードしたりできます。
+* **シームレスなバックグラウンド計測＆リアルタイム通知**:
+  * 抽出中に画面を消したり他アプリに切り替えても、復帰時に0秒からの累積抽出グラフが完全に復元されます。ステータスバー通知で注水量と抽出量をリアルタイムに確認できます。
 * **正式な開発者署名を適用**:
   * 恒久的な開発者署名鍵（`bleui-release.jks`）およびAndroid APK Signature Scheme v2署名を完了しており、安全かつ確実にインストールできます。
 * **モバイル最適化レスポンシブUX**:
@@ -134,7 +136,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 * **動画＆Webリンクからのレシピ自動抽出**:
   * コーヒー抽出動画のURLやWebページアドレスを入力すると、AIが字幕や本文テキストを解析し、段階別の水温、水量、プアパターン、待ち時間をレシピへ自動変換します。
   * 1つのコンテンツ内にホット／アイス、1杯分／2杯分など複数のレシピが含まれている場合でも、個別に分離して希望のレシピを選択可能です。
-  * 挽き目表記やミクロン（µm）数値をxBloomマシンの物理クリック数へ精密換算し、[推奨 / 甘み・ボディ / クリーンカップ・酸味] の3パターンを提案。
+  * EK43、コマンダンテC40、Fellow Odeなどの市販グラインダー設定値をxBloomのクリック数に高精度に変換します。
   * `[スタジオへ読み込む]` ボタンをワンクリックするだけで、全パラメータがエディタへ即時反映されます。
 * **リアルタイムAIバリスタ研究所**:
   * 抽出したコーヒーを飲んで「少し苦い」「酸味をもっと際立たせたい」などのフィードバックを入力すると、原因を即座に診断します。
@@ -149,7 +151,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ## 機能比較表
 
-| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
+| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
 | :--- | :--- | :--- |
 | **実行プラットフォーム** | ターミナルベース CLI / TUI (Linux中心) | **スタンドアロンAndroidネイティブアプリ(APK) ＋ クロスプラットフォームPC Web** |
 | **PC依存度** | PCのPython環境が必須 | **スマートフォン単独駆動（PC不要でスマホからBLE直接接続）** |
@@ -253,7 +255,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 ---
 
 ### 方法 B. Windows ポータブル版を実行 (PC推奨)
-1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v1.0.1-Windows-Portable.zip` をダウンロード
+1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v1.0.2-Windows-Portable.zip` をダウンロード
 2. お好みのフォルダーに解凍
 3. フォルダー内の **`run.bat`** ファイルをダブルクリック
    * 内蔵されたPython環境でサーバーが自動起動し、既定のWebブラウザ（`http://localhost:8000`）が自動で開きます。

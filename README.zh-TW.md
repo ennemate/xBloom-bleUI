@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.1)
+# xBloom bleUI (v1.0.2)
 
 <p align="center">
   <strong>專為 xBloom Studio 打造的獨立 Android 原生 App 與本機網頁控制器</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.1-orange.svg" alt="Version 1.0.1">
+  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -65,6 +65,8 @@
   * 啟動 App 即可一鍵搜尋並連線周圍的 xBloom Studio，無需 Python 伺服器中繼，隨時隨地完成即時沖煮、配方編輯與機器控制。
 * **官方雲端帳號直接同步**:
   * 可在手機 App 內直接登入 xBloom 官方帳號，一鍵載入雲端專屬配方或將新創作上傳備份。
+* **無縫後台遙測與即時通知**:
+  * 萃取過程中即使關閉螢幕或切換應用，返回時也能完整還原從0秒累積至今的萃取曲線；狀態列通知可即時查看注水量與萃取量。
 * **正式開發者簽章保護**:
   * 採用永久開發者金鑰（`bleui-release.jks`）與 Android APK Signature Scheme v2 完整簽署，安裝安全可靠。
 * **行動端最佳化響應式介面**:
@@ -134,7 +136,7 @@
 * **影片與網頁連結自動解析配方**:
   * 輸入咖啡教學影片連結或網頁網址，AI 會自動分析字幕與文章內容，提取水溫、水量、注水手法及間隔時間，轉換為標準配方。
   * 單篇內容若同時介紹熱沖、冰沖或不同人份，系統會智慧分拆，供您自由挑選。
-  * 研磨刻度或微米（µm）數據可精準換算為 xBloom 機身格數，並提供 [建議 / 甜感厚實 / 乾淨明亮] 3 種風格方案。
+  * 精確將 EK43、Comandante C40、Fellow Ode 等主流磨豆機刻度或微米（µm）數據換算為 xBloom 機身格數。
   * 點擊 `[載入至工作室]` 即可將全部參數一鍵填入編輯器。
 * **即時 AI 咖啡師實驗室**:
   * 品嚐剛沖煮完的咖啡後，只需給予「尾韻偏苦」或「想增強果酸」等簡單回饋，AI 即可分析萃取原因。
@@ -149,7 +151,7 @@
 
 ## 功能比較表
 
-| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v1.0.1)** |
+| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
 | :--- | :--- | :--- |
 | **執行平台** | 終端機命令列 CLI / TUI (Linux 為主) | **獨立 Android 原生 App (APK) ＋ 跨平台 PC 網頁儀表板** |
 | **電腦依賴性** | 必須仰賴電腦 Python 環境 | **手機獨立運作（完全無需電腦，手機藍牙直接連線控制）** |
@@ -253,7 +255,7 @@
 ---
 
 ### 途徑 B. 執行 Windows 免安裝便攜版 (PC 推薦)
-1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v1.0.1-Windows-Portable.zip`
+1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v1.0.2-Windows-Portable.zip`
 2. 解壓縮至任意資料夾
 3. 按兩下資料夾內的 **`run.bat`**
    * 內建的 Python 環境將自動帶起伺服器，並自動在預設瀏覽器開啟 `http://localhost:8000`。
