@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.2)
+# xBloom bleUI (v2.0.0)
 
 <p align="center">
   <strong>專為 xBloom Studio 打造的獨立 Android 原生 App 與本機網頁控制器</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
+  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -26,6 +26,68 @@
   <br>
   <em>即時注水量 (Water Pour) 與杯中萃取液 (Coffee Yield) 雙曲線圖＆智慧流速感應注水標記</em>
 </p>
+
+---
+
+## v2.0.0 新功能
+
+以下是 v2.0.0 新增的功能。畫面中的資料為範例。
+
+### 進階配方
+
+<p align="center">
+  <img src="docs/img/advanced-recipe.png" alt="進階配方編輯畫面" width="820">
+  <br>
+  <em>可為每次注水分別設定半徑與步驟時間的進階配方編輯畫面</em>
+</p>
+
+* 可為每次注水設定不同的**半徑(L1~L5)**。萃取時會依出水量切換到下一次注水的半徑。
+* 以**步驟時間**取代等待時間:從本次注水開始到下次注水開始的時間,扣除注水時間與攪拌時間(每次 8 秒)後就是機器的等待時間。
+* 可在設定中選擇**預設半徑**。一般配方不會由 App 變更半徑。
+* 官方韌體 V300 無法在萃取中變更半徑,僅套用第一次注水的半徑。建議使用 V500 以上版本。
+* 在設定中開啟進階配方選項後即可使用。
+
+### 茶模式
+
+<p align="center">
+  <img src="docs/img/tea-mode.png" alt="茶模式編輯畫面" width="820">
+  <br>
+  <em>Omni Brewer 專用的茶配方編輯畫面</em>
+</p>
+
+* 在配方工作室中切換咖啡與茶。
+* 一杯以官方 App 標準的 120ml 計算。輸入的水量不足 120ml 時,會自動補上排水所需的水。
+
+### 報告卡
+
+<p align="center">
+  <img src="docs/img/report-card.png" alt="沖煮報告卡" width="420">
+  <br>
+  <em>由萃取紀錄產生的報告卡</em>
+</p>
+
+* 在萃取紀錄中填寫咖啡豆、烘豆坊與杯測筆記後產生圖片。留空的欄位不會顯示在卡片上。
+* PC 可複製到剪貼簿或儲存 WebP,Android 可分享或儲存到相簿。
+
+### 萃取比較
+
+<p align="center">
+  <img src="docs/img/history-compare.png" alt="萃取比較畫面" width="700">
+  <br>
+  <em>比較兩筆萃取紀錄的圖表與參數</em>
+</p>
+
+* 選擇兩筆萃取紀錄,疊加圖表並以表格查看研磨度、萃取量與時間的差異。
+* 可從比較畫面或紀錄直接載入配方。進階配方會在進階編輯器中開啟。
+
+### 其他變更
+
+* **插槽儲存**:只儲存所選的插槽,不影響其他插槽。
+* **Android**:支援以上所有功能。首次啟動時會要求鄰近裝置與位置權限。
+* **配方清單**:一般編輯器只顯示一般配方,進階編輯器只顯示進階配方。
+* **多語言**:新增的畫面與伺服器訊息已翻譯為 7 種語言。
+
+完整變更內容請見[發行說明](https://github.com/ennemate/xBloom-bleUI/releases/tag/v2.0.0)(韓文)。
 
 ---
 
@@ -151,7 +213,7 @@
 
 ## 功能比較表
 
-| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
+| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
 | :--- | :--- | :--- |
 | **執行平台** | 終端機命令列 CLI / TUI (Linux 為主) | **獨立 Android 原生 App (APK) ＋ 跨平台 PC 網頁儀表板** |
 | **電腦依賴性** | 必須仰賴電腦 Python 環境 | **手機獨立運作（完全無需電腦，手機藍牙直接連線控制）** |
@@ -251,11 +313,12 @@
 1. 使用手機瀏覽器前往 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases)
 2. 下載 **`xBloom-bleUI-release.apk`** 並依照指示安裝
 3. 開啟 App，點選右上角的 **[藍牙連線]** 按鈕，系統將自動搜尋並直接連線附近的 xBloom Studio。
+   首次啟動時會要求鄰近裝置與位置權限,允許後才能連線到機器。
 
 ---
 
 ### 途徑 B. 執行 Windows 免安裝便攜版 (PC 推薦)
-1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v1.0.2-Windows-Portable.zip`
+1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v2.0.0-Windows-Portable.zip`
 2. 解壓縮至任意資料夾
 3. 按兩下資料夾內的 **`run.bat`**
    * 內建的 Python 環境將自動帶起伺服器，並自動在預設瀏覽器開啟 `http://localhost:8000`。
@@ -289,7 +352,7 @@
 * **一鍵線上自動更新**: 網頁介面上方出現更新提示徽章或前往設定 (⚙️) 點擊 [檢查更新]，即可一鍵安全更新至最新發行版本。
 * **使用者資料保留**:
   * 更新過程僅會替換原始碼與前端介面檔案，以下重要使用者資料不會被覆寫或刪除：
-    * 📂 `recipes/` (自訂調配配方與實體按鈕預設)
+    * 📂 `recipes/` (自訂調配配方)
     * 📄 `history.json` (過去所有沖煮歷程與雙曲線圖數據)
     * ⚙️ `config.json` (主題、桌布、雲端帳號等偏好設定)
     * 🐍 `python/` (便攜版內建獨立執行環境)

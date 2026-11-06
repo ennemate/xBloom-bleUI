@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.2)
+# xBloom bleUI (v2.0.0)
 
 <p align="center">
   <strong>xBloom Studio コーヒーマシンのためのスタンドアロンAndroidアプリ＆ローカルWebコントローラー</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
+  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -26,6 +26,68 @@
   <br>
   <em>リアルタイム注水量(Water Pour)とカップ抽出液(Coffee Yield)のデュアルグラフ＆スマート流速検知プアマーカー</em>
 </p>
+
+---
+
+## v2.0.0の新機能
+
+v2.0.0で追加された機能です。画面内のデータはサンプルです。
+
+### アドバンストレシピ
+
+<p align="center">
+  <img src="docs/img/advanced-recipe.png" alt="アドバンストレシピ編集画面" width="820">
+  <br>
+  <em>注湯ごとに半径とステップ時間を設定するアドバンストレシピ編集画面</em>
+</p>
+
+* 注湯ごとに**半径(L1〜L5)**を設定できます。抽出中は吐出量を見て次の注湯の半径に切り替えます。
+* 待機時間の代わりに**ステップ時間**を入力します。今の注湯の開始から次の注湯の開始までの時間で、注湯時間と攪拌時間(1回8秒)を引いた値が本体の待機時間になります。
+* 設定で**デフォルト半径**を選べます。通常レシピではアプリは半径を変更しません。
+* 公式ファームウェアV300は抽出中に半径を変更できないため、1投目の半径のみ適用されます。V500以降を推奨します。
+* 設定でアドバンストレシピのオプションをオンにすると使えます。
+
+### ティーモード
+
+<p align="center">
+  <img src="docs/img/tea-mode.png" alt="ティーモード編集画面" width="820">
+  <br>
+  <em>オムニブリューワー用のティーレシピ編集画面</em>
+</p>
+
+* レシピスタジオでコーヒーとティーを切り替えます。
+* 1杯は公式アプリの基準である120mlです。入力した湯量が120mlに満たない場合は、排水用のお湯を自動で追加します。
+
+### レポートカード
+
+<p align="center">
+  <img src="docs/img/report-card.png" alt="ブリューイングレポートカード" width="420">
+  <br>
+  <em>抽出記録から作るレポートカード</em>
+</p>
+
+* 抽出記録に豆、ロースタリー、カップノートを入力して画像にします。空欄の項目はカードに表示されません。
+* PCではクリップボードへのコピーとWebP保存、Androidでは共有と写真アプリへの保存に対応します。
+
+### 抽出比較
+
+<p align="center">
+  <img src="docs/img/history-compare.png" alt="抽出比較画面" width="700">
+  <br>
+  <em>2つの抽出記録のグラフとパラメータの比較</em>
+</p>
+
+* 抽出記録を2つ選んでグラフを重ね、挽き目、収量、時間の違いを表で確認できます。
+* 比較画面や記録からレシピを直接読み込めます。アドバンストレシピはアドバンスト編集画面で開きます。
+
+### その他の変更点
+
+* **スロット保存**: 選んだスロットだけを保存し、他のスロットには触れません。
+* **Android**: 上記の機能にすべて対応します。初回起動時に付近のデバイスと位置情報の権限を求めます。
+* **レシピ一覧**: 通常の編集画面には通常レシピだけ、アドバンスト編集画面にはアドバンストレシピだけが表示されます。
+* **多言語**: 追加した画面とサーバーメッセージを7言語に翻訳しました。
+
+詳しい変更内容は[リリースノート](https://github.com/ennemate/xBloom-bleUI/releases/tag/v2.0.0)(韓国語)をご覧ください。
 
 ---
 
@@ -151,7 +213,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ## 機能比較表
 
-| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
+| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
 | :--- | :--- | :--- |
 | **実行プラットフォーム** | ターミナルベース CLI / TUI (Linux中心) | **スタンドアロンAndroidネイティブアプリ(APK) ＋ クロスプラットフォームPC Web** |
 | **PC依存度** | PCのPython環境が必須 | **スマートフォン単独駆動（PC不要でスマホからBLE直接接続）** |
@@ -251,11 +313,12 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 1. スマートフォンのブラウザで [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) にアクセス
 2. **`xBloom-bleUI-release.apk`** をダウンロードしてインストール
 3. アプリを起動し、画面右上の **[BLE接続]** ボタンを押すと、周囲のxBloom Studioを自動探索して直接接続されます。
+   初回起動時に付近のデバイスと位置情報の権限を求めます。許可すると本体に接続できます。
 
 ---
 
 ### 方法 B. Windows ポータブル版を実行 (PC推奨)
-1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v1.0.2-Windows-Portable.zip` をダウンロード
+1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v2.0.0-Windows-Portable.zip` をダウンロード
 2. お好みのフォルダーに解凍
 3. フォルダー内の **`run.bat`** ファイルをダブルクリック
    * 内蔵されたPython環境でサーバーが自動起動し、既定のWebブラウザ（`http://localhost:8000`）が自動で開きます。
@@ -289,7 +352,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 * **ワンクリック自動アップデート**: Web画面上部のアップデート通知バッジまたは設定（⚙️）の [アップデート確認] から、最新バージョンへ安全にアップグレードできます。
 * **ユーザーデータ保護**:
   * アップデート時はソースコードと静的UIファイルのみが選択的に更新されるため、以下のユーザーデータは上書きされず安全に保持されます:
-    * 📂 `recipes/` (ユーザー作成のレシピおよびスロットプリセット)
+    * 📂 `recipes/` (ユーザー作成のレシピ)
     * 📄 `history.json` (過去の全抽出履歴およびデュアルチャートアーカイブ)
     * ⚙️ `config.json` (テーマ、壁紙、クラウドアカウント設定)
     * 🐍 `python/` (ポータブル版の内蔵ランタイム)

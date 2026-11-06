@@ -2,6 +2,7 @@
 
 import pytest
 
+from xbloom_ble.protocol import build_a6, build_load_frames
 from xbloom_ble.recipe import Recipe, RecipeError
 
 VALID = {
@@ -51,14 +52,22 @@ def test_bad_pattern_raises():
         Recipe.from_dict(bad)
 
 
-def test_agitation_only_with_spiral_raises():
-    bad = _with(pours=[
+def test_center_with_agitation_after_is_valid():
+    rec = Recipe.from_dict(_with(pours=[
         {"ml": 35, "temp_c": 90, "pattern": "center", "agitation": True,
          "pause_s": 40, "rpm": 100, "flow_ml_s": 3.0},
         {"ml": 115, "temp_c": 90, "pattern": "spiral", "pause_s": 5, "rpm": 100, "flow_ml_s": 3.0},
-    ])
-    with pytest.raises(RecipeError):
-        Recipe.from_dict(bad)
+    ]))
+    rec.validate()
+
+
+@pytest.mark.parametrize("temp", [0, 100])
+def test_room_temp_and_boiling_point_are_valid(temp):
+    rec = Recipe.from_dict(_with(pours=[
+        {"ml": 35, "temp_c": temp, "pattern": "spiral", "pause_s": 40, "rpm": 100, "flow_ml_s": 3.0},
+        {"ml": 115, "temp_c": 90, "pattern": "spiral", "pause_s": 5, "rpm": 100, "flow_ml_s": 3.0},
+    ]))
+    rec.validate()
 
 
 def test_ml_out_of_range_raises():
@@ -115,16 +124,14 @@ def test_dose_out_of_range_raises():
         Recipe.from_dict(_with(dose_g=0))
 
 
-def test_dose_over_app_max_raises():
-    # 18 g is the firm app maximum; 19 g must be rejected.
-    with pytest.raises(RecipeError, match="dose"):
-        Recipe.from_dict(_with(dose_g=19))
-
-
-def test_dose_at_app_max_passes():
-    # 18 g is exactly the app maximum and must be accepted.
-    r = Recipe.from_dict(_with(dose_g=18))
-    assert r.dose_g == 18
+@pytest.mark.parametrize("dose", [18, 20, 40])
+def test_large_dose_with_grinder_passes_and_reaches_the_frame(dose):
+    # There is deliberately no upper limit, even with the grinder on.
+    r = Recipe.from_dict(_with(dose_g=dose))
+    assert r.grind != 0
+    a6_frame = build_load_frames(r.to_protocol_dict())[1]
+    assert a6_frame[3] == 0xA6
+    assert build_a6(dose) in a6_frame
 
 
 def test_rpm_out_of_range_raises():

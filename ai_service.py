@@ -1,14 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-xBloom bleUI AI Service Module (v1.0.2)
-- Pure Python standard library implementation (no heavy third-party SDK required)
-- Supports Google Gemini (gemini-2.0-flash) and OpenAI ChatGPT (gpt-4o-mini)
-- Full 7-language i18n support (ko, en, ja, zh-TW, zh-CN, de, fr)
-- URL scraping and clean text extraction
-- Recipe extraction with xBloom hardware protocol validation (Spiral/Center/Ring, 56-58 click sweetspot)
-- Telemetry-driven barista diagnosis and one-click recipe patch generation
-"""
-
 import json
 import re
 import urllib.request
@@ -24,9 +13,6 @@ ssl_ctx = ssl.create_default_context()
 ssl_ctx.check_hostname = False
 ssl_ctx.verify_mode = ssl.CERT_NONE
 
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
 SUPPORTED_LANGUAGES = {
     "ko": {
         "name": "Korean (한국어)",
@@ -86,11 +72,7 @@ SUPPORTED_LANGUAGES = {
     }
 }
 
-# -------------------------------------------------------------
-# -------------------------------------------------------------
-
 def format_api_error(provider: str, status_code: int, raw_body: str, lang: str = "ko") -> str:
-    """사용자가 이해하기 쉬운 친절한 에러 메시지로 변환 (원시 JSON 덤프 차단)"""
     msg = ""
     try:
         err_json = json.loads(raw_body)
@@ -100,7 +82,7 @@ def format_api_error(provider: str, status_code: int, raw_body: str, lang: str =
         msg = raw_body
 
     combined_lower = f"{msg} {raw_body}".lower()
-    
+
     if any(k in combined_lower for k in [
         "api key not valid", "api_key_invalid", "incorrect api key", 
         "invalid api key", "api key is required", "key_invalid"
@@ -117,7 +99,7 @@ def format_api_error(provider: str, status_code: int, raw_body: str, lang: str =
             return "Clé API non valide. Veuillez vérifier votre clé dans les paramètres."
         else:
             return "Invalid API key. Please check your API key in Settings (Google AI Studio or OpenAI)."
-            
+
     elif any(k in combined_lower for k in ["quota", "resource_exhausted", "rate limit", "too many requests"]):
         if lang == "ko":
             return "API 호출 한도(Quota)를 초과했습니다. 잠시 후 다시 시도하거나 사용 한도를 확인해주세요."
@@ -127,13 +109,13 @@ def format_api_error(provider: str, status_code: int, raw_body: str, lang: str =
             return "已超過 API 調用配額上限。請稍後再試或檢查您的用量配額。"
         else:
             return "API quota or rate limit exceeded. Please try again later."
-            
+
     elif "permission" in combined_lower:
         if lang == "ko":
             return "API 키 권한 오류입니다. 모델 접근 권한 또는 프로젝트 설정을 확인해주세요."
         else:
             return "API permission denied. Please verify your key permissions."
-            
+
     else:
         clean_msg = ' '.join(msg.split()) if msg else f"HTTP {status_code}"
         if "{" in clean_msg and "}" in clean_msg:
@@ -145,7 +127,6 @@ def format_api_error(provider: str, status_code: int, raw_body: str, lang: str =
         return f"{provider.capitalize()} API 오류 ({status_code}): {clean_msg}"
 
 def detect_image_mime_type(data: bytes, default: Optional[str] = "image/jpeg") -> Optional[str]:
-    """이미지 바이너리 매직 바이트 검사로 정확한 MIME 타입 검출 (매직 바이트 불일치 시 None 반환 가능)"""
     if data.startswith(b"\x89PNG\r\n\x1a\n"):
         return "image/png"
     elif data.startswith(b"\xff\xd8\xff"):
@@ -158,20 +139,16 @@ def detect_image_mime_type(data: bytes, default: Optional[str] = "image/jpeg") -
         return "image/bmp"
     return default
 
-
 def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str = "gemini-3.5-flash-lite", lang: str = "ko", video_url: Optional[str] = None, images: Optional[List[Dict[str, str]]] = None) -> str:
-    """Google Gemini REST API 호출 (v1beta generateContent) - 자동 Fallback, Thinking 및 이미지 멀티모달 지원"""
     candidate_models = [model]
     for fb in ["gemini-3.5-flash-lite", "gemini-3.8-flash"]:
         if fb not in candidate_models:
             candidate_models.append(fb)
 
-
-
     last_error = None
     for target_model in candidate_models:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{target_model}:generateContent?key={api_key}"
-        
+
         is_yt = bool(video_url and re.search(r"(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)([a-zA-Z0-9_-]{11})", video_url))
         is_gemini_file = bool(video_url and video_url.startswith("https://generativelanguage.googleapis.com/v1beta/files/"))
 
@@ -180,7 +157,7 @@ def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str =
             "maxOutputTokens": 4096,
             "responseMimeType": "application/json" if "json" in user_prompt.lower() or "json" in system_prompt.lower() else "text/plain"
         }
-        
+
         if "gemini-3" in target_model:
             gen_config["thinkingConfig"] = {"thinkingLevel": "low"}
         elif "gemini-2.5" in target_model:
@@ -212,13 +189,13 @@ def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str =
             ],
             "generationConfig": gen_config
         }
-        
+
         req = urllib.request.Request(
             url,
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"}
         )
-        
+
         timeout_sec = 45 if (is_yt or images) else 35
         try:
             with urllib.request.urlopen(req, timeout=timeout_sec, context=ssl_ctx) as response:
@@ -226,7 +203,7 @@ def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str =
                 candidates = res_data.get("candidates", [])
                 if not candidates:
                     raise ValueError("Gemini returned empty candidate list.")
-                
+
                 parts = candidates[0].get("content", {}).get("parts", [])
                 text_parts = [p.get("text", "") for p in parts if not p.get("thought")]
                 if not text_parts and parts:
@@ -251,9 +228,7 @@ def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str =
         raise last_error
     raise RuntimeError(f"Gemini 연결 실패: 모든 후보 모델({candidate_models}) 호출 불능")
 
-
 def call_openai(api_key: str, system_prompt: str, user_prompt: str, model: str = "gpt-4o", lang: str = "ko", images: Optional[List[Dict[str, str]]] = None) -> str:
-    """OpenAI Chat Completions REST API 호출 - gpt-4o 플래그십 및 gpt-4o-mini Fallback, 이미지 멀티모달 지원"""
     candidate_models = [model]
     for fb in ["gpt-4o", "gpt-4o-mini"]:
         if fb not in candidate_models:
@@ -262,7 +237,7 @@ def call_openai(api_key: str, system_prompt: str, user_prompt: str, model: str =
     last_error = None
     for target_model in candidate_models:
         url = "https://api.openai.com/v1/chat/completions"
-        
+
         user_content: Any = user_prompt
         if images:
             user_content = [{"type": "text", "text": user_prompt}]
@@ -285,10 +260,10 @@ def call_openai(api_key: str, system_prompt: str, user_prompt: str, model: str =
             "temperature": 0.2,
             "max_tokens": 2048
         }
-        
+
         if "json" in user_prompt.lower() or "json" in system_prompt.lower():
             payload["response_format"] = {"type": "json_object"}
-            
+
         req = urllib.request.Request(
             url,
             data=json.dumps(payload).encode("utf-8"),
@@ -297,7 +272,7 @@ def call_openai(api_key: str, system_prompt: str, user_prompt: str, model: str =
                 "Authorization": f"Bearer {api_key}"
             }
         )
-        
+
         try:
             with urllib.request.urlopen(req, timeout=30, context=ssl_ctx) as response:
                 res_data = json.loads(response.read().decode("utf-8"))
@@ -322,7 +297,6 @@ def call_openai(api_key: str, system_prompt: str, user_prompt: str, model: str =
         raise last_error
     raise RuntimeError(f"OpenAI 연결 실패: 모든 후보 모델({candidate_models}) 호출 불능")
 
-
 def dispatch_llm(provider: str, api_key: str, system_prompt: str, user_prompt: str, model: Optional[str] = None, lang: str = "ko", video_url: Optional[str] = None, images: Optional[List[Dict[str, str]]] = None) -> str:
     provider = provider.lower().strip()
     if provider == "openai":
@@ -330,12 +304,7 @@ def dispatch_llm(provider: str, api_key: str, system_prompt: str, user_prompt: s
     else:
         return call_gemini(api_key, system_prompt, user_prompt, model=model or "gemini-3.5-flash-lite", lang=lang, video_url=video_url, images=images)
 
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
-
 def scrape_url_content(url: str) -> Dict[str, Any]:
-    """웹페이지 또는 유튜브 URL에서 텍스트 본문 및 고해상도 레시피 이미지 바이너리(Base64) 추출"""
     clean_url = url.strip()
     if not clean_url.startswith("http://") and not clean_url.startswith("https://"):
         clean_url = "https://" + clean_url
@@ -508,15 +477,11 @@ def scrape_url_content(url: str) -> Dict[str, Any]:
     except Exception as e:
         raise RuntimeError(f"웹페이지를 불러올 수 없습니다 ({clean_url}): {str(e)}")
 
-
 def scrape_url_text(url: str) -> str:
-    """하위 호환성 텍스트 스크래퍼"""
     res = scrape_url_content(url)
     return res.get("text", "")
 
-
 def sanitize_xbloom_temp(temp_val: Any, default: int = 93) -> int:
-    """xBloom Studio 하드웨어 수온 규격 검증 및 자동 클램프 (0=RT, 40~95°C, 100=BP). 96~99°C 절대 불가 (95°C로 제한)."""
     try:
         t = int(round(float(temp_val)))
     except (ValueError, TypeError):
@@ -530,10 +495,6 @@ def sanitize_xbloom_temp(temp_val: Any, default: int = 93) -> int:
     if t < 40:
         return 40
     return t
-
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
 
 def build_recipe_system_prompt(lang: str = "ko") -> str:
     lang_info = SUPPORTED_LANGUAGES.get(lang, SUPPORTED_LANGUAGES["ko"])
@@ -733,9 +694,7 @@ When NO valid coffee recipe exists:
 }}
 No extra commentary, markdown ticks or explanations outside the JSON."""
 
-
 def robust_parse_recipe_json(raw_text: str) -> Dict[str, Any]:
-    """거대 응답이나 문법 오류(콤마 누락, 미완결 괄호)가 포함된 LLM 출력에서 JSON을 복원 및 구출"""
     clean_json = raw_text.strip()
     if clean_json.startswith("```json"):
         clean_json = clean_json[7:]
@@ -794,21 +753,15 @@ def robust_parse_recipe_json(raw_text: str) -> Dict[str, Any]:
 
     raise ValueError(f"AI 응답을 JSON으로 파싱할 수 없습니다: {clean_json[:200]}")
 
-
 def convert_micron_to_xbloom(micron: float) -> int:
-    """마이크론(µm)을 xBloom 클릭수(1~80)로 변환"""
     clk = int(round((float(micron) - 180.0) / 11.013)) + 1
     return max(1, min(80, clk))
 
-
 def convert_xbloom_to_micron(click: int) -> int:
-    """xBloom 클릭수를 마이크론(µm)으로 변환"""
     c = max(1, min(80, int(click)))
     return int(round(180.0 + (c - 1) * 11.013))
 
-
 def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text: Optional[str] = None, model: Optional[str] = None, lang: str = "ko", images: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
-    """URL 또는 텍스트에서 레시피 추출 실행 (Gemini/OpenAI 네이티브 멀티모달 비디오/이미지 이해 및 사용자 언어 동기화)"""
     source_content = ""
     video_url = None
     all_images = list(images) if images else []
@@ -853,20 +806,19 @@ def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text:
     user_prompt = f"Please extract all coffee brewing recipes in {lang_info['name']} from the following content (if images or a video URL are provided, thoroughly analyze the visual tables, timelines, brew times, water weights, and grind sizes across the images/video):\n\n{source_content}"
 
     raw_response = dispatch_llm(provider, api_key, sys_prompt, user_prompt, model=model, lang=lang, video_url=video_url, images=all_images)
-    
+
     data = robust_parse_recipe_json(raw_response)
-            
+
     is_coffee = data.get("is_coffee_recipe", True)
     recipes = data.get("recipes", [])
     if not is_coffee or not recipes:
         rejection_reason = data.get("rejection_reason", "본문에서 유효한 커피 추출 레시피를 검출하지 못했습니다. 원두량, 물량, 또는 푸어 단계가 명시되어 있는지 확인해주세요.")
         raise ValueError(rejection_reason)
-        
+
     for r in recipes:
         r["dose"] = int(r.get("dose", 16))
         r["grind"] = max(1, min(80, int(r.get("grind", 58))))
 
-        # Ensure accurate grind_options with calculated micron
         rec_click = r["grind"]
         opt_b_click = rec_click
         opt_a_click = max(1, rec_click - 2)
@@ -880,7 +832,7 @@ def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text:
         r["rpm"] = int(r.get("rpm", 80))
         if r["rpm"] % 10 != 0:
             r["rpm"] = round(r["rpm"] / 10) * 10
-            
+
         bp_vol = float(r.get("bypass_volume", 0.0) or 0.0)
         bp_enabled = bool(r.get("bypass_enabled", False)) or (bp_vol > 0)
         if bp_enabled and bp_vol > 0:
@@ -914,10 +866,6 @@ def extract_recipe(provider: str, api_key: str, url: Optional[str] = None, text:
 
     return {"status": "ok", "recipes": recipes}
 
-
-# -------------------------------------------------------------
-# -------------------------------------------------------------
-
 def build_barista_system_prompt(lang: str = "ko", personality: str = "balanced") -> str:
     lang_info = SUPPORTED_LANGUAGES.get(lang, SUPPORTED_LANGUAGES["ko"])
     lang_name = lang_info["name"]
@@ -945,7 +893,6 @@ def build_barista_system_prompt(lang: str = "ko", personality: str = "balanced")
   2. 단, 적극성은 반드시 '바리스타로서의 물리적 합리성' 위에 서 있어야 합니다. 바꾸는 모든 변수는 커피 추출과 맛의 명확한 인과관계가 진단에 설명되어야 하며, 이유 없는 무작위 변경이나 반물리적 환각(예: 원두량이 늘어 베드 저항이 커졌는데 분쇄도를 거꾸로 조여버리는 등의 역주행)을 배제하고, 과감하되 물리학적으로 완벽히 설득력 있는 프로 바리스타의 설계를 제시합니다.
 """
     else:
-        # Default: Balanced
         personality_instruction = """
 [CURRENT ACTIVE PERSONALITY: ⚖️ BALANCED (보통 / 합리적 물리학자 - The Pragmatic Physicist)]
 - PHILOSOPHY & IDENTITY:
@@ -1079,22 +1026,19 @@ You MUST respond with a valid JSON object with the following structure:
   }}
 }}"""
 
-
 def barista_chat_service(provider: str, api_key: str, message: str, history: List[Dict[str, str]], telemetry: Optional[Dict[str, Any]] = None, model: Optional[str] = None, lang: str = "ko", personality: str = "balanced") -> Dict[str, Any]:
-    """텔레메트리 연동 바리스타 대화 및 레시피 보정안 생성 (사용자 언어 동기화)"""
     context_str = ""
     if telemetry:
         is_studio = telemetry.get("isStudioRecipe", False)
         steps_list = telemetry.get('steps') or telemetry.get('recipe', {}).get('steps') or []
         total_steps = len(steps_list)
-        
+
         step_lines = []
         total_timeline_sec = 0
-        
-        # Initial pre-brew bed leveling if Step 1 has agitation_before
+
         initial_prep_sec = 8 if (steps_list and steps_list[0].get('agitation_before')) else 0
         total_timeline_sec += initial_prep_sec
-        
+
         for i, s in enumerate(steps_list):
             w = float(s.get('water', 0) or 0)
             fl = float(s.get('flow', 3.2) or 3.2)
@@ -1102,17 +1046,17 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
                 fl = 3.2
             pour_sec = round(w / fl)
             after_sec = 8 if s.get('agitation_after') else 0
-            
+
             next_s = steps_list[i+1] if i+1 < len(steps_list) else None
             next_before_sec = 8 if (next_s and next_s.get('agitation_before')) else 0
-            
+
             wait_sec = int(s.get('wait', 0) or 0)
             overhead_sec = pour_sec + after_sec + next_before_sec
-            
+
             step_name = '1단계: 뜸 들이기 / Bloom' if i == 0 else f'{i+1}차 푸어'
             if i == total_steps - 1 and total_steps > 1:
                 step_name += ' [Final Pour / 마지막 차수]'
-                
+
             if next_s is not None:
                 intended_interval = overhead_sec + wait_sec
                 total_timeline_sec += (pour_sec + after_sec + wait_sec)
@@ -1133,7 +1077,7 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
                     + (f" + After Agitation {after_sec}s" if after_sec > 0 else "")
                     + f" + Final Machine Wait {wait_sec}s"
                 )
-            
+
             step_lines.append(
                 f"  - Step {i+1} ({step_name}): Temp {s.get('temp', 93)}°C | Water {s.get('water', 0)}g | Flow {fl}ml/s | Machine Wait {wait_sec}s | Pattern: {s.get('pattern', 'spiral')} | Agitation: [Before: {'ON' if s.get('agitation_before') else 'OFF'}, After: {'ON' if s.get('agitation_after') else 'OFF'}]\n"
                 f"    => [Interval Rhythm & Hardware Architecture]: {breakdown_detail} ({interval_summary})"
@@ -1184,20 +1128,20 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
 {steps_formatted}
 * TELEMETRY DIAGNOSIS GUIDANCE: In this History Mode, you are analyzing a real finished brew with measured machine sensor data. Compare the measured Total Brew Duration ({telemetry.get('duration', '00:00')}) and Cup Yield ({yield_val}g) against recipe expectations. If the actual duration was unusually long (e.g. >3:30 or 4:00+), diagnose bed compaction/drainage stall and fines migration. If unusually short, diagnose fast drawdown/channeling.
 """
-    
+
     conv_text = ""
     for turn in history[-6:]:
         role = turn.get("role", "user")
         content = turn.get("content", "")
         conv_text += f"{role.upper()}: {content}\n"
     conv_text += f"USER: {message}\n"
-    
+
     sys_prompt = build_barista_system_prompt(lang, personality=personality)
     lang_info = SUPPORTED_LANGUAGES.get(lang, SUPPORTED_LANGUAGES["ko"])
     user_prompt = f"Context:\n{context_str}\n\nConversation:\n{conv_text}\n\nPlease provide your expert barista diagnosis and recipe_patch in {lang_info['name']} JSON:"
-    
+
     raw = dispatch_llm(provider, api_key, sys_prompt, user_prompt, model=model, lang=lang)
-    
+
     clean_json = raw.strip()
     if clean_json.startswith("```json"):
         clean_json = clean_json[7:]
@@ -1206,7 +1150,7 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
     if clean_json.endswith("```"):
         clean_json = clean_json[:-3]
     clean_json = clean_json.strip()
-    
+
     try:
         data = json.loads(clean_json)
     except Exception:
@@ -1216,7 +1160,6 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
         else:
             data = {"diagnosis": raw, "recipe_patch": None}
 
-    # Sanitize and validate recipe_patch parameters
     if isinstance(data, dict) and isinstance(data.get("recipe_patch"), dict):
         patch = data["recipe_patch"]
         if "step_temps" in patch and isinstance(patch["step_temps"], list):
@@ -1253,32 +1196,25 @@ def barista_chat_service(provider: str, api_key: str, message: str, history: Lis
             clean_steps_patch = []
             for sp in patch["steps_patch"]:
                 if isinstance(sp, dict):
-                    # Clean step index
                     if "step" in sp:
                         try: sp["step"] = int(sp["step"])
                         except (ValueError, TypeError): pass
-                    # Clean temp (strictly clamp between 40-95°C, or 0/100, no 96-99°C)
                     if "temp" in sp:
                         sp["temp"] = sanitize_xbloom_temp(sp["temp"])
-                    # Clean water
                     if "water" in sp:
                         try: sp["water"] = max(10, min(250, int(round(float(sp["water"])))))
                         except (ValueError, TypeError): pass
-                    # Clean wait
                     if "wait" in sp:
                         try: sp["wait"] = max(0, min(180, int(round(float(sp["wait"])))))
                         except (ValueError, TypeError): pass
-                    # Clean flow
                     if "flow" in sp:
                         try: sp["flow"] = max(3.0, min(3.5, round(float(sp["flow"]), 1)))
                         except (ValueError, TypeError): pass
-                    # Clean pattern
                     if "pattern" in sp:
                         p_val = str(sp["pattern"]).strip().lower()
                         if "center" in p_val: sp["pattern"] = "center"
                         elif "ring" in p_val or "circle" in p_val or "circular" in p_val: sp["pattern"] = "ring"
                         else: sp["pattern"] = "spiral"
-                    # Clean agitation
                     if "agitation_before" in sp:
                         sp["agitation_before"] = bool(sp["agitation_before"] is True or str(sp["agitation_before"]).lower() in ["true", "on", "1"])
                     if "agitation_after" in sp:

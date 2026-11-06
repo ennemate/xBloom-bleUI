@@ -1,14 +1,5 @@
 import shutil
 import ai_service
-"""
-xBloom bleUI Local Web Server (v1.0.2)
-- 텔레메트리 콜백 직접 바인딩 (Bleak Notification 완벽 수신)
-- BLE 단일 세션 락(Lock) 적용으로 브루잉 도중 머신 리셋 차단
-- recipes/ 서버 직접 저장 및 푸어별 Agitation / Pattern 매핑
-- 그라인더 RPM 60~120 10단위 제어 지원
-- GitHub 릴리즈 연동 순수 파이썬 원클릭 자동 업데이트 지원 (데이터 100% 무손실 보존)
-- 글로벌 판매국 스페셜티 커피 바리스타 전문 용어 다국어(i18n) 지원
-"""
 
 import sys
 import os
@@ -29,19 +20,22 @@ import subprocess
 import threading
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Union
 import urllib.request
 import urllib.parse
 
-CURRENT_VERSION = "1.0.2"
+CURRENT_VERSION = "2.0.0"
 GITHUB_REPO = "ennemate/xBloom-bleUI"
 
 import uvicorn
 import yaml
+from xbloom_ble.protocol import build_set_pour_radius
+from xbloom_ble.v2_engine import AdvancedRecipeOrchestrator, OrchestratorState, StepProgress
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from bleak import BleakScanner
 
 from xbloom_ble.client import XBloomClient
@@ -80,13 +74,11 @@ cloud_client = None
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 RECIPES_DIR = os.path.join(BASE_DIR, "recipes")
-SLOTS_DIR = os.path.join(RECIPES_DIR, "slots")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
 HISTORY_FILE = os.path.join(BASE_DIR, "history.json")
 
 os.makedirs(STATIC_DIR, exist_ok=True)
 os.makedirs(RECIPES_DIR, exist_ok=True)
-os.makedirs(SLOTS_DIR, exist_ok=True)
 
 def normalize_pattern(pat: Optional[str]) -> str:
     p = str(pat or "center").strip().lower()
@@ -105,7 +97,9 @@ def load_server_config() -> Dict[str, Any]:
         "record_aborted_brews": False,
         "pour_marker_mode": "weight",
         "chart_smoothing": True,
-        "handdrip_interval_sync": False
+        "handdrip_interval_sync": False,
+        "enable_advanced_recipe": False,
+        "default_radius": "L3"
     }
     if os.path.exists(CONFIG_FILE):
         try:
@@ -216,28 +210,41 @@ latest_telemetry: Dict[str, Any] = {
 }
 ble_connection_status = "DISCONNECTED"
 discovered_device_address = None
+v2_orchestrator: Optional[AdvancedRecipeOrchestrator] = None
 
 class StepModel(BaseModel):
-    temp: int = 93
-    water: int = 50
-    wait: int = 15
-    flow: float = 3.2
-    pattern: str = "center"
-    agitation_before: bool = False
-    agitation_after: bool = False
+    model_config = ConfigDict(extra="allow")
+    temp: Optional[Union[int, float]] = 93
+    water: Optional[Union[int, float]] = None
+    pour: Optional[Union[int, float]] = None
+    ml: Optional[Union[int, float]] = None
+    wait: Optional[Union[int, float]] = 15
+    flow: Optional[Union[int, float]] = 3.2
+    pattern: Optional[str] = "center"
+    agitation_before: Optional[bool] = False
+    agitation_after: Optional[bool] = False
+    radius: Optional[str] = "L3"
+    step_time: Optional[Union[int, float]] = 0
 
 class RecipeModel(BaseModel):
+    model_config = ConfigDict(extra="allow")
     name: str = "Custom Brew"
-    dose: int = 15
-    grind_size: int = 45
-    grind_enabled: bool = True
+    dose: Union[int, float] = 15
+    grind_size: Union[int, float] = 45
+    grind_enabled: Optional[bool] = True
     grind_rpm: int = 80
-    interval_sync: bool = False
-    bypass_enabled: bool = False
+    interval_sync: Optional[bool] = False
+    bypass_enabled: Optional[bool] = False
     bypass_volume: float = 0.0
     bypass_temp: float = 85.0
+    is_advanced: Optional[bool] = False
+    schema_version: Optional[int] = 1
+    auto_grind: Optional[bool] = True
+    mode: str = "coffee"
+    beverage_type: Optional[str] = "coffee"
+    tea_type: Optional[str] = None
+    tea_cups: Optional[List[Any]] = None
     steps: List[StepModel] = Field(default_factory=list)
-
 
 class CloudLoginModel(BaseModel):
     email: str
@@ -255,7 +262,8 @@ class SettingsUpdateModel(BaseModel):
     chart_smoothing: Optional[bool] = None
     handdrip_interval_sync: Optional[bool] = None
     show_micron: Optional[bool] = None
-
+    enable_advanced_recipe: Optional[bool] = None
+    default_radius: Optional[str] = None
 
 class AISettingsUpdateModel(BaseModel):
     provider: Optional[str] = None
@@ -308,6 +316,8 @@ class HistoryItemModel(BaseModel):
 class HistoryUpdateNotesModel(BaseModel):
     beanName: Optional[str] = None
     notes: Optional[str] = None
+    roastery: Optional[str] = None
+    flavorTags: Optional[List[str]] = None
 
 async def broadcast_msg(data: Dict[str, Any]):
     for ws in list(connected_websockets):
@@ -317,7 +327,6 @@ async def broadcast_msg(data: Dict[str, Any]):
             connected_websockets.discard(ws)
 
 def on_machine_telemetry(telemetry_data):
-    """BLE Notification 콜백 함수 (StatusEvent 수신)"""
     global latest_telemetry, main_loop
     try:
         for attr in ["temp_c", "current_temperature", "temperature", "temp"]:
@@ -356,7 +365,6 @@ def on_machine_telemetry(telemetry_data):
             else:
                 latest_telemetry["state"] = upper_st
 
-
         for attr in ["current_step", "step_index", "step"]:
             if hasattr(telemetry_data, attr):
                 v = getattr(telemetry_data, attr)
@@ -374,6 +382,25 @@ def on_machine_telemetry(telemetry_data):
     except Exception as e:
         print(f"[WARN] Telemetry parse error: {e}")
 
+async def _announce_ble_disconnected(log_msg: str) -> None:
+    if active_radius_task and not active_radius_task.done():
+        active_radius_task.cancel()
+    await broadcast_msg({"type": "log", "msg": log_msg})
+    await broadcast_msg({"type": "status", "ble_status": "DISCONNECTED"})
+
+def mark_ble_disconnected(log_msg: str) -> None:
+    global ble_connection_status
+    if ble_connection_status != "CONNECTED":
+        return
+    ble_connection_status = "DISCONNECTED"
+    print(log_msg)
+    if main_loop and main_loop.is_running():
+        asyncio.run_coroutine_threadsafe(_announce_ble_disconnected(log_msg), main_loop)
+
+def handle_ble_link_lost(client: XBloomClient) -> None:
+    if client is ble_client:
+        mark_ble_disconnected("[BLE] ⚠️ 머신과의 연결이 끊어졌습니다.")
+
 async def connect_ble_task():
     global ble_client, ble_connection_status, discovered_device_address
     ble_connection_status = "SCANNING"
@@ -389,7 +416,6 @@ async def connect_ble_task():
             if "xbloom" in d_name or "bloom" in d_name:
                 target_address = d.address
                 print(f"[BLE] Device found: {d.name} ({d.address})")
-                await broadcast_msg({"type": "log", "msg": f"[BLE] 기기 발견: {d.name} ({d.address})"})
                 break
 
         if not target_address:
@@ -397,10 +423,11 @@ async def connect_ble_task():
 
         discovered_device_address = target_address
         print(f"[BLE] Connecting to device ({target_address})...")
-        await broadcast_msg({"type": "log", "msg": "[BLE] 페어링 연결 시도 중..."})
-        
-        ble_client = XBloomClient(target_address)
-        
+
+        new_client = XBloomClient(target_address)
+        new_client.on_link_lost = lambda: handle_ble_link_lost(new_client)
+        ble_client = new_client
+
         if hasattr(ble_client, "connect"):
             await ble_client.connect()
 
@@ -415,8 +442,8 @@ async def connect_ble_task():
             print("[BLE] Real-time telemetry fanout listener registered")
 
         ble_connection_status = "CONNECTED"
-        print("[BLE] xBloom machine connected and ready for control!")
-        await broadcast_msg({"type": "log", "msg": "[BLE] 머신 연결 성공! 제어 준비 완료."})
+        print(f"[BLE] xBloom machine connected and ready for control! ({d.name})")
+        await broadcast_msg({"type": "log", "msg": f"[BLE] 머신 연결 성공! ({d.name})"})
         await broadcast_msg({"type": "status", "ble_status": "CONNECTED"})
 
     except Exception as e:
@@ -446,9 +473,27 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="xBloom bleUI Server", version=CURRENT_VERSION, lifespan=lifespan)
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    print(f"\n[422 VALIDATION ERROR] URL: {request.method} {request.url.path}")
+    print(f"[422 DETAILS] {exc.errors()}")
+    try:
+        body = await request.body()
+        print(f"[422 RAW BODY] {body.decode('utf-8', errors='replace')}\n")
+    except Exception:
+        pass
+    err_msgs = []
+    for err in exc.errors():
+        loc = " -> ".join(str(l) for l in err.get("loc", []))
+        msg = err.get("msg", "Validation error")
+        err_msgs.append(f"{loc}: {msg}")
+    detail_str = "; ".join(err_msgs) if err_msgs else "요청 데이터 유효성 검증 실패"
+    return JSONResponse(status_code=422, content={"detail": detail_str, "errors": exc.errors()})
+
 class ProtocolCompliantPour:
     def __init__(self, water: int, temp: int, wait: int, flow: float, pattern: str = "center",
-                 agitation_before: bool = False, agitation_after: bool = False, rpm: int = 0):
+                 agitation_before: bool = False, agitation_after: bool = False, rpm: int = 0,
+                 radius: str = "L3", step_time: int = 0):
         self.water = int(water)
         self.ml = int(water)
         self.water_ml = int(water)
@@ -479,11 +524,23 @@ class ProtocolCompliantPour:
         self.vibration = bool(agitation_after or agitation_before)
         self.isEnableVibrationBefore = bool(agitation_before)
         self.isEnableVibrationAfter = bool(agitation_after)
+        self.radius = str(radius or "L3").upper()
+        self.step_time = int(step_time or 0)
 
-    def __getattr__(self, item):
-        if item == "rpm":
-            return self.rpm
-        return False
+    def to_protocol_dict(self) -> dict:
+        return {
+            "ml": self.ml,
+            "temp": self.temp_c,
+            "pattern": self.pattern,
+            "agitation": self.agitation_after,
+            "agitation_before": self.agitation_before,
+            "agitation_after": self.agitation_after,
+            "pause": self.pause_s,
+            "rpm": self.rpm,
+            "flow": self.flow_ml_s,
+            "radius": self.radius,
+            "step_time": self.step_time,
+        }
 
     def ble_omissions(self) -> list[str]:
         return []
@@ -514,7 +571,9 @@ class ProtocolCompliantPour:
             "agitation_after": self.agitation_after,
             "isEnableVibrationBefore": self.isEnableVibrationBefore,
             "isEnableVibrationAfter": self.isEnableVibrationAfter,
-            "vibration": self.vibration
+            "vibration": self.vibration,
+            "radius": self.radius,
+            "step_time": self.step_time,
         }
 
     def __getitem__(self, item):
@@ -539,14 +598,14 @@ class ProtocolCompliantRecipe:
         self.pours = pours
         self.steps = pours
 
-        self.bypass_enabled = bool(bypass_enabled or float(bypass_volume or 0.0) > 0)
-        self.bypass_volume = float(bypass_volume or 0.0)
-        self.bypass_temp = float(bypass_temp or 85.0)
+        self.bypass_enabled = bool(bypass_enabled) and float(bypass_volume or 0.0) > 0
+        self.bypass_volume = float(bypass_volume or 0.0) if self.bypass_enabled else 0.0
+        self.bypass_temp = float(bypass_temp or 85.0) if self.bypass_enabled else 85.0
 
         self.total_water = sum(getattr(p, "water", 0) for p in pours)
         self.total_water_g = self.total_water
         self.total_water_ml = self.total_water
-        
+
         calc_ratio = (self.total_water / self.dose) if self.dose > 0 else 0.0
         self.effective_ratio = float(calc_ratio)
         self.ratio = float(calc_ratio)
@@ -598,10 +657,14 @@ class ProtocolCompliantRecipe:
             "pours": [p.to_dict() if hasattr(p, "to_dict") else p for p in self.pours],
             "steps": [p.to_dict() if hasattr(p, "to_dict") else p for p in self.steps]
         }
-        if self.bypass_enabled or self.bypass_volume > 0:
+        if self.bypass_enabled and self.bypass_volume > 0:
             d["bypass_enabled"] = True
             d["bypass_volume"] = float(self.bypass_volume)
             d["bypass_temp"] = float(self.bypass_temp)
+        else:
+            d["bypass_enabled"] = False
+            d["bypass_volume"] = 0.0
+            d["bypass_temp"] = 85.0
         return d
 
     def __getitem__(self, item):
@@ -610,6 +673,8 @@ class ProtocolCompliantRecipe:
     def get(self, item, default=None):
         return self.to_protocol_dict().get(item, default)
 
+AGITATION_SECONDS = 8
+
 def build_official_recipe_object(recipe_data: Any):
     if isinstance(recipe_data, dict):
         rec_name = recipe_data.get("name", "Custom Brew")
@@ -617,9 +682,9 @@ def build_official_recipe_object(recipe_data: Any):
         rec_grind = int(recipe_data.get("grind_size", 45))
         rec_grind_on = bool(recipe_data.get("grind_enabled", True))
         rec_rpm = int(recipe_data.get("grind_rpm", 80))
-        rec_bypass_on = bool(recipe_data.get("bypass_enabled", False)) or float(recipe_data.get("bypass_volume", 0.0) or 0.0) > 0
-        rec_bypass_vol = float(recipe_data.get("bypass_volume", 0.0) or 0.0)
-        rec_bypass_temp = float(recipe_data.get("bypass_temp", 85.0) or 85.0)
+        rec_bypass_on = bool(recipe_data.get("bypass_enabled", False)) and float(recipe_data.get("bypass_volume", 0.0) or 0.0) > 0
+        rec_bypass_vol = float(recipe_data.get("bypass_volume", 0.0) or 0.0) if rec_bypass_on else 0.0
+        rec_bypass_temp = float(recipe_data.get("bypass_temp", 85.0) or 85.0) if rec_bypass_on else 85.0
         raw_steps = recipe_data.get("steps") or recipe_data.get("pours") or []
     else:
         rec_name = getattr(recipe_data, "name", "Custom Brew")
@@ -627,26 +692,52 @@ def build_official_recipe_object(recipe_data: Any):
         rec_grind = int(getattr(recipe_data, "grind_size", 45))
         rec_grind_on = bool(getattr(recipe_data, "grind_enabled", True))
         rec_rpm = int(getattr(recipe_data, "grind_rpm", 80))
-        rec_bypass_on = bool(getattr(recipe_data, "bypass_enabled", False)) or float(getattr(recipe_data, "bypass_volume", 0.0) or 0.0) > 0
-        rec_bypass_vol = float(getattr(recipe_data, "bypass_volume", 0.0) or 0.0)
-        rec_bypass_temp = float(getattr(recipe_data, "bypass_temp", 85.0) or 85.0)
+        rec_bypass_on = bool(getattr(recipe_data, "bypass_enabled", False)) and float(getattr(recipe_data, "bypass_volume", 0.0) or 0.0) > 0
+        rec_bypass_vol = float(getattr(recipe_data, "bypass_volume", 0.0) or 0.0) if rec_bypass_on else 0.0
+        rec_bypass_temp = float(getattr(recipe_data, "bypass_temp", 85.0) or 85.0) if rec_bypass_on else 85.0
         raw_steps = getattr(recipe_data, "steps", None) or getattr(recipe_data, "pours", None) or []
 
+    rec_is_advanced = bool(getattr(recipe_data, "is_advanced", False) if hasattr(recipe_data, "is_advanced") else (recipe_data.get("is_advanced", False) if isinstance(recipe_data, dict) else False))
+    rec_schema_v = int(getattr(recipe_data, "schema_version", 2 if rec_is_advanced else 1) if hasattr(recipe_data, "schema_version") else (recipe_data.get("schema_version", 2 if rec_is_advanced else 1) if isinstance(recipe_data, dict) else 1))
+    rec_auto_grind = bool(getattr(recipe_data, "auto_grind", True) if hasattr(recipe_data, "auto_grind") else (recipe_data.get("auto_grind", True) if isinstance(recipe_data, dict) else True))
 
     rec_rpm = max(60, min(120, round(rec_rpm / 10) * 10))
 
     pours = []
-    for s in raw_steps:
-        s_water = getattr(s, "water", None) if hasattr(s, "water") else s.get("water", 50)
+    for step_index, s in enumerate(raw_steps):
+        if hasattr(s, "water") and getattr(s, "water") is not None:
+            s_water = getattr(s, "water")
+        elif hasattr(s, "pour") and getattr(s, "pour") is not None:
+            s_water = getattr(s, "pour")
+        elif hasattr(s, "ml") and getattr(s, "ml") is not None:
+            s_water = getattr(s, "ml")
+        elif isinstance(s, dict):
+            s_water = s.get("water") if s.get("water") is not None else (s.get("pour") if s.get("pour") is not None else s.get("ml", 50))
+        else:
+            s_water = 50
         s_temp = getattr(s, "temp", None) if hasattr(s, "temp") else s.get("temp", s.get("temperature", 93))
         s_wait = getattr(s, "wait", None) if hasattr(s, "wait") else s.get("wait", s.get("pause", 15))
         s_flow = getattr(s, "flow", None) if hasattr(s, "flow") else s.get("flow", s.get("flow_rate", 3.2))
         s_pattern = getattr(s, "pattern", None) if hasattr(s, "pattern") else s.get("pattern", "center")
         s_before = getattr(s, "agitation_before", None) if hasattr(s, "agitation_before") else s.get("agitation_before", False)
         s_after = getattr(s, "agitation_after", None) if hasattr(s, "agitation_after") else s.get("agitation_after", s.get("agitation", False))
-        
+        s_radius = getattr(s, "radius", None) if hasattr(s, "radius") else s.get("radius", "L3")
+        s_step_time = getattr(s, "step_time", None) if hasattr(s, "step_time") else s.get("step_time", 0)
+
         pat = normalize_pattern(s_pattern)
         step_rpm = 0 if pat == "center" else max(60, min(120, rec_rpm))
+        norm_radius = str(s_radius or "L3").upper()
+        norm_step_time = int(s_step_time or 0)
+
+        final_wait = int(s_wait or 0)
+        if final_wait == 0 and norm_step_time > 0:
+            fl_val = float(s_flow) if float(s_flow) > 0 else 3.2
+            pour_dur = round(float(s_water) / fl_val)
+            after_sec = AGITATION_SECONDS if s_after else 0
+            next_step = raw_steps[step_index + 1] if step_index + 1 < len(raw_steps) else None
+            next_before = getattr(next_step, "agitation_before", False) if hasattr(next_step, "agitation_before") else (next_step.get("agitation_before", False) if isinstance(next_step, dict) else False)
+            next_before_sec = AGITATION_SECONDS if next_before else 0
+            final_wait = max(0, norm_step_time - pour_dur - after_sec - next_before_sec)
 
         if StepClass:
             try:
@@ -655,10 +746,12 @@ def build_official_recipe_object(recipe_data: Any):
                     temp_c=int(s_temp),
                     pattern=pat,
                     agitation=bool(s_after),
-                    pause_s=int(s_wait),
+                    pause_s=final_wait,
                     rpm=step_rpm,
                     flow_ml_s=float(s_flow),
-                    agitation_before=bool(s_before)
+                    agitation_before=bool(s_before),
+                    radius=norm_radius,
+                    step_time=norm_step_time
                 )
                 for attr, val in [
                     ("water", int(s_water)),
@@ -667,9 +760,9 @@ def build_official_recipe_object(recipe_data: Any):
                     ("temp", int(s_temp)),
                     ("temperature", int(s_temp)),
                     ("temperature_c", int(s_temp)),
-                    ("wait", int(s_wait)),
-                    ("wait_s", int(s_wait)),
-                    ("pause", int(s_wait)),
+                    ("wait", final_wait),
+                    ("wait_s", final_wait),
+                    ("pause", final_wait),
                     ("flow", float(s_flow)),
                     ("flow_rate", float(s_flow)),
                     ("rpm", step_rpm),
@@ -678,6 +771,8 @@ def build_official_recipe_object(recipe_data: Any):
                     ("isEnableVibrationBefore", bool(s_before)),
                     ("isEnableVibrationAfter", bool(s_after)),
                     ("vibration", bool(s_after or s_before)),
+                    ("radius", norm_radius),
+                    ("step_time", norm_step_time),
                 ]:
                     try:
                         setattr(step_obj, attr, val)
@@ -687,22 +782,25 @@ def build_official_recipe_object(recipe_data: Any):
                 continue
             except Exception:
                 pass
-        
+
         pours.append(ProtocolCompliantPour(
             water=int(s_water),
             temp=int(s_temp),
-            wait=int(s_wait),
+            wait=final_wait,
             flow=float(s_flow),
             pattern=pat,
             agitation_before=bool(s_before),
             agitation_after=bool(s_after),
-            rpm=step_rpm
+            rpm=step_rpm,
+            radius=norm_radius,
+            step_time=norm_step_time
         ))
 
     effective_grind = rec_grind if rec_grind_on else 0
-    total_w = sum(getattr(p, "water", 0) for p in pours)
+    total_w = sum(int(getattr(p, "water", None) or getattr(p, "ml", 0) or 0) for p in pours)
     calc_ratio = float(total_w / rec_dose) if rec_dose > 0 else 0.0
 
+    norm_pours = pours
     is_no_grind = (not rec_grind_on) or (effective_grind == 0)
 
     if RecipeClass:
@@ -711,7 +809,11 @@ def build_official_recipe_object(recipe_data: Any):
                 name=rec_name,
                 dose_g=rec_dose,
                 grind=effective_grind,
-                pours=pours
+                pours=norm_pours,
+                is_advanced=rec_is_advanced,
+                schema_version=rec_schema_v,
+                grind_rpm=rec_rpm,
+                auto_grind=rec_auto_grind
             )
             for attr, val in [
                 ("dose", rec_dose),
@@ -729,6 +831,9 @@ def build_official_recipe_object(recipe_data: Any):
                 ("bypass_enabled", rec_bypass_on),
                 ("bypass_volume", rec_bypass_vol),
                 ("bypass_temp", rec_bypass_temp),
+                ("is_advanced", rec_is_advanced),
+                ("schema_version", rec_schema_v),
+                ("auto_grind", rec_auto_grind),
             ]:
                 try:
                     setattr(rec_obj, attr, val)
@@ -744,25 +849,11 @@ def build_official_recipe_object(recipe_data: Any):
         grind_size=effective_grind,
         grind_enabled=rec_grind_on,
         grind_rpm=rec_rpm,
-        pours=pours,
+        pours=norm_pours,
         bypass_enabled=rec_bypass_on,
         bypass_volume=rec_bypass_vol,
         bypass_temp=rec_bypass_temp
     )
-
-
-def get_default_fallback_recipe(name: str):
-    return build_official_recipe_object({
-        "name": name,
-        "dose": 15,
-        "grind_size": 45,
-        "grind_enabled": True,
-        "grind_rpm": 80,
-        "steps": [
-            {"temp": 93, "water": 45, "wait": 30, "flow": 3.2, "pattern": "center", "agitation_before": False, "agitation_after": True},
-            {"temp": 93, "water": 180, "wait": 15, "flow": 3.2, "pattern": "spiral", "agitation_before": False, "agitation_after": False}
-        ]
-    })
 
 SLOT_KEY_MAP = { 1: "A", 2: "B", 3: "C" }
 
@@ -777,7 +868,13 @@ async def websocket_telemetry_endpoint(websocket: WebSocket):
             "telemetry": latest_telemetry
         })
         while True:
-            await websocket.receive_text()
+            raw_text = await websocket.receive_text()
+            try:
+                msg_data = json.loads(raw_text)
+                if msg_data.get("action") == "abort" or msg_data.get("type") == "abort":
+                    asyncio.create_task(stop_brew())
+            except Exception:
+                pass
     except WebSocketDisconnect:
         connected_websockets.remove(websocket)
 
@@ -814,9 +911,26 @@ async def update_settings(cfg_update: SettingsUpdateModel):
         server_config["handdrip_interval_sync"] = bool(cfg_update.handdrip_interval_sync)
     if cfg_update.show_micron is not None:
         server_config["show_micron"] = bool(cfg_update.show_micron)
+    if cfg_update.enable_advanced_recipe is not None:
+        server_config["enable_advanced_recipe"] = bool(cfg_update.enable_advanced_recipe)
+    if cfg_update.default_radius is not None:
+        new_rad = str(cfg_update.default_radius).strip().upper()
+        server_config["default_radius"] = new_rad
+        if ble_client and ble_connection_status == "CONNECTED":
+            try:
+                rad_frame = build_set_pour_radius(new_rad)
+                if hasattr(ble_client, "write_frame"):
+                    res = ble_client.write_frame(rad_frame)
+                    if asyncio.iscoroutine(res):
+                        await res
+                await broadcast_msg({
+                    "type": "log",
+                    "msg": f"[BLE] 🎯 머신 추출 반경 실시간 적용: {new_rad}"
+                })
+            except Exception as e:
+                print(f"[WARN] Failed to apply live pour radius to machine: {e}")
     save_server_config(server_config)
     return {"status": "ok", "config": server_config}
-
 
 def mask_api_key(key: Optional[str]) -> str:
     if not key or len(key) < 8:
@@ -830,13 +944,13 @@ async def get_ai_settings():
     openai_key = server_config.get("ai_openai_key", "")
     gemini_model = server_config.get("ai_gemini_model", "gemini-3.5-flash-lite")
     openai_model = server_config.get("ai_openai_model", "gpt-4o")
-    
+
     active_key = gemini_key if provider == "gemini" else openai_key
     active_model = gemini_model if provider == "gemini" else openai_model
     gem_ver = server_config.get("ai_gemini_verified", False)
     oai_ver = server_config.get("ai_openai_verified", False)
     is_active_verified = gem_ver if provider == "gemini" else oai_ver
-    
+
     return {
         "status": "ok",
         "provider": provider,
@@ -877,7 +991,7 @@ async def save_ai_settings(req: AISettingsUpdateModel):
             server_config["ai_gemini_model"] = req.model.strip()
         else:
             server_config["ai_openai_model"] = req.model.strip()
-        
+
     save_server_config(server_config)
     return await get_ai_settings()
 
@@ -890,7 +1004,7 @@ async def test_ai_connection(req: AITestConnectionRequest):
         key = server_config.get("ai_gemini_key" if provider == "gemini" else "ai_openai_key", "").strip()
     if not key:
         raise HTTPException(status_code=400, detail="API key is required for testing. Please enter a key.")
-    
+
     target_model = req.model or server_config.get("ai_gemini_model" if provider == "gemini" else "ai_openai_model", "gemini-3.5-flash-lite" if provider == "gemini" else "gpt-4o")
     try:
         res = ai_service.dispatch_llm(provider, key, "You are a connectivity test ping. Reply with 'OK'.", "ping", model=target_model)
@@ -907,7 +1021,7 @@ async def extract_recipe_endpoint(req: AIExtractRecipeRequest):
     global server_config
     provider = (req.provider or server_config.get("ai_provider", "gemini")).strip().lower()
     key = req.api_key or (server_config.get("ai_gemini_key") if provider == "gemini" else server_config.get("ai_openai_key"))
-    
+
     if not key:
         server_config[f"ai_{provider}_verified"] = False
         save_server_config(server_config)
@@ -915,7 +1029,7 @@ async def extract_recipe_endpoint(req: AIExtractRecipeRequest):
             status_code=400, 
             detail=f"{'Google Gemini' if provider == 'gemini' else 'OpenAI ChatGPT'} API 키가 설정되지 않았습니다. 환경 설정(⚙️)에서 키를 입력하고 [연결 테스트]를 완료해주세요."
         )
-        
+
     try:
         lang = req.lang or server_config.get("language", "ko")
         target_model = req.model or server_config.get("ai_gemini_model" if provider == "gemini" else "ai_openai_model", "gemini-3.5-flash-lite" if provider == "gemini" else "gpt-4o")
@@ -937,7 +1051,7 @@ async def barista_chat_endpoint(req: AIBaristaChatRequest):
     global server_config
     provider = (req.provider or server_config.get("ai_provider", "gemini")).strip().lower()
     key = req.api_key or (server_config.get("ai_gemini_key") if provider == "gemini" else server_config.get("ai_openai_key"))
-    
+
     if not key:
         server_config[f"ai_{provider}_verified"] = False
         save_server_config(server_config)
@@ -945,7 +1059,7 @@ async def barista_chat_endpoint(req: AIBaristaChatRequest):
             status_code=400, 
             detail=f"{'Google Gemini' if provider == 'gemini' else 'OpenAI ChatGPT'} API 키가 설정되지 않았습니다. 환경 설정(⚙️)에서 키를 입력하고 [연결 테스트]를 완료해주세요."
         )
-        
+
     try:
         lang = req.lang or server_config.get("language", "ko")
         target_model = req.model or server_config.get("ai_gemini_model" if provider == "gemini" else "ai_openai_model", "gemini-3.5-flash-lite" if provider == "gemini" else "gpt-4o")
@@ -970,11 +1084,31 @@ async def barista_chat_endpoint(req: AIBaristaChatRequest):
         traceback.print_exc()
         raise HTTPException(status_code=400, detail=err_str)
 
-
+def _history_record_time(record: Dict[str, Any]) -> float:
+    id_match = re.search(r"(\d{11,})$", str(record.get("id") or ""))
+    if id_match:
+        return float(id_match.group(1))
+    m = re.search(
+        r"(\d{1,2})\.\s*(\d{1,2})\.\s*(오전|오후|AM|PM)?\s*(\d{1,2}):(\d{2})",
+        str(record.get("date") or ""),
+    )
+    if not m:
+        return 0.0
+    hour = int(m.group(4)) % (12 if m.group(3) else 24)
+    if m.group(3) in ("오후", "PM"):
+        hour += 12
+    now = datetime.now()
+    try:
+        when = datetime(now.year, int(m.group(1)), int(m.group(2)), hour, int(m.group(5)))
+        if when > now + timedelta(days=1):
+            when = when.replace(year=now.year - 1)
+    except ValueError:
+        return 0.0
+    return when.timestamp() * 1000
 
 @app.get("/api/history")
 async def get_history(limit: int = 100):
-    records = load_brew_history()
+    records = sorted(load_brew_history(), key=_history_record_time, reverse=True)
     return {"records": records[:limit], "total": len(records)}
 
 @app.post("/api/history")
@@ -985,7 +1119,7 @@ async def add_history_record(record: HistoryItemModel):
         rec_dict["id"] = f"hist_{int(time.time() * 1000)}"
     if not rec_dict.get("date"):
         rec_dict["date"] = time.strftime("%m. %d. %H:%M")
-    
+
     records.insert(0, rec_dict)
     save_brew_history(records)
     print(f"[HISTORY] New brew record saved: {rec_dict['recipeName']} ({rec_dict.get('status', 'completed')}) - {rec_dict['totalYield']}g / {rec_dict['duration']}")
@@ -1002,6 +1136,10 @@ async def update_history_notes(record_id: str, update_data: HistoryUpdateNotesMo
                 target["beanName"] = update_data.beanName
             if update_data.notes is not None:
                 target["notes"] = update_data.notes
+            if update_data.roastery is not None:
+                target["roastery"] = update_data.roastery
+            if update_data.flavorTags is not None:
+                target["flavorTags"] = update_data.flavorTags
             break
     if not target:
         raise HTTPException(status_code=404, detail="해당 추출 기록을 찾을 수 없습니다.")
@@ -1048,7 +1186,7 @@ async def trigger_disconnect():
                     await res
         except Exception as e:
             print(f"[WARN] Exception during disconnect: {e}")
-    
+
     ble_connection_status = "DISCONNECTED"
     print("[BLE] Machine disconnected successfully.")
     await broadcast_msg({"type": "log", "msg": "[BLE] 머신과의 연결이 해제되었습니다."})
@@ -1069,15 +1207,23 @@ async def get_local_recipes():
 
                 steps_data = []
                 raw_steps = data.get("steps") or data.get("pours") or []
+                def first_set(step, keys, default):
+                    for key in keys:
+                        if step.get(key) is not None:
+                            return step[key]
+                    return default
+
                 for s in raw_steps:
                     steps_data.append({
-                        "temp": int(s.get("temp") or s.get("temperature", 92)),
+                        "temp": int(first_set(s, ("temp", "temperature"), 92)),
                         "water": int(s.get("water") or s.get("pour") or s.get("ml", 50)),
-                        "wait": int(s.get("wait") or s.get("pause_time") or s.get("pause", 15)),
+                        "wait": int(first_set(s, ("wait", "pause_time", "pause"), 15)),
                         "flow": float(s.get("flow_rate") or s.get("flow", 3.2)),
                         "pattern": normalize_pattern(s.get("pattern", "center")),
                         "agitation_before": bool(s.get("agitation_before", False)),
-                        "agitation_after": bool(s.get("agitation_after", s.get("agitation", False)))
+                        "agitation_after": bool(s.get("agitation_after", s.get("agitation", False))),
+                        "radius": str(s.get("radius", "L3")).upper(),
+                        "step_time": int(s.get("step_time", 0))
                     })
 
                 grind_val = int(data.get("grind_size") or data.get("grind", 45))
@@ -1085,9 +1231,13 @@ async def get_local_recipes():
                 grind_rpm = int(data.get("grind_rpm", data.get("rpm", 80)))
                 grind_rpm = max(60, min(120, round(grind_rpm / 10) * 10))
 
-                bp_vol = float(data.get("bypass_volume", 0.0) or 0.0)
-                bp_temp = float(data.get("bypass_temp", 85.0) or 85.0)
-                bp_on = bool(data.get("bypass_enabled", False)) or bp_vol > 0
+                bp_on = bool(data.get("bypass_enabled", False)) and float(data.get("bypass_volume", 0.0) or 0.0) > 0
+                bp_vol = float(data.get("bypass_volume", 0.0) or 0.0) if bp_on else 0.0
+                bp_temp = float(data.get("bypass_temp", 85.0) or 85.0) if bp_on else 85.0
+                is_adv = bool(data.get("is_advanced", False) or data.get("schema_version") == 2)
+
+                mode_val = str(data.get("mode", "coffee"))
+                tea_type_val = data.get("tea_type")
 
                 total_water_ml = sum(s["water"] for s in steps_data)
                 recipes_list.append({
@@ -1097,10 +1247,15 @@ async def get_local_recipes():
                     "grind_size": grind_val if grind_val > 0 else 45,
                     "grind_enabled": bool(grind_on),
                     "grind_rpm": grind_rpm,
-                    "interval_sync": False,
+                    "interval_sync": bool(data.get("interval_sync", False)),
                     "bypass_enabled": bp_on,
                     "bypass_volume": bp_vol,
                     "bypass_temp": bp_temp,
+                    "is_advanced": is_adv,
+                    "schema_version": int(data.get("schema_version", 2 if is_adv else 1)),
+                    "auto_grind": bool(data.get("auto_grind", True)),
+                    "mode": mode_val,
+                    "tea_type": tea_type_val,
                     "total_water": total_water_ml,
                     "pour_count": len(steps_data),
                     "steps": steps_data
@@ -1116,11 +1271,11 @@ async def delete_local_recipe(filename: str):
     clean_name = os.path.basename(filename)
     if clean_name != filename or not filename.endswith((".yaml", ".yml")):
         raise HTTPException(status_code=400, detail="유효하지 않은 레시피 파일명입니다.")
-    
+
     file_path = os.path.join(RECIPES_DIR, clean_name)
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="해당 레시피 파일을 찾을 수 없습니다.")
-    
+
     try:
         os.remove(file_path)
         print(f"[RECIPE] Deleted server recipe: {clean_name}")
@@ -1135,19 +1290,24 @@ async def save_recipe_to_server(recipe_data: RecipeModel):
         safe_name = re.sub(r'[\\/*?:"<>|]', "", recipe_data.name).strip()
         if not safe_name:
             safe_name = "custom_recipe"
-        
+
         filename = f"{safe_name}.yaml"
         file_path = os.path.join(RECIPES_DIR, filename)
 
+        is_tea_recipe = (getattr(recipe_data, "mode", "coffee") == "tea")
         yaml_content = {
             "name": recipe_data.name,
             "dose": int(recipe_data.dose),
-            "grind_size": int(recipe_data.grind_size),
-            "grind_enabled": bool(recipe_data.grind_enabled),
+            "grind_size": 0 if is_tea_recipe else int(recipe_data.grind_size),
+            "grind_enabled": False if is_tea_recipe else bool(recipe_data.grind_enabled),
             "grind_rpm": int(recipe_data.grind_rpm),
-            "bypass_enabled": bool(recipe_data.bypass_enabled),
-            "bypass_volume": float(recipe_data.bypass_volume),
+            "bypass_enabled": False if is_tea_recipe else bool(recipe_data.bypass_enabled),
+            "bypass_volume": 0.0 if is_tea_recipe else float(recipe_data.bypass_volume),
             "bypass_temp": float(recipe_data.bypass_temp),
+            "is_advanced": bool(recipe_data.is_advanced),
+            "schema_version": 2 if recipe_data.is_advanced else 1,
+            "auto_grind": bool(recipe_data.auto_grind),
+            "mode": recipe_data.mode or "coffee",
             "steps": [
                 {
                     "temp": int(s.temp),
@@ -1156,12 +1316,15 @@ async def save_recipe_to_server(recipe_data: RecipeModel):
                     "flow_rate": float(s.flow),
                     "pattern": normalize_pattern(s.pattern),
                     "agitation_before": bool(s.agitation_before),
-                    "agitation_after": bool(s.agitation_after)
+                    "agitation_after": bool(s.agitation_after),
+                    "radius": str(s.radius or "L3").upper(),
+                    "step_time": int(s.step_time or 0)
                 }
                 for s in recipe_data.steps
             ]
         }
-
+        if is_tea_recipe and recipe_data.tea_type:
+            yaml_content["tea_type"] = recipe_data.tea_type
 
         with open(file_path, "w", encoding="utf-8") as f:
             yaml.dump(yaml_content, f, allow_unicode=True, sort_keys=False)
@@ -1177,58 +1340,149 @@ async def write_slot(slot_id: int, recipe_data: RecipeModel):
     global ble_client
     if not (1 <= slot_id <= 3):
         raise HTTPException(status_code=400, detail="슬롯 번호는 1~3번만 지원합니다.")
+    if getattr(recipe_data, "is_advanced", False):
+        raise HTTPException(
+            status_code=400,
+            detail="고급 레시피는 동적 반경 및 실시간 앱 오케스트레이션 전용으로 머신 하드웨어 슬롯 저장을 지원하지 않습니다."
+        )
     if not ble_client or ble_connection_status != "CONNECTED":
         raise HTTPException(status_code=503, detail="머신이 연결되어 있지 않습니다.")
-    
-    target_slot_file = os.path.join(SLOTS_DIR, f"slot_{slot_id}.json")
-    try:
-        with open(target_slot_file, "w", encoding="utf-8") as f:
-            json.dump(recipe_data.dict(), f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"[WARN] Slot cache save warning: {e}")
-
-    all_slots_payload = {}
-    for sid in [1, 2, 3]:
-        key_name = SLOT_KEY_MAP[sid]
-        if sid == slot_id:
-            all_slots_payload[key_name] = build_official_recipe_object(recipe_data)
-        else:
-            s_file = os.path.join(SLOTS_DIR, f"slot_{sid}.json")
-            if os.path.exists(s_file):
-                try:
-                    with open(s_file, "r", encoding="utf-8") as f:
-                        saved_json = json.load(f)
-                        all_slots_payload[key_name] = build_official_recipe_object(saved_json)
-                except Exception:
-                    all_slots_payload[key_name] = get_default_fallback_recipe(f"Slot {key_name} Default")
-            else:
-                all_slots_payload[key_name] = get_default_fallback_recipe(f"Slot {key_name} Default")
 
     async with ble_lock:
         try:
-            if hasattr(ble_client, "save_slots"):
-                target_key = SLOT_KEY_MAP[slot_id]
-                print(f"[SLOT] Hardware slot mapping update: Slot {target_key} (#{slot_id}) -> '{recipe_data.name}'")
-                res = ble_client.save_slots(all_slots_payload)
-                if asyncio.iscoroutine(res):
-                    await res
-                print("[SLOT] xBloom hardware memory slot write successful!")
-            else:
-                raise RuntimeError("클라이언트에 save_slots 메서드가 없습니다.")
+            print(f"[SLOT] Hardware slot update: Slot {SLOT_KEY_MAP[slot_id]} (#{slot_id}) -> '{recipe_data.name}'")
+            await ble_client.save_slot(build_official_recipe_object(recipe_data), slot_id - 1)
         except Exception as e:
-            print(f"[WARN] save_slots BLE transfer error: {e}")
+            print(f"[WARN] save_slot BLE transfer error: {e}")
             traceback.print_exc()
             raise HTTPException(status_code=500, detail=f"슬롯 저장 실패: {str(e)}")
 
     return {"status": "saved", "slot": slot_id, "key": SLOT_KEY_MAP[slot_id], "name": recipe_data.name}
 
+async def monitor_grind_and_return_arm(client):
+    from xbloom_ble.client import CHAR_COMMAND
+    from xbloom_ble.protocol import build_grinder_exit
+    print("[BREW] ⏳ 원두 분쇄 모니터링 시작... (출수 감지 시 드리퍼 암 중앙 복귀)")
+    for _ in range(60):
+        await asyncio.sleep(1.0)
+        st = latest_telemetry.get("state", "").upper()
+        if st in ("BREWING", "POURING", "READY"):
+            print(f"[BREW] 🎯 출수 단계 진입 감지 ({st})! 드리퍼 크래들 암을 샤워헤드 아래(중앙)로 복귀시킵니다.")
+            if hasattr(client, "_client") and client._client:
+                try:
+                    await client._client.write_gatt_char(CHAR_COMMAND, build_grinder_exit(), response=False)
+                except Exception as e:
+                    print(f"[WARN] Grinder exit frame send failed: {e}")
+            break
+        elif st in ("IDLE", "STANDBY", "CANCELLED", "ERROR"):
+            break
+
+active_radius_task: Optional[asyncio.Task] = None
+app_radius_active = False
+
+def _default_radius() -> str:
+    return str(server_config.get("default_radius") or "L3").strip().upper()
+
+async def _restore_default_radius(client) -> None:
+    global app_radius_active
+    if not app_radius_active:
+        return
+    app_radius_active = False
+    try:
+        await client.write_frame(build_set_pour_radius(_default_radius()))
+    except Exception as e:
+        print(f"[WARN] Radius restore failed: {e}")
+
+async def monitor_and_apply_dynamic_radius(client, steps: List[StepModel]):
+    from xbloom_ble.client import CHAR_COMMAND
+    from xbloom_ble.protocol import build_set_pour_radius, build_grinder_exit
+
+    if not steps or len(steps) == 0:
+        return
+
+    print(f"[RADIUS CONTROLLER] 🚀 실시간 가변 반경 오케스트레이터 시작 (총 {len(steps)}단계)")
+
+    cum_targets = []
+    running_tot = 0
+    for s in steps:
+        w = int(getattr(s, "water", None) or getattr(s, "pour", 0) or 50)
+        running_tot += w
+        cum_targets.append(running_tot)
+
+    for _ in range(240):
+        st = latest_telemetry.get("state", "").upper()
+        if st in ("BREWING", "POURING"):
+            break
+        elif st in ("CANCELLED", "ERROR", "IDLE"):
+            await _restore_default_radius(client)
+            return
+        await asyncio.sleep(0.5)
+
+    print(f"[RADIUS CONTROLLER] 🚀 실물 출수 감지! 실시간 단계별 가변 반경 추적 시작")
+
+    current_applied_step = 1
+
+    while True:
+        await asyncio.sleep(0.3)
+        st = latest_telemetry.get("state", "").upper()
+        cur_water = float(latest_telemetry.get("pour_weight", 0.0) or 0.0)
+
+        total_target_water = float(cum_targets[-1]) if cum_targets else 200.0
+        is_completed = st in ("READY", "COMPLETE", "CANCELLED", "ERROR") or (cur_water >= total_target_water * 0.9 and st in ("IDLE", "STANDBY"))
+        if is_completed:
+            print(f"[RADIUS CONTROLLER] 🏁 추출 종료 감지 ({st}, 총 출수: {cur_water:.1f}g/{total_target_water:.1f}g). 크래들 암 중앙 원점 복귀.")
+            if hasattr(client, "_client") and client._client:
+                try:
+                    await client._client.write_gatt_char(CHAR_COMMAND, build_grinder_exit(), response=False)
+                    await asyncio.sleep(0.5)
+                except Exception:
+                    pass
+            await _restore_default_radius(client)
+            for _ in range(600):
+                await asyncio.sleep(1.0)
+                if latest_telemetry.get("state", "").upper() in ("IDLE", "STANDBY"):
+                    try:
+                        await client.write_frame(build_set_pour_radius(_default_radius()))
+                    except Exception as e:
+                        print(f"[WARN] Radius restore failed: {e}")
+                    break
+            break
+
+        rep_step = int(latest_telemetry.get("step_index", 0) or 0)
+
+        target_step = 1
+        for idx, target_w in enumerate(cum_targets, start=1):
+            if cur_water >= (target_w - 2.0) and idx < len(steps):
+                target_step = idx + 1
+            else:
+                break
+
+        if rep_step > target_step:
+            target_step = min(rep_step, len(steps))
+
+        if target_step > current_applied_step and target_step <= len(steps):
+            step_info = steps[target_step - 1]
+            target_radius = str(getattr(step_info, "radius", "L3") or "L3").upper()
+            print(f"[RADIUS CONTROLLER] 🎯 {target_step}차 푸어 전환 감지 (누적 출수: {cur_water:.1f}g) ➔ 반경 '{target_radius}' 이동")
+            await broadcast_msg({
+                "type": "log",
+                "msg": f"[RADIUS] 🎯 {target_step}차 푸어 반경 '{target_radius}' 적용"
+            })
+            if hasattr(client, "_client") and client._client:
+                try:
+                    f = build_set_pour_radius(target_radius)
+                    await client._client.write_gatt_char(CHAR_COMMAND, f, response=False)
+                except Exception as e:
+                    print(f"[WARN] Radius switch frame error: {e}")
+            current_applied_step = target_step
+
 @app.post("/api/brew/start")
 async def start_brew(recipe_data: RecipeModel):
-    """안전한 단계별 추출 실행: load_recipe (ARMED) -> start (COMMIT/START)"""
-    global ble_client, ble_connection_status, latest_telemetry
+    global ble_client, ble_connection_status, latest_telemetry, v2_orchestrator, active_radius_task, app_radius_active
+
     if not ble_client or ble_connection_status != "CONNECTED":
         raise HTTPException(status_code=503, detail="머신이 BLE로 연결되어 있지 않습니다.")
-    
+
     initial_temp = recipe_data.steps[0].temp if recipe_data.steps else 93
     latest_telemetry["pour_weight"] = 0.0
     latest_telemetry["yield_weight"] = 0.0
@@ -1238,7 +1492,19 @@ async def start_brew(recipe_data: RecipeModel):
     latest_telemetry["elapsed_time"] = 0
 
     recipe_obj = build_official_recipe_object(recipe_data)
-    print(f"\n[BREW] Executing brew routine: {recipe_data.name} (Dose: {recipe_data.dose}g)")
+    from xbloom_ble.protocol import build_load_frames
+    proto_dict = recipe_obj.to_protocol_dict()
+    load_frames = build_load_frames(proto_dict)
+
+    dbg_pours_cmd = hex(load_frames[3][3])
+    dbg_grind_byte = hex(load_frames[3][-4])
+    dbg_msg = f"[BREW DEBUG] 레시피: {recipe_data.name} | Dose: {recipe_data.dose}g | grind_size: {recipe_data.grind_size} | grind_enabled: {recipe_data.grind_enabled} | is_adv: {getattr(recipe_data, 'is_advanced', False)} | pours_cmd: {dbg_pours_cmd} | grind_byte: {dbg_grind_byte} | steps: {len(recipe_data.steps)}"
+    print(f"\n=======================================================")
+    print(dbg_msg)
+    for idx, fr in enumerate(load_frames):
+        print(f"  [BLE FRAME {idx}] CMD 0x{fr[3]:02x} ({len(fr)}B): {fr.hex()}")
+    print(f"=======================================================\n")
+    await broadcast_msg({"type": "log", "msg": dbg_msg})
 
     if hasattr(recipe_obj, "ble_warnings"):
         warnings = recipe_obj.ble_warnings()
@@ -1248,22 +1514,39 @@ async def start_brew(recipe_data: RecipeModel):
 
     rec_bp_vol = float(getattr(recipe_obj, "bypass_volume", 0.0) or 0.0)
     rec_bp_temp = float(getattr(recipe_obj, "bypass_temp", 85.0) or 85.0)
-    rec_bp_on = bool(getattr(recipe_obj, "bypass_enabled", False)) or rec_bp_vol > 0
+    rec_bp_on = bool(getattr(recipe_obj, "bypass_enabled", False)) and rec_bp_vol > 0
     if rec_bp_on and rec_bp_vol > 0:
         bp_msg = f"[BREW] 🚀 바이패스(Bypass) 활성화: 본 추출 완료 후 드리퍼 자동 이동 & {rec_bp_vol}ml ({rec_bp_temp}℃) 가수 진행"
         print(bp_msg)
         await broadcast_msg({"type": "log", "msg": bp_msg})
 
+    is_adv_recipe = bool(getattr(recipe_data, "is_advanced", False))
+    default_radius = _default_radius()
+    has_custom_radius = any(str(s.radius or "L3").upper() != default_radius for s in (recipe_data.steps or []))
+    use_app_radius = bool(is_adv_recipe and has_custom_radius and recipe_data.steps)
 
     async with ble_lock:
         try:
-            await broadcast_msg({"type": "log", "msg": f"[BREW] '{recipe_data.name}' 레시피 전송 중..."})
+            if use_app_radius:
+                first_radius = str(recipe_data.steps[0].radius or "L3").upper()
+                await ble_client.write_frame(build_set_pour_radius(first_radius))
+                app_radius_active = True
+                await broadcast_msg({"type": "log", "msg": f"[RADIUS] 🎯 1차 푸어 반경 '{first_radius}' 적용"})
+                await asyncio.sleep(0.3)
+
+            grind_label = f"분쇄도 {recipe_obj.grind}" if recipe_obj.grind > 0 else "분쇄 미사용(사전 분쇄)"
+            print(f"[BREW] Loading recipe to machine: {recipe_data.name} ({grind_label})")
+            load_res = None
             if hasattr(ble_client, "load_recipe"):
                 res = ble_client.load_recipe(recipe_obj)
                 if asyncio.iscoroutine(res):
-                    await res
-            latest_telemetry["state"] = "ARMED"
-            await broadcast_msg({"type": "log", "msg": "[BREW] 머신 준비 완료 (ARMED), 추출을 시작합니다..."})
+                    load_res = await res
+                else:
+                    load_res = res
+            load_state_name = getattr(load_res, "state_name", "armed") if load_res else "unknown"
+            load_log = f"[BREW] ✅ 레시피 로드 완료 (머신 상태: {load_state_name}) -> Commit & Start 진행"
+            print(load_log)
+            await broadcast_msg({"type": "log", "msg": load_log})
 
             start_event = None
             if hasattr(ble_client, "start"):
@@ -1271,6 +1554,11 @@ async def start_brew(recipe_data: RecipeModel):
                 if asyncio.iscoroutine(res):
                     res = await res
                 start_event = res
+                st_name = getattr(start_event, "state_name", "started") if start_event else "started"
+                start_log = f"[BREW] 🚀 머신 시동(Start) 완료 -> 응답 상태: {st_name}"
+                print(start_log)
+                await broadcast_msg({"type": "log", "msg": start_log})
+
                 if res and hasattr(res, "state_name") and res.state_name in ("no_beans", "no_water"):
                     what = "원두가" if res.state_name == "no_beans" else "물이"
                     err_msg = f"[BREW] 머신 거부: {what} 부족합니다. 추출이 취소되었습니다."
@@ -1287,38 +1575,128 @@ async def start_brew(recipe_data: RecipeModel):
                     res = await res
                 start_event = res
 
-            is_grind_active = (not getattr(recipe_obj, "no_grind", False)) and bool(recipe_data.grind_enabled)
-            is_machine_starting = bool(start_event and getattr(start_event, "state_name", "") == "starting")
+            print(f"[BREW] Hardware session active for '{recipe_data.name}'")
 
-            if is_grind_active or is_machine_starting:
-                latest_telemetry["state"] = "STARTING"
-                await broadcast_msg({"type": "log", "msg": f"[BREW] ⚙️ '{recipe_data.name}' 원두 분쇄 중 (Grind)... 분쇄 완료 후 추출이 시작됩니다."})
+            has_grind_phase = bool(recipe_obj.grind > 0 and recipe_obj.grind_enabled)
+            latest_telemetry["state"] = "STARTING" if has_grind_phase else "BREWING"
+
+            if use_app_radius:
+                if active_radius_task and not active_radius_task.done():
+                    active_radius_task.cancel()
+                active_radius_task = asyncio.create_task(monitor_and_apply_dynamic_radius(ble_client, recipe_data.steps))
+                print(f"[BREW] 고급 가변 반경 오케스트레이터 기동 (커스텀 반경 감지)")
             else:
-                latest_telemetry["state"] = "BREWING"
-                await broadcast_msg({"type": "log", "msg": f"[BREW] 🚀 '{recipe_data.name}' 실제 추출 진행 중..."})
+                if active_radius_task and not active_radius_task.done():
+                    active_radius_task.cancel()
+                print(f"[BREW] 온디바이스 순정 시퀀서 단독 제어 (가변 반경 간섭 없음)")
 
             await broadcast_msg({"type": "telemetry", **latest_telemetry})
         except Exception as e:
             traceback.print_exc()
             latest_telemetry["state"] = "ERROR"
             await broadcast_msg({"type": "log", "msg": f"[BREW ERROR] {str(e)}"})
+            await _restore_default_radius(ble_client)
             raise HTTPException(status_code=500, detail=f"추출 실패: {str(e)}")
 
-    return {"status": "started", "recipe": recipe_data.name, "grind_enabled": bool(recipe_data.grind_enabled)}
+    return {"status": "started", "recipe": recipe_data.name, "grind_enabled": bool(recipe_obj.grind > 0)}
 
 @app.post("/api/brew/stop")
 async def stop_brew():
-    global ble_client
-    async with ble_lock:
-        if ble_client and hasattr(ble_client, "cancel_brew"):
+    global ble_client, v2_orchestrator, active_radius_task
+    print("[BREW] 🛑 비상 정지(Emergency Stop) 요청 수신")
+
+    if active_radius_task and not active_radius_task.done():
+        try:
+            active_radius_task.cancel()
+            print("[BREW] 🛑 가변 반경 오케스트레이터 태스크 취소 완료")
+        except Exception as te:
+            print(f"[WARN] Cancel radius task error: {te}")
+
+    if ble_client and hasattr(ble_client, "_client") and ble_client._client:
+        from xbloom_ble.client import CHAR_COMMAND
+        from xbloom_ble.protocol import (
+            build_cancel,
+            build_grinder_stop,
+            build_grinder_exit,
+            build_water_stop,
+        )
+        try:
+            await ble_client._client.write_gatt_char(CHAR_COMMAND, build_cancel(), response=False)
+            await ble_client._client.write_gatt_char(CHAR_COMMAND, build_water_stop(), response=False)
+            await ble_client._client.write_gatt_char(CHAR_COMMAND, build_grinder_stop(), response=False)
+            await ble_client._client.write_gatt_char(CHAR_COMMAND, build_grinder_exit(), response=False)
+            await _restore_default_radius(ble_client)
+            print("[BREW] 🛑 하드웨어 강제 정지 패킷 즉시 전송 완료")
+        except Exception as he:
+            print(f"[WARN] Hardware emergency stop exception: {he}")
+
+    if ble_client and hasattr(ble_client, "cancel_brew"):
+        try:
             res = ble_client.cancel_brew()
             if asyncio.iscoroutine(res):
                 await res
-        elif ble_client and hasattr(ble_client, "stop"):
+        except Exception as ce:
+            print(f"[WARN] cancel_brew exception: {ce}")
+    elif ble_client and hasattr(ble_client, "stop"):
+        try:
             res = ble_client.stop()
             if asyncio.iscoroutine(res):
                 await res
+        except Exception as se:
+            print(f"[WARN] stop exception: {se}")
+
+    latest_telemetry["state"] = "CANCELLED"
+    await broadcast_msg({"type": "telemetry", **latest_telemetry})
+    await broadcast_msg({"type": "log", "msg": "[BREW] 🛑 머신 추출 긴급 중단 및 원점 복귀 완료"})
     return {"status": "stopped"}
+
+@app.post("/api/v2/brew/start")
+async def api_v2_brew_start(recipe_data: RecipeModel):
+    return await start_brew(recipe_data)
+
+@app.post("/api/v2/brew/abort")
+async def api_v2_brew_abort():
+    return await stop_brew()
+
+@app.post("/api/v2/brew/pause")
+async def api_v2_brew_pause():
+    global v2_orchestrator
+    if not v2_orchestrator or not v2_orchestrator.is_running:
+        return {"status": "not_running"}
+    await v2_orchestrator.pause()
+    return {"status": "paused"}
+
+@app.post("/api/v2/brew/resume")
+async def api_v2_brew_resume():
+    global v2_orchestrator
+    if not v2_orchestrator or not v2_orchestrator.is_running:
+        return {"status": "not_running"}
+    await v2_orchestrator.resume()
+    return {"status": "resumed"}
+
+@app.get("/api/v2/brew/status")
+async def api_v2_brew_status():
+    global v2_orchestrator
+    if not v2_orchestrator:
+        return {"is_running": False, "state": "IDLE"}
+    prog = v2_orchestrator.get_progress().to_dict()
+    prog["is_running"] = v2_orchestrator.is_running
+    return prog
+
+@app.post("/api/machine/radius/{level}")
+async def set_machine_radius(level: str):
+    global ble_client, ble_connection_status
+    if not ble_client or ble_connection_status != "CONNECTED":
+        raise HTTPException(status_code=503, detail="머신이 연결되어 있지 않습니다.")
+    from xbloom_ble.protocol import build_set_pour_radius
+    from xbloom_ble.client import CHAR_COMMAND
+    frame = build_set_pour_radius(level)
+    print(f"[RADIUS] 🎯 Setting pour radius to '{level}' (Frame: {frame.hex()})")
+    await broadcast_msg({"type": "log", "msg": f"[RADIUS] 🎯 반경 설정: {level}"})
+    if hasattr(ble_client, "_client") and ble_client._client:
+        await ble_client._client.write_gatt_char(CHAR_COMMAND, frame, response=False)
+        return {"status": "ok", "level": level, "frame": frame.hex()}
+    raise HTTPException(status_code=500, detail="BLE 클라이언트 에러")
 
 @app.post("/api/cloud/login")
 async def cloud_login(creds: CloudLoginModel):
@@ -1463,7 +1841,7 @@ def fetch_xbloom_shared_recipe(url_or_id: str) -> Dict[str, Any]:
         "interfaceVersion": 19700101,
         "skey": "testskey"
     }
-    
+
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
@@ -1538,22 +1916,18 @@ def fetch_xbloom_shared_recipe(url_or_id: str) -> Dict[str, Any]:
             "agitation_after": vib_after
         })
 
-    # Dose
     try:
         dose_val = int(round(float(vo.get("dose", 15))))
     except Exception:
         dose_val = 15
 
-    # Grind
     try:
         grind_val = int(round(float(vo.get("grinderSize", 45))))
     except Exception:
         grind_val = 45
 
-    # Grind enabled: isSetGrinderSize == 1
     grind_enabled = (vo.get("isSetGrinderSize") == 1)
 
-    # RPM
     raw_rpm = vo.get("rpm", 80)
     try:
         rpm_val = int(raw_rpm)
@@ -1587,14 +1961,12 @@ async def api_fetch_shared_recipe(req: FetchSharedRecipeRequest):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"공유 레시피 가져오기 실패: {str(e)}")
 
-
 _update_cache: Dict[str, Any] = {
     "last_check": 0,
     "data": None
 }
 
 def parse_version_tuple(v_str: str) -> tuple:
-    """'v0.8.5' -> (0, 8, 5) 변환"""
     nums = re.findall(r'\d+', str(v_str or ""))
     return tuple(map(int, nums)) if nums else (0, 0, 0)
 
@@ -1621,9 +1993,9 @@ def fetch_latest_release(force: bool = False) -> Dict[str, Any]:
                 remote_ver = tag.lstrip("vV")
                 remote_tuple = parse_version_tuple(remote_ver)
                 local_tuple = parse_version_tuple(CURRENT_VERSION)
-                
+
                 is_newer = remote_tuple > local_tuple
-                
+
                 result = {
                     "current_version": CURRENT_VERSION,
                     "latest_version": remote_ver,
@@ -1655,16 +2027,15 @@ def fetch_latest_release(force: bool = False) -> Dict[str, Any]:
     }
 
 def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
-    """순수 파이썬으로 릴리즈 zip 다운로드 및 데이터 100% 무손실 보존 덮어쓰기 수행"""
     tmp_dir = os.path.join(BASE_DIR, ".update_tmp")
     if os.path.exists(tmp_dir):
         shutil.rmtree(tmp_dir, ignore_errors=True)
     os.makedirs(tmp_dir, exist_ok=True)
-    
+
     zip_path = os.path.join(tmp_dir, "release.zip")
     extract_dir = os.path.join(tmp_dir, "extracted")
     os.makedirs(extract_dir, exist_ok=True)
-    
+
     try:
         req = urllib.request.Request(
             zip_url,
@@ -1672,42 +2043,42 @@ def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
         )
         with urllib.request.urlopen(req, timeout=45.0) as resp, open(zip_path, "wb") as out_f:
             shutil.copyfileobj(resp, out_f)
-            
+
         with zipfile.ZipFile(zip_path, 'r') as zf:
             zf.extractall(extract_dir)
-            
+
         extracted_items = os.listdir(extract_dir)
         source_root = extract_dir
         if len(extracted_items) == 1 and os.path.isdir(os.path.join(extract_dir, extracted_items[0])):
             source_root = os.path.join(extract_dir, extracted_items[0])
-            
+
         PROTECTED_ITEMS = {
             "recipes", "history.json", "history.json.bak",
             "config.json", "config.json.bak", "python",
             "runtime", ".git", ".gitignore", "scratch",
             "dist", "dist_portable", ".update_tmp"
         }
-        
+
         copied_files = []
         for root, dirs, files in os.walk(source_root):
             rel_path = os.path.relpath(root, source_root)
             rel_parts = [] if rel_path == "." else rel_path.split(os.sep)
-                
+
             if rel_parts and rel_parts[0] in PROTECTED_ITEMS:
                 continue
-                
+
             target_dir = os.path.join(BASE_DIR, rel_path) if rel_path != "." else BASE_DIR
             os.makedirs(target_dir, exist_ok=True)
-            
+
             for file_name in files:
                 if file_name in PROTECTED_ITEMS:
                     continue
                 if file_name.endswith(".zip") or file_name.endswith(".tar.gz"):
                     continue
-                    
+
                 src_file = os.path.join(root, file_name)
                 dst_file = os.path.join(target_dir, file_name)
-                
+
                 try:
                     shutil.copy2(src_file, dst_file)
                     copied_files.append(os.path.relpath(dst_file, BASE_DIR))
@@ -1716,7 +2087,7 @@ def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
 
         shutil.rmtree(tmp_dir, ignore_errors=True)
         print(f"[UPDATE] Replaced {len(copied_files)} files cleanly (user data preserved)")
-        
+
         def delayed_restart():
             time.sleep(1.5)
             try:
@@ -1732,9 +2103,9 @@ def apply_update_from_zip(zip_url: str) -> Dict[str, Any]:
                 print(f"[UPDATE RESTART ERROR] {re}")
             finally:
                 os._exit(0)
-                
+
         threading.Thread(target=delayed_restart, daemon=True).start()
-        
+
         return {
             "success": True,
             "message": "업데이트가 성공적으로 적용되었습니다. 잠시 후 서버가 재기동됩니다.",
@@ -1757,15 +2128,13 @@ async def api_apply_update():
     zip_url = release_info.get("zip_url")
     if not zip_url:
         raise HTTPException(status_code=400, detail="다운로드할 최신 릴리즈 ZIP URL을 찾을 수 없습니다.")
-    
+
     try:
         res = await loop.run_in_executor(None, apply_update_from_zip, zip_url)
         return res
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# ==============================================================================
-# ==============================================================================
 SCHEDULE_FILE = os.path.join(DATA_DIR, "schedule.json") if 'DATA_DIR' in globals() else "schedule.json"
 
 def calculate_next_trigger_datetime(time_str: str, repeat_mode: str, base_time: Optional[datetime] = None) -> datetime:
@@ -1813,11 +2182,6 @@ def dict_to_recipe_model(data: dict) -> RecipeModel:
     )
 
 async def scheduled_brew_daemon_loop():
-    """파이썬 백엔드 독립형 예약 브루잉 감시 데몬
-    - 5초마다 schedule.json을 모니터링
-    - T-35초: BLE 사전 예열(Pre-Connect) 및 머신 기상 + 레시피 무장(ARMED)
-    - T-0초 정각: 지연 시간 0초 즉시 start_brew 발사!
-    """
     print("[SCHEDULE DAEMON] ⏰ Background Scheduled Brew Watcher Started.")
     pre_staged_schedule_id = None
 
@@ -2000,6 +2364,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="xBloom bleUI Web Server")
     parser.add_argument("-p", "--port", type=int, default=8000, help="서버 포트 번호")
     parser.add_argument("--host", type=str, default="0.0.0.0", help="호스트 주소")
+    parser.add_argument(
+        "--reload",
+        action="store_true",
+        help="개발용: 코드 저장 시 서버 자동 재시작. 추출 중에도 BLE가 끊기므로 평소에는 쓰지 마세요.",
+    )
     args = parser.parse_args()
 
     print(f"\n========================================================")
@@ -2008,4 +2377,4 @@ if __name__ == "__main__":
     print(f"  - Network URL: http://0.0.0.0:{args.port}")
     print(f"========================================================\n")
 
-    uvicorn.run("server:app", host=args.host, port=args.port, reload=True)
+    uvicorn.run("server:app", host=args.host, port=args.port, reload=args.reload)

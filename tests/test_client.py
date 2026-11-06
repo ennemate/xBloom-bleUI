@@ -24,6 +24,7 @@ IDLE = "580207571f10000000c1010000002d33"        # 0x01
 NO_WATER = "580207571f10000000c10c000000a2b8"    # 0x0c
 NO_BEANS = "580207571f10000000c10f0000000000"    # 0x0f  (dummy crc; parser ignores it)
 SLOTS_SAVED = "580207571f10000000c1250000000000"  # 0x25
+SLOTS_SAVING = "580207571f10000000c1430000000000"  # 0x43
 ACK_42 = "580207421f0c000000c1c5c2"              # commit echo
 WATER35 = "5802074b9e10000000c100b8084759b4"     # 0x4b water 35.0 g
 COFFEE12 = "580207155010000000c19eef4141ceba"    # 0x15 coffee 12.12 g
@@ -51,6 +52,7 @@ class FakeBleak:
         self._cb = None
         self._aux_cb = None
         self._slot_writes = 0
+        self.slot_accepts = True
         # command byte (offset 3) -> frames to push after that write
         self.script: dict[int, list[str]] = {
             0x41: [ARMED],            # pours frame -> machine arms
@@ -84,8 +86,10 @@ class FakeBleak:
         cmd = data[3]
         for hx in self.script.get(cmd, []):
             self._push(hx)
-        if cmd == 0xF6:  # a slot write; the machine stores after the full trio
+        if cmd == 0xF6:  # a slot write; the machine enters saving, and a full trio ends with 0x25
             self._slot_writes += 1
+            if self.slot_accepts:
+                self._push(SLOTS_SAVING)
             if self._slot_writes >= 3:
                 self._push(SLOTS_SAVED)
 
@@ -129,7 +133,7 @@ def test_connect_and_context_manager(monkeypatch):
     import bleak
 
     fake = FakeBleak()
-    monkeypatch.setattr(bleak, "BleakClient", lambda addr: fake)
+    monkeypatch.setattr(bleak, "BleakClient", lambda addr, **_: fake)
 
     async def go():
         async with XBloomClient("AA:BB:CC:DD:EE:FF") as c:
@@ -168,14 +172,14 @@ def test_start_acts_on_commit_without_0x46():
     assert 0x46 not in _cmds(fake)  # machine acted -> don't nudge
 
 
-def test_start_nudges_with_0x46_when_stalled():
+def test_start_never_sends_0x46_even_when_stalled():
     fake = FakeBleak()
-    fake.script[0x42] = [ACK_42]        # commit acked but machine stalls (no state)
-    fake.script[0x46] = [STARTING]      # the nudge gets it going
+    fake.script[0x42] = [ACK_42]        # commit acked but no state follows
     c = _client(fake)
     ev = run(c.start(settle=0.05))
-    assert 0x46 in _cmds(fake)
-    assert ev.state_name == "starting"
+    assert 0x42 in _cmds(fake)
+    assert 0x46 not in _cmds(fake)      # 0x46 is the official app's pause
+    assert ev.raw == b""
 
 
 def test_start_returns_refusal_state():
@@ -189,7 +193,6 @@ def test_start_returns_refusal_state():
 def test_start_falls_back_to_synthetic_when_silent():
     fake = FakeBleak()
     fake.script[0x42] = []              # commit produces nothing
-    fake.script[0x46] = []              # nudge produces nothing either
     c = _client(fake)
     ev = run(c.start(settle=0.02))
     assert ev.state_name == "brewing"   # best-effort synthetic; raw is empty
@@ -221,6 +224,27 @@ def test_save_slots_programs_three_and_never_brews():
     cmds = _cmds(fake)
     assert cmds.count(0xF6) == 3                     # three slot writes
     assert not ({0x42, 0x46, 0x47} & set(cmds))      # never a brew opcode
+
+
+def test_save_slot_writes_only_the_chosen_slot_and_never_brews():
+    fake = FakeBleak()
+    c = _client(fake)
+    run(c.save_slot(RECIPE, 2))
+    cmds = _cmds(fake)
+    assert cmds.count(0xF6) == 1
+    slot_frame = next(w for w in fake.writes if w[3] == 0xF6)
+    assert slot_frame[10] == 2                       # slot C
+    assert cmds[-1] == 0xF7                          # back to AUTO
+    assert not ({0x42, 0x46, 0x47} & set(cmds))      # never a brew opcode
+
+
+def test_save_slot_reports_a_write_the_machine_did_not_accept():
+    fake = FakeBleak()
+    fake.slot_accepts = False
+    c = _client(fake)
+    with pytest.raises(XBloomError):
+        run(c.save_slot(RECIPE, 0, accept_timeout=0.05))
+    assert _cmds(fake)[-1] == 0xF7                   # still returns to AUTO
 
 
 def test_save_slots_rejects_wrong_count():

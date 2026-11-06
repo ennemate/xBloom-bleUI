@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.2)
+# xBloom bleUI (v2.0.0)
 
 <p align="center">
   <strong>Standalone Android App & Local Web Controller for xBloom Studio Coffee Machines</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
+  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -26,6 +26,68 @@
   <br>
   <em>Real-time Water Pour & Coffee Yield Dual Curve Chart with Smart Flow Detection Pour Markers</em>
 </p>
+
+---
+
+## What's New in v2.0.0
+
+These features were added in v2.0.0. The data in the screenshots below is sample data.
+
+### Advanced Recipes
+
+<p align="center">
+  <img src="docs/img/advanced-recipe.png" alt="Advanced recipe editor" width="820">
+  <br>
+  <em>Advanced recipe editor with a separate radius and step time for each pour</em>
+</p>
+
+* Set a **pour radius (L1 to L5)** for each pour. During the brew, the app switches to the next radius based on the water dispensed.
+* Enter a **step time** instead of a wait: the time from the start of one pour to the start of the next. The machine's wait is what remains after the pour and any agitation (8 seconds per agitation).
+* Choose a **default radius** in Settings. The app does not change the radius for normal recipes.
+* Official firmware V300 cannot change the radius during a brew, so only the first pour's radius applies. V500 or later is recommended.
+* Turn on the advanced recipe option in Settings to use this.
+
+### Tea Mode
+
+<p align="center">
+  <img src="docs/img/tea-mode.png" alt="Tea mode editor" width="820">
+  <br>
+  <em>Tea recipe editor for the Omni Brewer</em>
+</p>
+
+* Switch between coffee and tea in the Recipe Studio.
+* One cup is 120 ml, the official app's standard. If the water you enter is below 120 ml, the app adds the rest automatically to trigger the drain.
+
+### Report Card
+
+<p align="center">
+  <img src="docs/img/report-card.png" alt="Brewing report card" width="420">
+  <br>
+  <em>A report card made from a brew record</em>
+</p>
+
+* Add the bean, roastery and cup notes to a brew record and turn it into an image. Fields left blank do not appear on the card.
+* On PC you can copy it to the clipboard or save a WebP file. On Android you can share it or save it to your gallery.
+
+### Brew Comparison
+
+<p align="center">
+  <img src="docs/img/history-compare.png" alt="Brew comparison screen" width="700">
+  <br>
+  <em>Charts and parameters of two brew records compared</em>
+</p>
+
+* Pick two brew records to overlay their charts and see the differences in grind, yield and time.
+* Load a recipe straight from a record or the comparison screen. Advanced recipes open in the advanced editor.
+
+### Other Changes
+
+* **Slot saving**: saves only the slot you choose and leaves the others alone.
+* **Android**: supports everything above. On first launch it asks for the Nearby devices and Location permissions.
+* **Recipe list**: the normal editor shows normal recipes, and the advanced editor shows advanced recipes.
+* **Languages**: new screens and server messages are translated into 7 languages.
+
+See the [release notes](https://github.com/ennemate/xBloom-bleUI/releases/tag/v2.0.0) for the full list (Korean).
 
 ---
 
@@ -150,7 +212,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 
 ## Feature Comparison
 
-| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
+| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
 | :--- | :--- | :--- |
 | **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
 | **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
@@ -250,11 +312,12 @@ Choose the distribution suited for your setup:
 1. Open [Releases Page](https://github.com/ennemate/xBloom-bleUI/releases) on your smartphone.
 2. Download **`xBloom-bleUI-release.apk`** and install.
 3. Open the app and tap **[Connect BLE]** at the top right to discover and pair with your machine.
+   On first launch the app asks for the Nearby devices and Location permissions. Allow them to connect to the machine.
 
 ---
 
 ### Method B. Windows Standalone Portable (PC Recommended)
-1. Download `xBloom-bleUI-v1.0.2-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+1. Download `xBloom-bleUI-v2.0.0-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
 2. Unzip into any directory.
 3. Double-click **`run.bat`**.
    * The server starts automatically and opens your default browser at `http://localhost:8000`.
@@ -283,7 +346,7 @@ Choose the distribution suited for your setup:
 * **1-Click Update**: Upgrade seamlessly via the top update notification badge or Settings (⚙️).
 * **100% User Data Preserved**:
   * Updates never overwrite your user data:
-    * 📂 `recipes/` (custom recipes & slot presets)
+    * 📂 `recipes/` (custom recipes)
     * 📄 `history.json` (all past extraction logs & dual curves)
     * ⚙️ `config.json` (themes, wallpaper, cloud settings)
     * 🐍 `python/` (embedded runtime in portable editions)

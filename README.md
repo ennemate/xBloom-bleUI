@@ -1,11 +1,11 @@
-# xBloom bleUI (v1.0.2)
+# xBloom bleUI (v2.0.0)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 독립형 안드로이드 앱 & 로컬 웹 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.2-orange.svg" alt="Version 1.0.2">
+  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -26,6 +26,68 @@
   <br>
   <em>실시간 물 투입량(Water Pour)과 컵 추출액(Coffee Yield) 듀얼 그래프 & 스마트 유속 감지 푸어 마커</em>
 </p>
+
+---
+
+## v2.0.0 새 기능
+
+v2.0.0에서 추가된 기능입니다. 아래 화면의 데이터는 예시입니다.
+
+### 고급 레시피
+
+<p align="center">
+  <img src="docs/img/advanced-recipe.png" alt="고급 레시피 편집 화면" width="820">
+  <br>
+  <em>푸어마다 반경과 구간 시간을 따로 설정하는 고급 레시피 편집 화면</em>
+</p>
+
+* 푸어마다 **반경(L1~L5)** 을 다르게 설정합니다. 추출 중 물 배출량을 보고 다음 푸어 반경으로 바꿉니다.
+* 대기시간 대신 **구간 시간**을 입력합니다. 이번 푸어 시작부터 다음 푸어 시작까지의 시간이고, 물 붓는 시간과 교반 시간(1회 8초)을 뺀 값이 머신 대기시간이 됩니다.
+* 설정에서 **기본 반경**을 정할 수 있습니다. 일반 레시피는 앱이 반경을 바꾸지 않습니다.
+* 공식 펌웨어 V300은 추출 중 반경을 바꾸지 못해 1차 푸어 반경만 적용됩니다. V500 이상을 권장합니다.
+* 설정의 고급 레시피 옵션을 켜면 나타납니다.
+
+### 티 모드
+
+<p align="center">
+  <img src="docs/img/tea-mode.png" alt="티 모드 편집 화면" width="820">
+  <br>
+  <em>옴니 브루어용 티 레시피 편집 화면</em>
+</p>
+
+* 레시피 스튜디오에서 커피와 티를 전환합니다.
+* 한 컵은 공식 앱 기준인 120ml입니다. 입력한 물량이 120ml보다 적으면 배수용 물을 자동으로 더 붓습니다.
+
+### 레포트 카드
+
+<p align="center">
+  <img src="docs/img/report-card.png" alt="브루잉 레포트 카드" width="420">
+  <br>
+  <em>추출 기록으로 만드는 레포트 카드</em>
+</p>
+
+* 추출 기록에서 원두, 로스터리, 컵노트를 적어 이미지로 만듭니다. 비워 둔 칸은 카드에 나오지 않습니다.
+* PC에서는 클립보드 복사와 WebP 저장, 안드로이드에서는 공유와 사진 앱 저장을 지원합니다.
+
+### 추출 비교
+
+<p align="center">
+  <img src="docs/img/history-compare.png" alt="추출 비교 화면" width="700">
+  <br>
+  <em>두 추출 기록의 그래프와 파라미터 비교</em>
+</p>
+
+* 추출 기록 두 개를 골라 그래프를 겹쳐 보고, 분쇄도, 수율, 시간 차이를 표로 확인합니다.
+* 비교 화면이나 기록에서 레시피를 바로 불러올 수 있습니다. 고급 레시피는 고급 편집기로 열립니다.
+
+### 그 밖에 달라진 점
+
+* **슬롯 저장**: 선택한 슬롯 하나만 저장하며, 다른 슬롯은 건드리지 않습니다.
+* **안드로이드**: 위 기능을 모두 지원합니다. 첫 실행 때 근처 기기와 위치 권한을 요청합니다.
+* **레시피 목록**: 일반 편집기에서는 일반 레시피만, 고급 편집기에서는 고급 레시피만 보입니다.
+* **다국어**: 추가된 화면과 서버 메시지까지 7개 언어로 번역했습니다.
+
+자세한 변경 내역은 [릴리즈 노트](https://github.com/ennemate/xBloom-bleUI/releases/tag/v2.0.0)를 참고하세요.
 
 ---
 
@@ -151,7 +213,7 @@
 
 ## 기능 비교
 
-| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v1.0.2)** |
+| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
 | :--- | :--- | :--- |
 | **실행 플랫폼** | 터미널 기반 CLI 및 TUI (Linux 중심) | **독립형 안드로이드 네이티브 앱(APK) + 크로스플랫폼 PC 웹 대시보드** |
 | **PC 의존성** | PC 파이썬 환경 필수 | **스마트폰 단독 구동 (PC 없이 스마트폰에서 BLE 직결)** |
@@ -251,11 +313,12 @@
 1. 스마트폰 웹 브라우저에서 [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases) 접속
 2. **`xBloom-bleUI-release.apk`** 다운로드 및 설치
 3. 앱을 실행하고 화면 우측 상단의 **[BLE 연결]** 버튼을 누르면 주변의 xBloom Studio를 자동으로 탐색하여 직결됩니다.
+   처음 실행하면 근처 기기와 위치 권한을 묻습니다. 허용해야 머신에 연결할 수 있습니다.
 
 ---
 
 ### 방법 B. Windows 포터블 무설치판 실행 (PC 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v1.0.2-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v2.0.0-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    * 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.
@@ -289,7 +352,7 @@
 * **원클릭 자동 업데이트**: 웹 화면 상단의 업데이트 알림 뱃지 또는 설정(⚙️)의 [업데이트 확인]을 통해 안전하게 최신 버전으로 업그레이드할 수 있습니다.
 * **사용자 데이터 100% 무손실 보존**:
   * 업데이트 시 소스 코드와 정적 UI 파일만 선별 교체되므로, 다음 사용자 데이터는 **절대 덮어씌워지지 않고 안전하게 보존**됩니다:
-    * 📂 `recipes/` (나만의 작성 레시피 및 슬롯 프리셋)
+    * 📂 `recipes/` (나만의 작성 레시피)
     * 📄 `history.json` (과거 모든 추출 기록 및 듀얼 차트 아카이브)
     * ⚙️ `config.json` (테마, 배경화면, 클라우드 계정 설정)
     * 🐍 `python/` (포터블 에디션 내장 런타임)

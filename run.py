@@ -18,15 +18,15 @@ def parse_args():
     parser.add_argument("-p", "--port", type=int, default=None, help=f"Server port number (default: {DEFAULT_PORT})")
     parser.add_argument("--host", type=str, default=DEFAULT_HOST, help=f"Host address to bind (default: {DEFAULT_HOST})")
     parser.add_argument("--no-browser", action="store_true", help="Disable automatic browser open")
-    
+
     args, extra_args = parser.parse_known_args()
-    
+
     chosen_port = args.port or args.pos_port or int(os.environ.get("PORT", DEFAULT_PORT))
     return chosen_port, args.host, args.no_browser, extra_args
 
 def main():
     port, host, no_browser, extra_args = parse_args()
-    
+
     print("=" * 55)
     print("  xBloom bleUI Launcher")
     print(f"  - Web Dashboard : http://localhost:{port}")
@@ -34,7 +34,7 @@ def main():
     print("=" * 55)
 
     server_path = os.path.join(os.path.dirname(__file__), "server.py")
-    
+
     if not no_browser:
         def open_browser():
             time.sleep(1.2)

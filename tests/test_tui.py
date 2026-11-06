@@ -624,7 +624,7 @@ def test_journey_editor_preserves_metadata_on_edit(tmp_path):
 def test_journey_editor_validation_blocks_save(store):
     async def s(app, pilot):
         ed = await open_editor(app, pilot, "e")
-        ed.query_one("#dose_g", Input).value = "99"      # dose > 18
+        ed.query_one("#dose_g", Input).value = "0"       # dose < 1
         await pilot.pause(0.1)
         return ed.query_one("#save", ClickCell).has_class("disabled")
     assert drive(store, s) is True
