@@ -1,11 +1,11 @@
-# xBloom bleUI (v2.0.0)
+# xBloom bleUI (v2.0.1)
 
 <p align="center">
   <strong>xBloom Studio 커피 머신을 위한 독립형 안드로이드 앱 & 로컬 웹 컨트롤러</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/Version-2.0.1-orange.svg" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -213,7 +213,7 @@ v2.0.0에서 추가된 기능입니다. 아래 화면의 데이터는 예시입�
 
 ## 기능 비교
 
-| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
+| 기능 영역 | 기반 통신 라이브러리 (`xbloom-ble`) | **xBloom bleUI (v2.0.1)** |
 | :--- | :--- | :--- |
 | **실행 플랫폼** | 터미널 기반 CLI 및 TUI (Linux 중심) | **독립형 안드로이드 네이티브 앱(APK) + 크로스플랫폼 PC 웹 대시보드** |
 | **PC 의존성** | PC 파이썬 환경 필수 | **스마트폰 단독 구동 (PC 없이 스마트폰에서 BLE 직결)** |
@@ -318,7 +318,7 @@ v2.0.0에서 추가된 기능입니다. 아래 화면의 데이터는 예시입�
 ---
 
 ### 방법 B. Windows 포터블 무설치판 실행 (PC 추천)
-1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v2.0.0-Windows-Portable.zip` 다운로드
+1. [Releases 페이지](https://github.com/ennemate/xBloom-bleUI/releases)에서 `xBloom-bleUI-v2.0.1-Windows-Portable.zip` 다운로드
 2. 원하는 폴더에 압축 해제
 3. 폴더 안의 **`run.bat`** 파일을 더블 클릭
    * 내장된 임베디드 파이썬 환경으로 서버가 자동 구동되며, 기본 웹 브라우저(`http://localhost:8000`)가 즉시 열립니다.

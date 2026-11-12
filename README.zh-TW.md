@@ -1,11 +1,11 @@
-# xBloom bleUI (v2.0.0)
+# xBloom bleUI (v2.0.1)
 
 <p align="center">
   <strong>專為 xBloom Studio 打造的獨立 Android 原生 App 與本機網頁控制器</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/Version-2.0.1-orange.svg" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -213,7 +213,7 @@
 
 ## 功能比較表
 
-| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
+| 功能範疇 | 底層通訊函式庫 (`xbloom-ble`) | **xBloom bleUI (v2.0.1)** |
 | :--- | :--- | :--- |
 | **執行平台** | 終端機命令列 CLI / TUI (Linux 為主) | **獨立 Android 原生 App (APK) ＋ 跨平台 PC 網頁儀表板** |
 | **電腦依賴性** | 必須仰賴電腦 Python 環境 | **手機獨立運作（完全無需電腦，手機藍牙直接連線控制）** |
@@ -318,7 +318,7 @@
 ---
 
 ### 途徑 B. 執行 Windows 免安裝便攜版 (PC 推薦)
-1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v2.0.0-Windows-Portable.zip`
+1. 於 [Releases 頁面](https://github.com/ennemate/xBloom-bleUI/releases) 下載 `xBloom-bleUI-v2.0.1-Windows-Portable.zip`
 2. 解壓縮至任意資料夾
 3. 按兩下資料夾內的 **`run.bat`**
    * 內建的 Python 環境將自動帶起伺服器，並自動在預設瀏覽器開啟 `http://localhost:8000`。

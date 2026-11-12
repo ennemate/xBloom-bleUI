@@ -5,6 +5,7 @@ import logging
 from collections.abc import Awaitable, Callable, Mapping, Sequence
 
 from .protocol import (
+    build_back_to_normal,
     build_cancel,
     build_commit,
     build_load_frames,
@@ -293,7 +294,15 @@ class XBloomClient:
         log.info("→ 0x47 cancel (aborting brew)")
         await self._client.write_gatt_char(CHAR_COMMAND, build_cancel(), response=False)
 
-    async def save_slot(self, recipe: Recipe, slot: int, *, scale: bool = True, accept_timeout: float = 5.0) -> None:
+    async def save_slot(
+        self,
+        recipe: Recipe,
+        slot: int,
+        *,
+        scale: bool = True,
+        accept_timeout: float = 5.0,
+        idle_timeout: float = 6.0,
+    ) -> None:
         if self._client is None or not self._client.is_connected:
             raise XBloomError("not connected")
 
@@ -303,21 +312,21 @@ class XBloomClient:
         await self._start_notify()
         try:
             await self._client.write_gatt_char(CHAR_COMMAND, build_session_start(), response=False)
-            await self._client.write_gatt_char(CHAR_COMMAND, build_set_mode(pro=True), response=False)
-            try:
-                await self._drain_until_state(STATE_IDLE, self.ack_timeout)
-            except XBloomError:
-                log.warning("machine idle not confirmed; proceeding (is it in AUTO mode?)")
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(0.5)
 
             log.info("→ save slot %s (scale=%s)", "ABC"[slot], scale)
             await self._client.write_gatt_char(CHAR_COMMAND, frame, response=False)
             accepted = await self._drain_for_any({STATE_SLOTS_SAVING, STATE_SLOTS_SAVED}, accept_timeout)
-
-            await self._client.write_gatt_char(CHAR_COMMAND, build_set_mode(pro=False), response=False)
-            await asyncio.sleep(0.3)
             if accepted is None:
                 raise XBloomError("machine did not accept the slot write")
+            if (
+                accepted.state != STATE_SLOTS_SAVED
+                and await self._drain_for_any({STATE_SLOTS_SAVED}, 1.0) is None
+            ):
+                log.info("→ back to normal (ends the single-slot saving state)")
+                await self._client.write_gatt_char(CHAR_COMMAND, build_back_to_normal(), response=False)
+                if await self._drain_for_any({STATE_IDLE, STATE_COMPLETE}, idle_timeout) is None:
+                    log.warning("machine did not report idle after back to normal")
         finally:
             await self._stop_notify()
 

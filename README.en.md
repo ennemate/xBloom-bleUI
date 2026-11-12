@@ -1,11 +1,11 @@
-# xBloom bleUI (v2.0.0)
+# xBloom bleUI (v2.0.1)
 
 <p align="center">
   <strong>Standalone Android App & Local Web Controller for xBloom Studio Coffee Machines</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/Version-2.0.1-orange.svg" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -212,7 +212,7 @@ Cutting-edge AI capabilities make specialty brewing intuitive and scientifically
 
 ## Feature Comparison
 
-| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
+| Feature Domain | Foundation Library (`xbloom-ble`) | **xBloom bleUI (v2.0.1)** |
 | :--- | :--- | :--- |
 | **Execution Platform** | Terminal CLI & TUI (Linux-focused) | **Standalone Android APK + Cross-platform PC Web Dashboard** |
 | **PC Dependency** | PC Python environment required | **Smartphone Standalone (Direct BLE connection from phone)** |
@@ -317,7 +317,7 @@ Choose the distribution suited for your setup:
 ---
 
 ### Method B. Windows Standalone Portable (PC Recommended)
-1. Download `xBloom-bleUI-v2.0.0-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
+1. Download `xBloom-bleUI-v2.0.1-Windows-Portable.zip` from [Releases](https://github.com/ennemate/xBloom-bleUI/releases).
 2. Unzip into any directory.
 3. Double-click **`run.bat`**.
    * The server starts automatically and opens your default browser at `http://localhost:8000`.

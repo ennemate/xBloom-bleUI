@@ -17,6 +17,9 @@ __all__ = [
     "build_status_query",
     "build_save_slot",
     "build_set_mode",
+    "build_back_to_normal",
+    "machine_accepts_ratio",
+    "wire_dose_and_ratio",
     "build_commit",
     "build_start",
     "build_cancel",
@@ -202,10 +205,40 @@ def _ratio_byte(recipe: Mapping) -> int:
     dose = int(recipe.get("dose", 0))
     return (round(total / dose * 10) & 0xFF) if dose else 0xA0
 
+def _f32(x: float) -> float:
+    return struct.unpack("<f", struct.pack("<f", x))[0]
+
+def machine_accepts_ratio(dose: int, tail: int, total_ml: int) -> bool:
+    return int(_f32(_f32(_f32(tail) / _f32(10.0)) * _f32(dose))) == total_ml
+
+def _tails_near(total_ml: int, dose: int) -> list[int]:
+    base = round(total_ml / dose * 10)
+    return sorted(range(1, 256), key=lambda t: (abs(t - base), t))
+
+def wire_dose_and_ratio(dose: int, total_ml: int) -> tuple[int, int]:
+    if not dose or total_ml <= 0:
+        return dose, (round(total_ml / dose * 10) & 0xFF) if dose else 0xA0
+    for t in _tails_near(total_ml, dose):
+        if machine_accepts_ratio(dose, t, total_ml):
+            return dose, t
+    for same_side in (True, False):
+        for delta in range(1, 255):
+            for d in (dose + delta, dose - delta):
+                if not 1 <= d <= 255 or (same_side and (d > 15) != (dose > 15)):
+                    continue
+                for t in _tails_near(total_ml, d):
+                    if machine_accepts_ratio(d, t, total_ml):
+                        return d, t
+    return dose, round(total_ml / dose * 10) & 0xFF
+
 def build_load_frames(recipe: Mapping) -> list[bytes]:
     seq = recipe.get("seq", LOAD_SEQ)
     t1, t2 = recipe.get("stage_temps", (110.0, 90.0))
-    tail = _ratio_byte(recipe)
+    if recipe.get("tail") is not None:
+        wire_dose, tail = int(recipe["dose"]), int(recipe["tail"]) & 0xFF
+    else:
+        total_ml = sum(int(p["ml"]) for p in recipe["pours"])
+        wire_dose, tail = wire_dose_and_ratio(int(recipe["dose"]), total_ml)
     pours_cmd = POURS_CMD_NO_GRIND if int(recipe["grind"]) == 0 else POURS_CMD_GRIND
     if "bypass_enabled" in recipe:
         bp_enabled = bool(recipe.get("bypass_enabled", False))
@@ -215,7 +248,7 @@ def build_load_frames(recipe: Mapping) -> list[bytes]:
     bypass_temp = float(recipe.get("bypass_temp", 85.0) or 85.0) if bypass_vol > 0 else 0.0
     frames = [
         xbloom_frame(0xA4, seq, build_a4()),
-        xbloom_frame(0xA6, seq, build_a6(recipe["dose"], bypass_vol, bypass_temp)),
+        xbloom_frame(0xA6, seq, build_a6(wire_dose, bypass_vol, bypass_temp)),
         xbloom_frame(0xA8, seq, build_a8(t1, t2)),
         xbloom_frame(pours_cmd, seq, build_41(recipe["pours"], recipe["grind"], tail)),
     ]
@@ -265,6 +298,11 @@ def build_set_mode(pro: bool = True) -> bytes:
                      + b"\x00\x00\x00\x00" + payload)
     body[5:9] = struct.pack("<I", len(body) + 2)
     return bytes(body) + struct.pack("<H", crc16_kermit(bytes(body)))
+
+CMD_BACK_TO_NORMAL = 0x9E4E
+
+def build_back_to_normal() -> bytes:
+    return xbloom_frame_1(CMD_BACK_TO_NORMAL)
 
 CMD_TARE = 0x2134
 CMD_SET_POUR_RADIUS = 0x2CF3

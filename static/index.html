@@ -963,6 +963,26 @@
       align-items: center;
       justify-content: center;
     }
+    .compare-dual-banner { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+    .compare-badge { min-width: 0; }
+    @media (max-width: 600px) {
+      .compare-dual-banner { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 6px; }
+      .compare-badge { padding: 6px 10px; gap: 1px; }
+      .compare-badge > div:first-child { margin-bottom: 2px !important; }
+      .compare-badge-name { font-size: 0.82rem; line-height: 1.3; }
+      .compare-badge-sub { font-size: 0.68rem; }
+      .btn-compare-card-load { padding: 2px 7px; font-size: 0.64rem; white-space: nowrap; flex-shrink: 0; }
+      .compare-badge-tag { min-width: 0; margin-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .compare-vs { justify-self: center; width: 22px; height: 22px; font-size: 0.6rem; margin: -5px 0; position: relative; z-index: 1; }
+    }
+    .compare-chart-header > div:first-child { flex-wrap: wrap; row-gap: 6px; word-break: keep-all; }
+    .compare-tab-btn { white-space: nowrap; }
+    @media (max-width: 600px) {
+      .compare-chart-header > div:first-child { width: 100%; }
+      .compare-view-tabs { display: flex; width: 100%; }
+      .compare-tab-btn { flex: 1; min-width: 0; padding: 5px 4px; white-space: normal; word-break: keep-all; line-height: 1.25; }
+      .compare-legend { width: 100%; justify-content: center; gap: 12px; }
+    }
     .compare-chart-card {
       background: var(--card-inner);
       border: 1px solid var(--border);
@@ -1063,6 +1083,25 @@
     .diff-pos { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
     .diff-neg { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
     .diff-neutral { color: var(--muted); }
+    @media (max-width: 600px) {
+      .compare-diff-head { flex-wrap: wrap; gap: 2px 8px; }
+      .compare-diff-table { display: block; font-size: 0.72rem; }
+      .compare-diff-table thead, .compare-diff-table tbody { display: block; }
+      .compare-diff-table tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 10px; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+      .compare-diff-table tbody tr:last-child { border-bottom: none; }
+      .compare-diff-table thead tr { background: rgba(0, 0, 0, 0.15); padding: 6px 10px; }
+      .compare-diff-table th, .compare-diff-table td { display: block; width: auto !important; padding: 0; border: none; word-break: keep-all; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
+      .compare-diff-table th { background: none; }
+      .compare-diff-table th:first-child { display: none; }
+      .compare-diff-table td:first-child { grid-column: 1 / -1; font-size: 0.66rem; color: var(--muted); margin-bottom: 2px; }
+      .compare-diff-table tr:hover td { background: none; }
+      .compare-diff-table th:last-child, .compare-diff-table td:last-child { text-align: left; }
+      .diff-delta { padding: 0; background: none !important; border: none !important; font-size: inherit; font-weight: 600; line-height: 1.35; max-width: 100%; word-break: normal; overflow-wrap: anywhere; }
+      .compare-note { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+      .compare-note.open { display: block; -webkit-line-clamp: unset; }
+      .compare-footer-actions { flex-direction: column; align-items: stretch; gap: 8px; }
+      .compare-footer-actions .btn-secondary { width: 100%; }
+    }
     .compare-footer-actions {
       display: flex;
       justify-content: space-between;
@@ -2862,7 +2901,7 @@
         <div class="card log-card">
           <div class="card-title" data-i18n="card_log_monitor">BLE 이벤트 로그 모니터</div>
           <div class="log-box" id="logBox">
-            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v2.0.0 Ready</div>
+            <div class="log-entry" data-log-key="log_init_ready">[INIT] xBloom bleUI v2.0.1 Ready</div>
           </div>
         </div>
       </div>
@@ -2880,7 +2919,7 @@
           </div>
           <div class="metric-box">
             <div class="metric-unit" data-i18n="metric_temp">수온</div>
-            <div class="metric-val theme-txt" style="font-size:1.15rem;"><span id="tempVal">0°C</span></div>
+            <div class="metric-val theme-txt" style="font-size:1.15rem;"><span id="tempVal">--</span></div>
           </div>
           <div class="metric-box">
             <div class="metric-unit" data-i18n="metric_pour">푸어</div>
@@ -3562,7 +3601,7 @@
       </div>
     </div>
     <div>
-      <div style="font-weight:700; font-size:0.8rem; margin-bottom:6px; color:var(--text); display:flex; justify-content:space-between; align-items:center;">
+      <div class="compare-diff-head" style="font-weight:700; font-size:0.8rem; margin-bottom:6px; color:var(--text); display:flex; justify-content:space-between; align-items:center;">
         <span data-i18n="compare_table_title">📊 다이얼링 인 파라미터 Diff 분석</span>
         <span style="font-size:0.7rem; color:var(--muted); font-weight:normal;" data-i18n="compare_table_hint">A 기준 B의 변화값(Delta)</span>
       </div>
@@ -3842,7 +3881,7 @@
     <div class="settings-footer" style="margin-top:14px; border-top:1px solid var(--border); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
       <button class="btn-secondary" id="btnManualCheckUpdate" onclick="manualCheckUpdate()" style="width:auto !important; flex-shrink:0; font-size:0.75rem; font-weight:600; padding:6px 14px; border-radius:7px; cursor:pointer; border:1px solid var(--border); background:var(--card-inner); color:var(--text);" data-i18n="btn_check_update">업데이트 확인</button>
       <a href="https://github.com/ennemate/xBloom-bleUI" target="_blank" rel="noopener noreferrer" id="settingsFooterLink" style="font-size:0.75rem; color:var(--muted); text-decoration:none; cursor:pointer; transition:color 0.15s ease; display:inline-flex; align-items:center; gap:5px;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'" data-i18n-title="title_github" title="GitHub 저장소 바로가기">
-        <span id="settingsFooterVer">v2.0.0 by 팽이팽이</span>
+        <span id="settingsFooterVer">v2.0.1 by 팽이팽이</span>
       </a>
     </div>
   </div>
@@ -3859,12 +3898,12 @@
     <div style="margin: 14px 0 10px 0; display:flex; justify-content:space-between; align-items:center; background:var(--card-inner); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_cur_ver">현재 버전</div>
-        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v2.0.0</div>
+        <div style="font-weight:700; color:var(--text);" id="updateCurrentVer">v2.0.1</div>
       </div>
       <div style="font-size:1.1rem; color:var(--accent);">➔</div>
       <div>
         <div style="font-size:0.75rem; color:var(--muted);" data-i18n="update_latest_ver">최신 릴리즈</div>
-        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v2.0.0</div>
+        <div style="font-weight:700; color:var(--sky);" id="updateLatestVer">v2.0.1</div>
       </div>
     </div>
     <div style="font-size:0.8rem; font-weight:600; margin-bottom:6px; color:var(--text);" data-i18n="update_notes_title">릴리즈 변경 사항 (Release Notes)</div>
@@ -4608,7 +4647,7 @@
     "alert_stop_failed": "정지 명령 전송 실패",
     "grind_label": "분쇄",
     "no_grind": "원두분쇄 안함",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 구동 완료",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 구동 완료",
     "log_ws_connected": "[BLE] 웹소켓 채널 연결 완료",
     "log_ble_not_found": "[BLE ERROR] 주변에서 xBloom 기기를 찾지 못했습니다. 전원을 확인해주세요.",
     "log_ble_reconnecting": "[BLE] 머신 수동 재연결 시도 중...",
@@ -5539,7 +5578,7 @@
     "alert_stop_failed": "Failed to send emergency stop command",
     "grind_label": "Grind",
     "no_grind": "No Grind",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 Ready",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 Ready",
     "log_ws_connected": "[BLE] WebSocket telemetry channel connected",
     "log_ble_not_found": "[BLE ERROR] xBloom machine not found nearby. Please check machine power.",
     "log_ble_reconnecting": "[BLE] Attempting manual BLE reconnection...",
@@ -6457,7 +6496,7 @@
     "alert_stop_failed": "緊急停止コマンドの送信に失敗しました",
     "grind_label": "粉砕",
     "no_grind": "粉砕なし",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 起動完了",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 起動完了",
     "log_ws_connected": "[BLE] WebSocketチャンネル接続完了",
     "log_ble_not_found": "[BLE ERROR] 周辺でxBloom機器が見つかりませんでした。電源をご確認ください。",
     "log_ble_reconnecting": "[BLE] マシン手動再接続を試行中...",
@@ -7380,7 +7419,7 @@
     "alert_stop_failed": "發送緊急停止指令失敗",
     "grind_label": "研磨",
     "no_grind": "不研磨",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 啟動完成",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 啟動完成",
     "log_ws_connected": "[BLE] WebSocket 連線頻道已建立",
     "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 機器，請確認電源是否開啟。",
     "log_ble_reconnecting": "[BLE] 正在嘗試手動重新連線咖啡機...",
@@ -8298,7 +8337,7 @@
     "alert_stop_failed": "发送紧急停止指令失败",
     "grind_label": "研磨",
     "no_grind": "不研磨",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 启动完成",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 启动完成",
     "log_ws_connected": "[BLE] WebSocket 连接已建立",
     "log_ble_not_found": "[BLE ERROR] 未在附近找到 xBloom 机器，请确认电源是否开启。",
     "log_ble_reconnecting": "[BLE] 正在尝试手动重新连接咖啡机...",
@@ -9204,7 +9243,7 @@
     "alert_stop_failed": "Not-Aus-Befehl konnte nicht gesendet werden",
     "grind_label": "Mahlung",
     "no_grind": "Kein Mahlen",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 Bereit",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 Bereit",
     "log_ws_connected": "[BLE] WebSocket-Kanal verbunden",
     "log_ble_not_found": "[BLE ERROR] xBloom-Gerät nicht gefunden. Bitte Stromversorgung prüfen.",
     "log_ble_reconnecting": "[BLE] Versuche manuelle Wiederverbindung...",
@@ -10122,7 +10161,7 @@
     "alert_stop_failed": "Échec de l'envoi de la commande d'arrêt d'urgence",
     "grind_label": "Mouture",
     "no_grind": "Sans mouture",
-    "log_init_ready": "[INIT] xBloom bleUI v2.0.0 Prêt",
+    "log_init_ready": "[INIT] xBloom bleUI v2.0.1 Prêt",
     "log_ws_connected": "[BLE] Canal WebSocket connecté",
     "log_ble_not_found": "[BLE ERROR] Appareil xBloom introuvable. Veuillez vérifier l'alimentation.",
     "log_ble_reconnecting": "[BLE] Tentative de reconnexion manuelle...",
@@ -10498,16 +10537,16 @@
     const verDesc = document.getElementById("settingsVersionInfo");
     const verBadge = document.getElementById("settingsVersionBadge");
     if (verDesc) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.1";
       verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${curVer}`;
     }
     if (verBadge) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.1";
       verBadge.innerText = `v${curVer}`;
     }
     const footerVer = document.getElementById("settingsFooterVer");
     if (footerVer) {
-      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.0";
+      const curVer = (latestReleaseData && latestReleaseData.current_version) ? latestReleaseData.current_version : "2.0.1";
       footerVer.innerText = `v${curVer} by 팽이팽이`;
     }
     const stateEl = document.getElementById("stateText");
@@ -10789,14 +10828,14 @@
       const verDesc = document.getElementById("settingsVersionInfo");
       const verBadge = document.getElementById("settingsVersionBadge");
       if (verDesc) {
-        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "2.0.0"}`;
+        verDesc.innerText = `${t("current_ver_prefix", "현재 버전: ")}v${data.current_version || "2.0.1"}`;
       }
       if (verBadge) {
-        verBadge.innerText = `v${data.current_version || "2.0.0"}`;
+        verBadge.innerText = `v${data.current_version || "2.0.1"}`;
       }
       const footerVer = document.getElementById("settingsFooterVer");
       if (footerVer) {
-        footerVer.innerText = `v${data.current_version || "2.0.0"} by 팽이팽이`;
+        footerVer.innerText = `v${data.current_version || "2.0.1"} by 팽이팽이`;
       }
       if (data.update_available) {
         if (badgeBtn) {
@@ -10809,7 +10848,7 @@
       } else {
         if (badgeBtn) badgeBtn.style.display = "none";
         if (manual) {
-          alert(t("alert_latest_version", { ver: data.current_version || "2.0.0" }));
+          alert(t("alert_latest_version", { ver: data.current_version || "2.0.1" }));
         }
       }
     } catch (e) {
@@ -10836,8 +10875,8 @@
     const latestSpan = document.getElementById("updateLatestVer");
     const titleSpan = document.getElementById("updateModalTitle");
     const notesBox = document.getElementById("updateReleaseNotes");
-    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "2.0.0"}`;
-    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "2.0.0"}`;
+    if (currentSpan) currentSpan.innerText = `v${latestReleaseData.current_version || "2.0.1"}`;
+    if (latestSpan) latestSpan.innerText = `v${latestReleaseData.latest_version || "2.0.1"}`;
     if (titleSpan) titleSpan.innerText = latestReleaseData.release_name || t("update_title_ver", { v: latestReleaseData.latest_version });
     if (notesBox) {
       notesBox.innerText = latestReleaseData.release_notes || t("update_notes_default");
@@ -11702,12 +11741,18 @@ function focusAiSettingsSection() {
     const curPour = Number(data.pour_weight) || 0;
     const curYield = Number(data.yield_weight) || 0;
     const stUpper = String(data.state || "").toUpperCase().trim();
-    if (data.temperature !== undefined) {
-      const t = Math.round(Number(data.temperature));
-      let tempDisplay = `${t}°C`;
-      if (t === 0) tempDisplay = "0°C (RT)";
-      else if (t === 100) tempDisplay = "100°C (BP)";
-      document.getElementById("tempVal").innerText = tempDisplay;
+    {
+      const inBrew = isBrewActive || isBrewStaging || isGrindingPhase;
+      const steps = Array.isArray(activeRecipeSteps) ? activeRecipeSteps : [];
+      const step = inBrew ? (steps[(currentStepIndex || 1) - 1] || steps[0]) : null;
+      const rawT = step ? Number(step.temp ?? step.temperature) : NaN;
+      let tempDisplay = "--";
+      if (Number.isFinite(rawT)) {
+        const t = Math.round(rawT);
+        tempDisplay = t === 0 ? "0°C (RT)" : (t === 100 ? "100°C (BP)" : `${t}°C`);
+      }
+      const tempEl = document.getElementById("tempVal");
+      if (tempEl && tempEl.innerText !== tempDisplay) tempEl.innerText = tempDisplay;
     }
     if (data.pour_weight !== undefined) {
       const incomingPour = Number(data.pour_weight) || 0;
@@ -13468,7 +13513,7 @@ function focusAiSettingsSection() {
     const beanB = recB.beanName || '-';
     const beanDiff = (beanA === beanB && beanA !== '-')
       ? `<span class="diff-delta diff-neutral">${t("diff_same_bean")}</span>`
-      : `<span class="diff-delta diff-neg">${t("diff_other_bean")}</span>`;
+      : `<span class="diff-delta diff-neg">${escapeHtml(t("diff_other_bean")).replace(/\//g, "/<wbr>")}</span>`;
     createRow(t("param_bean_name", "원두명"), escapeHtml(beanA), escapeHtml(beanB), beanDiff);
     const doseA = Number(recA.dose) || 0;
     const doseB = Number(recB.dose) || 0;
@@ -13542,8 +13587,9 @@ function focusAiSettingsSection() {
       flowDiff = `<span class="diff-delta ${fDiff >= 0 ? 'diff-pos' : 'diff-neg'}">${fDiff >= 0 ? '+' : ''}${fDiff} g/s</span>`;
     }
     createRow(t("param_flow_rate", "평균 유속"), flowA !== "-" ? `${flowA} g/s` : '-', flowB !== "-" ? `${flowB} g/s` : '-', flowDiff);
-    const noteA = recA.notes ? escapeHtml(recA.notes) : '<span style="color:var(--muted);">-</span>';
-    const noteB = recB.notes ? escapeHtml(recB.notes) : '<span style="color:var(--muted);">-</span>';
+    const noteCell = n => n ? `<span class="compare-note" onclick="this.classList.toggle('open')">${escapeHtml(n)}</span>` : '<span style="color:var(--muted);">-</span>';
+    const noteA = noteCell(recA.notes);
+    const noteB = noteCell(recB.notes);
     createRow(t("param_notes", "테이스팅 노트"), noteA, noteB, `<span class="diff-delta diff-neutral">${t("diff_check")}</span>`);
   }
   function selectHistoryRecord(id) {

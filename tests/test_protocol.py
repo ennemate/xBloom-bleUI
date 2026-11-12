@@ -24,11 +24,14 @@ from xbloom_ble.protocol import (
     NO_GRIND_WIRE,
     START_OPCODE,
     build_41,
+    build_a6,
     build_cancel,
     build_commit,
     build_load_frames,
     build_start,
     crc16_kermit,
+    machine_accepts_ratio,
+    wire_dose_and_ratio,
     xbloom_frame,
 )
 
@@ -224,10 +227,10 @@ def test_load_frames_with_bypass():
         "bypass_temp": 88.0,
         "pours": [
             {"ml": 40, "temp": 92, "pattern": "spiral", "pause": 30, "rpm": 100, "flow": 3.0},
-            {"ml": 180, "temp": 92, "pattern": "spiral", "pause": 5, "rpm": 100, "flow": 3.0},
+            {"ml": 176, "temp": 92, "pattern": "spiral", "pause": 5, "rpm": 100, "flow": 3.0},
         ],
     }
-    frames = build_load_frames(recipe)
+    frames = build_load_frames(recipe)           # 216 ml / 18 g = 1:12, accepted as written
     a6_frame = frames[1]
     assert a6_frame[3] == 0xA6
     # Frame layout: 58 01 01 | CMD | SEQ | LEN(2) | 00 00 | PAYLOAD(13) | CRC(2)
@@ -238,3 +241,43 @@ def test_load_frames_with_bypass():
     assert struct.unpack("<f", payload[5:9])[0] == 88.0
     assert payload[9] == 18
 
+
+
+# ── ratio check of the recipe load (firmware V12.0D.500, 0x22142) ────────────
+def _terrero():
+    def pour(ml, temp, pause, before=False, after=False, rpm=0):
+        return {"ml": ml, "temp": temp, "pattern": "spiral", "pause": pause, "rpm": rpm, "flow": 3.2,
+                "agitation_before": before, "agitation_after": after}
+    return {"dose": 16, "grind": 75, "pours": [
+        pour(60, 93, 18, before=True, after=True, rpm=60), pour(90, 90, 17), pour(100, 88, 1, after=True)]}
+
+
+def test_wire_bytes_pass_the_machine_check_for_every_total():
+    for dose in (8, 12, 15, 16, 18, 20, 25, 30):
+        for total in range(dose * 5, dose * 25 + 1):
+            wire_dose, tail = wire_dose_and_ratio(dose, total)
+            assert machine_accepts_ratio(wire_dose, tail, total), (dose, total)
+
+
+def test_accepted_recipes_keep_their_dose_and_ratio_byte():
+    assert wire_dose_and_ratio(20, 180) == (20, 90)     # 1:9, accepted on hardware as is
+    assert wire_dose_and_ratio(16, 256) == (16, 160)    # 1:16
+    frames = build_load_frames(RECIPES["simple"])
+    assert frames[1] == xbloom_frame(0xA6, 0x1F, build_a6(RECIPES["simple"]["dose"]))
+
+
+def test_unacceptable_total_moves_only_the_dose_and_ratio_bytes():
+    # 16 g / 250 ml has no ratio byte the machine accepts. Sent as 18 g / 1:13.9 it loaded,
+    # ground at 75 and poured 60/90/100 ml (checked on hardware, one unit).
+    frames = build_load_frames(_terrero())
+    assert frames[1].hex() == "580101a61f18000000010000000000000000120000007eb5"
+    assert frames[3].hex() == (
+        "580101411f2700000001183c5d0203ee003c205a5a0200ef00002064580202ff0000204b8b7863")
+    assert frames[3][-4] == 75                          # grind as written
+    assert [f[3] for f in frames] == [0xA4, 0xA6, 0xA8, 0x41]
+
+
+def test_explicit_tail_is_sent_unchanged():
+    r = dict(_terrero(), tail=0x9C)
+    frames = build_load_frames(r)
+    assert frames[3][-3] == 0x9C and frames[1][18] == 16

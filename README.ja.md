@@ -1,11 +1,11 @@
-# xBloom bleUI (v2.0.0)
+# xBloom bleUI (v2.0.1)
 
 <p align="center">
   <strong>xBloom Studio コーヒーマシンのためのスタンドアロンAndroidアプリ＆ローカルWebコントローラー</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0.0-orange.svg" alt="Version 2.0.0">
+  <img src="https://img.shields.io/badge/Version-2.0.1-orange.svg" alt="Version 2.0.1">
   <img src="https://img.shields.io/badge/Platform-Android%20APK%20%7C%20Web-blue.svg" alt="Platform Android and Web">
   <img src="https://img.shields.io/badge/Hardware-xBloom%20Studio-38bdf8.svg" alt="Hardware xBloom Studio">
   <img src="https://img.shields.io/badge/i18n-7_Languages-brightgreen.svg" alt="i18n Multilingual">
@@ -213,7 +213,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 
 ## 機能比較表
 
-| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v2.0.0)** |
+| 機能領域 | 基盤通信ライブラリ (`xbloom-ble`) | **xBloom bleUI (v2.0.1)** |
 | :--- | :--- | :--- |
 | **実行プラットフォーム** | ターミナルベース CLI / TUI (Linux中心) | **スタンドアロンAndroidネイティブアプリ(APK) ＋ クロスプラットフォームPC Web** |
 | **PC依存度** | PCのPython環境が必須 | **スマートフォン単独駆動（PC不要でスマホからBLE直接接続）** |
@@ -318,7 +318,7 @@ PCを起動する必要なく、スマートフォンにアプリをインスト
 ---
 
 ### 方法 B. Windows ポータブル版を実行 (PC推奨)
-1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v2.0.0-Windows-Portable.zip` をダウンロード
+1. [Releases ページ](https://github.com/ennemate/xBloom-bleUI/releases) から `xBloom-bleUI-v2.0.1-Windows-Portable.zip` をダウンロード
 2. お好みのフォルダーに解凍
 3. フォルダー内の **`run.bat`** ファイルをダブルクリック
    * 内蔵されたPython環境でサーバーが自動起動し、既定のWebブラウザ（`http://localhost:8000`）が自動で開きます。

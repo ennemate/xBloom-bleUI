@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-title xBloom bleUI Server v2.0.0
+title xBloom bleUI Server v2.0.1
 
 set PORT=8000
 if not "%~1"=="" set PORT=%~1

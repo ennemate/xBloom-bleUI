@@ -24,7 +24,7 @@ from typing import Dict, Any, Optional, List, Union
 import urllib.request
 import urllib.parse
 
-CURRENT_VERSION = "2.0.0"
+CURRENT_VERSION = "2.0.1"
 GITHUB_REPO = "ennemate/xBloom-bleUI"
 
 import uvicorn

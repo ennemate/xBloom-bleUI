@@ -1,4 +1,4 @@
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 from .protocol import PATTERN_CODES, build_load_frames, crc16_kermit, xbloom_frame
 from .recipe import Pour, Recipe, RecipeError

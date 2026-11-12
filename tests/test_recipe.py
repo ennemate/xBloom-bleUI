@@ -2,7 +2,7 @@
 
 import pytest
 
-from xbloom_ble.protocol import build_a6, build_load_frames
+from xbloom_ble.protocol import build_a6, build_load_frames, wire_dose_and_ratio
 from xbloom_ble.recipe import Recipe, RecipeError
 
 VALID = {
@@ -129,9 +129,14 @@ def test_large_dose_with_grinder_passes_and_reaches_the_frame(dose):
     # There is deliberately no upper limit, even with the grinder on.
     r = Recipe.from_dict(_with(dose_g=dose))
     assert r.grind != 0
-    a6_frame = build_load_frames(r.to_protocol_dict())[1]
+    proto = r.to_protocol_dict()
+    a6_frame = build_load_frames(proto)[1]
     assert a6_frame[3] == 0xA6
-    assert build_a6(dose) in a6_frame
+    # The dose byte is the one the machine accepts for this pour total (the real dose when the
+    # ratio works out, the closest one otherwise); see wire_dose_and_ratio.
+    wire_dose, _ = wire_dose_and_ratio(dose, sum(p["ml"] for p in proto["pours"]))
+    assert abs(wire_dose - dose) <= 3
+    assert build_a6(wire_dose) in a6_frame
 
 
 def test_rpm_out_of_range_raises():

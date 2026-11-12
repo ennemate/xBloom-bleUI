@@ -25,6 +25,7 @@ NO_WATER = "580207571f10000000c10c000000a2b8"    # 0x0c
 NO_BEANS = "580207571f10000000c10f0000000000"    # 0x0f  (dummy crc; parser ignores it)
 SLOTS_SAVED = "580207571f10000000c1250000000000"  # 0x25
 SLOTS_SAVING = "580207571f10000000c1430000000000"  # 0x43
+BACK_TO_NORMAL = "580207571f10000000c1440000000000"  # 0x44
 ACK_42 = "580207421f0c000000c1c5c2"              # commit echo
 WATER35 = "5802074b9e10000000c100b8084759b4"     # 0x4b water 35.0 g
 COFFEE12 = "580207155010000000c19eef4141ceba"    # 0x15 coffee 12.12 g
@@ -59,6 +60,7 @@ class FakeBleak:
             0x44: [ARMED],            # no-grind pours -> arms
             0x42: [ACK_42, STARTING],  # commit -> acts (grinding)
             0xF7: [IDLE],             # set-mode -> idle (PRO ready / back to AUTO)
+            0x4E: [BACK_TO_NORMAL, IDLE],  # back to normal -> 0x44 -> idle
         }
 
     async def connect(self):
@@ -234,8 +236,27 @@ def test_save_slot_writes_only_the_chosen_slot_and_never_brews():
     assert cmds.count(0xF6) == 1
     slot_frame = next(w for w in fake.writes if w[3] == 0xF6)
     assert slot_frame[10] == 2                       # slot C
-    assert cmds[-1] == 0xF7                          # back to AUTO
+    assert 0xF7 not in cmds                          # the machine's mode is left alone
     assert not ({0x42, 0x46, 0x47} & set(cmds))      # never a brew opcode
+
+
+def test_save_slot_sends_back_to_normal_before_auto():
+    # A single slot leaves the machine saving (0x43, hourglass); 0x9E4E ends that.
+    fake = FakeBleak()
+    c = _client(fake)
+    run(c.save_slot(RECIPE, 1))
+    cmds = _cmds(fake)
+    assert cmds == [0xA4, 0xF6, 0x4E]
+    assert fake.writes[-1].hex() == "5801014e9e0c000000016c7f"
+
+
+def test_save_slot_skips_back_to_normal_when_saved():
+    fake = FakeBleak()
+    fake._slot_writes = 2                            # the next write completes a set, so 0x25 follows
+    c = _client(fake)
+    run(c.save_slot(RECIPE, 1))
+    cmds = _cmds(fake)
+    assert cmds == [0xA4, 0xF6]
 
 
 def test_save_slot_reports_a_write_the_machine_did_not_accept():
@@ -244,7 +265,7 @@ def test_save_slot_reports_a_write_the_machine_did_not_accept():
     c = _client(fake)
     with pytest.raises(XBloomError):
         run(c.save_slot(RECIPE, 0, accept_timeout=0.05))
-    assert _cmds(fake)[-1] == 0xF7                   # still returns to AUTO
+    assert _cmds(fake) == [0xA4, 0xF6]               # nothing after a refused write
 
 
 def test_save_slots_rejects_wrong_count():
